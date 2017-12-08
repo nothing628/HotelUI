@@ -54,23 +54,23 @@ namespace UIHotel
             }
 
             var templateSource = new LoadedTemplateSource(fileContents, filename);
-
+            
             if (templateName != "")
                 Engine.Razor.AddTemplate(templateName, templateSource);
 
             Engine.Razor.Compile(templateSource, templateKey, null);
 
-            TemplateKeyList.Add(filename, templateKey);
+            TemplateKeyList.Add(templateKey, filename);
 
             return templateKey;
         }
 
         public string Render(string filename)
         {
-            if (!TemplateKeyList.ContainsKey(filename))
-                return "";
+            string templateKey = GetTemplateKey(filename);
 
-            string templateKey = TemplateKeyList[filename];
+            if (templateKey == "")
+                return "";
 
             try
             {
@@ -84,10 +84,10 @@ namespace UIHotel
 
         public string Render(string filename, DynamicViewBag viewBag)
         {
-            if (!TemplateKeyList.ContainsKey(filename))
-                return "";
+            string templateKey = GetTemplateKey(filename);
 
-            string templateKey = TemplateKeyList[filename];
+            if (templateKey == "")
+                return "";
 
             try
             {
@@ -101,10 +101,10 @@ namespace UIHotel
 
         public string Render<T>(string filename, T model)
         {
-            if (!TemplateKeyList.ContainsKey(filename))
-                return "";
+            string templateKey = GetTemplateKey(filename);
 
-            string templateKey = TemplateKeyList[filename];
+            if (templateKey == "")
+                return "";
 
             try
             {
@@ -114,6 +114,15 @@ namespace UIHotel
             {
                 throw;
             }
+        }
+
+        private string GetTemplateKey(string filename)
+        {
+            string result = (from a in TemplateKeyList
+                             where a.Value == filename
+                             select a.Key).FirstOrDefault();
+
+            return result;
         }
     }
 }

@@ -15,25 +15,11 @@ namespace UIHotel
         [STAThread]
         static void Main()
         {
-            var settings = new CefSettings()
+            using (var startup = new App())
             {
-                RemoteDebuggingPort = 55477,
-                IgnoreCertificateErrors = true,
-            };
-
-            settings.RegisterScheme(new CefCustomScheme() {
-                DomainName = "localhost.com",
-                IsCorsEnabled = false,
-                IsSecure = false,
-                SchemeName = "http",
-                SchemeHandlerFactory = new AppRequestHandler()
-            });
-
-            Cef.Initialize(settings);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-            Cef.Shutdown();
+                startup.IsShowDevTool = true;
+                startup.Run("http://localhost.com/index.cshtml");     //Open after finish configure
+            }
         }
     }
 }
