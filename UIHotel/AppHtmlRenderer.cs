@@ -17,10 +17,12 @@ namespace UIHotel
         private Dictionary<string, string> TemplateKeyList = new Dictionary<string, string>();
         private TemplateServiceConfiguration config;
         private IRazorEngineService service;
+        private string RootPath;
 
-        public AppHtmlRenderer()
+        public AppHtmlRenderer(string RootPath)
         {
             InitRazorEngine();
+            this.RootPath = RootPath;
         }
 
         private void InitRazorEngine()
@@ -76,9 +78,9 @@ namespace UIHotel
             {
                 return Engine.Razor.RunCompile(templateKey);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.ToString();
             }
         }
 
@@ -93,9 +95,9 @@ namespace UIHotel
             {
                 return Engine.Razor.RunCompile(templateKey, viewBag: viewBag);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.ToString();
             }
         }
 
@@ -110,9 +112,9 @@ namespace UIHotel
             {
                 return Engine.Razor.RunCompile(templateKey, model: model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.ToString();
             }
         }
 

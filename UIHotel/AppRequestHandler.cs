@@ -26,7 +26,7 @@ namespace UIHotel
         public AppRequestHandler(string DomainName)
         {
             this.DomainName = DomainName;
-            this._HtmlRenderer = new AppHtmlRenderer();
+            this._HtmlRenderer = new AppHtmlRenderer(BaseDir);
             this._Scheme = new CefCustomScheme()
             {
                 DomainName = DomainName,
@@ -119,7 +119,9 @@ namespace UIHotel
 
         private string CombineUrl(params string[] param)
         {
-            return string.Join("/", param).Replace("//", "/");
+            string cleanUrl = string.Join("/", param).Replace("//", "/");
+
+            return cleanUrl[0] == '/' ? cleanUrl.Substring(1, cleanUrl.Length - 1) : cleanUrl; 
         }
 
         private RouteModel SearchRouteModel(string pathUri)
@@ -140,7 +142,7 @@ namespace UIHotel
         {
             var res = new ResourceHandler();
             var uri = new Uri(request.Url);
-            var model = SearchRouteModel(uri.AbsolutePath);
+            var model = SearchRouteModel(CombineUrl(uri.AbsolutePath));
 
             if (model == null)
             {

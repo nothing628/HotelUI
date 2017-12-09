@@ -1911,8 +1911,8 @@ function getOffsetRectRelativeToArbitraryNode(children, parent) {
 function getViewportOffsetRectRelativeToArtbitraryNode(element) {
   var html = window.document.documentElement;
   var relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
-  var width = Math.max(html.clientWidth, window.innerWidth || 0);
-  var height = Math.max(html.clientHeight, window.innerHeight || 0);
+  var width = Math.max(clientWidth, window.innerWidth || 0);
+  var height = Math.max(clientHeight, window.innerHeight || 0);
 
   var scrollTop = getScroll(html);
   var scrollLeft = getScroll(html, 'left');
