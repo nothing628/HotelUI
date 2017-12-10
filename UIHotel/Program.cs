@@ -18,7 +18,7 @@ namespace UIHotel
             using (var startup = new App())
             {
                 startup.IsShowDevTool = true;
-                startup.Run("http://localhost.com/index.cshtml");     //Open after finish configure
+                startup.Run("http://localhost.com/login.cshtml");     //Open after finish configure
             }
         }
     }

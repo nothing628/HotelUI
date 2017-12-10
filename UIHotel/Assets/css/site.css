@@ -2,3 +2,20 @@
 .widget-pie {
     background-color: #3eb0b9;
 }
+
+.login {
+    background-image: url('../images/bg-login.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+    .login .login-overlay {
+        background-color: black;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
