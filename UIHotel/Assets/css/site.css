@@ -24,7 +24,11 @@
 }
 
 .form-group {
-    margin-bottom: 0rem;
+    margin-bottom: 1rem;
+}
+
+.form-group.zero {
+    margin-bottom: 0px;
 }
 
 .row.room_status {
