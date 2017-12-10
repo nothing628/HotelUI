@@ -1,0 +1,285 @@
+﻿@{
+    Layout = "Layout";
+}
+
+<header class="content__title">
+    <h1>Room Status</h1>
+    <small>Check for room status</small>
+</header>
+
+<div class="row todo">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Filter</h2>
+            </div>
+
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group form-group--select">
+                            <div class="select">
+                                <select class="form-control">
+                                    <option>Select Type</option>
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
+                                    <option>Option 5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group form-group--select">
+                            <div class="select">
+                                <select class="form-control">
+                                    <option>Select Building</option>
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
+                                    <option>Option 5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group form-group--select">
+                            <div class="select">
+                                <select class="form-control">
+                                    <option>Select Floor</option>
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
+                                    <option>Option 5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Search">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="toolbar toolbar--inner">
+                    <div class="toolbar__label"><strong>ALL</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href="">Vacant (39)</a>
+                        <a href="">Occupied (6)</a>
+                        <a href="">Booked (1)</a>
+                    </div>
+                </div>
+                <div class="toolbar toolbar--inner">
+                    <div class="toolbar__label"><strong>Group 1</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href="">Vacant (3)</a>
+                        <a href="">Occupied (1)</a>
+                        <a href="">Booked (1)</a>
+                    </div>
+                </div>
+                <div class="row room_status">
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>201</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>202</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-orange">
+                            <div class="quick-stats__info">
+                                <h2>203</h2>
+                                <small>Booked</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>204</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>205</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toolbar toolbar--inner">
+                    <div class="toolbar__label"><strong>Group 2</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href="">Vacant (1)</a>
+                        <a href="">Occupied (2)</a>
+                        <a href="">Booked (2)</a>
+                    </div>
+                </div>
+                <div class="row room_status">
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>401</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>402</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-orange">
+                            <div class="quick-stats__info">
+                                <h2>403</h2>
+                                <small>Booked</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-orange">
+                            <div class="quick-stats__info">
+                                <h2>404</h2>
+                                <small>Booked</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>405</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="">Check In</a>
+                                        <a class="dropdown-item" href="">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

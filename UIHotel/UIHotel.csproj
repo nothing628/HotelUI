@@ -173,6 +173,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="View\Checkin\Checkin.cshtml" />
+    <None Include="View\Checkin\Room.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="View\Layout\Parts\BaseCSS.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
