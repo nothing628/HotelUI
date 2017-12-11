@@ -253,6 +253,9 @@
     <Content Include="Assets\css\app.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\css\basscss.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\css\bootstrap-datepicker.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
