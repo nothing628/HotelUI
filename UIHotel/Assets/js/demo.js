@@ -516,3 +516,9 @@ $(document).ready(function () {
         });
     }
 });
+
+'use strict';
+
+$(document).ready(function () {
+    $('.select2.select').select2();
+});

@@ -1,3 +1,235 @@
 ﻿@{
     Layout = "Layout";
 }
+
+<header class="content__title">
+    <h1>Booking In Registration</h1>
+</header>
+
+<div class="row todo">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Registration Info</h2>
+            </div>
+
+            <div class="card-block">
+                <form class="form-row">
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Rate Type</label>
+                        <div class="col-4">
+                            <select class="form-control">
+                                <option>Rate Type</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Arrival Date</label>
+                        <div class="col-4">
+                            <input class="form-control" value="2011-08-19" type="date">
+                        </div>
+                        <label class="col-2 col-form-label">Departure Date</label>
+                        <div class="col-4">
+                            <input class="form-control" value="2011-08-19" type="date">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Jumlah Adult</label>
+                        <div class="col-4">
+                            <input class="form-control" value="0" type="number">
+                        </div>
+                        <label class="col-2 col-form-label">Jumlah Child</label>
+                        <div class="col-4">
+                            <input class="form-control" value="0" type="number">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-header">
+                <h2 class="card-title">Room Select</h2>
+            </div>
+
+            <div class="card-block">
+                <form class="form-row">
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Room Type</label>
+                        <div class="col-3">
+                            <select class="form-control">
+                                <option>Room Type</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                        <label class="col-2 col-form-label">Room Number</label>
+                        <div class="col-3">
+                            <select class="form-control">
+                                <option>Room Number</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-lg btn-primary btn--icon" type="button"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Selected Room</label>
+                        <div class="col-10">
+                            <select class="form-control select2 select" multiple>
+                                <option>Room Type</option>
+                                <option>Melati No. 201</option>
+                                <option>Melati No. 205</option>
+                                <option>Mawar No. 301</option>
+                                <option>Mawar No. 501</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Note</label>
+                        <div class="col-6">
+                            <textarea class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-header">
+                <h2 class="card-title">Guest Info</h2>
+            </div>
+
+            <div class="card-block">
+                <form class="form-row">
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Name</label>
+                        <div class="col-3">
+                            <input class="form-control" placeholder="First Name" type="text">
+                        </div>
+                        <div class="col-3">
+                            <input class="form-control" placeholder="Middle Name" type="text">
+                        </div>
+                        <div class="col-3">
+                            <input class="form-control" placeholder="Last Name" type="text">
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-lg btn--icon btn-primary" type="button"><i class="zmdi zmdi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">ID Number</label>
+                        <div class="col-6">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Guest Type</label>
+                        <div class="col-6">
+                            <label class="custom-control custom-radio">
+                                <input name="radio-inline" class="custom-control-input" type="radio">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Regular</span>
+                            </label>
+
+                            <label class="custom-control custom-radio">
+                                <input name="radio-inline" class="custom-control-input" type="radio">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">VIP</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Birth Day</label>
+                        <div class="col-4">
+                            <input class="form-control" placeholder="Birth place" type="text">
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" value="2017-12-01" type="date">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Address</label>
+                        <div class="col-6">
+                            <textarea class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">State</label>
+                        <div class="col-4">
+                            <select class="form-control">
+                                <option>Select State</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                        <label class="col-2 col-form-label">Province</label>
+                        <div class="col-4">
+                            <input class="form-control" placeholder="Province" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">City</label>
+                        <div class="col-4">
+                            <input class="form-control" placeholder="City" type="text">
+                        </div>
+                        <label class="col-2 col-form-label">Pos Code</label>
+                        <div class="col-4">
+                            <input class="form-control" placeholder="Pos Code" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Email</label>
+                        <div class="col-6">
+                            <input class="form-control" placeholder="Email" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Phone Number 1</label>
+                        <div class="col-4">
+                            <input class="form-control" placeholder="Phone Number 1" type="text">
+                        </div>
+                        <label class="col-2 col-form-label">Phone Number 2</label>
+                        <div class="col-4">
+                            <input class="form-control" placeholder="Phone Number 2" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Photo Document</label>
+                        <div class="col-6">
+                            <button class="btn btn-lg btn-primary btn--icon" type="button"><i class="zmdi zmdi-cloud-upload"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">Photo Guest</label>
+                        <div class="col-6">
+                            <button class="btn btn-lg btn-primary btn--icon" type="button"><i class="zmdi zmdi-cloud-upload"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <button type="button" class="btn btn-lg btn--icon-text waves-effect btn-danger">Cancel</button>
+                        <button type="button" class="btn btn-lg btn--icon-text waves-effect btn-primary">Booking <i class="zmdi zmdi-check-all"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
