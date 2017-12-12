@@ -19,7 +19,7 @@ namespace UIHotel
             using (var startup = new AppMain())
             {
                 startup.IsShowDevTool = true;
-                startup.Run("http://localhost.com/checkin/checkout.cshtml");     //Open after finish configure
+                startup.Run("http://localhost.com/checkin/booking.cshtml");     //Open after finish configure
             }
         }
     }
