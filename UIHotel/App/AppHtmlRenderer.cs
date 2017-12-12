@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UIHotel
+namespace UIHotel.App
 {
     public class AppHtmlRenderer
     {

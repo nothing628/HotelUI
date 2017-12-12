@@ -82,9 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
-    <Compile Include="AppHtmlRenderer.cs" />
-    <Compile Include="AppRequestHandler.cs" />
+    <Compile Include="App\AppMain.cs" />
+    <Compile Include="App\AppHtmlRenderer.cs" />
+    <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -305,6 +305,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\images\bg-login.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\images\keycard.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\images\profile-pic.jpg">

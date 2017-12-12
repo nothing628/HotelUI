@@ -46,7 +46,7 @@
                                     <td class="h6">Jenis Kelamin</td>
                                     <td>Perempuan</td>
                                     <td class="h6">Laundry<br />Rp.0</td>
-                                    <td><span class="float-left">Balance : </span><span class="float-right">0</span></td>
+                                    <td><span class="float-left">Deposit : </span><span class="float-right">600.000</span></td>
                                 </tr>
                                 <tr>
                                     <td class="h6">Phone Number</td>
@@ -61,7 +61,7 @@
                                     <td>11 Desember 2017</td>
                                     <td class="h6">Departure Date</td>
                                     <td>12 Desember 2017</td>
-                                    <td colspan="2" class="h6"><span class="float-left">TOTAL TAGIHAN : </span><span class="float-right">550.000</span></td>
+                                    <td colspan="2" class="h6"><span class="float-left">TOTAL TAGIHAN : </span><span class="float-right">0</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -101,6 +101,12 @@
                                 </tr>
                                 <tr>
                                     <td>11/12/2017</td>
+                                    <td>Deposit</td>
+                                    <td>0</td>
+                                    <td>600.000</td>
+                                </tr>
+                                <tr>
+                                    <td>11/12/2017</td>
                                     <td>Room : 311 (Weekday)<br /><i>Family, Rate Rp.550.000</i></td>
                                     <td>550.000</td>
                                     <td>0</td>
@@ -108,11 +114,11 @@
                                 <tr>
                                     <td colspan="2"><span class="float-right">Total</span></td>
                                     <td>550.000</td>
-                                    <td>0</td>
+                                    <td>600.000</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><span class="float-right">Balance</span></td>
-                                    <td>550.000</td>
+                                    <td>-50.000</td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -124,7 +130,19 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">Rp.</span>
                                             <div class="form-group">
-                                                <input class="form-control" type="number" value="550000">
+                                                <input class="form-control" type="number" value="0" readonly>
+                                                <i class="form-group__bar"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="h6 bg-silver">DEPOSIT</td>
+                                    <td colspan="3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Rp.</span>
+                                            <div class="form-group">
+                                                <input class="form-control" type="number" value="50000" readonly>
                                                 <i class="form-group__bar"></i>
                                             </div>
                                         </div>
@@ -136,7 +154,7 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">Rp.</span>
                                             <div class="form-group">
-                                                <input class="form-control" type="number" value="550000">
+                                                <input class="form-control" type="number" value="0">
                                                 <i class="form-group__bar"></i>
                                             </div>
                                         </div>
@@ -148,7 +166,7 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">Rp.</span>
                                             <div class="form-group">
-                                                <input class="form-control" type="number" value="0">
+                                                <input class="form-control" type="number" value="50000" readonly>
                                                 <i class="form-group__bar"></i>
                                             </div>
                                         </div>
@@ -187,7 +205,28 @@
                     </div>
                 </div>
 
-                <button class="btn btn-lg btn-primary">Checkout <i class="zmdi zmdi-check-all"></i></button>
+                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modal-default">Checkout <i class="zmdi zmdi-check-all"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-default" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">Finishing Checkout</h5>
+            </div>
+            <div class="modal-body">
+                <div class="dropzone" style="height:300px;">
+                    <div class="dz-default dz-message">
+                        <img src="http://localhost.com/images/keycard.png" class="img-fluid" />
+                        <span>Tempelkan kartu Ruangan ...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

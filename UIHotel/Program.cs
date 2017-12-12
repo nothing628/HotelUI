@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
+using UIHotel.App;
 
 namespace UIHotel
 {
@@ -15,7 +16,7 @@ namespace UIHotel
         [STAThread]
         static void Main()
         {
-            using (var startup = new App())
+            using (var startup = new AppMain())
             {
                 startup.IsShowDevTool = true;
                 startup.Run("http://localhost.com/checkin/checkout.cshtml");     //Open after finish configure

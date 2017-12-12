@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIHotel.Model;
 using CefSharp;
+using System.Drawing;
 
-namespace UIHotel
+namespace UIHotel.App
 {
-    public class App : IDisposable
+    public class AppMain : IDisposable
     {
         private ChromiumWebBrowser browser;
         private Form mainForm;
@@ -33,7 +34,7 @@ namespace UIHotel
             get => Path.Combine(BaseDir, AssetPath);
         }
 
-        public App()
+        public AppMain()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

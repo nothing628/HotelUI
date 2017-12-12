@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace UIHotel
+namespace UIHotel.App
 {
     public class AppRequestHandler : ISchemeHandlerFactory
     {

@@ -49,3 +49,23 @@
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #89f596;
 }
+
+.dropzone .dz-message span:before {
+    content: '';
+    font-size: 1.6rem;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    margin-right: .8rem;
+}
+
+.dropzone .dz-message span {
+    display: block;
+    text-align: center;
+}
+
+.dropzone .dz-message img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
