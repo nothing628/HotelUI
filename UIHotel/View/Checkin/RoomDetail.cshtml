@@ -1,0 +1,151 @@
+﻿@{
+    Layout = "Layout";
+}
+
+<header class="content__title">
+    <h1>Room Detail</h1>
+</header>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Room Detail : Melati No. 201</h2>
+            </div>
+
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-2">
+                        <img class="img-fluid" src="http://localhost.com/images/room.jpg"/>
+                    </div>
+                    <div class="col-10">
+                        <form>
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Room Type</label>
+                                <div class="col-4">
+                                    <select class="form-control">
+                                        <option>Room Type</option>
+                                        <option>Mawar</option>
+                                        <option selected>Melati</option>
+                                        <option>Bunga Bangkai</option>
+                                        <option>Option 4</option>
+                                        <option>Option 5</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Room Number</label>
+                                <div class="col-4">
+                                    <input class="form-control" placeholder="Room Number" value="201" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label">Floor Number</label>
+                                <div class="col-4">
+                                    <input class="form-control" placeholder="Floor" value="1" type="number">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-10 offset-2">
+                                    <div class="btn-group-lg">
+                                        <button class="btn btn-success"><i class="zmdi zmdi-download"></i> Checkin</button>
+                                        <button class="btn btn-info"><i class="zmdi zmdi-bookmark"></i> Booking</button>
+                                        <button class="btn btn-danger" disabled><i class="zmdi zmdi-upload"></i> Checkout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-header">
+                <h2 class="card-title">Rate Plan</h2>
+            </div>
+
+            <div class="card-block">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="bg-silver">
+                            <td>Rate Plan</td>
+                            <td>Plan Note</td>
+                            <td>Weekday</td>
+                            <td>Weekend</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Basic</td>
+                            <td>Only Room</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp.</span>
+                                    <div class="form-group">
+                                        <input class="form-control" type="number" value="500000">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp.</span>
+                                    <div class="form-group">
+                                        <input class="form-control" type="number" value="600000">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Superior</td>
+                            <td>Incl. Laundry</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp.</span>
+                                    <div class="form-group">
+                                        <input class="form-control" type="number" value="600000">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp.</span>
+                                    <div class="form-group">
+                                        <input class="form-control" type="number" value="650000">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mega</td>
+                            <td>Incl. Laundry&FnB</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp.</span>
+                                    <div class="form-group">
+                                        <input class="form-control" type="number" value="650000">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp.</span>
+                                    <div class="form-group">
+                                        <input class="form-control" type="number" value="700000">
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
