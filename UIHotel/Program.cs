@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
 using UIHotel.App;
+using MySql.Data.MySqlClient;
+using UIHotel.Data;
 
 namespace UIHotel
 {
