@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace UIHotel.App.Provider
     public class RouterProvider : ServiceProvider
     {
         private List<RouteModel> listRoute { get; set; }
+        private string controllerNamespace { get; set; } = "UIHotel.App.Controller";
 
         public override void Register()
         {
@@ -57,11 +59,12 @@ namespace UIHotel.App.Provider
     {
         public string Method { get; set; }
         public string Path { get; set; }
+        public string Namespace { get; set; }
         public string Controller { get; set; }
         public string Action { get; set; }
         public string[] Params { get; set; }
         
-        public RouteModel(string Path, string Controller, string Action = "index", string Method = "GET")
+        public RouteModel(string Path, string Controller, string Namespace = "UIHotel.App.Controller", string Action = "index", string Method = "GET")
         {
             this.Path = Path;
             this.Controller = Controller;
@@ -78,9 +81,79 @@ namespace UIHotel.App.Provider
             return Regex.IsMatch(Path, pattern, RegexOptions.IgnoreCase) && request.Method == Method;
         }
 
+        public string GetController(string Path)
+        {
+            var isControllerContextExists = Regex.IsMatch(this.Path, @"{controller}", RegexOptions.IgnoreCase);
+
+            if (isControllerContextExists)
+            {
+                var pattern = Regex.Replace(this.Path, @"{controller}", @"([^\/\n]+)");
+                var matchColl = Regex.Matches(Path, pattern, RegexOptions.IgnoreCase);
+                var match = matchColl[0];
+
+                if (match.Captures.Count == 2)
+                    return match.Captures[1].Value;
+            }
+            
+            return Controller;
+        }
+
+        public string GetAction(string Path)
+        {
+            var isActionContextExists = Regex.IsMatch(this.Path, @"{action}", RegexOptions.IgnoreCase);
+
+            if (isActionContextExists)
+            {
+                var pattern = Regex.Replace(this.Path, @"{action}", @"([^\/\n]+)");
+                var matchColl = Regex.Matches(Path, pattern, RegexOptions.IgnoreCase);
+                var match = matchColl[0];
+
+                if (match.Captures.Count == 2)
+                    return match.Captures[1].Value;
+            }
+
+            return Action;
+        }
+
         public ResourceHandler GetResponse(IRequest request)
         {
+            var Url = new Uri(request.Url);
+            var Path = Url.AbsolutePath;
+            var Controller = GetController(Path);
+            var Action = GetAction(Path);
+            var ClassName = Namespace + "." + Controller;
+            
+            if (IsClassExists(ClassName) && IsMethodExists(ClassName, Action))
+            {
+                //
+            }
+
             return ResourceHandler.FromString("A", Encoding.UTF8);
+        }
+
+        private bool IsClassExists(string ClassName)
+        {
+            Type type = Type.GetType(ClassName);
+
+            if (type != null)
+                return type.IsClass;
+
+            return false;
+        }
+
+        private bool IsMethodExists(string ClassName, string Method)
+        {
+            if (IsClassExists(ClassName))
+            {
+                Type type = Type.GetType(ClassName);
+                MethodInfo[] methods = type.GetMethods();
+
+                foreach (MethodInfo method in methods)
+                    if (method.Name.Equals(Method, StringComparison.OrdinalIgnoreCase))
+                        return true;
+            }
+
+            return false;
         }
     }
 }
