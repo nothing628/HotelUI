@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using UIHotel.Model;
 using CefSharp;
 using System.Drawing;
+using UIHotel.App.Provider;
 
 namespace UIHotel.App
 {
@@ -21,6 +22,20 @@ namespace UIHotel.App
         private const string AssetPath = "Assets";
         private const string Domain = "localhost.com";
         private string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
+        private List<ServiceProvider> listServiceProvider = new List<ServiceProvider>();
+        public static AppMain Main { get; set; }
+
+        public void RegisterProvider()
+        {
+            foreach (ServiceProvider provider in listServiceProvider)
+                provider.Register();
+        }
+
+        public void BootProvider()
+        {
+            foreach (ServiceProvider provider in listServiceProvider)
+                provider.Boot();
+        }
 
         public bool IsShowDevTool { get; set; }
 
@@ -34,6 +49,18 @@ namespace UIHotel.App
             get => Path.Combine(BaseDir, AssetPath);
         }
 
+        public ServiceProvider this[string provide]
+        {
+            get
+            {
+                foreach (ServiceProvider provider in listServiceProvider)
+                    if (provider.Provide() == provide)
+                        return provider;
+
+                return null;
+            }
+        }
+
         public AppMain()
         {
             Application.EnableVisualStyles();
@@ -44,6 +71,12 @@ namespace UIHotel.App
             
             ConfigureSetting();
             ConfigureRoute();
+
+            listServiceProvider.Add(new RouterProvider());
+            listServiceProvider.Add(new ViewProvider());
+
+            RegisterProvider();
+            BootProvider();
 
             browser = new ChromiumWebBrowser("about:blank");
             browser.RegisterAsyncJsObject("CS", new BaseModel());

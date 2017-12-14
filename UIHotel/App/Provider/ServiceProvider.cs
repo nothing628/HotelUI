@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace UIHotel.App.Provider
 {
-    public class ServiceProvider
+    public abstract class ServiceProvider
     {
-        public virtual void Register()
-        {
-            //
-        }
-
-        public virtual void Boot()
-        {
-            //
-        }
+        public abstract void Register();
+        public abstract void Boot();
+        public abstract string Provide();
     }
 }

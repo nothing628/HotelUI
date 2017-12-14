@@ -18,8 +18,6 @@ namespace UIHotel.App.Provider
 
         public override void Register()
         {
-            base.Register();
-
             listRoute = new List<RouteModel>();
             listRoute.Add(new RouteModel("home/get/{action}", "HomeController"));
             listRoute.Add(new RouteModel("home/post/{action}", "HomeController", Method: "POST"));
@@ -27,8 +25,6 @@ namespace UIHotel.App.Provider
 
         public override void Boot()
         {
-            base.Boot();
-            //
         }
 
         public ResourceHandler GetResponse(IRequest request)
@@ -53,6 +49,11 @@ namespace UIHotel.App.Provider
                     return true;
 
             return false;
+        }
+
+        public override string Provide()
+        {
+            return "route";
         }
     }
 

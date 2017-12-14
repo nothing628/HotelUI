@@ -18,10 +18,10 @@ namespace UIHotel
         [STAThread]
         static void Main()
         {
-            using (var startup = new AppMain())
+            using (AppMain.Main = new AppMain())
             {
-                startup.IsShowDevTool = true;
-                startup.Run("http://localhost.com/home/get/index");     //Open after finish configure
+                AppMain.Main.IsShowDevTool = true;
+                AppMain.Main.Run("http://localhost.com/home/get/index");     //Open after finish configure
             }
         }
     }

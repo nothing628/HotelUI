@@ -120,6 +120,9 @@
     <Compile Include="App\Controller\HomeController.cs" />
     <Compile Include="App\Provider\RouterProvider.cs" />
     <Compile Include="App\Provider\ServiceProvider.cs" />
+    <Compile Include="App\Provider\ViewProvider.cs" />
+    <Compile Include="App\View\ViewCompiler.cs" />
+    <Compile Include="App\View\ViewManager.cs" />
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\Room.cs" />
     <Compile Include="Model\BaseModel.cs" />
