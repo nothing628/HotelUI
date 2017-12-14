@@ -9,6 +9,11 @@ namespace UIHotel.App.Controller
 {
     public class HomeController : BaseController
     {
+        public HomeController(IRequest request) : base(request)
+        {
+            //
+        }
+
         public IResourceHandler index()
         {
             return View();

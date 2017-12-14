@@ -35,12 +35,12 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler View()
         {
-            return ResourceHandler.FromString("A", Encoding.UTF8);
+            return ResourceHandler.FromString("View", Encoding.UTF8);
         }
 
         public IResourceHandler View(string viewPath)
         {
-            return ResourceHandler.FromString("A", Encoding.UTF8);
+            return ResourceHandler.FromString("View B", Encoding.UTF8);
         }
     }
 }

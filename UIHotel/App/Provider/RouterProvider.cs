@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UIHotel.App.Controller;
 
 namespace UIHotel.App.Provider
 {
@@ -59,7 +60,7 @@ namespace UIHotel.App.Provider
     {
         public string Method { get; set; }
         public string Path { get; set; }
-        public string Namespace { get; set; }
+        public string Namespace { get; set; } = "UIHotel.App.Controller";
         public string Controller { get; set; }
         public string Action { get; set; }
         public string[] Params { get; set; }
@@ -123,12 +124,31 @@ namespace UIHotel.App.Provider
             var Action = GetAction(Path);
             var ClassName = Namespace + "." + Controller;
             
-            if (IsClassExists(ClassName) && IsMethodExists(ClassName, Action))
+            if (IsMethodExists(ClassName, Action))
             {
-                //
+                Type type = Type.GetType(ClassName);
+
+                return CreateInstance(type, Action, request);
             }
 
-            return ResourceHandler.FromString("A", Encoding.UTF8);
+            return new ResourceHandler() {
+                StatusCode = (int)HttpStatusCode.NotFound,
+                StatusText = "Not Found",
+            };
+        }
+
+        private ResourceHandler CreateInstance(Type Type, string Method, IRequest request)
+        {
+            ConstructorInfo constInfo = Type.GetConstructor(new[] { typeof(IRequest) });
+            MethodInfo method = Type.GetMethod(Method);
+            Object instance = constInfo.Invoke(new object[] { request });
+            
+            var result = method?.Invoke(instance, new object[] { });
+
+            if (result != null)
+                return (ResourceHandler)result;
+            else
+                return new ResourceHandler() { StatusCode = (int)HttpStatusCode.NotFound, StatusText = "Method '" + Method + "' Not Found" };
         }
 
         private bool IsClassExists(string ClassName)
@@ -149,7 +169,7 @@ namespace UIHotel.App.Provider
                 MethodInfo[] methods = type.GetMethods();
 
                 foreach (MethodInfo method in methods)
-                    if (method.Name.Equals(Method, StringComparison.OrdinalIgnoreCase))
+                    if (method.Name.Equals(Method, StringComparison.OrdinalIgnoreCase) && method.ReturnType != typeof(void))
                         return true;
             }
 
