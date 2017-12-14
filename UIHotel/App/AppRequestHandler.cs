@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using UIHotel.App.Provider;
 
 namespace UIHotel.App
 {
@@ -14,6 +15,7 @@ namespace UIHotel.App
     {
         private string DomainName;
         private AppHtmlRenderer _HtmlRenderer;
+        private RouterProvider _RouterProvider;
         private CefCustomScheme _Scheme;
         public List<RouteModel> mapRoute = new List<RouteModel>();
         private string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -26,6 +28,7 @@ namespace UIHotel.App
         public AppRequestHandler(string DomainName)
         {
             this.DomainName = DomainName;
+            this._RouterProvider = new RouterProvider();
             this._HtmlRenderer = new AppHtmlRenderer(BaseDir);
             this._Scheme = new CefCustomScheme()
             {
@@ -35,6 +38,8 @@ namespace UIHotel.App
                 SchemeName = "http",
                 SchemeHandlerFactory = this
             };
+
+            this._RouterProvider.Register();
         }
 
         public void RegisterPath(string pathLocation, string urlPath)
@@ -143,6 +148,9 @@ namespace UIHotel.App
             var res = new ResourceHandler();
             var uri = new Uri(request.Url);
             var model = SearchRouteModel(CombineUrl(uri.AbsolutePath));
+
+            if (_RouterProvider.HasMatch(request))
+                return _RouterProvider.GetResponse(request);
 
             if (model == null)
             {

@@ -18,16 +18,29 @@ namespace UIHotel.App.Controller
 
         public BaseController()
         {
-            //
+            DBConnection = new MySqlConnection(Properties.Settings.Default.MyDB);
+            Model = new DataContext(DBConnection, false);
+
+            DBConnection.Open();
         }
 
         public BaseController(IRequest Request)
         {
             this.Request = Request;
             this.DBConnection = new MySqlConnection(Properties.Settings.Default.MyDB);
-            this.Model = new DataContext(DBConnection, true);
+            this.Model = new DataContext(DBConnection, false);
 
             DBConnection.Open();
+        }
+
+        public IResourceHandler View()
+        {
+            return ResourceHandler.FromString("A", Encoding.UTF8);
+        }
+
+        public IResourceHandler View(string viewPath)
+        {
+            return ResourceHandler.FromString("A", Encoding.UTF8);
         }
     }
 }
