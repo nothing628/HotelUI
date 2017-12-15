@@ -16,12 +16,37 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler index()
         {
-            return View("index");
+            return View("Index");
         }
 
         public IResourceHandler login()
         {
-            return View("login");
+            return View("Login");
+        }
+
+        public IResourceHandler booking()
+        {
+            return View("Checkin.Booking");
+        }
+
+        public IResourceHandler checkin()
+        {
+            return View("Checkin.Checkin");
+        }
+
+        public IResourceHandler checkout()
+        {
+            return View("Checkin.Checkout");
+        }
+
+        public IResourceHandler room()
+        {
+            return View("Checkin.Room");
+        }
+
+        public IResourceHandler roomdetail()
+        {
+            return View("Checkin.RoomDetail");
         }
     }
 }

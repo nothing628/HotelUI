@@ -143,9 +143,7 @@ namespace UIHotel.App.Provider
 
                 return result;
             }
-
             
-
             return new ResourceHandler() {
                 StatusCode = (int)HttpStatusCode.NotFound,
                 StatusText = "Not Found",
