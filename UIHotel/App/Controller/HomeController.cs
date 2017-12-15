@@ -16,7 +16,7 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler index()
         {
-            return View();
+            return View("index");
         }
     }
 }

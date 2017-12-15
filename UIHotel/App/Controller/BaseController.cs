@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.App.Provider;
+using UIHotel.App.View;
 using UIHotel.Data;
 
 namespace UIHotel.App.Controller
@@ -33,14 +35,34 @@ namespace UIHotel.App.Controller
             DBConnection.Open();
         }
 
-        public IResourceHandler View()
+        public IResourceHandler View(string viewName)
         {
-            return ResourceHandler.FromString("View", Encoding.UTF8);
+            ViewProvider viewProvider = AppMain.Main["view"] as ViewProvider;
+
+            try
+            {
+                string renderResult = viewProvider.ViewManager.Render(viewName);
+
+                return ResourceHandler.FromString(renderResult, Encoding.UTF8);
+            } catch (ViewNotFoundException ex)
+            {
+                return ResourceHandler.FromString(ex.ToString());
+            }
         }
 
-        public IResourceHandler View(string viewPath)
+        public IResourceHandler View(string viewName, object viewData)
         {
-            return ResourceHandler.FromString("View B", Encoding.UTF8);
+            ViewProvider viewProvider = AppMain.Main["view"] as ViewProvider;
+
+            try
+            {
+                string renderResult = viewProvider.ViewManager.Render(viewName, viewData);
+
+                return ResourceHandler.FromString(renderResult, Encoding.UTF8);
+            } catch (ViewNotFoundException ex)
+            {
+                return ResourceHandler.FromString(ex.ToString());
+            }
         }
     }
 }

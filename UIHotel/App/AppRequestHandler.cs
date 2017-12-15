@@ -14,7 +14,6 @@ namespace UIHotel.App
     public class AppRequestHandler : ISchemeHandlerFactory
     {
         private string DomainName;
-        private AppHtmlRenderer _HtmlRenderer;
         private RouterProvider _RouterProvider;
         private CefCustomScheme _Scheme;
         public List<RouteModel> mapRoute = new List<RouteModel>();
@@ -29,7 +28,6 @@ namespace UIHotel.App
         {
             this.DomainName = DomainName;
             this._RouterProvider = new RouterProvider();
-            this._HtmlRenderer = new AppHtmlRenderer(BaseDir);
             this._Scheme = new CefCustomScheme()
             {
                 DomainName = DomainName,
@@ -62,26 +60,12 @@ namespace UIHotel.App
         {
             if (file.Exists)
             {
-                bool IsViewTemplate = false;
-
-                if (file.Extension == ".cshtml")
-                {
-                    _HtmlRenderer.RegisterTemplate(file.FullName, url);
-                    IsViewTemplate = true;
-                }
-
                 mapRoute.Add(new RouteModel()
                 {
                     RoutePath = url,
                     Filename = file.FullName,
-                    IsViewTemplate = IsViewTemplate
                 });
             }
-        }
-
-        public void RegisterTemplate(string filename, string name)
-        {
-            _HtmlRenderer.RegisterTemplate(filename, name);
         }
 
         private void ScanDirectories(DirectoryInfo[] listDir, string urlPath)
@@ -158,15 +142,7 @@ namespace UIHotel.App
                 res.StatusCode = (int)HttpStatusCode.NotFound;
 
                 return res;
-            }
-
-            if (model.IsViewTemplate)
-            {
-                var renderResult = _HtmlRenderer.Render(model.Filename);
-
-                return ResourceHandler.FromString(renderResult, Encoding.UTF8);
-            }
-            else
+            } else
             {
                 var stream = model.GetFilestream();
                 var mimeType = GetMimeType(model.Filename);
@@ -185,13 +161,12 @@ namespace UIHotel.App
     {
         public string Filename { get; set; }
         public string RoutePath { get; set; }
-        public bool IsViewTemplate { get; set; }
 
         public FileStream GetFilestream()
         {
             var info = new FileInfo(Filename);
 
-            if (!IsViewTemplate && info.Exists)
+            if (info.Exists)
             {
                 return new FileStream(info.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             }

@@ -13,6 +13,13 @@ namespace UIHotel.App.Provider
 
         public override void Boot()
         {
+            try
+            {
+                ViewManager.RegisterView("Layout.Layout", "Layout");
+            } catch (ViewNotFoundException ex)
+            {
+                //
+            }
         }
 
         public override string Provide()

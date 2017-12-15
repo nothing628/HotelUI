@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\AppMain.cs" />
-    <Compile Include="App\AppHtmlRenderer.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
     <Compile Include="App\Controller\HomeController.cs" />
@@ -146,6 +145,8 @@
     <Compile Include="App\Provider\ViewProvider.cs" />
     <Compile Include="App\View\ViewCompiler.cs" />
     <Compile Include="App\View\ViewManager.cs" />
+    <Compile Include="App\View\ViewNotFoundException.cs" />
+    <Compile Include="App\View\ViewTemplateManager.cs" />
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\Room.cs" />
     <Compile Include="Model\BaseModel.cs" />

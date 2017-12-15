@@ -21,7 +21,7 @@ namespace UIHotel.App
         private const string ViewPath = "View";
         private const string AssetPath = "Assets";
         private const string Domain = "localhost.com";
-        private string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
+        
         private List<ServiceProvider> listServiceProvider = new List<ServiceProvider>();
         public static AppMain Main { get; set; }
 
@@ -39,15 +39,9 @@ namespace UIHotel.App
 
         public bool IsShowDevTool { get; set; }
 
-        public string ViewFullPath
-        {
-            get => Path.Combine(BaseDir, ViewPath);
-        }
-
-        public string AssetsFullPath
-        {
-            get => Path.Combine(BaseDir, AssetPath);
-        }
+        public string BaseDir { get => AppDomain.CurrentDomain.BaseDirectory; }
+        public string ViewFullPath { get => Path.Combine(BaseDir, ViewPath); }
+        public string AssetsFullPath { get => Path.Combine(BaseDir, AssetPath); }
 
         public ServiceProvider this[string provide]
         {
@@ -65,10 +59,13 @@ namespace UIHotel.App
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+        }
 
+        public void Init()
+        {
             IsShowDevTool = false;
             RequestHandler = new AppRequestHandler(Domain);
-            
+
             ConfigureSetting();
             ConfigureRoute();
 
@@ -109,7 +106,6 @@ namespace UIHotel.App
             var LayoutTemplate = Path.Combine(ViewFullPath, "Layout\\Layout.cshtml");
             RequestHandler.RegisterPath(AssetsFullPath, "/");
             RequestHandler.RegisterPath(ViewFullPath, "/");
-            RequestHandler.RegisterTemplate(LayoutTemplate, "Layout");
         }
 
         private void Browser_IsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs e)

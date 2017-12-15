@@ -5,34 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title></title>
 
-    @Include("Layout/Parts/BaseCSS.cshtml")
+    @Include("Layout.Parts.BaseCSS")
 </head>
 
 <body data-ma-theme="blue-grey">
     <main class="main">
-        @Include("Layout/Parts/PageLoader.cshtml")
+        @Include("Layout.Parts.PageLoader")
 
         <header class="header">
-            @Include("Layout/Parts/TitleNav.cshtml")
-            @Include("Layout/Parts/SearchNav.cshtml")
-            @Include("Layout/Parts/TopNav.cshtml")
+            @Include("Layout.Parts.TitleNav")
+            @Include("Layout.Parts.SearchNav")
+            @Include("Layout.Parts.TopNav")
         </header>
 
         <aside class="sidebar">
             <div class="scrollbar-inner">
-                @Include("Layout/Parts/Userinfo.cshtml")
-                @Include("Layout/Parts/Menubar.cshtml")
+                @Include("Layout.Parts.Userinfo")
+                @Include("Layout.Parts.Menubar")
             </div>
         </aside>
 
-        @Include("Layout/Parts/Chatbar.cshtml")
+        @Include("Layout.Parts.Chatbar")
 
         <section class="content">
             @RenderBody()
         </section>
     </main>
 
-    @Include("Layout/Parts/IEWarn.cshtml")
-    @Include("Layout/Parts/BaseJS.cshtml")
+    @Include("Layout.Parts.IEWarn")
+    @Include("Layout.Parts.BaseJS")
 </body>
 </html>
