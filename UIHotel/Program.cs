@@ -15,7 +15,7 @@ namespace UIHotel
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [STAThread]
+        [MTAThread]
         static void Main()
         {
             using (AppMain.Main = new AppMain())

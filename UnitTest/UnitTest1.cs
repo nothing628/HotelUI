@@ -32,6 +32,14 @@ namespace UnitTest
             var[3] = IsMethodExists("UnitTest.UnitTest1", "TestMethod2");
         }
 
+        [TestMethod]
+        public void TestInstance()
+        {
+            var result = CreateInstance(typeof(TestCore), "test");
+
+            Assert.AreEqual("Hellow world", result);
+        }
+
         public bool IsMatch(string Path, string route)
         {
             var pattern = Regex.Replace(route, @"{\w+}", @"([^\/\n]+)");
@@ -63,6 +71,17 @@ namespace UnitTest
 
             return false;
         }
+
+        private string CreateInstance(Type Type, string Method)
+        {
+            ConstructorInfo constInfo = Type.GetConstructor(new Type[] { });
+            MethodInfo method = Type.GetMethod(Method);
+            Object instance = constInfo.Invoke(new object[] { });
+
+            var result = method?.Invoke(instance, new object[] { });
+
+            return result.ToString();
+        }
     }
 
     public class TestCore
@@ -70,6 +89,11 @@ namespace UnitTest
         public void Index()
         {
 
+        }
+
+        public string test()
+        {
+            return "Hellow world";
         }
     }
 }

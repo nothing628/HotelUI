@@ -1,11 +1,13 @@
 ﻿using CefSharp;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using UIHotel.App.Controller;
 
@@ -117,6 +119,9 @@ namespace UIHotel.App.Provider
             return Action;
         }
 
+        private AutoResetEvent resetEvent = new AutoResetEvent(false);
+        private ResourceHandler result = null;
+
         public ResourceHandler GetResponse(IRequest request)
         {
             var Url = new Uri(request.Url);
@@ -129,13 +134,38 @@ namespace UIHotel.App.Provider
             {
                 Type type = Type.GetType(ClassName);
 
-                return CreateInstance(type, Action, request);
+                BackgroundWorker worker = new BackgroundWorker();
+                resetEvent = new AutoResetEvent(false);
+                worker.DoWork += Worker_DoWork;
+                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                worker.RunWorkerAsync(new object[] { type, Action, request });
+                resetEvent.WaitOne();
+
+                return result;
             }
+
+            
 
             return new ResourceHandler() {
                 StatusCode = (int)HttpStatusCode.NotFound,
                 StatusText = "Not Found",
             };
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            result = e.Result as ResourceHandler;
+            resetEvent.Set();
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object[] argument = e.Argument as object[];
+            Type type = argument[0] as Type;
+            string method = argument[1] as string;
+            IRequest request = argument[2] as IRequest;
+
+            e.Result = CreateInstance(type, method, request);
         }
 
         private ResourceHandler CreateInstance(Type Type, string Method, IRequest request)
@@ -144,7 +174,12 @@ namespace UIHotel.App.Provider
             MethodInfo method = Type.GetMethod(Method);
             Object instance = constInfo.Invoke(new object[] { request });
             
-            var result = method?.Invoke(instance, new object[] { });
+            var result = method.Invoke(instance, BindingFlags.Default, null, new object[] { }, null);
+
+            constInfo = null;
+            method = null;
+            instance = null;
+            GC.Collect();
 
             if (result != null)
                 return (ResourceHandler)result;
