@@ -18,5 +18,10 @@ namespace UIHotel.App.Controller
         {
             return View("index");
         }
+
+        public IResourceHandler login()
+        {
+            return View("login");
+        }
     }
 }

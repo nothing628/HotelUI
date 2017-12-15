@@ -95,8 +95,8 @@ namespace UIHotel.App.Provider
                 var matchColl = Regex.Matches(Path, pattern, RegexOptions.IgnoreCase);
                 var match = matchColl[0];
 
-                if (match.Captures.Count == 2)
-                    return match.Captures[1].Value;
+                if (match.Groups.Count == 2)
+                    return match.Groups[1].Value;
             }
             
             return Controller;
@@ -112,8 +112,8 @@ namespace UIHotel.App.Provider
                 var matchColl = Regex.Matches(Path, pattern, RegexOptions.IgnoreCase);
                 var match = matchColl[0];
 
-                if (match.Captures.Count == 2)
-                    return match.Captures[1].Value;
+                if (match.Groups.Count == 2)
+                    return match.Groups[1].Value;
             }
 
             return Action;

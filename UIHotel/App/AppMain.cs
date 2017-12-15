@@ -103,7 +103,6 @@ namespace UIHotel.App
 
         private void ConfigureRoute()
         {
-            var LayoutTemplate = Path.Combine(ViewFullPath, "Layout\\Layout.cshtml");
             RequestHandler.RegisterPath(AssetsFullPath, "/");
             RequestHandler.RegisterPath(ViewFullPath, "/");
         }
