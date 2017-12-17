@@ -1,7 +1,9 @@
 ﻿using CefSharp;
 using MySql.Data.MySqlClient;
+using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +19,26 @@ namespace UIHotel.App.Controller
         private MySqlConnection DBConnection { get; set; }
         private IPostData PostData { get; set; }
         private IRequest Request { get; set; }
+        private DynamicViewBag _ViewBag
+        {
+            get
+            {
+                var expObject = ViewBag as ExpandoObject;
+                var dictObject = expObject.ToDictionary(z => z.Key, x => x.Value);
+                var viewBag = new DynamicViewBag();
+
+                viewBag.AddDictionary(dictObject);
+
+                return viewBag;
+            }
+        }
+        public dynamic ViewBag { get; set; } = new ExpandoObject();
 
         public BaseController()
         {
             DBConnection = new MySqlConnection(Properties.Settings.Default.MyDB);
             Model = new DataContext(DBConnection, false);
-
+            
             DBConnection.Open();
         }
 
@@ -52,11 +68,11 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler View(string viewName, object viewData)
         {
-            ViewProvider viewProvider = AppMain.Main["view"] as ViewProvider;
+            var viewProvider = AppMain.Main["view"] as ViewProvider;
 
             try
             {
-                string renderResult = viewProvider.ViewManager.Render(viewName, viewData);
+                string renderResult = viewProvider.ViewManager.Render(viewName, viewData, _ViewBag);
 
                 return ResourceHandler.FromString(renderResult, Encoding.UTF8);
             } catch (ViewNotFoundException ex)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RazorEngine.Templating;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,9 +27,9 @@ namespace UIHotel.App.View
             return compiler.Render(ViewName);
         }
 
-        public string Render(string ViewName, object ViewData)
+        public string Render(string ViewName, object ViewData, DynamicViewBag ViewBag = null)
         {
-            return compiler.Render(ViewName, ViewData);
+            return compiler.Render(ViewName, ViewData, ViewBag);
         }
     }
 }

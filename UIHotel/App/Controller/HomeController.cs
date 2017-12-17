@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,15 @@ namespace UIHotel.App.Controller
         public IResourceHandler roomdetail()
         {
             return View("Checkin.RoomDetail");
+        }
+
+        public IResourceHandler test()
+        {
+            var obj = new { Nama = "A" };
+
+            ViewBag.Name = "test";
+
+            return View("Test", obj);
         }
     }
 }

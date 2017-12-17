@@ -85,14 +85,9 @@ namespace UIHotel.App.View
             return Engine.Razor.RunCompile(ViewName);
         }
 
-        public string Render(string ViewName, object data)
+        public string Render(string ViewName, object data, DynamicViewBag viewBag = null)
         {
-            return Engine.Razor.RunCompile(ViewName, typeof(object), data);
-        }
-
-        public string Render(string ViewName, DynamicViewBag viewBag)
-        {
-            return Engine.Razor.RunCompile(ViewName, null, null, viewBag);
+            return Engine.Razor.RunCompile(ViewName, null, data, viewBag);
         }
     }
 }
