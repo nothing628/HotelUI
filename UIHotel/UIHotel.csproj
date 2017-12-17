@@ -306,6 +306,17 @@
     <None Include="View\Test.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Vue\dist\static\js\app.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Vue\dist\static\js\manifest.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Vue\dist\static\js\vendor.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Vue\src\App.vue" />
+    <None Include="Vue\src\components\HelloWorld.vue" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -473,6 +484,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="database.txt" />
+    <Content Include="Vue\dist\static\css\app.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Vue\dist\static\js\app.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Vue\dist\static\js\manifest.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Vue\dist\static\js\vendor.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Vue\src\assets\logo.png" />
+    <Content Include="Vue\src\main.js" />
+    <Content Include="Vue\src\router\index.js" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

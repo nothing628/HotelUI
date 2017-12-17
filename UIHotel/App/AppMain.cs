@@ -103,6 +103,7 @@ namespace UIHotel.App
 
         private void ConfigureRoute()
         {
+            RequestHandler.RegisterPath(Path.Combine(BaseDir, @"Vue\dist\static"), "/");
             RequestHandler.RegisterPath(AssetsFullPath, "/");
             RequestHandler.RegisterPath(ViewFullPath, "/");
         }
