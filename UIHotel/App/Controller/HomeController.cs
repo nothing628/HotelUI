@@ -52,6 +52,9 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler test()
         {
+            var query = Query["foo"];
+            var data = Query["data"];
+            
             var obj = new { Nama = "A" };
 
             ViewBag.Name = "test";

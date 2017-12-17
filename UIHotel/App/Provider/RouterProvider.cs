@@ -74,6 +74,7 @@ namespace UIHotel.App.Provider
             this.Controller = Controller;
             this.Action = Action;
             this.Method = Method;
+            this.Namespace = Namespace;
         }
 
         public bool IsMatch(IRequest request)
@@ -120,7 +121,7 @@ namespace UIHotel.App.Provider
         }
 
         private AutoResetEvent resetEvent = new AutoResetEvent(false);
-        private ResourceHandler result = null;
+        private ResourceHandler result;
 
         public ResourceHandler GetResponse(IRequest request)
         {
@@ -134,7 +135,7 @@ namespace UIHotel.App.Provider
             {
                 Type type = Type.GetType(ClassName);
 
-                BackgroundWorker worker = new BackgroundWorker();
+                var worker = new BackgroundWorker();
                 resetEvent = new AutoResetEvent(false);
                 worker.DoWork += Worker_DoWork;
                 worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
@@ -158,10 +159,10 @@ namespace UIHotel.App.Provider
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            object[] argument = e.Argument as object[];
-            Type type = argument[0] as Type;
-            string method = argument[1] as string;
-            IRequest request = argument[2] as IRequest;
+            var argument = e.Argument as object[];
+            var type = argument[0] as Type;
+            var method = argument[1] as string;
+            var request = argument[2] as IRequest;
 
             e.Result = CreateInstance(type, method, request);
         }
@@ -200,9 +201,8 @@ namespace UIHotel.App.Provider
             if (IsClassExists(ClassName))
             {
                 Type type = Type.GetType(ClassName);
-                MethodInfo[] methods = type.GetMethods();
 
-                foreach (MethodInfo method in methods)
+                foreach (MethodInfo method in type.GetMethods())
                     if (method.Name.Equals(Method, StringComparison.OrdinalIgnoreCase) && method.ReturnType != typeof(void))
                         return true;
             }
