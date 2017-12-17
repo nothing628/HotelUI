@@ -29,7 +29,7 @@ namespace UIHotel.App.View
         {
             viewConfig = new TemplateServiceConfiguration();
             // .. configure your instance
-            viewConfig.BaseTemplateType = typeof(TemplateBase<>);
+            viewConfig.BaseTemplateType = typeof(Template.HtmlTemplateBase<>);
             viewConfig.Language = Language.CSharp; // VB.NET as template language.
             viewConfig.EncodedStringFactory = new RawStringFactory(); // Raw string encoding.
             viewConfig.EncodedStringFactory = new HtmlEncodedStringFactory(); // Html encoding.
