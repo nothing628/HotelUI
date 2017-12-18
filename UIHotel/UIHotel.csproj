@@ -97,6 +97,12 @@
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.1.6.2\lib\40\FluentMigrator.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.Runner.1.6.2\lib\40\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.10.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data.Entity.EF6, Version=6.9.10.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -157,6 +163,8 @@
     <Compile Include="Data\Guest.cs" />
     <Compile Include="Data\Invoice.cs" />
     <Compile Include="Data\InvoiceDetail.cs" />
+    <Compile Include="Data\Migrations\CreateUserTable.cs" />
+    <Compile Include="Data\Migrations\Migrator.cs" />
     <Compile Include="Data\Room.cs" />
     <Compile Include="Data\RoomCategory.cs" />
     <Compile Include="Data\RoomPrice.cs" />
@@ -499,6 +507,7 @@
     </Content>
     <Content Include="Assets\lib\moment.min.js" />
     <Content Include="database.txt" />
+    <Content Include="InstallationDummyFile.txt" />
     <Content Include="Vue\dist\static\css\app.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
