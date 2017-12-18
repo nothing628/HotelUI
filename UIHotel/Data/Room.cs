@@ -10,7 +10,11 @@ namespace UIHotel.Data
     [Table("room")]
     public class Room
     {
-        public int id { get; set; }
-        public string room_number { get; set; }
+        public int Id { get; set; }
+        public string IdCategory { get; set; }
+        public int RoomFloor { get; set; }
+        public string RoomNumber { get; set; }
+        public string RoomCard { get; set; }
+        public int Status { get; set; }
     }
 }
