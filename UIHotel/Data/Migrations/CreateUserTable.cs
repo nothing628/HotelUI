@@ -17,9 +17,27 @@ namespace UIHotel.Data.Migrations
 
         public override void Up()
         {
-            Create.Table("user_test")
-                .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
-                .WithColumn("Username").AsString(50).NotNullable();
+            Create.Table("user")
+                .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
+                .WithColumn("username").AsString(50).NotNullable()
+                .WithColumn("password").AsString(50).NotNullable()
+                .WithColumn("permission").AsInt32().WithDefaultValue(0)
+                .WithColumn("create_at").AsDateTime().NotNullable()
+                .WithColumn("update_at").AsDateTime().Nullable();
+
+            Create.Table("room_status")
+                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("status").AsString(50).NotNullable()
+                .WithColumn("status_color").AsString(6).NotNullable();
+
+            Create.Table("room_category")
+                .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
+                .WithColumn("category").AsString(50).NotNullable();
+
+            Create.Table("room")
+                .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
+                .WithColumn("room_number").AsString(10).NotNullable()
+                .WithColumn("status").AsInt32().WithDefaultValue(0);
         }
     }
 }

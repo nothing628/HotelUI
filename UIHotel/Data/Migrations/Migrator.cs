@@ -19,28 +19,55 @@ namespace UIHotel.Data.Migrations
 {
     class Migrator
     {
-        public void Run()
+        private MigrationRunner GetRunner()
         {
             var filename = Process.GetCurrentProcess().MainModule.FileName;
             var fname = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
             var asm = Assembly.LoadFile(fname);
-            NullAnnouncer announcer = new NullAnnouncer();
-            RunnerContext context = new RunnerContext(announcer) {
+            var announcer = new NullAnnouncer();
+            var context = new RunnerContext(announcer)
+            {
                 Database = "mysql",
                 Timeout = 15,
                 Connection = Properties.Settings.Default.MyDB,
                 Namespace = "UIHotel.Data.Migrations",
-                
-            };
-            ProcessorOptions options = new ProcessorOptions() { Timeout = 15 };
-            
-            MySqlDbFactory factory = new MySqlDbFactory();
-            MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.MyDB);
-            MySqlGenerator generator = new MySqlGenerator();
-            MySqlProcessor processor = new MySqlProcessor(connection, generator, announcer, options, factory);
-            MigrationRunner runner = new MigrationRunner(asm, context, processor);
 
-            runner.MigrateUp(true);
+            };
+            var options = new ProcessorOptions() { Timeout = 15 };
+
+            var factory = new MySqlDbFactory();
+            var connection = new MySqlConnection(Properties.Settings.Default.MyDB);
+            var generator = new MySqlGenerator();
+            var processor = new MySqlProcessor(connection, generator, announcer, options, factory);
+            var runner = new MigrationRunner(asm, context, processor);
+
+            return runner;
+        }
+
+        public void RunDown()
+        {
+            try
+            {
+                var runner = GetRunner();
+
+                runner.MigrateDown(0);
+            } catch
+            {
+                //
+            }
+        }
+
+        public void Run()
+        {
+            try
+            {
+                var runner = GetRunner();
+
+                runner.MigrateUp(true);
+            } catch
+            {
+                //
+            }
         }
     }
 }

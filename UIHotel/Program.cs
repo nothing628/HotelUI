@@ -20,6 +20,7 @@ namespace UIHotel
         static void Main()
         {
             var migrator = new Migrator();
+            migrator.RunDown();
             migrator.Run();
 
             /*
