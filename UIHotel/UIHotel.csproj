@@ -407,9 +407,6 @@
     <Content Include="Assets\css\material-design-iconic-font.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\css\select2.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\css\simple-line-icons.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -488,9 +485,6 @@
     <Content Include="Assets\js\salvattore.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\js\select2.full.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\js\tether.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -500,16 +494,24 @@
     <Content Include="Assets\lib\app.bundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\lib\jquery.flot.js">
+    <Content Include="Assets\lib\css\select2.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\lib\jquery.flot.resize.js">
+    <Content Include="Assets\lib\js\jquery.flot.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\lib\jquery.min.js">
+    <Content Include="Assets\lib\js\jquery.flot.resize.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\lib\moment.min.js" />
+    <Content Include="Assets\lib\js\jquery.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\lib\js\moment.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\lib\js\select2.full.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="database.txt" />
     <Content Include="InstallationDummyFile.txt" />
     <Content Include="Vue\dist\static\css\app.css">

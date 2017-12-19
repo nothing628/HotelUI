@@ -13,10 +13,18 @@ module.exports = {
     },
     plugins: [
         new CopyPlugin(
-            assets.map(asset => {
+            assets.JS.map(asset => {
                 return {
                     from: path.resolve(__dirname, `./node_modules/${asset}`),
-                    to: path.resolve(__dirname, './Assets/lib')
+                    to: path.resolve(__dirname, './Assets/lib/js/')
+                };
+            })
+        ),
+        new CopyPlugin(
+            assets.CSS.map(asset => {
+                return {
+                    from: path.resolve(__dirname, `./node_modules/${asset}`),
+                    to: path.resolve(__dirname, './Assets/lib/css/')
                 };
             })
         )
