@@ -30,17 +30,20 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("update_at").AsDateTime().Nullable();
 
             Create.Table("room_status")
-                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("id").AsInt32().NotNullable().PrimaryKey()
                 .WithColumn("status").AsString(50).NotNullable()
                 .WithColumn("status_color").AsString(6).NotNullable();
 
             Create.Table("room_category")
                 .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
-                .WithColumn("category").AsString(50).NotNullable();
+                .WithColumn("category").AsString(50).NotNullable()
+                .WithColumn("description").AsString(200).Nullable();
 
             Create.Table("room")
                 .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
+                .WithColumn("id_category").AsInt64().NotNullable()
                 .WithColumn("room_number").AsString(10).NotNullable()
+                .WithColumn("room_floor").AsInt16().WithDefaultValue(1)
                 .WithColumn("status").AsInt32().WithDefaultValue(0);
         }
     }

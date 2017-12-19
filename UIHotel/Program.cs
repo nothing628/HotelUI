@@ -8,6 +8,7 @@ using UIHotel.App;
 using MySql.Data.MySqlClient;
 using UIHotel.Data;
 using UIHotel.Data.Migrations;
+using UIHotel.Data.Seeds;
 
 namespace UIHotel
 {
@@ -22,6 +23,7 @@ namespace UIHotel
             var migrator = new Migrator();
             migrator.RunDown();
             migrator.Run();
+            DBSeeder.Run();
 
             /*
             using (AppMain.Main = new AppMain())
