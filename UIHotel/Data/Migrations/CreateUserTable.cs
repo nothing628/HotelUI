@@ -12,6 +12,9 @@ namespace UIHotel.Data.Migrations
     {
         public override void Down()
         {
+            Delete.Table("room");
+            Delete.Table("room_category");
+            Delete.Table("room_status");
             Delete.Table("user");
         }
 
@@ -21,6 +24,7 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("username").AsString(50).NotNullable()
                 .WithColumn("password").AsString(50).NotNullable()
+                .WithColumn("fullname").AsString(50).NotNullable()
                 .WithColumn("permission").AsInt32().WithDefaultValue(0)
                 .WithColumn("create_at").AsDateTime().NotNullable()
                 .WithColumn("update_at").AsDateTime().Nullable();

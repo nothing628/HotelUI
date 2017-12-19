@@ -163,6 +163,7 @@
     <Compile Include="Data\Guest.cs" />
     <Compile Include="Data\Invoice.cs" />
     <Compile Include="Data\InvoiceDetail.cs" />
+    <Compile Include="Data\Migrations\CreateGuestTable.cs" />
     <Compile Include="Data\Migrations\CreateUserTable.cs" />
     <Compile Include="Data\Migrations\Migrator.cs" />
     <Compile Include="Data\Room.cs" />
