@@ -2,6 +2,7 @@
     'select2/dist/css/select2.min.css',
 ];
 const JS = [
+    'chart.js/dist/Chart.min.js',
     'jquery/dist/jquery.min.js',
     'jquery.flot/jquery.flot.js',
     'jquery.flot/jquery.flot.resize.js',
