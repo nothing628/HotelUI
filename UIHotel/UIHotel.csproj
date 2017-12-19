@@ -171,6 +171,8 @@
     <Compile Include="Data\RoomPrice.cs" />
     <Compile Include="Data\RoomStatus.cs" />
     <Compile Include="Data\Seeds\DBSeeder.cs" />
+    <Compile Include="Data\Seeds\RoomSeeder.cs" />
+    <Compile Include="Data\Seeds\RoomStatusSeeder.cs" />
     <Compile Include="Data\User.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Program.cs" />

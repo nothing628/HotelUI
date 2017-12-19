@@ -23,7 +23,7 @@ namespace UIHotel
             var migrator = new Migrator();
             migrator.RunDown();
             migrator.Run();
-            DBSeeder.Run();
+            DBSeeder.Seed();
 
             /*
             using (AppMain.Main = new AppMain())

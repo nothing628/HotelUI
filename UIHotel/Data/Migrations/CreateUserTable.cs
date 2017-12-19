@@ -42,7 +42,7 @@ namespace UIHotel.Data.Migrations
             Create.Table("room")
                 .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("id_category").AsInt64().NotNullable()
-                .WithColumn("room_number").AsString(10).NotNullable()
+                .WithColumn("room_number").AsString(10).NotNullable().Unique()
                 .WithColumn("room_floor").AsInt16().WithDefaultValue(1)
                 .WithColumn("status").AsInt32().WithDefaultValue(0);
         }

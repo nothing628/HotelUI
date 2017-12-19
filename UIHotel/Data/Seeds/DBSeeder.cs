@@ -8,22 +8,18 @@ using UIHotel.Data;
 
 namespace UIHotel.Data.Seeds
 {
-    public static class DBSeeder
+    public abstract class DBSeeder
     {
-        public static void Run()
+        public abstract void Run(DataContext context);
+
+        public static void Seed()
         {
             using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.MyDB))
             using (DataContext context = new DataContext(connection, false))
             {
-                context.RoomCategory.Add(new RoomCategory() { Category = "Big" });
-                context.RoomCategory.Add(new RoomCategory() { Category = "Medium" });
-                context.RoomCategory.Add(new RoomCategory() { Category = "Small" });
-                context.RoomStatus.Add(new RoomStatus() { Id = 1, Status = "Vacant", StatusColor = "00FF00" });
-                context.RoomStatus.Add(new RoomStatus() { Id = 2, Status = "Booked", StatusColor = "FF9900" });
-                context.RoomStatus.Add(new RoomStatus() { Id = 3, Status = "Occupied", StatusColor = "FF0000" });
-                context.RoomStatus.Add(new RoomStatus() { Id = 4, Status = "Cleaning", StatusColor = "0000FF" });
-                context.RoomStatus.Add(new RoomStatus() { Id = 5, Status = "Maintance", StatusColor = "999999" });
-                context.RoomStatus.Add(new RoomStatus() { Id = 6, Status = "LateCheckout", StatusColor = "FFFF00" });
+                new RoomSeeder().Run(context);
+                new RoomStatusSeeder().Run(context);
+
                 context.SaveChanges();
             }
         }
