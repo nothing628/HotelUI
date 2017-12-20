@@ -269,6 +269,9 @@
     <None Include="View\Checkin\Booking.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Checkin\CancelBooking.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="View\Checkin\Checkin.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -519,6 +522,9 @@
     </Content>
     <Content Include="database.txt" />
     <Content Include="InstallationDummyFile.txt" />
+    <None Include="View\Checkin\RoomChange.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Vue\dist\static\css\app.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
