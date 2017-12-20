@@ -15,12 +15,16 @@
 }
 
 .toolbar .toolbar__label {
-    width: calc(100% - 300px);
+    width: calc(100% - 600px);
 }
 
 .toolbar .toolbar__nav.right {
     margin-right: -0.8rem;
     margin-left: auto;
+}
+
+.actions:not(.actions--inverse) .actions__item {
+    color: #ffffff;
 }
 
 .form-group {
