@@ -20,19 +20,19 @@ namespace UIHotel
         [MTAThread]
         static void Main()
         {
+#if SEED
             var migrator = new Migrator();
             migrator.RunDown();
             migrator.Run();
             DBSeeder.Seed();
-
-            /*
+#endif
+            
             using (AppMain.Main = new AppMain())
             {
                 AppMain.Main.Init();
                 AppMain.Main.IsShowDevTool = true;
-                AppMain.Main.Run("http://localhost.com/home/get/test?foo=2&data=test%20data");     //Open after finish configure
+                AppMain.Main.Run("http://localhost.com/home/get/room");     //Open after finish configure
             }
-            */
         }
     }
 }

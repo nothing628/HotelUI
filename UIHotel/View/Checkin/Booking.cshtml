@@ -16,15 +16,18 @@
             <div class="card-block">
                 <form class="form-row">
                     <div class="form-group row">
-                        <label class="col-2 col-form-label">Rate Type</label>
+                        <label class="col-2 col-form-label">Booking Type</label>
                         <div class="col-4">
                             <select class="form-control">
-                                <option>Rate Type</option>
-                                <option>Basic</option>
-                                <option>Superior</option>
-                                <option>Mega</option>
-                                <option>Option 4</option>
-                                <option>Option 5</option>
+                                <optgroup label="Basic">
+                                    <option>WALK-IN</option>
+                                    <option>TELEPHONE</option>
+                                </optgroup>
+                                
+                                <optgroup label="Online">
+                                    <option>TRAVELOKA</option>
+                                    <option>AGODA</option>
+                                </optgroup>
                             </select>
                         </div>
                     </div>
@@ -59,44 +62,19 @@
             <div class="card-block">
                 <form class="form-row">
                     <div class="form-group row">
-                        <label class="col-2 col-form-label">Room Type</label>
-                        <div class="col-3">
-                            <select class="form-control">
-                                <option>Room Type</option>
-                                <option>Mawar</option>
-                                <option>Melati</option>
-                                <option>Bunga Bangkai</option>
-                                <option>Option 4</option>
-                                <option>Option 5</option>
-                            </select>
-                        </div>
-                        <label class="col-2 col-form-label">Room Number</label>
-                        <div class="col-3">
-                            <select class="form-control">
-                                <option>Room Number</option>
-                                <option>201</option>
-                                <option>202</option>
-                                <option>301</option>
-                                <option>302</option>
-                                <option>401</option>
-                            </select>
-                        </div>
-                        <div class="col-2">
-                            <button class="btn btn-lg btn-primary btn--icon" type="button"><i class="zmdi zmdi-plus"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
                         <label class="col-2 col-form-label">Selected Room</label>
-                        <div class="col-10">
+                        <div class="col-8">
                             <select class="form-control select2 select" multiple>
-                                <option>Room Type</option>
+                                <option>Melati No. 204</option>
                                 <option>Melati No. 201</option>
                                 <option>Melati No. 205</option>
                                 <option>Mawar No. 301</option>
                                 <option>Mawar No. 501</option>
                                 <option>Option 5</option>
                             </select>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-lg btn--icon btn-primary" type="button"><i class="zmdi zmdi-search"></i></button>
                         </div>
                     </div>
 
@@ -116,24 +94,18 @@
             <div class="card-block">
                 <form class="form-row">
                     <div class="form-group row">
-                        <label class="col-2 col-form-label">Name</label>
-                        <div class="col-3">
-                            <input class="form-control" placeholder="First Name" type="text">
-                        </div>
-                        <div class="col-3">
-                            <input class="form-control" placeholder="Middle Name" type="text">
-                        </div>
-                        <div class="col-3">
-                            <input class="form-control" placeholder="Last Name" type="text">
+                        <label class="col-2 col-form-label">ID Number*</label>
+                        <div class="col-6">
+                            <input class="form-control" placeholder="ID Number" type="text" required>
                         </div>
                         <div class="col-1">
                             <button class="btn btn-lg btn--icon btn-primary" type="button"><i class="zmdi zmdi-search"></i></button>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-2 col-form-label">ID Number</label>
-                        <div class="col-6">
-                            <input class="form-control" type="text">
+                        <label class="col-2 col-form-label">Name*</label>
+                        <div class="col-8">
+                            <input class="form-control" placeholder="Fullname" type="text" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -201,9 +173,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-2 col-form-label">Phone Number 1</label>
+                        <label class="col-2 col-form-label">Phone Number 1*</label>
                         <div class="col-4">
-                            <input class="form-control" placeholder="Phone Number 1" type="text">
+                            <input class="form-control" placeholder="Phone Number 1" type="text" required>
                         </div>
                         <label class="col-2 col-form-label">Phone Number 2</label>
                         <div class="col-4">
@@ -211,7 +183,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-2 col-form-label">Photo Document</label>
+                        <label class="col-2 col-form-label">Photo Document*</label>
                         <div class="col-6">
                             <button class="btn btn-lg btn-primary btn--icon" type="button"><i class="zmdi zmdi-cloud-upload"></i></button>
                         </div>
@@ -232,4 +204,3 @@
         </div>
     </div>
 </div>
-
