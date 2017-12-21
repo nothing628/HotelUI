@@ -42,7 +42,12 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler cancel()
         {
-            return View("Checkin.CancelBooking");
+            return View("Booking.Cancel");
+        }
+
+        public IResourceHandler listBooking()
+        {
+            return View("Booking.List");
         }
 
         public IResourceHandler change()
