@@ -23,6 +23,8 @@ namespace UIHotel.App.Provider
             listRoute = new List<RouteModel>();
             listRoute.Add(new RouteModel("home/get/{action}", "HomeController"));
             listRoute.Add(new RouteModel("home/post/{action}", "HomeController", Method: "POST"));
+            listRoute.Add(new RouteModel("room/get/{action}", "RoomController"));
+            listRoute.Add(new RouteModel("room/post/{action}", "RoomController", Method: "POST"));
         }
 
         public override void Boot()

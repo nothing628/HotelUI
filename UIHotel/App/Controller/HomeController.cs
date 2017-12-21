@@ -40,16 +40,6 @@ namespace UIHotel.App.Controller
             return View("Checkin.Checkout");
         }
 
-        public IResourceHandler room()
-        {
-            return View("Checkin.Room");
-        }
-
-        public IResourceHandler roomdetail()
-        {
-            return View("Checkin.RoomDetail");
-        }
-
         public IResourceHandler cancel()
         {
             return View("Checkin.CancelBooking");

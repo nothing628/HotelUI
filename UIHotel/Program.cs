@@ -31,7 +31,7 @@ namespace UIHotel
             {
                 AppMain.Main.Init();
                 AppMain.Main.IsShowDevTool = true;
-                AppMain.Main.Run("http://localhost.com/home/get/room");     //Open after finish configure
+                AppMain.Main.Run("http://localhost.com/room/get/index");     //Open after finish configure
             }
         }
     }

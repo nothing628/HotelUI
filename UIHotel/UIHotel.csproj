@@ -146,6 +146,7 @@
     <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
     <Compile Include="App\Controller\HomeController.cs" />
+    <Compile Include="App\Controller\RoomController.cs" />
     <Compile Include="App\Provider\RouterProvider.cs" />
     <Compile Include="App\Provider\ServiceProvider.cs" />
     <Compile Include="App\Provider\ViewProvider.cs" />
@@ -223,6 +224,9 @@
     <None Include="Assets\fonts\Material-Design-Iconic-Font.woff2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\fonts\roboto\Roboto-Bold-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\fonts\roboto\Roboto-Medium-webfont.woff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -278,12 +282,6 @@
     <None Include="View\Checkin\Checkout.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="View\Checkin\Room.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="View\Checkin\RoomDetail.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="View\Guest\Invoice.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -330,6 +328,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Report\Guest.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Room\Category.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Room\Detail.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Room\List.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Room\Price.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Test.cshtml">
