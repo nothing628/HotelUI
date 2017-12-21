@@ -17,18 +17,31 @@
                 <form class="form-row">
                     <div class="form-group row">
                         <label class="col-2 col-form-label">Booking Type</label>
-                        <div class="col-4">
-                            <select class="form-control">
-                                <optgroup label="Basic">
-                                    <option>WALK-IN</option>
-                                    <option>TELEPHONE</option>
-                                </optgroup>
-                                
-                                <optgroup label="Online">
-                                    <option>TRAVELOKA</option>
-                                    <option>AGODA</option>
-                                </optgroup>
+                        <div class="col-2">
+                            <select class="form-control" id="select-data">
+                                <option value="1">WALK-IN</option>
+                                <option value="2">TELEPHONE</option>
+                                <option value="3">ONLINE</option>
                             </select>
+                        </div>
+                        <label class="col-1 col-form-label" id="online-label">Online Type</label>
+                        <div class="col-3" id="online-field">
+                            <select class="form-control">
+                                <option value="3">TRAVELOKA</option>
+                                <option value="4">AGODA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row" id="harga-label">
+                        <label class="col-2 col-form-label" >Harga</label>
+                        <div class="col-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">Rp.</span>
+                                <div class="form-group">
+                                    <input class="form-control" value="0" type="number">
+                                    <i class="form-group__bar"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -74,7 +87,7 @@
                             </select>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-lg btn--icon btn-primary" type="button"><i class="zmdi zmdi-search"></i></button>
+                            <button class="btn btn-lg btn--icon btn-primary" type="button" data-toggle="modal" data-target="#modal-default"><i class="zmdi zmdi-search"></i></button>
                         </div>
                     </div>
 
@@ -204,3 +217,28 @@
         </div>
     </div>
 </div>
+
+@Include("Room.ModalMulti")
+@section scripts {
+<script>
+    $(document).ready(() => {
+        $('#harga-label').hide();
+        $('#online-label').hide();
+        $('#online-field').hide();
+
+        $('#select-data').on('change', (evt) => {
+            var val = $('#select-data').val();
+
+            if (val > 2) {
+                $('#harga-label').show();
+                $('#online-label').show();
+                $('#online-field').show();
+            } else {
+                $('#harga-label').hide();
+                $('#online-label').hide();
+                $('#online-field').hide();
+            }
+        })
+    })
+</script>
+}

@@ -62,7 +62,7 @@
                             <input type="text" class="form-control" placeholder="Select room"/>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-lg btn--icon btn-primary" type="button"><i class="zmdi zmdi-search"></i></button>
+                            <button class="btn btn-lg btn--icon btn-primary" data-toggle="modal" data-target="#modal-default" type="button"><i class="zmdi zmdi-search"></i></button>
                         </div>
                     </div>
 
@@ -185,7 +185,7 @@
 
                     <div class="form-group row">
                         <button type="button" class="btn btn-lg btn--icon-text waves-effect btn-danger">Cancel</button>
-                        <button type="button" class="btn btn-lg btn--icon-text waves-effect btn-primary" data-toggle="modal" data-target="#modal-default">Checkin <i class="zmdi zmdi-check-all"></i></button>
+                        <button type="button" class="btn btn-lg btn--icon-text waves-effect btn-primary">Checkin <i class="zmdi zmdi-check-all"></i></button>
                     </div>
                 </form>
             </div>
@@ -193,23 +193,4 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-default" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title pull-left">Finishing Checkin</h5>
-            </div>
-            <div class="modal-body">
-                <div class="dropzone" style="height:300px;">
-                    <div class="dz-default dz-message">
-                        <img src="http://localhost.com/images/keycard.png" class="img-fluid" />
-                        <span>Tempelkan kartu Ruangan ...</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
+@Include("Room.ModalSingle")

@@ -339,6 +339,12 @@
     <None Include="View\Room\List.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Room\ModalMulti.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Room\ModalSingle.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="View\Room\Price.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
