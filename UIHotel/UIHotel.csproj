@@ -546,8 +546,6 @@
     <Content Include="Assets\lib\js\select2.full.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="database.txt" />
-    <Content Include="InstallationDummyFile.txt" />
     <None Include="View\Checkin\RoomChange.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
