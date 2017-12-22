@@ -18,5 +18,20 @@ namespace UIHotel.App.Controller
         {
             return View("Setting.Index");
         }
+
+        public IResourceHandler calendar()
+        {
+            return View("Setting.Calendar");
+        }
+
+        public IResourceHandler rate()
+        {
+            return View("Setting.RateType");
+        }
+
+        public IResourceHandler user()
+        {
+            return View("Setting.User");
+        }
     }
 }

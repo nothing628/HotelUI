@@ -361,6 +361,12 @@
     <None Include="View\Setting\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Setting\RateType.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Setting\User.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="View\Test.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -547,6 +553,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="View\Checkin\RoomChange.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Setting\Calendar.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Vue\dist\static\css\app.css">
