@@ -146,6 +146,7 @@
     <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
     <Compile Include="App\Controller\HomeController.cs" />
+    <Compile Include="App\Controller\ReportController.cs" />
     <Compile Include="App\Controller\RoomController.cs" />
     <Compile Include="App\Controller\SettingController.cs" />
     <Compile Include="App\Provider\RouterProvider.cs" />
@@ -331,9 +332,11 @@
     <None Include="View\Login.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="View\Report\Account.cshtml">
+    <None Include="View\Report\Booking.cshtml" />
+    <None Include="View\Report\Checkin.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Report\Finance.cshtml" />
     <None Include="View\Report\Guest.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
