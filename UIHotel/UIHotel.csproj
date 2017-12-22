@@ -147,6 +147,7 @@
     <Compile Include="App\Controller\BaseController.cs" />
     <Compile Include="App\Controller\HomeController.cs" />
     <Compile Include="App\Controller\RoomController.cs" />
+    <Compile Include="App\Controller\SettingController.cs" />
     <Compile Include="App\Provider\RouterProvider.cs" />
     <Compile Include="App\Provider\ServiceProvider.cs" />
     <Compile Include="App\Provider\ViewProvider.cs" />
@@ -352,6 +353,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Room\Price.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Setting\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Test.cshtml">
