@@ -160,6 +160,7 @@
     <Compile Include="App\View\ViewManager.cs" />
     <Compile Include="App\View\ViewNotFoundException.cs" />
     <Compile Include="App\View\ViewTemplateManager.cs" />
+    <Compile Include="Data\BookingDetail.cs" />
     <Compile Include="Data\BookingType.cs" />
     <Compile Include="Data\Booking.cs" />
     <Compile Include="Data\Checkin.cs" />
