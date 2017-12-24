@@ -45,11 +45,6 @@ namespace UIHotel.App.Controller
             return View("Booking.Cancel");
         }
 
-        public IResourceHandler listCheckin()
-        {
-            return View("Checkin.List");
-        }
-
         public IResourceHandler listBooking()
         {
             return View("Booking.List");

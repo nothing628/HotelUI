@@ -145,6 +145,7 @@
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
+    <Compile Include="App\Controller\GuestController.cs" />
     <Compile Include="App\Controller\HomeController.cs" />
     <Compile Include="App\Controller\MoneyController.cs" />
     <Compile Include="App\Controller\ReportController.cs" />
@@ -294,6 +295,9 @@
     <None Include="View\Guest\Invoice.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Guest\List.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="View\Guest\Pay.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -334,9 +338,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Money\In.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="View\Money\Invoice.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Money\List.cshtml">

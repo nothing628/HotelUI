@@ -19,11 +19,6 @@ namespace UIHotel.App.Controller
             return View("Money.List");
         }
 
-        public IResourceHandler invoice()
-        {
-            return View("Money.Invoice");
-        }
-
         public IResourceHandler pengeluaran()
         {
             return View("Money.Out");
