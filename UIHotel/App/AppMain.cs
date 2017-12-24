@@ -1,4 +1,5 @@
-﻿using CefSharp.WinForms;
+﻿using CefSharp;
+using CefSharp.WinForms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,10 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIHotel.Model;
-using CefSharp;
 using System.Drawing;
 using UIHotel.App.Provider;
+using UIHotel.ViewModel;
 
 namespace UIHotel.App
 {

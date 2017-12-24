@@ -169,6 +169,7 @@
     <Compile Include="Data\Invoice.cs" />
     <Compile Include="Data\InvoiceDetail.cs" />
     <Compile Include="Data\Migrations\CreateGuestTable.cs" />
+    <Compile Include="Data\Migrations\CreateInvoiceTable.cs" />
     <Compile Include="Data\Migrations\CreateUserTable.cs" />
     <Compile Include="Data\Migrations\Migrator.cs" />
     <Compile Include="Data\Room.cs" />
@@ -176,10 +177,11 @@
     <Compile Include="Data\RoomPrice.cs" />
     <Compile Include="Data\RoomStatus.cs" />
     <Compile Include="Data\Seeds\DBSeeder.cs" />
+    <Compile Include="Data\Seeds\InvoiceSeeder.cs" />
     <Compile Include="Data\Seeds\RoomSeeder.cs" />
     <Compile Include="Data\Seeds\RoomStatusSeeder.cs" />
     <Compile Include="Data\User.cs" />
-    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="ViewModel\BaseModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

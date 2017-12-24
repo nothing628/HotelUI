@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define SEED
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,14 +26,14 @@ namespace UIHotel
             migrator.RunDown();
             migrator.Run();
             DBSeeder.Seed();
-#endif
-            
+#else
             using (AppMain.Main = new AppMain())
             {
                 AppMain.Main.Init();
                 AppMain.Main.IsShowDevTool = true;
                 AppMain.Main.Run("http://localhost.com/home/get/listBooking");     //Open after finish configure
             }
+#endif
         }
     }
 }
