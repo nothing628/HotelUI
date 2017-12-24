@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace UIHotel.Data
+namespace UIHotel.Data.Table
 {
     [Table("invoice_detail")]
     public class InvoiceDetail

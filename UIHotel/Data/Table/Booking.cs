@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UIHotel.Data
+namespace UIHotel.Data.Table
 {
     [Table("booking")]
     public class Booking
