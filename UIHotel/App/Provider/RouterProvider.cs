@@ -29,6 +29,8 @@ namespace UIHotel.App.Provider
             listRoute.Add(new RouteModel("setting/post/{action}", "SettingController", Method: "POST"));
             listRoute.Add(new RouteModel("report/get/{action}", "ReportController"));
             listRoute.Add(new RouteModel("report/post/{action}", "ReportController", Method: "POST"));
+            listRoute.Add(new RouteModel("money/get/{action}", "MoneyController"));
+            listRoute.Add(new RouteModel("money/post/{action}", "MoneyController", Method: "POST"));
         }
 
         public override void Boot()
