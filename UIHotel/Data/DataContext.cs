@@ -14,11 +14,13 @@ namespace UIHotel.Data
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class DataContext : DbContext
     {
+        public DbSet<BookingType> BookingType { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<RoomCategory> RoomCategory { get; set; }
         public DbSet<RoomStatus> RoomStatus { get; set; }
-        public DbSet<Room> Room { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public DataContext()
           : base()

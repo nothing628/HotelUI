@@ -1,14 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UIHotel.Data
 {
+    [Table("guest")]
     public class Guest
     {
-        public int Id { get; set; }
+        [Key]
+        public long Id { get; set; }
+
+        public string IdNumber { get; set; }
+        public string IdKind { get; set; }
         public string Fullname { get; set; }
+
+        public DateTime BirthDay { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime? UpdateAt { get; set; }
     }
 }

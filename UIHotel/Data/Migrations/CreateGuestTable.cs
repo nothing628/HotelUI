@@ -15,6 +15,7 @@ namespace UIHotel.Data.Migrations
             Delete.Table("checkin");
             Delete.Table("booking_detail");
             Delete.Table("booking");
+            Delete.Table("booking_type");
             Delete.Table("guest");
         }
 
@@ -22,15 +23,22 @@ namespace UIHotel.Data.Migrations
         {
             Create.Table("guest")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("fullname").AsString(50).NotNullable()
                 .WithColumn("id_number").AsString(50).NotNullable().Unique()
                 .WithColumn("id_kind").AsString(20).WithDefaultValue("KTP").Unique()
+                .WithColumn("fullname").AsString(50).NotNullable()
+                .WithColumn("birth_day").AsDate().NotNullable()
                 .WithColumn("create_at").AsDateTime().NotNullable()
                 .WithColumn("update_at").AsDateTime().Nullable();
+
+            Create.Table("booking_type")
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("type").AsString(50).NotNullable()
+                .WithColumn("is_online").AsBoolean().WithDefaultValue(false);
 
             Create.Table("booking")
                 .WithColumn("id").AsString(25).PrimaryKey()
                 .WithColumn("id_guest").AsInt64().NotNullable()
+                .WithColumn("id_type").AsInt64().NotNullable()
                 .WithColumn("count_child").AsInt16()
                 .WithColumn("count_adult").AsInt16()
                 .WithColumn("arrive_at").AsDate().NotNullable()
@@ -41,7 +49,8 @@ namespace UIHotel.Data.Migrations
             Create.Table("booking_detail")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("id_booking").AsString(25).NotNullable()
-                .WithColumn("id_room").AsInt64().NotNullable();
+                .WithColumn("id_room").AsInt64().NotNullable()
+                .WithColumn("is_checkin").AsBoolean().WithDefaultValue(false);
 
             Create.Table("checkin")
                 .WithColumn("id").AsString(25).PrimaryKey()
