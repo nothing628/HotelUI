@@ -30,11 +30,13 @@ namespace UIHotel.Data.Table
         public short CountAdult { get; set; }
 
         [Required]
-        [Column("arrive_at", Order = 5)]
+        [DataType(DataType.Date)]
+        [Column("arrive_at", Order = 5, TypeName = "Date")]
         public DateTime ArriveAt { get; set; }
 
         [Required]
-        [Column("departure_at", Order = 6)]
+        [DataType(DataType.Date)]
+        [Column("departure_at", Order = 6, TypeName = "Date")]
         public DateTime DepartureAt { get; set; }
 
         [Required]
