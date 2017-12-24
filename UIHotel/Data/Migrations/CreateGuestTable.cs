@@ -23,12 +23,16 @@ namespace UIHotel.Data.Migrations
         {
             Create.Table("guest")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("id_number").AsString(50).NotNullable().Unique()
-                .WithColumn("id_kind").AsString(20).WithDefaultValue("KTP").Unique()
+                .WithColumn("id_number").AsString(50).NotNullable()
+                .WithColumn("id_kind").AsString(20).WithDefaultValue("KTP")
                 .WithColumn("fullname").AsString(50).NotNullable()
                 .WithColumn("birth_day").AsDate().NotNullable()
                 .WithColumn("create_at").AsDateTime().NotNullable()
                 .WithColumn("update_at").AsDateTime().Nullable();
+
+            Create.UniqueConstraint("Cret")
+                .OnTable("guest")
+                .Columns("id_number", "id_kind");
 
             Create.Table("booking_type")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
@@ -39,8 +43,8 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("id").AsString(25).PrimaryKey()
                 .WithColumn("id_guest").AsInt64().NotNullable()
                 .WithColumn("id_type").AsInt64().NotNullable()
-                .WithColumn("count_child").AsInt16()
-                .WithColumn("count_adult").AsInt16()
+                .WithColumn("count_child").AsInt16().WithDefaultValue(0)
+                .WithColumn("count_adult").AsInt16().WithDefaultValue(0)
                 .WithColumn("arrive_at").AsDate().NotNullable()
                 .WithColumn("departure_at").AsDate().NotNullable()
                 .WithColumn("create_at").AsDateTime().NotNullable()
