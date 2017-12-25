@@ -33,5 +33,10 @@ namespace UIHotel.App.Controller
         {
             return View("Setting.User");
         }
+
+        public IResourceHandler room()
+        {
+            return View("Setting.Room");
+        }
     }
 }
