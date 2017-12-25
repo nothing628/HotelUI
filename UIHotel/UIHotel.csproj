@@ -367,9 +367,6 @@
     <None Include="Vue\dist\static\js\manifest.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Vue\dist\static\js\vendor.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Vue\src\App.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
   </ItemGroup>
@@ -535,9 +532,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Vue\dist\static\js\manifest.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Vue\dist\static\js\vendor.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Vue\src\assets\logo.png" />
