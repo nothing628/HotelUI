@@ -3,6 +3,10 @@
     background-color: #3eb0b9;
 }
 
+#app {
+    text-align: start;
+}
+
 .login {
     background-image: url('../images/bg-login.jpg');
     background-repeat: no-repeat;

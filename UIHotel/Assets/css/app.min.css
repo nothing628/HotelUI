@@ -2327,18 +2327,6 @@ pre code {
     max-width: 100%
 }
 
-.table td,
-.table th {
-    padding: 1rem 1.5rem;
-    vertical-align: top;
-    border-top: 1px solid #f2f2f2
-}
-
-.table thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #f2f2f2
-}
-
 .table tbody+tbody {
     border-top: 2px solid #f2f2f2
 }
@@ -9206,22 +9194,11 @@ label {
     opacity: 1
 }
 
-.table thead th {
-    border-bottom-width: 1px
-}
-
 .table tr[class*=table-] td,
 .table tr[class*=table-] th,
 .table tr[class*=table-]+tr td,
 .table tr[class*=table-]+tr th {
     border: 0
-}
-
-.table:not(.table-bordered)>tbody:first-child td,
-.table:not(.table-bordered)>tbody:first-child th,
-.table:not(.table-bordered)>thead:first-child td,
-.table:not(.table-bordered)>thead:first-child th {
-    border-top: 0
 }
 
 .table-inverse td,
@@ -10251,7 +10228,7 @@ textarea {
 
 @media (min-width:1200px) {
     .content:not(.content--boxed):not(.content--full) {
-        padding: 102px 30px 0 270px
+        padding: 30px 30px 0 270px
     }
     .header__logo {
         min-width: calc(270px - 2rem)
@@ -10260,7 +10237,7 @@ textarea {
 
 @media (min-width:576px) and (max-width:1199px) {
     .content:not(.content--boxed):not(.content--full) {
-        padding: 102px 30px 0
+        padding: 30px 30px 0
     }
 }
 
@@ -10357,10 +10334,6 @@ textarea {
     [data-columns]:before {
         content: '1 .column.size-1of1'
     }
-}
-
-.column {
-    float: left
 }
 
 .size-1of1 {
@@ -11099,7 +11072,7 @@ textarea {
     width: 270px;
     position: fixed;
     left: 0;
-    padding: 102px 2rem .5rem;
+    padding: 30px 2rem .5rem;
     height: 100%;
     overflow: hidden;
     z-index: 9
