@@ -213,6 +213,18 @@
     <None Include="Assets\fonts\Material-Design-Iconic-Font.woff2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\fonts\MaterialIcons-Regular.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\fonts\MaterialIcons-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\fonts\MaterialIcons-Regular.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\fonts\MaterialIcons-Regular.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\fonts\roboto\Roboto-Bold-webfont.woff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -411,6 +423,9 @@
     <Content Include="Assets\css\material-design-iconic-font.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\css\Material-Icons.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\css\simple-line-icons.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -418,6 +433,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\fonts\fontawesome-webfont.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\fonts\MaterialIcons-Regular.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\fonts\Simple-Line-Icons.svg">
