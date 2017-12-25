@@ -1,5 +1,6 @@
 ﻿const CSS = [
     'select2/dist/css/select2.min.css',
+    'bootstrap/dist/css/bootstrap.min.css',
     'fullcalendar/dist/fullcalendar.min.css'
 ];
 const JS = [
@@ -9,6 +10,8 @@ const JS = [
     'jquery.flot/jquery.flot.resize.js',
     'select2/dist/js/select2.full.min.js',
     'moment/min/moment.min.js',
+    'bootstrap/dist/js/bootstrap.min.js',
+    'bootstrap/dist/js/bootstrap.bundle.min.js',
     'fullcalendar/dist/fullcalendar.min.js'
 ];
 
