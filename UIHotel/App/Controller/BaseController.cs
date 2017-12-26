@@ -20,7 +20,7 @@ namespace UIHotel.App.Controller
     {
         public DataContext Model { get; set; }
         private MySqlConnection DBConnection { get; set; }
-        public IPostData PostData { get; set; }
+        public IPostData PostData { get => Request.PostData; }
         private DynamicViewBag _ViewBag
         {
             get

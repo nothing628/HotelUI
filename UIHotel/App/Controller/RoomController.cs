@@ -1,6 +1,10 @@
 ﻿using CefSharp;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +65,32 @@ namespace UIHotel.App.Controller
                            select a).ToList();
 
             return Json(tmpData);
+        }
+
+        public IResourceHandler setRoom()
+        {
+            var data = PostData.Elements;
+            var rpp = data[0].GetBody();
+            var reader = new JsonTextReader(new StringReader(rpp));
+            var jtoken = JToken.ReadFrom(reader);
+            var room = new Room()
+            {
+                RoomNumber = jtoken.Value<string>("roomNumber"),
+                RoomFloor = jtoken.Value<short>("roomFloor"),
+                IdCategory = jtoken.Value<long>("roomCategory"),
+                Status = 1
+            };
+
+            try
+            {
+                Model.Rooms.Add(room);
+                Model.SaveChanges();
+            } catch (Exception ex)
+            {
+                //
+            }
+            
+            return Json(new { success = true });
         }
     }
 }
