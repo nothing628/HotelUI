@@ -54,5 +54,13 @@ namespace UIHotel.App.Controller
             
             return Json(tmpData);
         }
+
+        public IResourceHandler getCategory()
+        {
+            var tmpData = (from a in Model.RoomCategory
+                           select a).ToList();
+
+            return Json(tmpData);
+        }
     }
 }

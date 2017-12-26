@@ -8928,11 +8928,6 @@ progress::-webkit-progress-bar {
     background-color: #eee
 }
 
-.card {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
-    margin-bottom: 30px
-}
-
 .card-block p:only-child,
 .card-title,
 .custom-control {
