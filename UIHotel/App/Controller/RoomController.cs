@@ -33,5 +33,12 @@ namespace UIHotel.App.Controller
         {
             return View("Room.Category");
         }
+
+        public IResourceHandler getRoom()
+        {
+            var x = Model.Rooms.ToList();
+
+            return Json(x);
+        }
     }
 }

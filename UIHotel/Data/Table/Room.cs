@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +22,7 @@ namespace UIHotel.Data.Table
         public string RoomNumber { get; set; }
 
         [Column("room_floor", Order = 3)]
-        public short RoomFloor { get; set; }
+        public short RoomFloor { get; set; } = 1;
 
         [Column("status", Order = 4)]
         public int Status { get; set; }

@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace UIHotel.App.Controller
 {
     public class BaseController
     {
-        private DataContext Model { get; set; }
+        public DataContext Model { get; set; }
         private MySqlConnection DBConnection { get; set; }
-        private IPostData PostData { get; set; }
+        public IPostData PostData { get; set; }
         private DynamicViewBag _ViewBag
         {
             get
@@ -83,6 +84,22 @@ namespace UIHotel.App.Controller
 
                 return ResourceHandler.FromString(renderResult, Encoding.UTF8);
             } catch (ViewNotFoundException ex)
+            {
+                return ResourceHandler.FromString(ex.ToString());
+            }
+        }
+
+        public IResourceHandler Json(object data)
+        {
+            try
+            {
+                var dataJson = JsonConvert.SerializeObject(data, Formatting.None);
+                var retValue = ResourceHandler.FromString(dataJson);
+
+                retValue.MimeType = "application/json";
+
+                return retValue; 
+            } catch (Exception ex)
             {
                 return ResourceHandler.FromString(ex.ToString());
             }
