@@ -9,27 +9,29 @@
 </head>
 
 <body data-ma-theme="blue-grey">
-    <main class="main application theme--light" id="app">
-        @Include("Layout.Parts.PageLoader")
+    <main class="main" id="app">
+        <v-app id="inspire">
+            @Include("Layout.Parts.PageLoader")
 
-        <header class="header">
-            @Include("Layout.Parts.TitleNav")
-            @Include("Layout.Parts.SearchNav")
-            @Include("Layout.Parts.TopNav")
-        </header>
+            <header class="header">
+                @Include("Layout.Parts.TitleNav")
+                @Include("Layout.Parts.SearchNav")
+                @Include("Layout.Parts.TopNav")
+            </header>
 
-        <aside class="sidebar">
-            <div class="scrollbar-inner">
-                @Include("Layout.Parts.Userinfo")
-                @Include("Layout.Parts.Menubar")
-            </div>
-        </aside>
+            <aside class="sidebar">
+                <div class="scrollbar-inner">
+                    @Include("Layout.Parts.Userinfo")
+                    @Include("Layout.Parts.Menubar")
+                </div>
+            </aside>
 
-        @Include("Layout.Parts.Chatbar")
+            @Include("Layout.Parts.Chatbar")
 
-        <section class="content">
-            @RenderBody()
-        </section>
+            <section class="content">
+                @RenderBody()
+            </section>
+        </v-app>
     </main>
 
     @Include("Layout.Parts.IEWarn")

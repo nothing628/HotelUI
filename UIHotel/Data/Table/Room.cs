@@ -26,5 +26,11 @@ namespace UIHotel.Data.Table
 
         [Column("status", Order = 4)]
         public int Status { get; set; }
+        
+        [NotMapped]
+        public string RoomStatus { get; set; }
+
+        [NotMapped]
+        public string RoomCategory { get; set; }
     }
 }

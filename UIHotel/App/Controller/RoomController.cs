@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.Data.Table;
 
 namespace UIHotel.App.Controller
 {
@@ -36,9 +37,22 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler getRoom()
         {
-            var x = Model.Rooms.ToList();
-
-            return Json(x);
+            var tmpData = (from a in Model.Rooms
+                           join b in Model.RoomCategory on a.IdCategory equals b.Id into c
+                           from f in c
+                           join d in Model.RoomStatus on a.Status equals d.Id into e
+                           from g in e
+                           select new {
+                               Id = a.Id,
+                               IdCategory = a.IdCategory,
+                               RoomFloor = a.RoomFloor,
+                               Status = a.Status,
+                               RoomNumber = a.RoomNumber,
+                               RoomCategory = f.Category,
+                               RoomStatus = g.Status,
+                           }).ToList();
+            
+            return Json(tmpData);
         }
     }
 }

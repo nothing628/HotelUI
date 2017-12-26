@@ -20,8 +20,8 @@
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.RoomNumber }}</td>
                     <td class="text-xs-right">{{ props.item.RoomFloor }}</td>
-                    <td class="text-xs-right">{{ props.item.IdCategory }}</td>
-                    <td class="text-xs-right">{{ props.item.Status }}</td>
+                    <td class="text-xs-right">{{ props.item.RoomCategory }}</td>
+                    <td class="text-xs-right">{{ props.item.RoomStatus }}</td>
                 </template>
                 <template slot="pageText" slot-scope="{ pageStart, pageStop }">
                     From {{ pageStart }} to {{ pageStop }}
