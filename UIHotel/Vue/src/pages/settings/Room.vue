@@ -127,7 +127,11 @@
                 this.newDialog = true
             },
             deleteRoom(room) {
-                console.log(room)
+                this.roomData.id = room.Id;
+
+                axios.post('http://localhost.com/room/post/deleteRoom', this.roomData)
+                    .then(this.successSave)
+                    .catch(e => { })
             },
             editRoom(room) {
                 this.roomData.id = room.Id;

@@ -83,7 +83,7 @@ namespace UIHotel.App.Controller
                 Model.Rooms.Add(room);
                 Model.SaveChanges();
 
-                return Json(new { success = true, message = "Success update data" });
+                return Json(new { success = true, message = "Success insert data" });
             } catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
@@ -99,14 +99,46 @@ namespace UIHotel.App.Controller
                             where a.Id == roomId
                             select a).FirstOrDefault();
 
-                room.RoomNumber = jToken.Value<string>("roomNumber");
-                room.RoomFloor = jToken.Value<short>("roomFloor");
-                room.IdCategory = jToken.Value<long>("roomCategory");
+                if (room != null)
+                {
+                    room.RoomNumber = jToken.Value<string>("roomNumber");
+                    room.RoomFloor = jToken.Value<short>("roomFloor");
+                    room.IdCategory = jToken.Value<long>("roomCategory");
 
-                Model.Entry(room).State = EntityState.Modified;
-                Model.SaveChanges();
+                    Model.Entry(room).State = EntityState.Modified;
+                    Model.SaveChanges();
 
-                return Json(new { success = true, message = "Success update data" });
+                    return Json(new { success = true, message = "Success update data" });
+                } else
+                {
+                    return Json(new { success = false, message = "Room not found" });
+                }
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        public IResourceHandler deleteRoom()
+        {
+            try
+            {
+                var roomId = Convert.ToInt64(jToken.Value<string>("id"));
+                var room = (from a in Model.Rooms
+                            where a.Id == roomId
+                            where a.Status == 1
+                            select a).FirstOrDefault();
+
+                if (room != null)
+                {
+                    Model.Rooms.Remove(room);
+                    Model.SaveChanges();
+
+                    return Json(new { success = true, message = "Data deleted" });
+                } else
+                {
+                    return Json(new { success = false, message = "Room status must be 'Vacant'" });
+                }
             } catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
