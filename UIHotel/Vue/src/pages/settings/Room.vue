@@ -2,7 +2,7 @@
     <v-app id="inspire">
         <v-card>
             <v-card-title>
-                <v-btn color="primary" dark @click.stop="newDialog = true">Add Room</v-btn>
+                <v-btn color="primary" dark @click.stop="newRoom">Add Room</v-btn>
                 <v-spacer></v-spacer>
                 <v-text-field append-icon="search"
                               label="Search"
@@ -23,7 +23,8 @@
                     <td class="text-xs-right">{{ props.item.RoomCategory }}</td>
                     <td class="text-xs-right">{{ props.item.RoomStatus }}</td>
                     <td class="text-xs-right">
-                        <v-btn color="primary">Remove</v-btn>
+                        <v-btn color="warning" @click.stop="editRoom(props.item)">Edit</v-btn>
+                        <v-btn color="error" @click.stop="deleteRoom(props.item)">Remove</v-btn>
                     </td>
                 </template>
                 <template slot="pageText" slot-scope="{ pageStart, pageStop }">
@@ -59,6 +60,12 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-snackbar :timeout="1000"
+                    :top="true"
+                    :color="snackbar.color"
+                    v-model="snackbar.show">
+            {{ snackbar.text }}
+        </v-snackbar>
     </v-app>
 </template>
 
@@ -88,6 +95,7 @@
                     items: []
                 },
                 roomData: {
+                    id: "",
                     roomNumber: "",
                     roomFloor: 1,
                     roomCategory: ""
@@ -97,7 +105,12 @@
                     (v) => !!v || 'Name is required',
                     (v) => v && v.length <= 10 || 'Name must be less than 10 characters'
                 ],
-                select: []
+                select: [],
+                snackbar: {
+                    color: 'success',
+                    text: '',
+                    show: false,
+                }
             }
         },
         watch: {
@@ -109,15 +122,46 @@
             }
         },
         methods: {
+            newRoom() {
+                this.roomData.id = ""
+                this.newDialog = true
+            },
+            deleteRoom(room) {
+                console.log(room)
+            },
+            editRoom(room) {
+                this.roomData.id = room.Id;
+                this.roomData.roomCategory = room.IdCategory
+                this.roomData.roomNumber = room.RoomNumber
+                this.roomData.roomFloor = room.RoomFloor
+
+                this.newDialog = true
+            },
             successSave(response) {
+                if (response.data.success) {
+                    this.snackbar.color = 'success'
+                } else {
+                    this.snackbar.color = 'error'
+                }
+
+                this.snackbar.text = response.data.message
+                this.snackbar.show = true
                 this.getDataFromApi()
             },
             saveRoom() {
                 this.newDialog = false
 
-                axios.post('http://localhost.com/room/post/setRoom', this.roomData)
-                    .then(this.successSave)
-                    .catch(e => { })
+                if (this.roomData.id == "") {
+                    //Insert Data
+                    axios.post('http://localhost.com/room/post/setRoom', this.roomData)
+                        .then(this.successSave)
+                        .catch(e => { })
+                } else {
+                    //Update Data
+                    axios.post('http://localhost.com/room/post/updateRoom', this.roomData)
+                        .then(this.successSave)
+                        .catch(e => { })
+                }
             },
             getData(response) {
                 let items = response.data;

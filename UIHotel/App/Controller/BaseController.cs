@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,22 @@ namespace UIHotel.App.Controller
                 viewBag.AddDictionary(dictObject);
 
                 return viewBag;
+            }
+        }
+        public JToken jToken
+        {
+            get
+            {
+                if (Request.ResourceType == ResourceType.Xhr)
+                {
+                    var postElm = PostData.Elements;
+                    var jsonContent = postElm[0].GetBody();
+
+                    return JToken.Parse(jsonContent);
+                } else
+                {
+                    return JToken.Parse("{}");
+                }
             }
         }
         public NameValueCollection Query

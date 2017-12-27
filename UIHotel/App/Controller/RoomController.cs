@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -69,15 +70,11 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler setRoom()
         {
-            var data = PostData.Elements;
-            var rpp = data[0].GetBody();
-            var reader = new JsonTextReader(new StringReader(rpp));
-            var jtoken = JToken.ReadFrom(reader);
             var room = new Room()
             {
-                RoomNumber = jtoken.Value<string>("roomNumber"),
-                RoomFloor = jtoken.Value<short>("roomFloor"),
-                IdCategory = jtoken.Value<long>("roomCategory"),
+                RoomNumber = jToken.Value<string>("roomNumber"),
+                RoomFloor = jToken.Value<short>("roomFloor"),
+                IdCategory = jToken.Value<long>("roomCategory"),
                 Status = 1
             };
 
@@ -85,12 +82,35 @@ namespace UIHotel.App.Controller
             {
                 Model.Rooms.Add(room);
                 Model.SaveChanges();
+
+                return Json(new { success = true, message = "Success update data" });
             } catch (Exception ex)
             {
-                //
+                return Json(new { success = false, message = ex.Message });
             }
-            
-            return Json(new { success = true });
+        }
+
+        public IResourceHandler updateRoom()
+        {
+            try
+            {
+                var roomId = Convert.ToInt64(jToken.Value<string>("id"));
+                var room = (from a in Model.Rooms
+                            where a.Id == roomId
+                            select a).FirstOrDefault();
+
+                room.RoomNumber = jToken.Value<string>("roomNumber");
+                room.RoomFloor = jToken.Value<short>("roomFloor");
+                room.IdCategory = jToken.Value<long>("roomCategory");
+
+                Model.Entry(room).State = EntityState.Modified;
+                Model.SaveChanges();
+
+                return Json(new { success = true, message = "Success update data" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
     }
 }
