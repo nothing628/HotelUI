@@ -100,6 +100,7 @@
                     roomFloor: 1,
                     roomCategory: ""
                 },
+                valid: true,
                 newDialog: false,
                 nameRules: [
                     (v) => !!v || 'Name is required',

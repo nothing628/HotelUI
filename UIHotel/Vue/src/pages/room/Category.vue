@@ -31,6 +31,32 @@
             </v-data-table>
         </v-card>
 
+        <v-dialog v-model="newDialog" max-width="500px">
+            <v-card>
+                <v-card-title>Add Category </v-card-title>
+                <v-card-text>
+                    <v-form v-model="valid">
+                        <v-text-field label="Category Name"
+                                      :rules="rules.categoryRules"
+                                      :counter="50"
+                                      v-model="categoryData.category"
+                                      required></v-text-field>
+                        <v-text-field label="Description"
+                                      :rules="rules.descriptionRules"
+                                      :counter="200"
+                                      :multi-line="true"
+                                      :rows="2"
+                                      v-model="categoryData.description"
+                                      required></v-text-field>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="primary">Submit</v-btn>
+                    <v-btn color="primary" flat @click.stop="newDialog=false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <v-snackbar :timeout="1000"
                     :top="true"
                     :color="snackbar.color"
@@ -58,6 +84,22 @@
                     ],
                     items: []
                 },
+                valid: true,
+                newDialog: false,
+                rules: {
+                    categoryRules: [
+                        (v) => !!v || 'Category Name is required',
+                        (v) => v && v.length <= 50 || 'Category must be less than 50 characters'
+                    ],
+                    descriptionRules: [
+                        (v) => v && v.length <= 200 || 'Description must be less than 200 characters'
+                    ]
+                },
+                categoryData: {
+                    id: "",
+                    category: "",
+                    description: "",
+                },
                 snackbar: {
                     color: 'success',
                     text: '',
@@ -80,7 +122,10 @@
         },
         methods: {
             newCategory() {
-                //
+                this.categoryData.id = ""
+                this.categoryData.category = ""
+                this.categoryData.description = ""
+                this.newDialog = true
             },
             getData(response) {
                 let items = response.data;
