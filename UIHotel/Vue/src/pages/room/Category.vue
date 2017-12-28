@@ -21,8 +21,8 @@
                     <td>{{ props.item.Category }}</td>
                     <td class="text-xs-right">{{ props.item.Description }}</td>
                     <td class="text-xs-right">
-                        <v-btn color="warning">Edit</v-btn>
-                        <v-btn color="error"  >Remove</v-btn>
+                        <v-btn color="warning" @click.stop="edit(props.item)">Edit</v-btn>
+                        <v-btn color="error"  @click.stop="remove(props.item)">Remove</v-btn>
                     </td>
                 </template>
                 <template slot="pageText" slot-scope="{ pageStart, pageStop }">
@@ -51,7 +51,7 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="primary">Submit</v-btn>
+                    <v-btn color="primary" @click.stop="store">Submit</v-btn>
                     <v-btn color="primary" flat @click.stop="newDialog=false">Close</v-btn>
                 </v-card-actions>
             </v-card>
@@ -127,6 +127,35 @@
                 this.categoryData.description = ""
                 this.newDialog = true
             },
+            remove(category) {
+                this.categoryData.id = category.Id
+
+                //Delete Data
+                axios.post('http://localhost.com/room/post/deleteCategory', this.categoryData)
+                    .then(this.successSave)
+                    .catch(e => { })
+            },
+            edit(category) {
+                this.categoryData.id = category.Id
+                this.categoryData.category = category.Category
+                this.categoryData.description = category.Description
+                this.newDialog = true
+            },
+            store() {
+                this.newDialog = false
+
+                if (this.categoryData.id == "") {
+                    //Insert Data
+                    axios.post('http://localhost.com/room/post/storeCategory', this.categoryData)
+                        .then(this.successSave)
+                        .catch(e => { })
+                } else {
+                    //Update Data
+                    axios.post('http://localhost.com/room/post/updateCategory', this.categoryData)
+                        .then(this.successSave)
+                        .catch(e => { })
+                }
+            },
             getData(response) {
                 let items = response.data;
 
@@ -140,7 +169,18 @@
                 this.tableData.loading = true
 
                 axios.post('http://localhost.com/room/post/getCategoryData', { page, rowsPerPage, search }).then(this.getData).catch(e => { })
-            }
+            },
+            successSave(response) {
+                if (response.data.success) {
+                    this.snackbar.color = 'success'
+                } else {
+                    this.snackbar.color = 'error'
+                }
+
+                this.snackbar.text = response.data.message
+                this.snackbar.show = true
+                this.getDataFromApi()
+            },
         },
         mounted() {
             this.tableData.pagination.rowsPerPage = 10

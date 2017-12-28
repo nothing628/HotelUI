@@ -23,8 +23,8 @@
                     <td class="text-xs-right">{{ props.item.RoomCategory }}</td>
                     <td class="text-xs-right">{{ props.item.RoomStatus }}</td>
                     <td class="text-xs-right">
-                        <v-btn color="warning" @click.stop="editRoom(props.item)">Edit</v-btn>
-                        <v-btn color="error" @click.stop="deleteRoom(props.item)">Remove</v-btn>
+                        <v-btn color="warning" @click.stop="edit(props.item)">Edit</v-btn>
+                        <v-btn color="error" @click.stop="remove(props.item)">Remove</v-btn>
                     </td>
                 </template>
                 <template slot="pageText" slot-scope="{ pageStart, pageStop }">
@@ -55,7 +55,7 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="primary" @click.stop="saveRoom">Submit</v-btn>
+                    <v-btn color="primary" @click.stop="store">Submit</v-btn>
                     <v-btn color="primary" flat @click.stop="newDialog=false">Close</v-btn>
                 </v-card-actions>
             </v-card>
@@ -132,14 +132,14 @@
                 this.roomData.id = ""
                 this.newDialog = true
             },
-            deleteRoom(room) {
+            remove(room) {
                 this.roomData.id = room.Id;
 
                 axios.post('http://localhost.com/room/post/deleteRoom', this.roomData)
                     .then(this.successSave)
                     .catch(e => { })
             },
-            editRoom(room) {
+            edit(room) {
                 this.roomData.id = room.Id;
                 this.roomData.roomCategory = room.IdCategory
                 this.roomData.roomNumber = room.RoomNumber
@@ -158,7 +158,7 @@
                 this.snackbar.show = true
                 this.getDataFromApi()
             },
-            saveRoom() {
+            store() {
                 this.newDialog = false
 
                 if (this.roomData.id == "") {

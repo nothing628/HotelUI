@@ -20,6 +20,7 @@ namespace UIHotel.App.Controller
 
         }
 
+        #region View
         public IResourceHandler index()
         {
             return View("Room.List");
@@ -39,7 +40,7 @@ namespace UIHotel.App.Controller
         {
             return View("Room.Category");
         }
-
+        #endregion
         #region Room Maintain
         public IResourceHandler getRoomData()
         {
@@ -145,7 +146,7 @@ namespace UIHotel.App.Controller
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Room status must be 'Vacant'" });
+                    return Json(new { success = false, message = "Room status must be 'Vacant' or Room not exists!" });
                 }
             }
             catch (Exception ex)
@@ -180,17 +181,76 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler storeCategory()
         {
-            return Json(new { });
+            var category = new RoomCategory()
+            {
+                Category = jToken.Value<string>("category"),
+                Description = jToken.Value<string>("description"),
+            };
+
+            try
+            {
+                Model.RoomCategory.Add(category);
+                Model.SaveChanges();
+
+                return Json(new { success = true, message = "Success insert data" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         public IResourceHandler updateCategory()
         {
-            return Json(new { });
+            try
+            {
+                var categoryId = Convert.ToInt64(jToken.Value<string>("id"));
+                var category = (from a in Model.RoomCategory
+                                where a.Id == categoryId
+                                select a).FirstOrDefault();
+
+                if (category != null)
+                {
+                    category.Category = jToken.Value<string>("category");
+                    category.Description = jToken.Value<string>("description");
+
+                    Model.Entry(category).State = EntityState.Modified;
+                    Model.SaveChanges();
+
+                    return Json(new { success = true, message = "Success update data" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Category Not Found!" });
+                }
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         public IResourceHandler deleteCategory()
         {
-            return Json(new { });
+            try
+            {
+                var categoryId = Convert.ToInt64(jToken.Value<string>("id"));
+                var category = (from a in Model.RoomCategory
+                                where a.Id == categoryId
+                                select a).FirstOrDefault();
+
+                if (category != null)
+                {
+                    Model.RoomCategory.Remove(category);
+                    Model.SaveChanges();
+
+                    return Json(new { success = true, message = "Success remove data" });
+                } else
+                {
+                    return Json(new { success = false, message = "Category Not Found!" });
+                }
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
         #endregion
 
