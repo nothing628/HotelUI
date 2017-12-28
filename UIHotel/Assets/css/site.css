@@ -1,5 +1,5 @@
 ﻿
-.widget-pie {
+.card.widget-pie {
     background-color: #3eb0b9;
 }
 
@@ -27,6 +27,13 @@
     margin-left: auto;
 }
 
+.toolbar.room_status {
+    margin-bottom: 0px;
+    box-shadow: none;
+    border-bottom: 1px solid #c1c1c1;
+}
+
+
 .actions:not(.actions--inverse) .actions__item {
     color: #ffffff;
 }
@@ -42,6 +49,11 @@
 .row.room_status {
     margin-left: 0px;
     margin-right: 0px;
+    margin-top: 20px;
+}
+
+.row.room_status .quick-stats__item {
+    margin-bottom: 20px;
 }
 
 .login .login-overlay {
