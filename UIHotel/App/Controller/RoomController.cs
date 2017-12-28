@@ -42,6 +42,7 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler getRoom()
         {
+            var search = jToken.Value<string>("search");
             var page = jToken.Value<int>("page");
             var rowPerPage = jToken.Value<int>("rowsPerPage");
             var iQuery = (from a in Model.Rooms
@@ -49,6 +50,7 @@ namespace UIHotel.App.Controller
                           from f in c
                           join d in Model.RoomStatus on a.Status equals d.Id into e
                           from g in e
+                          where (search != null) ? a.RoomNumber.StartsWith(search) : true
                           orderby a.RoomNumber ascending
                           select new
                           {

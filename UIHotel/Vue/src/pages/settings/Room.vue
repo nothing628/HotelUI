@@ -8,7 +8,7 @@
                               label="Search"
                               single-line
                               hide-details
-                              v-model="search"></v-text-field>
+                              v-model="tableData.search"></v-text-field>
             </v-card-title>
             <v-data-table v-bind:headers="tableData.headers"
                           v-bind:items="tableData.items"
@@ -114,6 +114,11 @@
             }
         },
         watch: {
+            'tableData.search': {
+                handler() {
+                    this.getDataFromApi()
+                }
+            },
             'tableData.pagination': {
                 handler() {
                     this.getDataFromApi();
@@ -176,9 +181,10 @@
             },
             getDataFromApi() {
                 const { page, rowsPerPage } = this.tableData.pagination
+                const search = this.tableData.search
                 this.tableData.loading = true
-                
-                axios.post('http://localhost.com/room/post/getRoom', { page, rowsPerPage }).then(this.getData).catch(e => { })
+
+                axios.post('http://localhost.com/room/post/getRoom', { page, rowsPerPage, search }).then(this.getData).catch(e => { })
             },
             getCategory() {
                 axios.get('http://localhost.com/room/get/getCategory').then(this.getCategoryData).catch(e => { })
