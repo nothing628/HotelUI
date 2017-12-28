@@ -171,14 +171,14 @@
                 let items = response.data;
 
                 this.tableData.loading = false
-                this.tableData.items = items
-                this.tableData.totalItems = items.length
+                this.tableData.items = items.data
+                this.tableData.totalItems = items.total
             },
             getDataFromApi() {
-                const { sortBy, descending, page, rowsPerPage } = this.tableData.pagination
+                const { page, rowsPerPage } = this.tableData.pagination
                 this.tableData.loading = true
-
-                axios.get('http://localhost.com/room/get/getRoom').then(this.getData).catch(e => { })
+                
+                axios.post('http://localhost.com/room/post/getRoom', { page, rowsPerPage }).then(this.getData).catch(e => { })
             },
             getCategory() {
                 axios.get('http://localhost.com/room/get/getCategory').then(this.getCategoryData).catch(e => { })
@@ -197,6 +197,7 @@
             }
         },
         mounted() {
+            this.tableData.pagination.rowsPerPage = 10
             this.getCategory()
             this.getDataFromApi()
         }

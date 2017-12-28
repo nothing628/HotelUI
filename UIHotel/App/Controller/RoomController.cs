@@ -42,22 +42,31 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler getRoom()
         {
-            var tmpData = (from a in Model.Rooms
-                           join b in Model.RoomCategory on a.IdCategory equals b.Id into c
-                           from f in c
-                           join d in Model.RoomStatus on a.Status equals d.Id into e
-                           from g in e
-                           select new {
-                               Id = a.Id,
-                               IdCategory = a.IdCategory,
-                               RoomFloor = a.RoomFloor,
-                               Status = a.Status,
-                               RoomNumber = a.RoomNumber,
-                               RoomCategory = f.Category,
-                               RoomStatus = g.Status,
-                           }).ToList();
-            
-            return Json(tmpData);
+            var page = jToken.Value<int>("page");
+            var rowPerPage = jToken.Value<int>("rowsPerPage");
+            var iQuery = (from a in Model.Rooms
+                          join b in Model.RoomCategory on a.IdCategory equals b.Id into c
+                          from f in c
+                          join d in Model.RoomStatus on a.Status equals d.Id into e
+                          from g in e
+                          orderby a.RoomNumber ascending
+                          select new
+                          {
+                              Id = a.Id,
+                              IdCategory = a.IdCategory,
+                              RoomFloor = a.RoomFloor,
+                              Status = a.Status,
+                              RoomNumber = a.RoomNumber,
+                              RoomCategory = f.Category,
+                              RoomStatus = g.Status,
+                          });
+            var count = iQuery.Count();
+            var tmpData = iQuery
+                .Skip(rowPerPage * (page - 1))
+                .Take(rowPerPage)
+                .ToList();
+
+            return Json(new { data = tmpData, total = count });
         }
 
         public IResourceHandler getCategory()
