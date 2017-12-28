@@ -40,7 +40,7 @@ namespace UIHotel.App.Controller
             return View("Room.Category");
         }
 
-        public IResourceHandler getRoom()
+        public IResourceHandler getRoomData()
         {
             var search = jToken.Value<string>("search");
             var page = jToken.Value<int>("page");
@@ -77,6 +77,29 @@ namespace UIHotel.App.Controller
                            select a).ToList();
 
             return Json(tmpData);
+        }
+
+        public IResourceHandler getCategoryData()
+        {
+            var search = jToken.Value<string>("search");
+            var page = jToken.Value<int>("page");
+            var rowPerPage = jToken.Value<int>("rowsPerPage");
+            var iQuery = (from a in Model.RoomCategory
+                          where (search != null) ? a.Category.StartsWith(search) : true
+                          orderby a.Category ascending
+                          select new
+                          {
+                              a.Id,
+                              a.Category,
+                              a.Description
+                          });
+            var count = iQuery.Count();
+            var tmpData = iQuery
+                .Skip(rowPerPage * (page - 1))
+                .Take(rowPerPage)
+                .ToList();
+
+            return Json(new { data = tmpData, total = count });
         }
 
         public IResourceHandler setRoom()

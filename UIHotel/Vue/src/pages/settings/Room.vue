@@ -184,7 +184,7 @@
                 const search = this.tableData.search
                 this.tableData.loading = true
 
-                axios.post('http://localhost.com/room/post/getRoom', { page, rowsPerPage, search }).then(this.getData).catch(e => { })
+                axios.post('http://localhost.com/room/post/getRoomData', { page, rowsPerPage, search }).then(this.getData).catch(e => { })
             },
             getCategory() {
                 axios.get('http://localhost.com/room/get/getCategory').then(this.getCategoryData).catch(e => { })

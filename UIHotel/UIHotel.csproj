@@ -576,6 +576,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Vue\src\pages\room\Category.vue" />
     <None Include="Vue\src\pages\settings\Room.vue" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

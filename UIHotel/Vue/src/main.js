@@ -4,13 +4,15 @@ import '../../node_modules/vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import App from './App'
+import RoomCategory from './pages/room/Category'
 import SettingRoom from './pages/settings/Room'
 import router from './router'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 Vue.component("app", App)
-Vue.component("setting-room", SettingRoom);
+Vue.component('room-category', RoomCategory)
+Vue.component("setting-room", SettingRoom)
 
 /* eslint-disable no-new */
 new Vue({
