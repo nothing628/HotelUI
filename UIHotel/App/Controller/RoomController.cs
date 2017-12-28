@@ -40,6 +40,7 @@ namespace UIHotel.App.Controller
             return View("Room.Category");
         }
 
+        #region Room Maintain
         public IResourceHandler getRoomData()
         {
             var search = jToken.Value<string>("search");
@@ -71,38 +72,7 @@ namespace UIHotel.App.Controller
             return Json(new { data = tmpData, total = count });
         }
 
-        public IResourceHandler getCategory()
-        {
-            var tmpData = (from a in Model.RoomCategory
-                           select a).ToList();
-
-            return Json(tmpData);
-        }
-
-        public IResourceHandler getCategoryData()
-        {
-            var search = jToken.Value<string>("search");
-            var page = jToken.Value<int>("page");
-            var rowPerPage = jToken.Value<int>("rowsPerPage");
-            var iQuery = (from a in Model.RoomCategory
-                          where (search != null) ? a.Category.StartsWith(search) : true
-                          orderby a.Category ascending
-                          select new
-                          {
-                              a.Id,
-                              a.Category,
-                              a.Description
-                          });
-            var count = iQuery.Count();
-            var tmpData = iQuery
-                .Skip(rowPerPage * (page - 1))
-                .Take(rowPerPage)
-                .ToList();
-
-            return Json(new { data = tmpData, total = count });
-        }
-
-        public IResourceHandler setRoom()
+        public IResourceHandler storeRoom()
         {
             var room = new Room()
             {
@@ -118,7 +88,8 @@ namespace UIHotel.App.Controller
                 Model.SaveChanges();
 
                 return Json(new { success = true, message = "Success insert data" });
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
@@ -143,11 +114,13 @@ namespace UIHotel.App.Controller
                     Model.SaveChanges();
 
                     return Json(new { success = true, message = "Success update data" });
-                } else
+                }
+                else
                 {
                     return Json(new { success = false, message = "Room not found" });
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
@@ -169,14 +142,64 @@ namespace UIHotel.App.Controller
                     Model.SaveChanges();
 
                     return Json(new { success = true, message = "Data deleted" });
-                } else
+                }
+                else
                 {
                     return Json(new { success = false, message = "Room status must be 'Vacant'" });
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+        #endregion
+        #region Category Maintain
+        public IResourceHandler getCategoryData()
+        {
+            var search = jToken.Value<string>("search");
+            var page = jToken.Value<int>("page");
+            var rowPerPage = jToken.Value<int>("rowsPerPage");
+            var iQuery = (from a in Model.RoomCategory
+                          where (search != null) ? a.Category.StartsWith(search) : true
+                          orderby a.Category ascending
+                          select new
+                          {
+                              a.Id,
+                              a.Category,
+                              a.Description
+                          });
+            var count = iQuery.Count();
+            var tmpData = iQuery
+                .Skip(rowPerPage * (page - 1))
+                .Take(rowPerPage)
+                .ToList();
+
+            return Json(new { data = tmpData, total = count });
+        }
+
+        public IResourceHandler storeCategory()
+        {
+            return Json(new { });
+        }
+
+        public IResourceHandler updateCategory()
+        {
+            return Json(new { });
+        }
+
+        public IResourceHandler deleteCategory()
+        {
+            return Json(new { });
+        }
+        #endregion
+
+        public IResourceHandler getCategory()
+        {
+            var tmpData = (from a in Model.RoomCategory
+                           select a).ToList();
+
+            return Json(tmpData);
         }
     }
 }

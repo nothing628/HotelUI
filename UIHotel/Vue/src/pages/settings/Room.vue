@@ -163,7 +163,7 @@
 
                 if (this.roomData.id == "") {
                     //Insert Data
-                    axios.post('http://localhost.com/room/post/setRoom', this.roomData)
+                    axios.post('http://localhost.com/room/post/storeRoom', this.roomData)
                         .then(this.successSave)
                         .catch(e => { })
                 } else {
