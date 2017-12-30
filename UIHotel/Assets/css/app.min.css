@@ -10223,7 +10223,7 @@ textarea {
 
 @media (min-width:1200px) {
     .content:not(.content--boxed):not(.content--full) {
-        padding: 30px 30px 0 270px
+        padding: 96px 30px 0 270px
     }
     .header__logo {
         min-width: calc(270px - 2rem)
@@ -10232,7 +10232,7 @@ textarea {
 
 @media (min-width:576px) and (max-width:1199px) {
     .content:not(.content--boxed):not(.content--full) {
-        padding: 30px 30px 0
+        padding: 96px 30px 0
     }
 }
 
@@ -11067,7 +11067,7 @@ textarea {
     width: 270px;
     position: fixed;
     left: 0;
-    padding: 30px 2rem .5rem;
+    padding: 96px 2rem .5rem;
     height: 100%;
     overflow: hidden;
     z-index: 9

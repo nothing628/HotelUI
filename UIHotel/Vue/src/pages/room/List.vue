@@ -1,0 +1,438 @@
+<template>
+    <v-app id="inspire">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Filter</h2>
+            </div>
+
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group zero form-group--select">
+                            <div class="select">
+                                <select class="form-control">
+                                    <option>Select Room Type</option>
+                                    <option>Big</option>
+                                    <option>Medium</option>
+                                    <option>Small</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group zero form-group--select">
+                            <div class="select">
+                                <select class="form-control">
+                                    <option>Select Status</option>
+                                    <option>Vacant</option>
+                                    <option>Occupied</option>
+                                    <option>Booked</option>
+                                    <option>Late</option>
+                                    <option>Cleaning</option>
+                                    <option>Maintance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group zero">
+                            <input class="form-control" type="text" placeholder="Search">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="toolbar room_status toolbar--inner">
+                    <div class="toolbar__label"><strong>ALL</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href=""><span class="badge badge-success">Vacant (1)</span></a>
+                        <a href=""><span class="badge badge-danger">Occupied (1)</span></a>
+                        <a href=""><span class="badge bg-orange">Booked (1)</span></a>
+                        <a href=""><span class="badge bg-blue">Late (1)</span></a>
+                        <a href=""><span class="badge purple lighten-1">Cleaning (1)</span></a>
+                        <a href=""><span class="badge grey darken-1">Maintance (1)</span></a>
+                    </div>
+                </div>
+                <div class="toolbar room_status toolbar--inner">
+                    <div class="toolbar__label"><strong>Big</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href=""><span class="badge badge-success">Vacant (1)</span></a>
+                        <a href=""><span class="badge badge-danger">Occupied (1)</span></a>
+                        <a href=""><span class="badge bg-orange">Booked (1)</span></a>
+                        <a href=""><span class="badge bg-blue">Late (1)</span></a>
+                        <a href=""><span class="badge purple lighten-1">Cleaning (1)</span></a>
+                        <a href=""><span class="badge grey darken-1">Maintance (1)</span></a>
+                    </div>
+                </div>
+                <div class="row room_status">
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>201</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>202</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkout"><i class="zmdi zmdi-upload"></i> Check Out</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/change"><i class="zmdi zmdi-refresh-sync"></i> Change Room</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-orange">
+                            <div class="quick-stats__info">
+                                <h2>203</h2>
+                                <small>Booked</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/cancel"><i class="zmdi zmdi-close"></i> Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item purple lighten-1">
+                            <div class="quick-stats__info">
+                                <h2>204</h2>
+                                <small>Cleaning</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>205</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toolbar room_status toolbar--inner">
+                    <div class="toolbar__label"><strong>Medium</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href=""><span class="badge badge-success">Vacant (1)</span></a>
+                        <a href=""><span class="badge badge-danger">Occupied (1)</span></a>
+                        <a href=""><span class="badge bg-orange">Booked (1)</span></a>
+                        <a href=""><span class="badge bg-blue">Late (1)</span></a>
+                        <a href=""><span class="badge purple lighten-1">Cleaning (1)</span></a>
+                        <a href=""><span class="badge grey darken-1">Maintance (1)</span></a>
+                    </div>
+                </div>
+                <div class="row room_status">
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>401</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-blue">
+                            <div class="quick-stats__info">
+                                <h2>402</h2>
+                                <small>Late Checkout</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkout"><i class="zmdi zmdi-upload"></i> Check Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-orange">
+                            <div class="quick-stats__info">
+                                <h2>403</h2>
+                                <small>Booked</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/cancel"><i class="zmdi zmdi-close"></i> Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item grey darken-1">
+                            <div class="quick-stats__info">
+                                <h2>404</h2>
+                                <small>Maintance</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>405</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkout"><i class="zmdi zmdi-upload"></i> Check Out</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/change"><i class="zmdi zmdi-refresh-sync"></i> Change Room</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolbar room_status toolbar--inner">
+                    <div class="toolbar__label"><strong>Small</strong></div>
+                    <div class="toolbar__nav right">
+                        <a href=""><span class="badge badge-success">Vacant (1)</span></a>
+                        <a href=""><span class="badge badge-danger">Occupied (1)</span></a>
+                        <a href=""><span class="badge bg-orange">Booked (1)</span></a>
+                        <a href=""><span class="badge bg-blue">Late (1)</span></a>
+                        <a href=""><span class="badge purple lighten-1">Cleaning (1)</span></a>
+                        <a href=""><span class="badge grey darken-1">Maintance (1)</span></a>
+                    </div>
+                </div>
+                <div class="row room_status">
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>301</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>302</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>303</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-green">
+                            <div class="quick-stats__info">
+                                <h2>304</h2>
+                                <small>Vacant</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>305</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkout"><i class="zmdi zmdi-upload"></i> Check Out</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/change"><i class="zmdi zmdi-refresh-sync"></i> Change Room</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>306</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkout"><i class="zmdi zmdi-upload"></i> Check Out</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/change"><i class="zmdi zmdi-refresh-sync"></i> Change Room</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quick-stats__item bg-red">
+                            <div class="quick-stats__info">
+                                <h2>307</h2>
+                                <small>Occupied</small>
+                            </div>
+
+                            <div class="actions listview__actions">
+                                <div class="dropdown actions__item">
+                                    <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/checkout"><i class="zmdi zmdi-upload"></i> Check Out</a>
+                                        <a class="dropdown-item" href="http://localhost.com/home/get/change"><i class="zmdi zmdi-refresh-sync"></i> Change Room</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </v-app>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                //
+            }
+        },
+        methods: {
+            //
+        },
+        mounted() {
+
+        }
+    }
+</script>
