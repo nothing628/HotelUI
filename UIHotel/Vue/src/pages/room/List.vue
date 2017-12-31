@@ -10,9 +10,9 @@
                               v-model="search"></v-text-field>
             </v-card-title>
             <v-expansion-panel expand>
-                <v-expansion-panel-content v-for="(item,i) in 5" :key="i" v-bind:value="item === 2">
+                <v-expansion-panel-content v-for="(category,i) in categories" :key="i">
                     <div slot="header">
-                        ALL
+                        {{ category.Category }}
                         <div class="right">
                             <span class="badge badge-success">Vacant (1)</span>
                             <span class="badge badge-danger">Occupied (1)</span>
@@ -24,20 +24,20 @@
                     </div>
                     <v-card>
                         <div class="row room_status">
-                            <div class="col-md-2" v-for="(room,j) in 5" :key="j" >
-                                <div class="quick-stats__item bg-green">
+                            <div class="col-md-2" v-for="(room,j) in category.Rooms" :key="j" >
+                                <div class="quick-stats__item" :style="{'background-color': '#' + room.StatusColor }">
                                     <div class="quick-stats__info">
-                                        <h2>201</h2>
-                                        <small>Vacant</small>
+                                        <h2>{{ room.RoomNumber }}</h2>
+                                        <small>{{ room.Status }}</small>
                                     </div>
 
                                     <div class="actions listview__actions">
                                         <div class="dropdown actions__item">
                                             <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="http://localhost.com/room/get/detail"><i class="zmdi zmdi-apps"></i> Detail</a>
-                                                <a class="dropdown-item" href="http://localhost.com/home/get/checkin"><i class="zmdi zmdi-download"></i> Check In</a>
-                                                <a class="dropdown-item" href="http://localhost.com/home/get/booking"><i class="zmdi zmdi-bookmark"></i> Booking</a>
+                                                <a class="dropdown-item" v-for="(link,k) in room.RoomLinks" :href="link.Href">
+                                                    <i :class="link.Icon"></i> {{ link.Name }}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -52,17 +52,37 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
         data() {
             return {
-                search: ""
+                search: "",
+                categories: [],
+            }
+        },
+        watch: {
+            search: {
+                handler() {
+                    this.getDataFromApi()
+                }
             }
         },
         methods: {
-            //
+            getData(response) {
+                let items = response.data;
+
+                this.categories = items.data
+                console.log(items)
+            },
+            getDataFromApi() {
+                let search = this.search
+
+                axios.post('http://localhost.com/room/post/getRoomList', { search }).then(this.getData).catch(e => { })
+            },
         },
         mounted() {
-
+            this.getDataFromApi()
         }
     }
 </script>

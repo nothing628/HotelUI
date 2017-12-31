@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel.Data.Table;
+using UIHotel.ViewModel;
 
 namespace UIHotel.App.Controller
 {
@@ -253,13 +254,65 @@ namespace UIHotel.App.Controller
             }
         }
         #endregion
+        #region RoomList
+        public IResourceHandler getRoomList()
+        {
+            try
+            {
+                var search = jToken.Value<string>("search");
+                var categories = GetCategoryList();
+                var status = GetStatusList();
+                var rooms = (from a in Model.Rooms
+                             where (search == "") ? true : a.RoomNumber.StartsWith(search)
+                             select a).ToList();
+
+                var result = (from a in rooms
+                             join b in categories on a.IdCategory equals b.Id into c
+                             from d in c
+                             join e in status on a.Status equals e.Id into f
+                             from g in f
+                             select new RoomModel()
+                             {
+                                 Id = a.Id,
+                                 RoomFloor = a.RoomFloor,
+                                 RoomNumber = a.RoomNumber,
+                                 RoomCategory = d.Category,
+                                 StatusID = g.Id,
+                                 Status = g.Status,
+                                 StatusColor = g.StatusColor,
+                             }).ToList();
+
+                var grp = (from a in result
+                           group a by a.RoomCategory into b
+                           select new
+                           {
+                               Category = b.Key,
+                               Rooms = b.ToList()
+                           }).ToList();
+
+                return Json(new { data = grp, success = true, message = "" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.ToString() });
+            }
+        }
+        #endregion
 
         public IResourceHandler getCategory()
         {
-            var tmpData = (from a in Model.RoomCategory
-                           select a).ToList();
+            return Json(GetCategoryList());
+        }
 
-            return Json(tmpData);
+        private List<RoomCategory> GetCategoryList()
+        {
+            return (from a in Model.RoomCategory
+                    select a).ToList();
+        }
+
+        private List<RoomStatus> GetStatusList()
+        {
+            return (from a in Model.RoomStatus
+                    select a).ToList();
         }
     }
 }
