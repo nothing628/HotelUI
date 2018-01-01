@@ -8,20 +8,19 @@ using System.Threading.Tasks;
 
 namespace UIHotel.Data.Table
 {
-    [Table("room_price")]
-    public class RoomPrice
+    [Table("daycycle")]
+    public class DayCycle
     {
         [Key]
         [Column("id", Order = 0)]
         public long Id { get; set; }
 
-        [Column("id_category", Order = 1)]
-        public long IdCategory { get; set; }
-
-        [Column("id_effect", Order = 2)]
+        [Column("id_effect", Order = 1)]
+        [Required]
         public int IdEffect { get; set; }
 
-        [Column("price", Order = 3)]
-        public decimal Price { get; set; }
+        [Required]
+        [Column("date_at", Order = 2, TypeName = "Date")]
+        public DateTime DateAt { get; set; }
     }
 }

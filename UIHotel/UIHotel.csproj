@@ -164,12 +164,14 @@
     <Compile Include="App\View\ViewNotFoundException.cs" />
     <Compile Include="App\View\ViewTemplateManager.cs" />
     <Compile Include="Data\Migrations\CreatePriceTable.cs" />
+    <Compile Include="Data\Seeds\RoomPriceSeeder.cs" />
     <Compile Include="Data\Table\BookingDetail.cs" />
     <Compile Include="Data\Table\BookingType.cs" />
     <Compile Include="Data\Table\Booking.cs" />
     <Compile Include="Data\Table\Checkin.cs" />
     <Compile Include="Data\DataContext.cs" />
-    <Compile Include="Data\Table\Daylist.cs" />
+    <Compile Include="Data\Table\DayCycle.cs" />
+    <Compile Include="Data\Table\DayEffect.cs" />
     <Compile Include="Data\Table\Guest.cs" />
     <Compile Include="Data\Table\Invoice.cs" />
     <Compile Include="Data\Table\InvoiceDetail.cs" />

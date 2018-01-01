@@ -19,10 +19,13 @@ namespace UIHotel.Data
         public DbSet<BookingDetail> BookingDetails { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Checkin> CheckIn { get; set; }
+        public DbSet<DayCycle> DayCycles { get; set; }
+        public DbSet<DayEffect> DayEffect { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<RoomCategory> RoomCategory { get; set; }
+        public DbSet<RoomPrice> RoomPrice { get; set; }
         public DbSet<RoomStatus> RoomStatus { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }

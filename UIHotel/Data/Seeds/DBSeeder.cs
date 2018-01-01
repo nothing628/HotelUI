@@ -14,14 +14,21 @@ namespace UIHotel.Data.Seeds
 
         public static void Seed()
         {
-            using (MySqlConnection connection = new MySqlConnection(Properties.Settings.Default.MyDB))
-            using (DataContext context = new DataContext(connection, false))
+            using (var connection = new MySqlConnection(Properties.Settings.Default.MyDB))
+            using (var context = new DataContext(connection, false))
             {
-                new RoomSeeder().Run(context);
-                new RoomStatusSeeder().Run(context);
-                new InvoiceSeeder().Run(context);
+                try
+                {
+                    new RoomSeeder().Run(context);
+                    new RoomStatusSeeder().Run(context);
+                    new InvoiceSeeder().Run(context);
+                    new RoomPriceSeeder().Run(context);
 
-                context.SaveChanges();
+                    context.SaveChanges();
+                } catch
+                {
+                    //
+                }
             }
         }
     }

@@ -21,7 +21,8 @@ namespace UIHotel.Data.Migrations
         {
             Create.Table("dayeffect")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
-                .WithColumn("effect").AsString(50)
+                .WithColumn("effect").AsString(50).NotNullable()
+                .WithColumn("effect_color").AsString(6).NotNullable()
                 .WithColumn("can_delete").AsBoolean().WithDefaultValue(true);
 
             Create.Table("daycycle")
