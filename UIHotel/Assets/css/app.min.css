@@ -2833,7 +2833,6 @@ input[type=submit].btn-block {
     border: 1px solid transparent;
     padding: .6rem 1rem;
     font-size: 1rem;
-    border-radius: 2px;
     transition: all .2s ease-in-out
 }
 
@@ -9000,11 +8999,6 @@ progress::-webkit-progress-bar {
     color: #333;
     margin-bottom: .6rem;
     font-weight: 400
-}
-
-.table th,
-label {
-    font-weight: 500
 }
 
 .card--fullscreen {

@@ -3,6 +3,10 @@
     background-color: #3eb0b9;
 }
 
+.card-block {
+    padding: 0rem 2rem;
+}
+
 #app {
     text-align: start;
 }
