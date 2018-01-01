@@ -14,25 +14,4 @@
 
 @Include("Room.ModalMulti")
 @section scripts {
-<script>
-    $(document).ready(() => {
-        $('#harga-label').hide();
-        $('#online-label').hide();
-        $('#online-field').hide();
-
-        $('#select-data').on('change', (evt) => {
-            var val = $('#select-data').val();
-
-            if (val > 2) {
-                $('#harga-label').show();
-                $('#online-label').show();
-                $('#online-field').show();
-            } else {
-                $('#harga-label').hide();
-                $('#online-label').hide();
-                $('#online-field').hide();
-            }
-        })
-    })
-</script>
 }

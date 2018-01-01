@@ -8,6 +8,7 @@ import Booking from './pages/booking/Booking'
 import Checkin from './pages/checkin/Checkin'
 import Checkout from './pages/checkin/Checkout'
 import RoomCategory from './pages/room/Category'
+import RoomPrice from './pages/room/Price'
 import RoomList from './pages/room/List'
 import RoomMaintain from './pages/settings/Room'
 
@@ -18,6 +19,7 @@ Vue.component('checkin', Checkin)
 Vue.component('checkout', Checkout)
 Vue.component('room-category', RoomCategory)
 Vue.component('room-list', RoomList)
+Vue.component('room-price', RoomPrice)
 Vue.component("setting-room", RoomMaintain)
 
 /* eslint-disable no-new */

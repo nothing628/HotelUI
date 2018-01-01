@@ -163,6 +163,7 @@
     <Compile Include="App\View\ViewManager.cs" />
     <Compile Include="App\View\ViewNotFoundException.cs" />
     <Compile Include="App\View\ViewTemplateManager.cs" />
+    <Compile Include="Data\Migrations\CreatePriceTable.cs" />
     <Compile Include="Data\Table\BookingDetail.cs" />
     <Compile Include="Data\Table\BookingType.cs" />
     <Compile Include="Data\Table\Booking.cs" />
@@ -582,6 +583,7 @@
     <None Include="Vue\src\pages\checkin\Checkout.vue" />
     <None Include="Vue\src\pages\room\Category.vue" />
     <None Include="Vue\src\pages\room\List.vue" />
+    <None Include="Vue\src\pages\room\Price.vue" />
     <None Include="Vue\src\pages\settings\Room.vue" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
