@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const env = config.build.env;
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -26,6 +26,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].js')
   },
   plugins: [
+      new HardSourceWebpackPlugin(),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
