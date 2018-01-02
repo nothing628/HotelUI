@@ -7,7 +7,7 @@
                         <v-icon>chevron_left</v-icon>
                     </v-btn>
                     <div class="picker--date__header-selector-date">
-                        <strong class="green--text text--lighten-1">January 2018</strong>
+                        <strong class="green--text text--lighten-1">{{ displayMonth }}</strong>
                     </div>
                     <v-btn flat icon @click="nextMonth">
                         <v-icon>chevron_right</v-icon>
@@ -24,9 +24,7 @@
                     <tbody>
                         <tr v-for="i in getRows()">
                             <td v-for="j in 7">
-                                <button v-if="getValid(i, j)" type="button" :class="getClass(i, j)">
-                                    <span class="btn__content">{{ getDateVal(i, j) }}</span>
-                                </button>
+                                <v-btn v-if="getValid(i, j)" :color="getClass(i, j)" icon>{{ getDateVal(i, j) }}</v-btn>
                             </td>
                         </tr>
                         <tr>
@@ -55,14 +53,27 @@
             },
             currDat() {
                 return new Date(this.currYear, this.currMonth)
+            },
+            displayMonth() {
+                var momen = moment(this.currDat)
+
+                return momen.format("MMMM YYYY")
             }
         },
         methods: {
             nextMonth() {
-                //
+                var momen = moment(this.currDat)
+                var res = momen.add(1, 'M')
+                
+                this.currYear = res.year()
+                this.currMonth = res.month()
             },
             prevMonth() {
-                //
+                var momen = moment(this.currDat)
+                var res = momen.subtract(1, 'M')
+
+                this.currYear = res.year()
+                this.currMonth = res.month()
             },
             getRows() {
                 var momen = moment(this.currDat)
@@ -96,19 +107,17 @@
                 return date > 0 && date <= endDate 
             },
             getClass(r, c) {
-                var base = ['btn', 'btn--raised', 'btn--icon', 'waves-effect']
-
                 if (this.getValid(r, c)) {
                     var res = this.getDateVal(r, c)
                     var currDate = moment(this.today)
                     var selDate = moment(this.currDat).date(res)
 
                     if (currDate.isSame(selDate, 'day')) {
-                        base = base.concat(['btn--active', 'green', 'lighten-1'])
+                        return 'btn--active green lighten-1'
                     }
                 }
 
-                return base
+                return ''
             }
         },
         mounted() {
