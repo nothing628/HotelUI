@@ -3,15 +3,15 @@
         <div class="picker__body">
             <div class="picker--date__header">
                 <div class="picker--date__header-selector">
-                    <button type="button" class="btn btn--icon waves-effect" data-ripple="true">
-                        <div class="btn__content"><i aria-hidden="true" class="material-icons icon">chevron_left</i></div>
-                    </button>
+                    <v-btn flat icon @click="prevMonth">
+                        <v-icon>chevron_left</v-icon>
+                    </v-btn>
                     <div class="picker--date__header-selector-date">
                         <strong class="green--text text--lighten-1">January 2018</strong>
                     </div>
-                    <button type="button" class="btn btn--icon waves-effect" data-ripple="true">
-                        <div class="btn__content"><i aria-hidden="true" class="material-icons icon">chevron_right</i></div>
-                    </button>
+                    <v-btn flat icon @click="nextMonth">
+                        <v-icon>chevron_right</v-icon>
+                    </v-btn>
                 </div>
             </div>
             <div class="picker--date__table">
@@ -45,11 +45,25 @@
         data() {
             return {
                 weekday: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-                currDat: null
+                currMonth: 0,
+                currYear: 0,
             }
         },
-        computed: { },
+        computed: {
+            today() {
+                return new Date()
+            },
+            currDat() {
+                return new Date(this.currYear, this.currMonth)
+            }
+        },
         methods: {
+            nextMonth() {
+                //
+            },
+            prevMonth() {
+                //
+            },
             getRows() {
                 var momen = moment(this.currDat)
                 var start = momen.startOf('M')
@@ -57,7 +71,7 @@
                 var offset = start.day()
                 var enddate = end.date() + offset
                 var ret = Math.ceil(enddate / 7)
-                console.log9
+
                 return ret == 0 ? 1 : ret
             },
             getOffset(date) {
@@ -86,10 +100,10 @@
 
                 if (this.getValid(r, c)) {
                     var res = this.getDateVal(r, c)
-                    var currDate = moment(this.currDat)
-                    var selDate = moment(this.currDat).set('date', res)
+                    var currDate = moment(this.today)
+                    var selDate = moment(this.currDat).date(res)
 
-                    if (currDate.isSame(selDate)) {
+                    if (currDate.isSame(selDate, 'day')) {
                         base = base.concat(['btn--active', 'green', 'lighten-1'])
                     }
                 }
@@ -98,7 +112,10 @@
             }
         },
         mounted() {
-            this.currDat = new Date()
+            var today = moment()
+
+            this.currMonth = today.month()
+            this.currYear = today.year()
         }
     }
 </script>
