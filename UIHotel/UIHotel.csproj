@@ -558,6 +558,18 @@
     <None Include="View\Setting\Calendar.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Vue\build\build.js" />
+    <None Include="Vue\build\check-versions.js" />
+    <None Include="Vue\build\dev-client.js" />
+    <None Include="Vue\build\dev-server.js" />
+    <None Include="Vue\build\utils.js" />
+    <None Include="Vue\build\vue-loader.conf.js" />
+    <None Include="Vue\build\webpack.base.conf.js" />
+    <None Include="Vue\build\webpack.dev.conf.js" />
+    <None Include="Vue\build\webpack.prod.conf.js" />
+    <None Include="Vue\config\dev.env.js" />
+    <None Include="Vue\config\index.js" />
+    <None Include="Vue\config\prod.env.js" />
     <Content Include="Vue\dist\static\css\app.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
