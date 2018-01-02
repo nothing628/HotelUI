@@ -7,7 +7,7 @@
                         <h2 class="card-title mb-0">Calendar</h2>
                     </v-card-title>
                     <v-card-title>
-                        <v-date-picker color="green lighten-1"></v-date-picker>
+                        <v-date-control></v-date-control>
                     </v-card-title>          
                 </v-card>
             </v-flex>
@@ -47,7 +47,7 @@
                 tableData: {
                     search: '',
                     totalItems: 0,
-                    loading: true,
+                    loading: false,
                     pagination: {},
                     headers: [
                         { text: '', sortable: false },

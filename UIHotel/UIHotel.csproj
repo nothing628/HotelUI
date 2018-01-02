@@ -395,6 +395,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Vue\src\App.vue" />
+    <None Include="Vue\src\components\date\DatePicker.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
   </ItemGroup>
   <ItemGroup>
