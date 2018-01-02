@@ -9036,11 +9036,6 @@ progress::-webkit-progress-bar {
     cursor: pointer
 }
 
-.btn:not(.btn-secondary):not([class*=btn-outline-]):not(.btn-link) {
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .12);
-    border: 0
-}
-
 .btn--action,
 .btn--icon {
     padding: 0;

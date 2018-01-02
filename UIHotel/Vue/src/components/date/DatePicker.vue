@@ -24,7 +24,9 @@
                     <tbody>
                         <tr v-for="i in getRows()">
                             <td v-for="j in 7">
-                                <v-btn v-if="getValid(i, j)" :color="getClass(i, j)" icon>{{ getDateVal(i, j) }}</v-btn>
+                                <button v-if="getValid(i, j)" type="button" :class="getClass(i, j)">
+                                    <span class="btn__content">{{ getDateVal(i, j) }}</span>
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -107,17 +109,20 @@
                 return date > 0 && date <= endDate 
             },
             getClass(r, c) {
+                var base = ['btn', 'btn--raised', 'btn--icon', 'waves-effect']
+                var outline = ['btn btn--floating btn--outline btn--depressed indigo--text']
+
                 if (this.getValid(r, c)) {
                     var res = this.getDateVal(r, c)
                     var currDate = moment(this.today)
                     var selDate = moment(this.currDat).date(res)
 
                     if (currDate.isSame(selDate, 'day')) {
-                        return 'btn--active green lighten-1'
+                        base = base.concat(['btn--active', 'green', 'lighten-1'])
                     }
                 }
 
-                return ''
+                return base
             }
         },
         mounted() {
