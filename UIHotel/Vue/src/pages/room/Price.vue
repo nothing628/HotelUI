@@ -1,42 +1,43 @@
 <template>
     <v-app id="inspire">
-        <v-layout row>
-            <v-flex md4>
-                <v-card>
-                    <v-card-title>
-                        <h2 class="card-title mb-0">Calendar</h2>
-                    </v-card-title>
-                    <v-card-title>
-                        <v-date-control @dateclick="dateClicked" :items="items" :colors="colors"></v-date-control>
-                    </v-card-title>          
-                </v-card>
-            </v-flex>
-            <v-flex md8>
-                <v-card>
-                    <v-card-title>
-                        <h2 class="card-title mb-0">Price List</h2>
-                    </v-card-title>
-                    <v-card-title>
-                        <v-data-table v-bind:headers="tableData.headers"
-                                      v-bind:items="tableData.items"
-                                      v-bind:search="tableData.search"
-                                      v-bind:pagination.sync="tableData.pagination"
-                                      v-bind:total-items="tableData.totalItems"
-                                      v-bind:loading="tableData.loading"
-                                      class="elevation-1">
-                            <template slot="items" slot-scope="props">
-                                <td>12</td>
-                                <td class="text-xs-right">12000</td>
-                            </template>
-                            <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-                                From {{ pageStart }} to {{ pageStop }}
-                            </template>
-                        </v-data-table>
-                    </v-card-title>
-                </v-card>
-            </v-flex>
-        </v-layout>
-
+        <v-container fluid grid-list-md>
+            <v-layout row>
+                <v-flex md4>
+                    <v-card>
+                        <v-card-title>
+                            <h2 class="card-title mb-0">Calendar</h2>
+                        </v-card-title>
+                        <v-card-title>
+                            <v-date-control @dateclick="dateClicked" :items="items" :colors="colors"></v-date-control>
+                        </v-card-title>
+                    </v-card>
+                </v-flex>
+                <v-flex md8>
+                    <v-card>
+                        <v-card-title>
+                            <h2 class="card-title mb-0">Price List</h2>
+                        </v-card-title>
+                        <v-card-title>
+                            <v-data-table v-bind:headers="tableData.headers"
+                                          v-bind:items="tableData.items"
+                                          v-bind:search="tableData.search"
+                                          v-bind:pagination.sync="tableData.pagination"
+                                          v-bind:total-items="tableData.totalItems"
+                                          v-bind:loading="tableData.loading"
+                                          class="elevation-1">
+                                <template slot="items" slot-scope="props">
+                                    <td>12</td>
+                                    <td class="text-xs-right">12000</td>
+                                </template>
+                                <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                                    From {{ pageStart }} to {{ pageStop }}
+                                </template>
+                            </v-data-table>
+                        </v-card-title>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
         <v-dialog v-model="changeDialog" max-width="500px">
             <v-card>
                 <v-card-title>Change Date Type </v-card-title>
@@ -58,7 +59,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
         <v-snackbar :timeout="1000"
                     :top="true"
                     :color="snackbar.color"

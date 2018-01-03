@@ -794,12 +794,14 @@ pre code {
 }
 
 .container,
-.container-fluid {
+.container-fluid,
+.container.fluid {
     margin-left: auto;
     margin-right: auto;
     padding-right: 15px;
     padding-left: 15px;
-    position: relative
+    position: relative;
+    width: 100%;
 }
 
 .pre-scrollable {
@@ -814,7 +816,8 @@ pre code {
         width: 540px;
         max-width: 100%
     }
-    .container-fluid {
+    .container-fluid,
+    .container.fluid {
         padding-right: 15px;
         padding-left: 15px
     }
