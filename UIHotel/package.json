@@ -10,6 +10,8 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
+    "browser-sync": "^2.23.2",
+    "browser-sync-webpack-plugin": "^1.2.0",
     "chalk": "^2.3.0",
     "connect-history-api-fallback": "^1.5.0",
     "copy-webpack-plugin": "^4.3.0",
@@ -40,6 +42,7 @@
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-middleware": "^2.0.3",
+    "webpack-dev-server": "^2.9.7",
     "webpack-hot-middleware": "^2.21.0",
     "webpack-merge": "^4.1.1"
   },
@@ -61,7 +64,8 @@
     "dev": "node Vue/build/dev-server.js",
     "start": "npm run dev",
     "build": "node Vue/build/build.js",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "start:dev": "webpack-dev-server --config Vue/build/webpack.config.js"
   },
   "engines": {
     "node": ">= 4.0.0",

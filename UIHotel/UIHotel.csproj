@@ -571,6 +571,7 @@
     <None Include="Vue\config\dev.env.js" />
     <None Include="Vue\config\index.js" />
     <None Include="Vue\config\prod.env.js" />
+    <Content Include="Vue\build\webpack.config.js" />
     <Content Include="Vue\dist\static\css\app.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
