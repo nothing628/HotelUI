@@ -18,7 +18,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th v-for="(d,idx) in weekday" v-key="idx">{{ d }}</th>
+                            <th v-for="(d,idx) in weekday" :key="idx">{{ d }}</th>
                         </tr>
                     </thead>
                     <tbody>
