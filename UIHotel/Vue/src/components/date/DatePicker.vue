@@ -149,7 +149,7 @@
                     var item = this.items[date]
 
                     if (item in this.colors) {
-                        var color = this.colors[item]
+                        var color = '#' + this.colors[item]
 
                         return {'border-color' : color, 'color' : color}
                     }

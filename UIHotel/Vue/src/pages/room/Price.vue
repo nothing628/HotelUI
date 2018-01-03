@@ -56,23 +56,26 @@
                     ],
                     items: [{ day: 'A' }, { day: 'B' }]
                 },
-                colors: {
-                    WEEKEND: '#FF9800',
-                    WEEKDAY: '#00F200',
-                    HOLIDAY: '#0098FF',
-                },
-                items: {
-                    '2018-01-11': 'WEEKEND',
-                    '2018-01-22': 'WEEKDAY',
-                    '2018-01-03': 'HOLIDAY',
-                    '2018-01-15': 'HOLIDAY'
-                }
+                colors: {},
+                items: {}
             }
         },
         methods: {
             dateClicked(str) {
                 console.log(str)
+            },
+            getColorsData(response) {
+                var data = response.data
+
+                this.colors = data.colors
+                this.items = data.items
+            },
+            getColorsApi() {
+                axios.post('http://localhost.com/room/post/getDayEffect').then(this.getColorsData).catch(e => { })
             }
+        },
+        mounted() {
+            this.getColorsApi()
         }
     }
 </script>

@@ -297,6 +297,23 @@ namespace UIHotel.App.Controller
             }
         }
         #endregion
+        #region Day Maintain
+        public IResourceHandler getDayEffect()
+        {
+            var res = GetDayEffectList();
+            var days = (from a in Model.DayCycles
+                        select a).ToList();
+            var day = (from a in days
+                       join b in res on a.IdEffect equals b.Id into c
+                       from d in c
+                       select new { Date = a.DateAt, Effect = d.Effect })
+                       .ToList()
+                       .ToDictionary(x => x.Date.ToString("yyyy-MM-dd"), x => x.Effect);
+            var mutate = res.ToDictionary(x => x.Effect, x => x.EffectColor);
+
+            return Json(new { colors = mutate, items = day });
+        }
+        #endregion
 
         public IResourceHandler getCategory()
         {
@@ -312,6 +329,12 @@ namespace UIHotel.App.Controller
         private List<RoomStatus> GetStatusList()
         {
             return (from a in Model.RoomStatus
+                    select a).ToList();
+        }
+
+        private List<DayEffect> GetDayEffectList()
+        {
+            return (from a in Model.DayEffect
                     select a).ToList();
         }
     }
