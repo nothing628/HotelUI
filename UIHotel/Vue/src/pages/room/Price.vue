@@ -36,6 +36,35 @@
                 </v-card>
             </v-flex>
         </v-layout>
+
+        <v-dialog v-model="changeDialog" max-width="500px">
+            <v-card>
+                <v-card-title>Change Date Type </v-card-title>
+                <v-card-text>
+                    <v-form>
+                        <v-text-field label="Date"
+                                      v-model="dateForm.date"
+                                      readonly></v-text-field>
+                        <v-select v-bind:items="typeList"
+                                  v-model="dateForm.type"
+                                  label="Date Type"
+                                  item-value="text"
+                                  item-text="text"></v-select>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="primary" @click.stop="store">Submit</v-btn>
+                    <v-btn color="primary" flat @click.stop="changeDialog=false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-snackbar :timeout="1000"
+                    :top="true"
+                    :color="snackbar.color"
+                    v-model="snackbar.show">
+            {{ snackbar.text }}
+        </v-snackbar>
     </v-app>
 </template>
 <script>
@@ -44,6 +73,11 @@
     export default {
         data() {
             return {
+                changeDialog: false,
+                dateForm: {
+                    type: null,
+                    date: null,
+                },
                 tableData: {
                     search: '',
                     totalItems: 0,
@@ -57,12 +91,29 @@
                     items: [{ day: 'A' }, { day: 'B' }]
                 },
                 colors: {},
-                items: {}
+                items: {},
+                snackbar: {
+                    color: 'success',
+                    text: '',
+                    show: false,
+                }
+            }
+        },
+        computed: {
+            typeList() {
+                var keys = Object.keys(this.colors)
+                var ret = keys.map(x => {
+                    return { text: x }
+                })
+
+                return ret
             }
         },
         methods: {
             dateClicked(str) {
-                console.log(str)
+                this.dateForm.date = str
+                this.dateForm.type = this.items[str]
+                this.changeDialog = true
             },
             getColorsData(response) {
                 var data = response.data
@@ -72,6 +123,24 @@
             },
             getColorsApi() {
                 axios.post('http://localhost.com/room/post/getDayEffect').then(this.getColorsData).catch(e => { })
+            },
+            store() {
+                axios.post('http://localhost.com/room/post/setDayEffect', this.dateForm).then(this.onSuccess).catch(e => { })
+
+                this.changeDialog = false
+            },
+            onSuccess(response) {
+                var data = response.data
+
+                if (data.success) {
+                    this.snackbar.color = 'success'
+                } else {
+                    this.snackbar.color = 'error'
+                }
+
+                this.snackbar.text = data.message
+                this.snackbar.show = true
+                this.getColorsApi()
             }
         },
         mounted() {

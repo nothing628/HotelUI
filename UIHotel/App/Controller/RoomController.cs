@@ -5,6 +5,7 @@ using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -312,6 +313,32 @@ namespace UIHotel.App.Controller
             var mutate = res.ToDictionary(x => x.Effect, x => x.EffectColor);
 
             return Json(new { colors = mutate, items = day });
+        }
+        public IResourceHandler setDayEffect()
+        {
+            var date = jToken.Value<string>("date");
+            var effect = jToken.Value<string>("type");
+
+            try
+            {
+                var pdate = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.CurrentCulture);
+                var dayCycle = (from a in Model.DayCycles
+                                where a.DateAt == pdate
+                                select a).FirstOrDefault();
+                var effectID = (from a in Model.DayEffect
+                                where a.Effect == effect
+                                select a.Id).FirstOrDefault();
+
+                dayCycle.IdEffect = effectID;
+
+                Model.Entry(dayCycle).State = EntityState.Modified;
+                Model.SaveChanges();
+
+                return Json(new { success = true, message = "Success update data" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
         #endregion
 
