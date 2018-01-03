@@ -104,6 +104,7 @@ module.exports = {
     ],
     devServer: {
         open: true, // to open the local server in browser
+        port: 9871,
         contentBase: __dirname + '/src',
     }
 };
