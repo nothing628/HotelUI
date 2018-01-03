@@ -7,7 +7,7 @@
                         <h2 class="card-title mb-0">Calendar</h2>
                     </v-card-title>
                     <v-card-title>
-                        <v-date-control :items="items" :colors="colors"></v-date-control>
+                        <v-date-control @dateclick="dateClicked" :items="items" :colors="colors"></v-date-control>
                     </v-card-title>          
                 </v-card>
             </v-flex>
@@ -67,6 +67,11 @@
                     '2018-01-03': 'HOLIDAY',
                     '2018-01-15': 'HOLIDAY'
                 }
+            }
+        },
+        methods: {
+            dateClicked(str) {
+                console.log(str)
             }
         }
     }

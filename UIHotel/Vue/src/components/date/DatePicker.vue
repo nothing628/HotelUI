@@ -24,7 +24,7 @@
                     <tbody>
                         <tr v-for="i in getRows()">
                             <td v-for="j in 7">
-                                <button v-if="getValid(i, j)" :style="getStyle(i, j)" type="button" :class="getClass(i, j)">
+                                <button v-if="getValid(i, j)" :style="getStyle(i, j)" type="button" :class="getClass(i, j)" v-on:click="dateClicked(i, j)">
                                     <span class="btn__content">{{ getDateVal(i, j) }}</span>
                                 </button>
                             </td>
@@ -81,6 +81,11 @@
                 this.currYear = res.year()
                 this.currMonth = res.month()
             },
+            dateClicked(r, c) {
+                var selDate = this.getDate(r, c)
+
+                this.$emit('dateclick', selDate.format('YYYY-MM-DD'))
+            },
             getRows() {
                 var momen = moment(this.currDat)
                 var start = momen.startOf('M')
@@ -95,6 +100,10 @@
                 var momen = moment(date)
 
                 return momen.day()
+            },
+            getDate(row, col) {
+                var date = this.getDateVal(row, col)
+                return moment(this.currDat).date(date)
             },
             getDateVal(row, col) {
                 var momen = moment(this.currDat)
@@ -116,8 +125,7 @@
                 var base = ['btn', 'btn--raised', 'btn--icon', 'waves-effect']
 
                 if (this.getValid(r, c)) {
-                    var date = this.getDateVal(r, c)
-                    var selDate = moment(this.currDat).date(date)
+                    var selDate = this.getDate(r, c)
 
                     if (this.isMarked(selDate.format("YYYY-MM-DD"))) {
                         base = base.concat(['btn--outline', 'btn--depressed'])
@@ -128,8 +136,7 @@
             },
             getStyle(r, c) {
                 if (this.getValid(r, c)) {
-                    var date = this.getDateVal(r, c)
-                    var selDate = moment(this.currDat).date(date)
+                    var selDate = this.getDate(r, c)
                     var style = this.getColorStyle(selDate.format("YYYY-MM-DD"))
                     
                     return style
