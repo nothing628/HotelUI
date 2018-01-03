@@ -24,7 +24,7 @@
                     <tbody>
                         <tr v-for="i in getRows()">
                             <td v-for="j in 7">
-                                <button v-if="getValid(i, j)" type="button" :class="getClass(i, j)">
+                                <button v-if="getValid(i, j)" :style="getStyle(i, j)" type="button" :class="getClass(i, j)">
                                     <span class="btn__content">{{ getDateVal(i, j) }}</span>
                                 </button>
                             </td>
@@ -61,6 +61,10 @@
 
                 return momen.format("MMMM YYYY")
             }
+        },
+        props: {
+            colors: { type: Object, default() { return {} } },
+            items: { type: Object, default() { return {} } }
         },
         methods: {
             nextMonth() {
@@ -110,19 +114,44 @@
             },
             getClass(r, c) {
                 var base = ['btn', 'btn--raised', 'btn--icon', 'waves-effect']
-                var outline = ['btn btn--floating btn--outline btn--depressed indigo--text']
 
                 if (this.getValid(r, c)) {
-                    var res = this.getDateVal(r, c)
-                    var currDate = moment(this.today)
-                    var selDate = moment(this.currDat).date(res)
+                    var date = this.getDateVal(r, c)
+                    var selDate = moment(this.currDat).date(date)
 
-                    if (currDate.isSame(selDate, 'day')) {
-                        base = base.concat(['btn--active', 'green', 'lighten-1'])
+                    if (this.isMarked(selDate.format("YYYY-MM-DD"))) {
+                        base = base.concat(['btn--outline', 'btn--depressed'])
                     }
                 }
 
                 return base
+            },
+            getStyle(r, c) {
+                if (this.getValid(r, c)) {
+                    var date = this.getDateVal(r, c)
+                    var selDate = moment(this.currDat).date(date)
+                    var style = this.getColorStyle(selDate.format("YYYY-MM-DD"))
+                    
+                    return style
+                }
+
+                return {}
+            },
+            getColorStyle(date) {
+                if (date in this.items) {
+                    var item = this.items[date]
+
+                    if (item in this.colors) {
+                        var color = this.colors[item]
+
+                        return {'border-color' : color, 'color' : color}
+                    }
+                }
+
+                return {}
+            },
+            isMarked(date) {
+                return date in this.items
             }
         },
         mounted() {

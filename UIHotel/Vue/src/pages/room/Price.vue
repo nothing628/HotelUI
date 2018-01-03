@@ -7,7 +7,7 @@
                         <h2 class="card-title mb-0">Calendar</h2>
                     </v-card-title>
                     <v-card-title>
-                        <v-date-control></v-date-control>
+                        <v-date-control :items="items" :colors="colors"></v-date-control>
                     </v-card-title>          
                 </v-card>
             </v-flex>
@@ -55,6 +55,17 @@
                         { text: 'WEEKEND', sortable: false },
                     ],
                     items: [{ day: 'A' }, { day: 'B' }]
+                },
+                colors: {
+                    WEEKEND: '#FF9800',
+                    WEEKDAY: '#00F200',
+                    HOLIDAY: '#0098FF',
+                },
+                items: {
+                    '2018-01-11': 'WEEKEND',
+                    '2018-01-22': 'WEEKDAY',
+                    '2018-01-03': 'HOLIDAY',
+                    '2018-01-15': 'HOLIDAY'
                 }
             }
         }
