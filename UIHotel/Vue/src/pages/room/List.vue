@@ -14,12 +14,7 @@
                     <div slot="header">
                         {{ category.Category }}
                         <div class="right">
-                            <span class="badge badge-success">Vacant (1)</span>
-                            <span class="badge badge-danger">Occupied (1)</span>
-                            <span class="badge bg-orange">Booked (1)</span>
-                            <span class="badge bg-blue">Late (1)</span>
-                            <span class="badge purple lighten-1">Cleaning (1)</span>
-                            <span class="badge grey darken-1">Maintance (1)</span>
+                            <span v-for="(c,s) in category.StatusCount" :style="getColorStatus(s)" class="badge mr-1">{{ s }} ({{ c }})</span>
                         </div>
                     </div>
                     <v-card>
@@ -59,6 +54,7 @@
             return {
                 search: "",
                 categories: [],
+                status: [],
             }
         },
         watch: {
@@ -73,12 +69,19 @@
                 let items = response.data;
 
                 this.categories = items.data
-                console.log(items)
+                this.status = items.status
             },
             getDataFromApi() {
                 let search = this.search
 
                 axios.post('http://localhost.com/room/post/getRoomList', { search }).then(this.getData).catch(e => { })
+            },
+            getColorStatus(status) {
+                var stat = this.status.find(x => x.Status == status);
+
+                return {
+                    'background-color': '#' + stat.StatusColor
+                }
             },
         },
         mounted() {

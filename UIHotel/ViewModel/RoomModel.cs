@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.Data.Table;
 
 namespace UIHotel.ViewModel
 {
@@ -84,5 +86,31 @@ namespace UIHotel.ViewModel
         public long IdCategory { get; set; }
         public string Category { get; set; }
         public decimal Price { get; set; }
+    }
+
+    public class RoomContainer
+    {
+        public string Category { get; set; }
+        public List<RoomModel> Rooms { get; set; }
+        [JsonIgnore]
+        public List<RoomStatus> Status { get; set; }
+        public Dictionary<string, int> StatusCount
+        {
+            get
+            {
+                var list = new Dictionary<string, int>();
+
+                foreach (var status in Status)
+                {
+                    var room = (from a in Rooms
+                                where a.StatusID == status.Id
+                                select a).Count();
+
+                    list.Add(status.Status, room);
+                }
+
+                return list; 
+            }
+        }
     }
 }

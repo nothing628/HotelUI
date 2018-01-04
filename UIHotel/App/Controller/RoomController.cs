@@ -285,13 +285,14 @@ namespace UIHotel.App.Controller
 
                 var grp = (from a in result
                            group a by a.RoomCategory into b
-                           select new
+                           select new RoomContainer
                            {
                                Category = b.Key,
+                               Status = status,
                                Rooms = b.ToList()
                            }).ToList();
 
-                return Json(new { data = grp, success = true, message = "" });
+                return Json(new { data = grp, status = status, success = true, message = "" });
             } catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.ToString() });
