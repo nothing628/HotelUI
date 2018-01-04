@@ -8,6 +8,7 @@ import ComDate from './components/date/DatePicker'
 import Booking from './pages/booking/Booking'
 import Checkin from './pages/checkin/Checkin'
 import Checkout from './pages/checkin/Checkout'
+import RoomDetail from './pages/room/Detail'
 import RoomCategory from './pages/room/Category'
 import RoomPrice from './pages/room/Price'
 import RoomList from './pages/room/List'
@@ -19,6 +20,7 @@ Vue.component('v-date-control', ComDate)
 Vue.component('booking', Booking)
 Vue.component('checkin', Checkin)
 Vue.component('checkout', Checkout)
+Vue.component('room-detail', RoomDetail)
 Vue.component('room-category', RoomCategory)
 Vue.component('room-list', RoomList)
 Vue.component('room-price', RoomPrice)
