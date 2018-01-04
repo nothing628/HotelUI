@@ -340,6 +340,60 @@ namespace UIHotel.App.Controller
                 return Json(new { success = false, message = ex.Message });
             }
         }
+        public IResourceHandler getPrice()
+        {
+            try
+            {
+                var type = jToken.Value<string>("type");
+                var eff = (from effect in Model.DayEffect
+                           join b in Model.RoomPrice on effect.Id equals b.IdEffect into c
+                           from price in c
+                           join e in Model.RoomCategory on price.IdCategory equals e.Id into f
+                           from category in f
+                           where effect.Effect == type
+                           select new { effect = effect, price = price, category = category }).ToList();
+                var arrPrice = (from a in eff
+                                select new RoomPriceModel()
+                                {
+                                    Category = a.category.Category,
+                                    IdCategory = a.category.Id,
+                                    IdEffect = a.effect.Id,
+                                    Price = a.price.Price,
+                                }).ToList();
+
+                return Json(new { success = true, data = arrPrice });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        public IResourceHandler setPrice()
+        {
+            var idCategory = jToken.Value<long>("IdCategory");
+            var idEffect = jToken.Value<int>("IdEffect");
+            var price = jToken.Value<decimal>("Price");
+
+            try
+            {
+                var data = (from a in Model.RoomPrice
+                            where a.IdCategory == idCategory
+                            where a.IdEffect == idEffect
+                            select a).FirstOrDefault();
+
+                if (data != null)
+                {
+                    data.Price = price;
+
+                    Model.Entry(data).State = EntityState.Modified;
+                    Model.SaveChanges();
+                }
+
+                return Json(new { success = true, message = "Success update data" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
         #endregion
 
         public IResourceHandler getCategory()

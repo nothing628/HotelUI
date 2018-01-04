@@ -1,5 +1,5 @@
 <template>
-    <div class="picker picker--date card" data-ripple="false" style="height: auto;">
+    <div class="picker picker--date card" data-ripple="false" style="height: auto;box-shadow:none;">
         <div class="picker__body">
             <div class="picker--date__header">
                 <div class="picker--date__header-selector">

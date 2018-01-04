@@ -77,4 +77,12 @@ namespace UIHotel.ViewModel
         public string Href { get; set; }
         public string Name { get; set; }
     }
+
+    public class RoomPriceModel
+    {
+        public int IdEffect { get; set; }
+        public long IdCategory { get; set; }
+        public string Category { get; set; }
+        public decimal Price { get; set; }
+    }
 }

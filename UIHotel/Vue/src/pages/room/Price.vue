@@ -16,24 +16,44 @@
                     <v-card>
                         <v-card-title>
                             <h2 class="card-title mb-0">Price List</h2>
+                            <v-spacer></v-spacer>
+                            <v-select v-bind:items="typeList"
+                                      v-model="type"
+                                      label="Date Type"
+                                      item-value="text"
+                                      item-text="text"></v-select>
                         </v-card-title>
-                        <v-card-title>
-                            <v-data-table v-bind:headers="tableData.headers"
-                                          v-bind:items="tableData.items"
-                                          v-bind:search="tableData.search"
-                                          v-bind:pagination.sync="tableData.pagination"
-                                          v-bind:total-items="tableData.totalItems"
-                                          v-bind:loading="tableData.loading"
-                                          class="elevation-1">
-                                <template slot="items" slot-scope="props">
-                                    <td>12</td>
-                                    <td class="text-xs-right">12000</td>
-                                </template>
-                                <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-                                    From {{ pageStart }} to {{ pageStop }}
-                                </template>
-                            </v-data-table>
-                        </v-card-title>
+                        <v-data-table v-bind:headers="tableData.headers"
+                                      v-bind:items="tableData.items"
+                                      v-bind:search="tableData.search"
+                                      v-bind:pagination.sync="tableData.pagination"
+                                      v-bind:total-items="tableData.totalItems"
+                                      v-bind:loading="tableData.loading"
+                                      v-bind:hide-actions="true"
+                                      class="elevation-1">
+                            <template slot="items" slot-scope="props">
+                                <td>{{ props.item.Category }}</td>
+                                <td class="text-xs-right">
+                                    <v-edit-dialog @open="tmp = props.item.Price"
+                                                   @save="storeDate(props.item, tmp)"
+                                                   large
+                                                   lazy>
+                                        <div>Rp. {{ props.item.Price }}</div>
+                                        <div slot="input" class="mt-3 title">Change Price</div>
+                                        <v-text-field slot="input"
+                                                      label="Edit"
+                                                      v-model="tmp"
+                                                      prefix="Rp."
+                                                      single-line
+                                                      counter
+                                                      autofocus></v-text-field>
+                                    </v-edit-dialog>
+                                </td>
+                            </template>
+                            <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                                From {{ pageStart }} to {{ pageStop }}
+                            </template>
+                        </v-data-table>
                     </v-card>
                 </v-flex>
             </v-layout>
@@ -73,6 +93,8 @@
     export default {
         data() {
             return {
+                type: null,
+                tmp: null,
                 changeDialog: false,
                 dateForm: {
                     type: null,
@@ -82,13 +104,14 @@
                     search: '',
                     totalItems: 0,
                     loading: false,
-                    pagination: {},
+                    pagination: {
+                        rowsPerPage: -1
+                    },
                     headers: [
-                        { text: '', sortable: false },
-                        { text: 'WEEKDAY', sortable: false },
-                        { text: 'WEEKEND', sortable: false },
+                        { text: 'ROOM TYPE', sortable: false },
+                        { text: 'PRICE', sortable: false },
                     ],
-                    items: [{ day: 'A' }, { day: 'B' }]
+                    items: []
                 },
                 colors: {},
                 items: {},
@@ -96,6 +119,18 @@
                     color: 'success',
                     text: '',
                     show: false,
+                }
+            }
+        },
+        watch: {
+            type: {
+                handler() {
+                    this.getPriceApi()
+                }
+            },
+            'tableData.pagination': {
+                handler() {
+                    console.log(this.tableData)
                 }
             }
         },
@@ -121,13 +156,48 @@
                 this.colors = data.colors
                 this.items = data.items
             },
+            getPriceData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    //process
+                    this.tableData.items = []
+
+                    data.data.forEach(x => this.tableData.items.push(x))
+                } else {
+                    this.snackbar.color = 'error'
+                    this.snackbar.text = data.message
+                    this.snackbar.show = true
+                }
+
+                this.tableData.loading = false
+            },
             getColorsApi() {
                 axios.post('http://localhost.com/room/post/getDayEffect').then(this.getColorsData).catch(e => { })
+            },
+            getPriceApi() {
+                var type = this.type
+                axios.post('http://localhost.com/room/post/getPrice', { type: type }).then(this.getPriceData).catch(e => { })
             },
             store() {
                 axios.post('http://localhost.com/room/post/setDayEffect', this.dateForm).then(this.onSuccess).catch(e => { })
 
                 this.changeDialog = false
+            },
+            storeDate(item, newprice) {
+                var newObject = {
+                    IdCategory: item.IdCategory,
+                    IdEffect: item.IdEffect,
+                    Price: newprice
+                }
+
+                this.tableData.loading = true
+                axios.post('http://localhost.com/room/post/setPrice', newObject).then(this.storeResponse).catch(e => { })
+            },
+            storeResponse(response) {
+                var data = response.data
+                
+                this.getPriceApi()
             },
             onSuccess(response) {
                 var data = response.data
