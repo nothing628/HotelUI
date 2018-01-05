@@ -30,7 +30,16 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler detail()
         {
-            return View("Room.Detail");
+            var qry = Query["roomId"];
+            var roomId = Convert.ToInt64(qry);
+            var room = (from a in Model.Rooms
+                        where a.Id == roomId
+                        select a).FirstOrDefault();
+            
+            if (room != null)
+                return View("Room.Detail", room);
+            else
+                return Redirect("http://localhost.com/room/get/index");
         }
 
         public IResourceHandler price()
@@ -390,6 +399,43 @@ namespace UIHotel.App.Controller
                 }
 
                 return Json(new { success = true, message = "Success update data" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        #endregion
+        #region Room Detail
+        public IResourceHandler getRoomDetail()
+        {
+            try
+            {
+                var id = jToken.Value<long>("id");
+                var room = (from a in Model.Rooms
+                            join b in Model.RoomCategory on a.IdCategory equals b.Id into c
+                            from d in c
+                            join e in Model.RoomStatus on a.Status equals e.Id into f
+                            from g in f
+                            where a.Id == id
+                            select new { a = a, b = d, c = g }).FirstOrDefault();
+
+                if (room != null)
+                {
+                    var ret = new RoomModel()
+                    {
+                        Id = room.a.Id,
+                        RoomCategory = room.b.Category,
+                        RoomFloor = room.a.RoomFloor,
+                        RoomNumber = room.a.RoomNumber,
+                        Status = room.c.Status,
+                        StatusColor = room.c.StatusColor,
+                        StatusID = room.c.Id
+                    };
+
+                    return Json(new { success = true, data = ret });
+                }
+
+                return Json(new { success = false, message = "Room Not Found " });
             } catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });

@@ -23,6 +23,7 @@ namespace UIHotel.ViewModel
                     Icon = "zmdi zmdi-apps",
                     Href = string.Format("http://localhost.com/room/get/detail?roomId={0}", Id),
                     Name = "Detail",
+                    Color = "757575",
                 });
 
                 if (Status == "Vacant" || Status == "Booked")
@@ -32,6 +33,7 @@ namespace UIHotel.ViewModel
                         Icon = "zmdi zmdi-download",
                         Href =string.Format("http://localhost.com/home/get/checkin?roomId={0}", Id),
                         Name = "Checkin",
+                        Color = "66BB6A",
                     });
                 }
 
@@ -42,6 +44,7 @@ namespace UIHotel.ViewModel
                         Icon = "zmdi zmdi-upload",
                         Href = string.Format("http://localhost.com/home/get/checkout?roomId={0}", Id),
                         Name = "Checkout",
+                        Color = "EF5350",
                     });
                 }
 
@@ -52,6 +55,7 @@ namespace UIHotel.ViewModel
                         Icon = "zmdi zmdi-bookmark",
                         Href = string.Format("http://localhost.com/home/get/booking?roomId={0}", Id),
                         Name = "Booking",
+                        Color = "039BE5",
                     });
                 }
                 
@@ -62,6 +66,7 @@ namespace UIHotel.ViewModel
                         Icon = "zmdi zmdi-refresh-sync",
                         Href = string.Format("http://localhost.com/home/get/change?roomId={0}", Id),
                         Name = "Change Room",
+                        Color = "F9A825"
                     });
                 }
 
@@ -78,6 +83,7 @@ namespace UIHotel.ViewModel
         public string Icon { get; set; }
         public string Href { get; set; }
         public string Name { get; set; }
+        public string Color { get; set; }
     }
 
     public class RoomPriceModel
