@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -120,6 +121,15 @@ namespace UIHotel.App.Controller
             {
                 return ResourceHandler.FromString(ex.ToString());
             }
+        }
+
+        public IResourceHandler Redirect(string url)
+        {
+            var resource = new ResourceHandler();
+            resource.StatusCode = (int)HttpStatusCode.Redirect;
+            resource.Headers.Add("Location", url);
+
+            return resource;
         }
     }
 }

@@ -30,7 +30,25 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler detail()
         {
-            return View("Room.Detail");
+            var id = Query["roomId"];
+            var roomId = Convert.ToInt64(id);
+
+            try
+            {
+                var room = (from a in Model.Rooms
+                            where a.Id == roomId
+                            select a).FirstOrDefault();
+
+                if (room != null)
+                {
+                    return View("Room.Detail", room);
+                }
+
+                return Redirect("http://localhost.com/room/get/index");
+            } catch (Exception ex)
+            {
+                return Redirect("http://localhost.com/room/get/index");
+            }
         }
 
         public IResourceHandler price()
@@ -396,7 +414,13 @@ namespace UIHotel.App.Controller
             }
         }
         #endregion
-
+        #region Room Detail
+        public IResourceHandler getRoomDetail()
+        {
+            return Json(new { });
+        }
+        #endregion
+        
         public IResourceHandler getCategory()
         {
             return Json(GetCategoryList());
