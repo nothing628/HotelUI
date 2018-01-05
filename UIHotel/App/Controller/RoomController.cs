@@ -417,7 +417,40 @@ namespace UIHotel.App.Controller
         #region Room Detail
         public IResourceHandler getRoomDetail()
         {
-            return Json(new { });
+            var roomId = jToken.Value<string>("roomId");
+            var Id = Convert.ToInt64(roomId);
+
+            try
+            {
+                var room = (from a in Model.Rooms
+                            join b in Model.RoomCategory on a.IdCategory equals b.Id into c
+                            from d in c
+                            join e in Model.RoomStatus on a.Status equals e.Id into f
+                            from g in f
+                            where a.Id == Id
+                            select new { a = a, b = d, c = g }).FirstOrDefault();
+
+                if (room != null)
+                {
+                    var roomModel = new RoomModel()
+                    {
+                        Id = room.a.Id,
+                        RoomFloor = room.a.RoomFloor,
+                        RoomNumber = room.a.RoomNumber,
+                        RoomCategory = room.b.Category,
+                        StatusID = room.c.Id,
+                        Status = room.c.Status,
+                        StatusColor = room.c.StatusColor,
+                    };
+
+                    return Json(new { success = true, data = roomModel });
+                }
+
+                return Json(new { success = false, message = "Room Not Found" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
         #endregion
         
