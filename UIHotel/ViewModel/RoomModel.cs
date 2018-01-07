@@ -31,7 +31,7 @@ namespace UIHotel.ViewModel
                     ls.Add(new RoomLink()
                     {
                         Icon = "zmdi zmdi-download",
-                        Href =string.Format("http://localhost.com/home/get/checkin?roomId={0}", Id),
+                        Href =string.Format("http://localhost.com/checkin/get/index?roomId={0}", Id),
                         Name = "Checkin",
                         Color = "66BB6A",
                     });
@@ -42,7 +42,7 @@ namespace UIHotel.ViewModel
                     ls.Add(new RoomLink()
                     {
                         Icon = "zmdi zmdi-upload",
-                        Href = string.Format("http://localhost.com/home/get/checkout?roomId={0}", Id),
+                        Href = string.Format("http://localhost.com/checkin/get/checkout?roomId={0}", Id),
                         Name = "Checkout",
                         Color = "D32F2F",
                     });
@@ -53,7 +53,7 @@ namespace UIHotel.ViewModel
                     ls.Add(new RoomLink()
                     {
                         Icon = "zmdi zmdi-bookmark",
-                        Href = string.Format("http://localhost.com/home/get/booking?roomId={0}", Id),
+                        Href = string.Format("http://localhost.com/checkin/get/booking?roomId={0}", Id),
                         Name = "Booking",
                         Color = "039BE5",
                     });

@@ -25,36 +25,6 @@ namespace UIHotel.App.Controller
             return View("Login");
         }
 
-        public IResourceHandler booking()
-        {
-            return View("Checkin.Booking");
-        }
-
-        public IResourceHandler checkin()
-        {
-            return View("Checkin.Checkin");
-        }
-
-        public IResourceHandler checkout()
-        {
-            return View("Checkin.Checkout");
-        }
-
-        public IResourceHandler cancel()
-        {
-            return View("Booking.Cancel");
-        }
-
-        public IResourceHandler listBooking()
-        {
-            return View("Booking.List");
-        }
-
-        public IResourceHandler change()
-        {
-            return View("Checkin.RoomChange");
-        }
-
         public IResourceHandler test()
         {
             var query = Query["foo"];

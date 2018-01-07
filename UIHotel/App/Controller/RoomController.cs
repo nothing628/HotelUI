@@ -28,6 +28,11 @@ namespace UIHotel.App.Controller
             return View("Room.List");
         }
 
+        public IResourceHandler change()
+        {
+            return View("Room.Change");
+        }
+
         public IResourceHandler detail()
         {
             var id = Query["roomId"];

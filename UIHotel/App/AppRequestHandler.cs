@@ -16,7 +16,7 @@ namespace UIHotel.App
         private string DomainName;
         private RouterProvider _RouterProvider;
         private CefCustomScheme _Scheme;
-        public List<RouteModel> mapRoute = new List<RouteModel>();
+        public List<ResourceModel> mapRoute = new List<ResourceModel>();
         private string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
 
         public CefCustomScheme Scheme
@@ -60,7 +60,7 @@ namespace UIHotel.App
         {
             if (file.Exists)
             {
-                mapRoute.Add(new RouteModel()
+                mapRoute.Add(new ResourceModel()
                 {
                     RoutePath = url,
                     Filename = file.FullName,
@@ -113,7 +113,7 @@ namespace UIHotel.App
             return cleanUrl[0] == '/' ? cleanUrl.Substring(1, cleanUrl.Length - 1) : cleanUrl; 
         }
 
-        private RouteModel SearchRouteModel(string pathUri)
+        private ResourceModel SearchRouteModel(string pathUri)
         {
             var result = (from a in mapRoute
                           where pathUri.Equals(a.RoutePath, StringComparison.OrdinalIgnoreCase)
@@ -157,7 +157,7 @@ namespace UIHotel.App
         }
     }
 
-    public class RouteModel
+    public class ResourceModel
     {
         public string Filename { get; set; }
         public string RoutePath { get; set; }
