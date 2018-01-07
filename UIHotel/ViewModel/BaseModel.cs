@@ -16,9 +16,9 @@ namespace UIHotel.ViewModel
 
         public object GetObjectParam(string InstanceName, string Method, params object[] s)
         {
-            string typeName = "UIHotel.Model." + InstanceName;
+            string typeName = "UIHotel.ViewModel." + InstanceName;
             Type typeD = Type.GetType(typeName);
-            Type[] typeParams = new Type[s.Length];
+            var typeParams = new Type[s.Length];
 
             for (int i = 0; i < s.Length; i++)
                 typeParams[i] = s[i].GetType();
@@ -32,15 +32,13 @@ namespace UIHotel.ViewModel
 
             if (method == null)
                 return null;
-
-            Object retVal = method.Invoke(p, s);
-
-            return retVal;
+            
+            return method.Invoke(p, s);
         }
 
         public object GetObject(string InstanceName, string Method)
         {
-            string typeName = "UIHotel.Model." + InstanceName;
+            string typeName = "UIHotel.ViewModel." + InstanceName;
             Type typeD = Type.GetType(typeName);
 
             Object p = Activator.CreateInstance(typeD,
@@ -49,24 +47,8 @@ namespace UIHotel.ViewModel
                 BindingFlags.Instance |
                 BindingFlags.OptionalParamBinding, null, null, null);
             MethodInfo method = typeD.GetMethod(Method);
-            Object retVal = method.Invoke(p, null);
 
-            return retVal;
-        }
-
-        T CreateType<T>() where T : new()
-        {
-            return new T();
-        }
-
-        T GetInstance<T>()
-        {
-            return (T)Activator.CreateInstance(typeof(T));
-        }
-
-        T GetInstance<T>(params object[] args)
-        {
-            return (T)Activator.CreateInstance(typeof(T), args);
+            return method.Invoke(p, null);
         }
     }
 }

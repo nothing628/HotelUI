@@ -304,7 +304,7 @@
                 registration : {
                     valid: true,
                     book_no: "",
-                    deposit: 50000,
+                    deposit: 0,
                     arr_date: null,
                     dep_date: null,
                     adl_count: 1,
@@ -339,11 +339,15 @@
                 }
             }
         },
+        props: {
+            min_deposit: { type: Number, default: 50000 }
+        },
         watch: {
         },
         mounted() {
             var momen = moment()
 
+            this.deposit = this.min_deposit
             this.registration.arr_date = momen.format('YYYY-MM-DD')
             this.registration.dep_date = momen.add(1, 'd').format('YYYY-MM-DD')
         }
