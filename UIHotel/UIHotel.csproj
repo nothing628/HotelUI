@@ -148,6 +148,7 @@
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
+    <Compile Include="App\Controller\CheckinController.cs" />
     <Compile Include="App\Controller\GuestController.cs" />
     <Compile Include="App\Controller\HomeController.cs" />
     <Compile Include="App\Controller\MoneyController.cs" />
@@ -157,6 +158,8 @@
     <Compile Include="App\Provider\RouterProvider.cs" />
     <Compile Include="App\Provider\ServiceProvider.cs" />
     <Compile Include="App\Provider\ViewProvider.cs" />
+    <Compile Include="App\Router\RouteModel.cs" />
+    <Compile Include="App\Router\RouterControl.cs" />
     <Compile Include="App\View\Template\HtmlHelper.cs" />
     <Compile Include="App\View\Template\HtmlTemplateBase.cs" />
     <Compile Include="App\View\ViewCompiler.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="ViewModel\BaseModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CheckinModel.cs" />
     <Compile Include="ViewModel\RoomModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -268,6 +272,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Upload\.gitkeep">
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="View\Booking\List.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -396,6 +404,9 @@
     </None>
     <None Include="Vue\src\App.vue" />
     <None Include="Vue\src\components\date\DatePicker.vue" />
+    <None Include="Vue\src\components\dialog\BookDialog.vue" />
+    <None Include="Vue\src\components\dialog\GuestDialog.vue" />
+    <None Include="Vue\src\components\dialog\RoomDialog.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
   </ItemGroup>
   <ItemGroup>
@@ -553,7 +564,7 @@
     <Content Include="Assets\lib\js\select2.full.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="View\Checkin\RoomChange.cshtml">
+    <None Include="View\Room\Change.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Setting\Calendar.cshtml">
@@ -585,6 +596,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Vue\src\assets\logo.png" />
+    <Content Include="Vue\src\components\CountryList.js" />
     <Content Include="Vue\src\main.js" />
     <Content Include="Vue\src\router\index.js" />
     <Content Include="webpack.config.js" />

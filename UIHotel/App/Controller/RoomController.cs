@@ -28,18 +28,32 @@ namespace UIHotel.App.Controller
             return View("Room.List");
         }
 
+        public IResourceHandler change()
+        {
+            return View("Room.Change");
+        }
+
         public IResourceHandler detail()
         {
-            var qry = Query["roomId"];
-            var roomId = Convert.ToInt64(qry);
-            var room = (from a in Model.Rooms
-                        where a.Id == roomId
-                        select a).FirstOrDefault();
-            
-            if (room != null)
-                return View("Room.Detail", room);
-            else
+            var id = Query["roomId"];
+            var roomId = Convert.ToInt64(id);
+
+            try
+            {
+                var room = (from a in Model.Rooms
+                            where a.Id == roomId
+                            select a).FirstOrDefault();
+
+                if (room != null)
+                {
+                    return View("Room.Detail", room);
+                }
+
                 return Redirect("http://localhost.com/room/get/index");
+            } catch (Exception ex)
+            {
+                return Redirect("http://localhost.com/room/get/index");
+            }
         }
 
         public IResourceHandler price()
@@ -408,41 +422,43 @@ namespace UIHotel.App.Controller
         #region Room Detail
         public IResourceHandler getRoomDetail()
         {
+            var roomId = jToken.Value<string>("roomId");
+            var Id = Convert.ToInt64(roomId);
+
             try
             {
-                var id = jToken.Value<long>("id");
                 var room = (from a in Model.Rooms
                             join b in Model.RoomCategory on a.IdCategory equals b.Id into c
                             from d in c
                             join e in Model.RoomStatus on a.Status equals e.Id into f
                             from g in f
-                            where a.Id == id
+                            where a.Id == Id
                             select new { a = a, b = d, c = g }).FirstOrDefault();
 
                 if (room != null)
                 {
-                    var ret = new RoomModel()
+                    var roomModel = new RoomModel()
                     {
                         Id = room.a.Id,
-                        RoomCategory = room.b.Category,
                         RoomFloor = room.a.RoomFloor,
                         RoomNumber = room.a.RoomNumber,
+                        RoomCategory = room.b.Category,
+                        StatusID = room.c.Id,
                         Status = room.c.Status,
                         StatusColor = room.c.StatusColor,
-                        StatusID = room.c.Id
                     };
 
-                    return Json(new { success = true, data = ret });
+                    return Json(new { success = true, data = roomModel });
                 }
 
-                return Json(new { success = false, message = "Room Not Found " });
+                return Json(new { success = false, message = "Room Not Found" });
             } catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
         }
         #endregion
-
+        
         public IResourceHandler getCategory()
         {
             return Json(GetCategoryList());

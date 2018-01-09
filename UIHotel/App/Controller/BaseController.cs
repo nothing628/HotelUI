@@ -123,12 +123,13 @@ namespace UIHotel.App.Controller
             }
         }
 
-        public IResourceHandler Redirect(string newLocation)
+        public IResourceHandler Redirect(string url)
         {
-            var ret = new ResourceHandler();
-            ret.Headers.Add("Location", newLocation);
-            ret.StatusCode = (int)HttpStatusCode.Redirect;
-            return ret;
+            var resource = new ResourceHandler();
+            resource.StatusCode = (int)HttpStatusCode.Redirect;
+            resource.Headers.Add("Location", url);
+
+            return resource;
         }
     }
 }

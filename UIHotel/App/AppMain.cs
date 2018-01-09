@@ -18,8 +18,6 @@ namespace UIHotel.App
         private ChromiumWebBrowser browser;
         private Form mainForm;
         private AppRequestHandler RequestHandler;
-        private const string ViewPath = "View";
-        private const string AssetPath = "Assets";
         private const string Domain = "localhost.com";
         
         private List<ServiceProvider> listServiceProvider = new List<ServiceProvider>();
@@ -40,8 +38,9 @@ namespace UIHotel.App
         public bool IsShowDevTool { get; set; }
 
         public string BaseDir { get => AppDomain.CurrentDomain.BaseDirectory; }
-        public string ViewFullPath { get => Path.Combine(BaseDir, ViewPath); }
-        public string AssetsFullPath { get => Path.Combine(BaseDir, AssetPath); }
+        public string ViewPath { get => Path.Combine(BaseDir, "View"); }
+        public string AssetsPath { get => Path.Combine(BaseDir, "Assets"); }
+        public string UploadPath { get => Path.Combine(BaseDir, "Upload"); }
 
         public ServiceProvider this[string provide]
         {
@@ -103,9 +102,10 @@ namespace UIHotel.App
 
         private void ConfigureRoute()
         {
-            RequestHandler.RegisterPath(Path.Combine(BaseDir, @"Vue\dist\static"), "/");
-            RequestHandler.RegisterPath(AssetsFullPath, "/");
-            RequestHandler.RegisterPath(ViewFullPath, "/");
+            RequestHandler.RegisterPath(Path.Combine(BaseDir, @"Vue\dist\static"), "");
+            RequestHandler.RegisterPath(AssetsPath, "");
+            RequestHandler.RegisterPath(ViewPath, "");
+            RequestHandler.RegisterPath(UploadPath, "Upload/");
         }
 
         private void Browser_IsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs e)

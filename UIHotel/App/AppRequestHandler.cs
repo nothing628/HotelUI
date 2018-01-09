@@ -16,7 +16,7 @@ namespace UIHotel.App
         private string DomainName;
         private RouterProvider _RouterProvider;
         private CefCustomScheme _Scheme;
-        public List<RouteModel> mapRoute = new List<RouteModel>();
+        public List<ResourceModel> mapRoute = new List<ResourceModel>();
         private string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
 
         public CefCustomScheme Scheme
@@ -42,68 +42,11 @@ namespace UIHotel.App
 
         public void RegisterPath(string pathLocation, string urlPath)
         {
-            try
+            mapRoute.Add(new ResourceModel()
             {
-                var dirInfo = new DirectoryInfo(pathLocation);
-                var lstDir = dirInfo.GetDirectories();
-                var lstFile = dirInfo.GetFiles();
-
-                ScanDirectories(lstDir, urlPath);
-                ScanFiles(lstFile, urlPath);
-            } catch
-            {
-                throw;
-            }
-        }
-
-        public void RegisterRoute(string url, FileInfo file)
-        {
-            if (file.Exists)
-            {
-                mapRoute.Add(new RouteModel()
-                {
-                    RoutePath = url,
-                    Filename = file.FullName,
-                });
-            }
-        }
-
-        private void ScanDirectories(DirectoryInfo[] listDir, string urlPath)
-        {
-            foreach (var info in listDir)
-            {
-                var lstDir = info.GetDirectories();
-                var lstFile = info.GetFiles();
-
-                ScanDirectories(lstDir, CombineUrl(urlPath, info.Name));
-                ScanFiles(lstFile, CombineUrl(urlPath, info.Name));
-            }
-        }
-
-        private void ScanFiles(FileInfo[] listFile, string urlPath)
-        {
-            foreach (var info in listFile)
-            {
-                if (info.Exists)
-                    RegisterRoute(CombineUrl(urlPath, info.Name), info);
-            }
-        }
-
-        private string ConvertToPathUri(string localPath)
-        {
-            var cleanPath = localPath.Replace(BaseDir, "");
-
-            return cleanPath.Replace(Path.DirectorySeparatorChar, '/');
-        }
-
-        private string ConvertToPathLocal(string uriPath)
-        {
-            var convertSlash = uriPath.Replace('/', Path.DirectorySeparatorChar);
-
-            if (convertSlash.StartsWith(Path.DirectorySeparatorChar.ToString()))
-                convertSlash = convertSlash.Substring(1);
-            
-            return Path.Combine(BaseDir, convertSlash);
+                RoutePath = urlPath,
+                BasePath = pathLocation
+            });
         }
 
         private string CombineUrl(params string[] param)
@@ -113,13 +56,12 @@ namespace UIHotel.App
             return cleanUrl[0] == '/' ? cleanUrl.Substring(1, cleanUrl.Length - 1) : cleanUrl; 
         }
 
-        private RouteModel SearchRouteModel(string pathUri)
+        private ResourceModel SearchRouteModel(string pathUri)
         {
-            var result = (from a in mapRoute
-                          where pathUri.Equals(a.RoutePath, StringComparison.OrdinalIgnoreCase)
-                          select a).FirstOrDefault();
-
-            return result;
+            return (from a in mapRoute
+                    where a.IsMatch(pathUri)
+                    where a.IsExists(pathUri)
+                    select a).FirstOrDefault();
         }
 
         private string GetMimeType(string filename)
@@ -131,7 +73,8 @@ namespace UIHotel.App
         {
             var res = new ResourceHandler();
             var uri = new Uri(request.Url);
-            var model = SearchRouteModel(CombineUrl(uri.AbsolutePath));
+            var path = CombineUrl(uri.AbsolutePath);
+            var model = SearchRouteModel(path);
 
             if (_RouterProvider.HasMatch(request))
                 return _RouterProvider.GetResponse(request);
@@ -144,8 +87,8 @@ namespace UIHotel.App
                 return res;
             } else
             {
-                var stream = model.GetFilestream();
-                var mimeType = GetMimeType(model.Filename);
+                var stream = model.GetFilestream(path);
+                var mimeType = GetMimeType(model.ResolveFile(path));
 
                 res.StatusCode = (int)HttpStatusCode.OK;
                 res.Stream = stream;
@@ -157,21 +100,65 @@ namespace UIHotel.App
         }
     }
 
-    public class RouteModel
+    public class ResourceModel
     {
-        public string Filename { get; set; }
-        public string RoutePath { get; set; }
+        private string _RoutePath;
 
-        public FileStream GetFilestream()
+        public string BasePath { get; set; }
+        public string RoutePath
         {
-            var info = new FileInfo(Filename);
-
-            if (info.Exists)
+            get => _RoutePath;
+            set
             {
-                return new FileStream(info.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var ret = value;
+
+                if (value.EndsWith("/"))
+                    ret = ret.Substring(0, ret.Length - 1);
+
+                _RoutePath = ret;
+            }
+        }
+        private bool IsRoot { get => RoutePath == ""; }
+
+        public string ResolveFile(string url)
+        {
+            if (IsMatch(url))
+            {
+                var cleanPath = url;
+
+                if (!IsRoot)
+                    cleanPath = cleanPath.Replace(RoutePath, "").TrimStart('/');
+
+                var baseName = cleanPath.Replace('/', Path.DirectorySeparatorChar);
+                return Path.Combine(BasePath, baseName);
             }
 
+            return "";
+        }
+
+        public FileStream GetFilestream(string Url)
+        {
+            var filename = ResolveFile(Url);
+
+            if (filename != "" && File.Exists(filename))
+                return new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
             return null;
+        }
+
+        public bool IsMatch(string url)
+        {
+            if (IsRoot)
+                return true;
+
+            return url.StartsWith(RoutePath);
+        }
+
+        public bool IsExists(string url)
+        {
+            var file = ResolveFile(url);
+
+            return File.Exists(file);
         }
     }
 }
