@@ -593,6 +593,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Vue\src\assets\logo.png" />
+    <Content Include="Vue\src\components\CountryList.js" />
     <Content Include="Vue\src\main.js" />
     <Content Include="Vue\src\router\index.js" />
     <Content Include="webpack.config.js" />

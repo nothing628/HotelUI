@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.Data.Table;
 
 namespace UIHotel.App.Controller
 {
@@ -33,5 +34,17 @@ namespace UIHotel.App.Controller
         {
             return View("Booking.List");
         }
+
+        #region Process Checkin
+        public IResourceHandler postCheckin()
+        {
+            return Json(new { });
+        }
+
+        public Guest postGuest()
+        {
+            return new Guest();
+        }
+        #endregion
     }
 }

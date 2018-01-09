@@ -1,13 +1,13 @@
 <template>
     <v-app id="inspire">
-        <v-card>
+        <v-card class="mb-4">
             <v-card-title primary-title>
                 <div>
                     <h2 class="card-title mb-0">Registration Info</h2>
                 </div>
             </v-card-title>
             <div class="card-block">
-                <v-form v-model="registration.valid">
+                <v-form v-model="registration.valid"  ref="form_registration" lazy-validation>
                     <v-layout row>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Booking Number</v-subheader>
@@ -16,7 +16,7 @@
                             <v-text-field type="text" readonly disabled v-model="registration.book_no"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark small color="primary">
+                            <v-btn fab dark icon small color="primary">
                                 <v-icon dark>search</v-icon>
                             </v-btn>
                         </v-flex>
@@ -104,7 +104,7 @@
                 </div>
             </v-card-title>
             <div class="card-block">
-                <v-form v-model="room.valid">
+                <v-form v-model="room.valid" ref="form_room" lazy-validation>
                     <v-layout row>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Select Room</v-subheader>
@@ -113,7 +113,7 @@
                             <v-text-field type="text" readonly disabled v-model="room.room_number"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark small color="primary">
+                            <v-btn fab dark icon small color="primary">
                                 <v-icon dark>search</v-icon>
                             </v-btn>
                         </v-flex>
@@ -135,16 +135,20 @@
                 </div>
             </v-card-title>
             <div class="card-block">
-                <v-form v-model="guest.valid">
+                <v-form v-model="guest.valid" ref="form_guest" lazy-validation>
                     <v-layout row>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">ID Number*</v-subheader>
                         </v-flex>
                         <v-flex md6>
-                            <v-text-field type="text" v-model="guest.id_number"></v-text-field>
+                            <v-text-field type="text"
+                                          label="Enter ID Number"
+                                          single-line
+                                          :rules="rules.id_number"
+                                          v-model="guest.id_number"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark small color="primary">
+                            <v-btn fab dark icon small color="primary">
                                 <v-icon dark>search</v-icon>
                             </v-btn>
                         </v-flex>
@@ -154,7 +158,11 @@
                             <v-subheader class="text--lighten-1">Name*</v-subheader>
                         </v-flex>
                         <v-flex md8>
-                            <v-text-field type="text" v-model="guest.name"></v-text-field>
+                            <v-text-field type="text"
+                                          label="Enter user name"
+                                          single-line
+                                          :rules="rules.name"
+                                          v-model="guest.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -210,13 +218,13 @@
                             <v-subheader class="text--lighten-1">State</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-select v-bind:items="['test']"
+                            <v-select v-bind:items="country_list"
                                       v-model="guest.address.state"
-                                      label="Select"
+                                      label="Select Country"
                                       single-line
                                       auto
-                                      prepend-icon="map"
-                                      hide-details></v-select>
+                                      autocomplete
+                                      prepend-icon="map"></v-select>
                         </v-flex>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Province</v-subheader>
@@ -252,7 +260,7 @@
                             <v-subheader class="text--lighten-1">Phone Number 1*</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-text-field type="text" prepend-icon="phone" v-model="guest.phone.phone1"></v-text-field>
+                            <v-text-field type="text" prepend-icon="phone" :rules="rules.phone_num" v-model="guest.phone.phone1"></v-text-field>
                         </v-flex>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Phone Number 2</v-subheader>
@@ -266,7 +274,8 @@
                             <v-subheader class="text--lighten-1">Photo Document*</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-btn fab dark small color="primary">
+                            <v-text-field type="text" readonly disabled :rules="rules.photo_doc" v-model="guest.photo_doc"></v-text-field>
+                            <v-btn fab dark icon small color="primary">
                                 <v-icon dark>backup</v-icon>
                             </v-btn>
                         </v-flex>
@@ -274,16 +283,17 @@
                             <v-subheader class="text--lighten-1">Photo Guest</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-btn fab dark small color="primary">
+                            <v-text-field type="text" readonly disabled :rules="rules.photo_doc" v-model="guest.photo_doc"></v-text-field>
+                            <v-btn fab dark icon small color="primary">
                                 <v-icon dark>backup</v-icon>
                             </v-btn>
                         </v-flex>
                     </v-layout>
 
-                    <v-layout row>
+                    <v-layout row class="mb-3">
                         <v-flex md6>
                             <v-btn color="error">Cancel</v-btn>
-                            <v-btn color="success" dark>Checkin <v-icon dark right>check_circle</v-icon></v-btn>
+                            <v-btn color="success" dark @click.stop="checkin">Checkin <v-icon dark right>check_circle</v-icon></v-btn>
                         </v-flex>
                     </v-layout>
                 </v-form>
@@ -294,6 +304,7 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
+    import country from '../../components/CountryList'
 
     export default {
         data() {
@@ -302,7 +313,7 @@
                 modal2: false,
                 modal3: false,
                 registration : {
-                    valid: true,
+                    valid: false,
                     book_no: "",
                     deposit: 0,
                     arr_date: null,
@@ -311,12 +322,12 @@
                     chl_count: 0
                 },
                 room: {
-                    valid: true,
+                    valid: false,
                     room_number: null,
                     note: null
                 },
                 guest: {
-                    valid: true,
+                    valid: false,
                     id_number: null,
                     name: null,
                     type: 'Regular',
@@ -336,18 +347,60 @@
                     },
                     photo_doc: null,
                     photo_guest: null
+                },
+                rules: {
+                    id_number: [
+                        (v) => !!v || 'ID Number is required'
+                    ],
+                    name: [
+                        (v) => !!v || 'Name is required'
+                    ],
+                    phone_num: [
+                        (v) => !!v || 'Phone Number is required'
+                    ],
+                    photo_doc: [
+                        (v) => !!v || 'Document is required'
+                    ]
                 }
             }
         },
         props: {
             min_deposit: { type: Number, default: 50000 }
         },
+        computed: {
+            country_list() {
+                return country.country_list
+            }
+        },
         watch: {
+        },
+        methods: {
+            checkinData(response) {
+
+            },
+            checkin() {
+                this.$refs.form_registration.validate()
+                this.$refs.form_room.validate()
+                this.$refs.form_guest.validate()
+
+                const registration = this.registration
+                const room = this.room
+                const guest = this.guest
+                const data = { registration, room, guest }
+
+                console.log(data)
+
+                if (registration.valid && room.valid && guest.valid) {
+                    axios.post('http://localhost.com/checkin/post/postCheckin', data)
+                        .then(this.checkinData)
+                        .catch(e => { })
+                }
+            }
         },
         mounted() {
             var momen = moment()
 
-            this.deposit = this.min_deposit
+            this.registration.deposit = this.min_deposit
             this.registration.arr_date = momen.format('YYYY-MM-DD')
             this.registration.dep_date = momen.add(1, 'd').format('YYYY-MM-DD')
         }
