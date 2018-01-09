@@ -275,7 +275,7 @@
                         </v-flex>
                         <v-flex md4>
                             <v-text-field type="text" readonly disabled :rules="rules.photo_doc" v-model="guest.photo_doc"></v-text-field>
-                            <v-btn fab dark icon small color="primary">
+                            <v-btn fab dark icon small color="primary" @click.stop="uploadDoc">
                                 <v-icon dark>backup</v-icon>
                             </v-btn>
                         </v-flex>
@@ -283,8 +283,8 @@
                             <v-subheader class="text--lighten-1">Photo Guest</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-text-field type="text" readonly disabled :rules="rules.photo_doc" v-model="guest.photo_doc"></v-text-field>
-                            <v-btn fab dark icon small color="primary">
+                            <v-text-field type="text" readonly disabled v-model="guest.photo_guest"></v-text-field>
+                            <v-btn fab dark icon small color="primary" @click.stop="uploadPhoto">
                                 <v-icon dark>backup</v-icon>
                             </v-btn>
                         </v-flex>
@@ -299,6 +299,9 @@
                 </v-form>
             </div>
         </v-card>
+        <book-dialog v-model="dialog_book"></book-dialog>
+        <room-dialog v-model="dialog_room"></room-dialog>
+        <guest-dialog v-model="dialog_guest"></guest-dialog>
     </v-app>
 </template>
 <script>
@@ -312,6 +315,9 @@
                 modal1: false,
                 modal2: false,
                 modal3: false,
+                dialog_book: { show: false },
+                dialog_room: { show: false },
+                dialog_guest: { show: false },
                 registration : {
                     valid: false,
                     book_no: "",
@@ -375,8 +381,13 @@
         watch: {
         },
         methods: {
+            updateRoom() {
+                this.dialog_book.show = !this.dialog_book.show
+            },
             checkinData(response) {
+                var data = response.data
 
+                console.log(data)
             },
             checkin() {
                 this.$refs.form_registration.validate()
@@ -395,6 +406,12 @@
                         .then(this.checkinData)
                         .catch(e => { })
                 }
+            },
+            uploadDoc() {
+                //
+            },
+            uploadPhoto() {
+                //
             }
         },
         mounted() {
