@@ -193,7 +193,7 @@
                                               v-model="guest.birth_day"
                                               prepend-icon="event"
                                               readonly></v-text-field>
-                                <v-date-picker v-model="guest.birth_day" scrollable actions>
+                                <v-date-picker v-model="guest.birth_day" :allowed-dates="allowedDates" scrollable actions>
                                     <template slot-scope="{ save, cancel }">
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
@@ -308,10 +308,22 @@
     import axios from 'axios'
     import moment from 'moment'
     import country from '../../components/CountryList'
+    import DialogBook from '../../components/dialog/BookDialog'
+    import DialogRoom from '../../components/dialog/RoomDialog'
+    import DialogGuest from '../../components/dialog/GuestDialog'
 
     export default {
+        components: {
+            'book-dialog': DialogBook,
+            'room-dialog': DialogRoom,
+            'guest-dialog': DialogGuest,
+        },
         data() {
             return {
+                allowedDates: {
+                    min: null,
+                    max: null
+                },
                 modal1: false,
                 modal2: false,
                 modal3: false,
@@ -439,10 +451,10 @@
                 }
             },
             uploadDoc() {
-                //
+                window.CS.getObject("CheckinModel", "Return").then(e => this.guest.photo_doc = e).catch(e => { });
             },
             uploadPhoto() {
-                //
+                window.CS.getObject("CheckinModel", "Return").then(e => this.guest.photo_guest = e).catch(e => { });
             }
         },
         mounted() {
@@ -451,6 +463,8 @@
             this.registration.deposit = this.min_deposit
             this.registration.arr_date = momen.format('YYYY-MM-DD')
             this.registration.dep_date = momen.add(1, 'd').format('YYYY-MM-DD')
+            this.allowedDates.max = moment().subtract(18, "y").toISOString().substr(0, 10)
+            this.guest.birth_day = moment().subtract(18, "y").format('YYYY-MM-DD')
         }
     }
 </script>

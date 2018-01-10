@@ -13,16 +13,10 @@ import RoomCategory from './pages/room/Category'
 import RoomPrice from './pages/room/Price'
 import RoomList from './pages/room/List'
 import RoomMaintain from './pages/settings/Room'
-import DialogBook from './components/dialog/BookDialog'
-import DialogRoom from './components/dialog/RoomDialog'
-import DialogGuest from './components/dialog/GuestDialog'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 Vue.component('v-date-control', ComDate)
-Vue.component('book-dialog', DialogBook)
-Vue.component('room-dialog', DialogRoom)
-Vue.component('guest-dialog', DialogGuest)
 Vue.component('booking', Booking)
 Vue.component('checkin', Checkin)
 Vue.component('checkout', Checkout)
