@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel.Data.Table;
+using UIHotel.ViewModel;
 
 namespace UIHotel.App.Controller
 {
@@ -29,7 +30,7 @@ namespace UIHotel.App.Controller
         {
             return View("Checkin.Booking");
         }
-        
+
         public IResourceHandler listBooking()
         {
             return View("Booking.List");
@@ -44,6 +45,36 @@ namespace UIHotel.App.Controller
         public Guest postGuest()
         {
             return new Guest();
+        }
+
+        public IResourceHandler getRooms()
+        {
+            try
+            {
+                var search = jToken.Value<string>("search");
+                var result = (from a in Model.Rooms
+                              join b in Model.RoomCategory on a.IdCategory equals b.Id into c
+                              from d in c
+                              join e in Model.RoomStatus on a.Status equals e.Id into f
+                              from g in f
+                              where g.Id == 1 || g.Id == 2
+                              where a.RoomNumber.Contains(search) || d.Category.Contains(search)
+                              select new RoomModel()
+                              {
+                                  Id = a.Id,
+                                  RoomFloor = a.RoomFloor,
+                                  RoomNumber = a.RoomNumber,
+                                  RoomCategory = d.Category,
+                                  StatusID = g.Id,
+                                  Status = g.Status,
+                                  StatusColor = g.StatusColor,
+                              }).ToList();
+
+                return Json(new { data = result, success = true });
+            } catch (Exception ex)
+            {
+                return Json(new { message = ex.Message, success = false });
+            }
         }
         #endregion
     }

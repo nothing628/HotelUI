@@ -19,7 +19,7 @@
                     </div>
                     <v-card>
                         <div class="row room_status">
-                            <div class="col-md-2" v-for="(room,j) in category.Rooms" :key="j" >
+                            <div class="col-md-2" v-for="(room,j) in category.Rooms" :key="j">
                                 <div class="quick-stats__item" :style="{'background-color': '#' + room.StatusColor }">
                                     <div class="quick-stats__info">
                                         <h2>{{ room.RoomNumber }}</h2>

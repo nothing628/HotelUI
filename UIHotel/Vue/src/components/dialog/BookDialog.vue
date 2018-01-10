@@ -1,9 +1,9 @@
 <template>
-    <v-dialog v-model="dataValue.show" scrollable max-width="300px">
+    <v-dialog v-model="dataValue.show" scrollable max-width="600px">
         <v-card>
             <v-card-title>Select Country</v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: 300px;">
+            <v-card-text style="height: 400px;">
                 <v-text-field type="text" v-model="dataValue.text" @input="updateValue"></v-text-field>
             </v-card-text>
             <v-divider></v-divider>
@@ -15,6 +15,8 @@
     </v-dialog>
 </template>
 <script>
+    import axios from 'axios'
+
     export default {
         data() {
             return {

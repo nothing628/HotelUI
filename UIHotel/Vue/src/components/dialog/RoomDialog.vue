@@ -1,16 +1,75 @@
 <template>
-    <div></div>
+    <v-dialog v-model="dataValue.show" scrollable max-width="600px">
+        <v-card>
+            <v-card-title>Select Room</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text style="height: 400px;">
+                <v-container grid-list-md>
+                    <v-layout wrap>
+                        <v-flex md12>
+                            <v-text-field label="Search room" v-model="tableData.search" hide-details></v-text-field>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+                <v-data-table v-bind:headers="tableData.headers"
+                              v-bind:items="tableData.items"
+                              v-bind:pagination.sync="tableData.pagination"
+                              v-bind:total-items="tableData.totalItems"
+                              v-bind:hide-actions="true"
+                              class="elevation-1">
+                    <template slot="items" slot-scope="props">
+                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomCategory }}</td>
+                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomNumber }}</td>
+                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomFloor }}</td>
+                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.Status }}</td>
+                        <td class="text-xs-center">
+                            <v-btn dark color="success" @click.stop="setValue(props.item)">Select</v-btn>
+                        </td>
+                    </template>
+                    <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                        From {{ pageStart }} to {{ pageStop }}
+                    </template>
+                </v-data-table>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-btn color="blue darken-1" flat @click.native="dataValue.show = false">Close</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 <script>
+    import axios from 'axios'
+
     export default {
         data() {
             return {
+                tableData: {
+                    search: '',
+                    totalItems: 0,
+                    pagination: {
+                        rowsPerPage: -1
+                    },
+                    headers: [
+                        { text: 'TYPE', sortable: false },
+                        { text: 'NUMBER', sortable: false },
+                        { text: 'FLOOR', sortable: false },
+                        { text: '', sortable: false },
+                    ],
+                    items: []
+                },
                 dataValue: {
+                    room: {},
                     show: false,
                 }
             }
         },
         watch: {
+            'tableData.search': {
+                handler() {
+                    this.getDataApi()
+                }
+            },
             dataValue: {
                 handler() {
                     this.updateValue()
@@ -32,7 +91,34 @@
             updateValue() {
                 // Emit the number value through the input event
                 this.$emit('input', this.dataValue)
+            },
+            setValue(item) {
+                this.dataValue.room = item
+                this.dataValue.show = false
+            },
+            getData(response) {
+                var data = response.data
+
+                this.tableData.items = []
+                
+                data.data.forEach(x => this.tableData.items.push(x))
+            },
+            getDataApi() {
+                const search = this.tableData.search
+
+                axios.post('http://localhost.com/checkin/post/getRooms', { search })
+                    .then(this.getData)
+                    .catch(e => { })
+            },
+            getStyle(item) {
+                var backColor = '#' + item.StatusColor
+                var textColor = '#FFFFFF'
+
+                return { 'background-color': backColor, color: textColor }
             }
+        },
+        mounted() {
+            this.getDataApi()
         }
     }
 </script>

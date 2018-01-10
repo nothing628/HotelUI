@@ -113,7 +113,7 @@
                             <v-text-field type="text" readonly disabled v-model="room.room_number"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark icon small color="primary">
+                            <v-btn fab dark icon small color="primary" @click.stop="selectRoom">
                                 <v-icon dark>search</v-icon>
                             </v-btn>
                         </v-flex>
@@ -329,6 +329,7 @@
                 },
                 room: {
                     valid: false,
+                    room_id: null,
                     room_number: null,
                     note: null
                 },
@@ -379,9 +380,39 @@
             }
         },
         watch: {
+            dialog_room: {
+                handler() {
+                    if ("room" in this.dialog_room) {
+                        var room = this.dialog_room.room
+                        var roomNumber = ""
+
+                        if ("Id" in room) {
+                            this.room.room_id = room.Id
+                        }
+
+                        if ("RoomCategory" in room) {
+                            roomNumber += room.RoomCategory + ": "
+                        }
+
+                        if ("RoomNumber" in room) {
+                            roomNumber += room.RoomNumber + ": Floor "
+                        }
+
+                        if ("RoomFloor" in room) {
+                            roomNumber += room.RoomFloor
+                        }
+
+                        this.room.room_number = roomNumber
+                    }
+                },
+                deep: true
+            }
         },
         methods: {
-            updateRoom() {
+            selectRoom() {
+                this.dialog_room.show = !this.dialog_room.show
+            },
+            selectBook() {
                 this.dialog_book.show = !this.dialog_book.show
             },
             checkinData(response) {
