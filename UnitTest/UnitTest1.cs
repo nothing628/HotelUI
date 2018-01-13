@@ -82,6 +82,15 @@ namespace UnitTest
 
             return result.ToString();
         }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var omt = 1;
+            var str = string.Format("{0:D5}", omt);
+
+            Console.WriteLine(str);
+        }
     }
 
     public class TestCore

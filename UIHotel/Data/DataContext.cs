@@ -31,9 +31,8 @@ namespace UIHotel.Data
         public DbSet<User> Users { get; set; }
 
         public DataContext()
-          : base()
+          : base("MyDB")
         {
-
         }
 
         public DataContext(DbConnection existingConnection, bool contextOwnsConnection)

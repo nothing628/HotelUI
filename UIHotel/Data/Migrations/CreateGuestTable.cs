@@ -70,10 +70,13 @@ namespace UIHotel.Data.Migrations
 
             Create.Table("checkin")
                 .WithColumn("id").AsString(25).PrimaryKey()
-                .WithColumn("id_booking").AsString(25).Nullable()
+                .WithColumn("id_room").AsInt64().NotNullable()
                 .WithColumn("id_guest").AsInt64().NotNullable()
+                .WithColumn("id_booking").AsString(25).Nullable()
                 .WithColumn("arrive_at").AsDate().NotNullable()
                 .WithColumn("departure_at").AsDate().NotNullable()
+                .WithColumn("count_child").AsInt16().WithDefaultValue(0)
+                .WithColumn("count_adult").AsInt16().WithDefaultValue(1)
                 .WithColumn("checkin_at").AsDateTime().NotNullable()
                 .WithColumn("checkout_at").AsDateTime().Nullable();
         }

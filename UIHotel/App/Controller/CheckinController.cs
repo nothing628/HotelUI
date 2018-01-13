@@ -49,12 +49,13 @@ namespace UIHotel.App.Controller
             {
                 var dataGuest = ProcessGuest(guest);
                 var dataCheckin = ProcessCheckin(room, registration, dataGuest);
-            } catch
-            {
-                //
-            }
+                var dataInvoice = ProcessInvoice(dataCheckin, registration);
 
-            return Json(new { });
+                return Json(new { success = true, redirect_url = "" });
+            } catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.ToString() });
+            }
         }
 
         public Guest ProcessGuest(JToken token)
@@ -123,13 +124,63 @@ namespace UIHotel.App.Controller
 
         public Checkin ProcessCheckin(JToken tokenRoom, JToken tokenReg, Guest guest)
         {
-            var booking = tokenReg[""].Value<string>();
-            var dataCheckin = new Checkin();
+            var room_id = tokenRoom.Value<long>("room_id");
+            var booking = tokenReg.Value<string>("book_no");
 
+            var arrAt = tokenReg.Value<DateTime>("arr_date");
+            var deptAt = tokenReg.Value<DateTime>("dep_date");
+            var countAdl = tokenReg.Value<short>("adl_count");
+            var countChl = tokenReg.Value<short>("chl_count");
+            var dataCheckin = new Checkin()
+            {
+                Id = Checkin.GenerateID(),
+                ArriveAt = arrAt,
+                DepartureAt = deptAt,
+                CountAdult = countAdl,
+                CountChild = countChl,
+                IdGuest = guest.Id,
+                IdRoom = room_id,
+                CheckinAt = DateTime.Now,
+            };
+
+            //TODO : should update booking detail too..
             if (booking != null)
                 dataCheckin.IdBooking = booking;
 
-            return dataCheckin;
+            using (var trans = Model.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    var room = (from a in Model.Rooms
+                                where a.Id == room_id
+                                select a).FirstOrDefault();
+
+                    if (room != null)
+                    {
+                        //Change room status to Occupied
+                        room.Status = 3;
+                        Model.Entry(room).State = System.Data.Entity.EntityState.Modified;
+                    }
+
+                    //Add checkin record
+                    Model.CheckIn.Add(dataCheckin);
+                    Model.SaveChanges();
+
+                    trans.Commit();
+
+                    return dataCheckin;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public Invoice ProcessInvoice(Checkin checkin, JToken tokenReg)
+        {
+            return new Invoice();
         }
 
         public IResourceHandler getRooms()
