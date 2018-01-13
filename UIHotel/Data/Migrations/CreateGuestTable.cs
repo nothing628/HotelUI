@@ -78,7 +78,8 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("count_child").AsInt16().WithDefaultValue(0)
                 .WithColumn("count_adult").AsInt16().WithDefaultValue(1)
                 .WithColumn("checkin_at").AsDateTime().NotNullable()
-                .WithColumn("checkout_at").AsDateTime().Nullable();
+                .WithColumn("checkout_at").AsDateTime().Nullable()
+                .WithColumn("note").AsString(255).Nullable();
         }
     }
 }

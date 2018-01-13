@@ -124,6 +124,7 @@ namespace UIHotel.App.Controller
 
         public Checkin ProcessCheckin(JToken tokenRoom, JToken tokenReg, Guest guest)
         {
+            var note = tokenRoom.Value<string>("note");
             var room_id = tokenRoom.Value<long>("room_id");
             var booking = tokenReg.Value<string>("book_no");
 
@@ -131,6 +132,7 @@ namespace UIHotel.App.Controller
             var deptAt = tokenReg.Value<DateTime>("dep_date");
             var countAdl = tokenReg.Value<short>("adl_count");
             var countChl = tokenReg.Value<short>("chl_count");
+            
             var dataCheckin = new Checkin()
             {
                 Id = Checkin.GenerateID(),
@@ -141,6 +143,7 @@ namespace UIHotel.App.Controller
                 IdGuest = guest.Id,
                 IdRoom = room_id,
                 CheckinAt = DateTime.Now,
+                Note = note,
             };
 
             //TODO : should update booking detail too..
