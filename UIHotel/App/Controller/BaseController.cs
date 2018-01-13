@@ -36,6 +36,7 @@ namespace UIHotel.App.Controller
                 return viewBag;
             }
         }
+
         public JToken jToken
         {
             get
@@ -52,6 +53,7 @@ namespace UIHotel.App.Controller
                 }
             }
         }
+
         public NameValueCollection Query
         {
             get

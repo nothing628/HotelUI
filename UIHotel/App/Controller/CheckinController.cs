@@ -1,6 +1,8 @@
 ﻿using CefSharp;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,12 +41,95 @@ namespace UIHotel.App.Controller
         #region Process Checkin
         public IResourceHandler postCheckin()
         {
+            var guest = jToken["guest"];
+            var registration = jToken["registration"];
+            var room = jToken["room"];
+            
+            try
+            {
+                var dataGuest = ProcessGuest(guest);
+                var dataCheckin = ProcessCheckin(room, registration, dataGuest);
+            } catch
+            {
+                //
+            }
+
             return Json(new { });
         }
 
-        public Guest postGuest()
+        public Guest ProcessGuest(JToken token)
         {
-            return new Guest();
+            var guestId = token.Value<string>("id_number");
+            
+            try
+            {
+                var dataGuest = (from a in Model.Guests
+                                 where a.IdNumber == guestId
+                                 select a).FirstOrDefault();
+
+                if (dataGuest == null)
+                {
+                    var name = token.Value<string>("name");
+                    var email = token.Value<string>("email");
+                    var birth_place = token.Value<string>("birth_place");
+                    var birth_day = token.Value<string>("birth_day");
+                    var photo_doc = token.Value<string>("photo_doc");
+                    var photo_guest = token.Value<string>("photo_guest");
+                    var address = token["address"].Value<string>("note");
+                    var city = token["address"].Value<string>("city");
+                    var province = token["address"].Value<string>("province");
+                    var postcode = token["address"].Value<string>("postcode");
+                    var state = token["address"].Value<string>("state");
+                    var type = token.Value<string>("type");
+                    var phone1 = token["phone"].Value<string>("phone1");
+                    var phone2 = token["phone"].Value<string>("phone2");
+
+                    var BirthDay = DateTime.ParseExact(birth_day, "yyyy-MM-dd", CultureInfo.CurrentCulture);
+
+                    var guest = new Guest()
+                    {
+                        Address = address,
+                        City = city,
+                        Province = province,
+                        State = state,
+                        PostCode = postcode,
+                        Phone1 = phone1,
+                        Phone2 = phone2,
+                        PhotoDoc = photo_doc,
+                        PhotoGuest = photo_guest,
+                        IdNumber = guestId,
+                        BirthPlace = birth_place,
+                        BirthDay = BirthDay,
+                        IsVIP = (type == "VIP"),
+                        Fullname = name,
+                        Email = email,
+                        CreateAt = DateTime.Now,
+                        UpdateAt = DateTime.Now,
+                    };
+
+                    Model.Guests.Add(guest);
+                    Model.SaveChanges();
+                    // Create new User Data
+                    return guest;
+                } else
+                {
+                    return dataGuest;
+                }
+            } catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Checkin ProcessCheckin(JToken tokenRoom, JToken tokenReg, Guest guest)
+        {
+            var booking = tokenReg[""].Value<string>();
+            var dataCheckin = new Checkin();
+
+            if (booking != null)
+                dataCheckin.IdBooking = booking;
+
+            return dataCheckin;
         }
 
         public IResourceHandler getRooms()

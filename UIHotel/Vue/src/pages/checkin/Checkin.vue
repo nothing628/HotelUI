@@ -110,7 +110,7 @@
                             <v-subheader class="text--lighten-1">Select Room</v-subheader>
                         </v-flex>
                         <v-flex md6>
-                            <v-text-field type="text" readonly disabled v-model="room.room_number"></v-text-field>
+                            <v-text-field type="text" readonly disabled :rules="rules.room_num" v-model="room.room_number"></v-text-field>
                         </v-flex>
                         <v-flex md2>
                             <v-btn fab dark icon small color="primary" @click.stop="selectRoom">
@@ -289,14 +289,14 @@
                             </v-btn>
                         </v-flex>
                     </v-layout>
-
-                    <v-layout row class="mb-3">
-                        <v-flex md6>
-                            <v-btn color="error">Cancel</v-btn>
-                            <v-btn color="success" dark @click.stop="checkin">Checkin <v-icon dark right>check_circle</v-icon></v-btn>
-                        </v-flex>
-                    </v-layout>
                 </v-form>
+
+                <v-layout row class="mb-3">
+                    <v-flex md6>
+                        <v-btn color="error">Cancel</v-btn>
+                        <v-btn color="success" dark @click.stop="checkin">Checkin <v-icon dark right>check_circle</v-icon></v-btn>
+                    </v-flex>
+                </v-layout>
             </div>
         </v-card>
         <book-dialog v-model="dialog_book"></book-dialog>
@@ -379,7 +379,10 @@
                     ],
                     photo_doc: [
                         (v) => !!v || 'Document is required'
-                    ]
+                    ],
+                    room_num: [
+                        (v) => !!v || 'Room Number is required'
+                    ],
                 }
             }
         },
@@ -392,6 +395,14 @@
             }
         },
         watch: {
+            'registration.deposit': {
+                handler() {
+                    if (this.registration.deposit < this.min_deposit)
+                        this.registration.deposit = this.min_deposit
+
+                    console.log(this.registration.deposit)
+                }
+            },
             dialog_room: {
                 handler() {
                     if ("room" in this.dialog_room) {
@@ -407,7 +418,7 @@
                         }
 
                         if ("RoomNumber" in room) {
-                            roomNumber += room.RoomNumber + ": Floor "
+                            roomNumber += room.RoomNumber + ", Floor "
                         }
 
                         if ("RoomFloor" in room) {
