@@ -18,6 +18,7 @@ namespace UIHotel.App.Controller
             //
         }
 
+        #region Views
         public IResourceHandler index()
         {
             return View("Checkin.Checkin");
@@ -38,6 +39,12 @@ namespace UIHotel.App.Controller
             return View("Booking.List");
         }
 
+        public IResourceHandler invoice()
+        {
+            return View("Booking.List");
+        }
+        #endregion
+
         #region Process Checkin
         public IResourceHandler postCheckin()
         {
@@ -49,9 +56,10 @@ namespace UIHotel.App.Controller
             {
                 var dataGuest = ProcessGuest(guest);
                 var dataCheckin = ProcessCheckin(room, registration, dataGuest);
-                var dataInvoice = ProcessInvoice(dataCheckin, registration);
+                var dataInvoice = ProcessInvoice(dataCheckin, registration, dataGuest);
+                var retUrl = string.Format("http://localhost.com/checkin/get/invoice/{0}", dataInvoice.Id);
 
-                return Json(new { success = true, redirect_url = "" });
+                return Json(new { success = true, redirect_url = retUrl});
             } catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.ToString() });
@@ -181,9 +189,44 @@ namespace UIHotel.App.Controller
             }
         }
 
-        public Invoice ProcessInvoice(Checkin checkin, JToken tokenReg)
+        public Invoice ProcessInvoice(Checkin checkin, JToken tokenReg, Guest guest)
         {
-            return new Invoice();
+            var deposit = tokenReg.Value<decimal>("deposit");
+            var inv = new Invoice()
+            {
+                Id = Invoice.GenerateID(),
+                IdCheckin = checkin.Id,
+                IdGuest = guest.Id,
+                IsClosed = false,
+                UpdateAt = DateTime.Now,
+                CreateAt = DateTime.Now
+            };
+            var invDet = new InvoiceDetail()
+            {
+                IdInvoice = inv.Id,
+                AmmountIn = deposit,
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
+                Description = "Deposit",
+            };
+
+            using (var trans = Model.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    Model.Invoices.Add(inv);
+                    Model.InvoiceDetails.Add(invDet);
+                    Model.SaveChanges();
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+            
+            return inv;
         }
 
         public IResourceHandler getRooms()

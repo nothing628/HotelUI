@@ -441,7 +441,13 @@
             checkinData(response) {
                 var data = response.data
 
-                console.log(data)
+                if (data.success) {
+                    // redirect here
+                    window.location = data.redirect_url
+                } else {
+                    // show errors
+                    console.log(data.message)
+                }
             },
             checkin() {
                 this.$refs.form_registration.validate()
@@ -452,9 +458,7 @@
                 const room = this.room
                 const guest = this.guest
                 const data = { registration, room, guest }
-
-                console.log(data)
-
+                
                 if (registration.valid && room.valid && guest.valid) {
                     axios.post('http://localhost.com/checkin/post/postCheckin', data)
                         .then(this.checkinData)

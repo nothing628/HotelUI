@@ -31,7 +31,7 @@ namespace UIHotel.Data
         public DbSet<User> Users { get; set; }
 
         public DataContext()
-          : base("MyDB")
+          : base(new MySqlConnection(Properties.Settings.Default.MyDB), false)
         {
         }
 
