@@ -10,9 +10,15 @@ namespace UIHotel.ViewModel
 {
     public class RoomModel
     {
-        public long Id { get; set; }
-        public string RoomNumber { get; set; }
-        public short RoomFloor { get; set; }
+        [JsonIgnore]
+        public Room DataRoom { get; set; }
+        [JsonIgnore]
+        public RoomStatus DataStatus { get; set; }
+
+
+        public long Id { get => DataRoom.Id; }
+        public string RoomNumber { get => DataRoom.RoomNumber; }
+        public short RoomFloor { get => DataRoom.RoomFloor; }
         public string RoomCategory { get; set; }
         public RoomLink[] RoomLinks {
             get {
@@ -73,9 +79,9 @@ namespace UIHotel.ViewModel
                 return ls.ToArray();
             }
         }
-        public int StatusID { get; set; }
-        public string Status { get; set; }
-        public string StatusColor { get; set; }
+        public int StatusID { get => DataStatus.Id; }
+        public string Status { get => DataStatus.Status; }
+        public string StatusColor { get => DataStatus.StatusColor; }
     }
 
     public class RoomLink

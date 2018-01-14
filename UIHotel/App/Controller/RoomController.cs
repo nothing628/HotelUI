@@ -328,13 +328,9 @@ namespace UIHotel.App.Controller
                                   from g in f
                                   select new RoomModel()
                                   {
-                                      Id = a.Id,
-                                      RoomFloor = a.RoomFloor,
-                                      RoomNumber = a.RoomNumber,
+                                      DataRoom = a,
+                                      DataStatus = g,
                                       RoomCategory = d.Category,
-                                      StatusID = g.Id,
-                                      Status = g.Status,
-                                      StatusColor = g.StatusColor,
                                   }).ToList();
 
                     var grp = (from a in result
@@ -487,13 +483,9 @@ namespace UIHotel.App.Controller
                     {
                         var roomModel = new RoomModel()
                         {
-                            Id = room.a.Id,
-                            RoomFloor = room.a.RoomFloor,
-                            RoomNumber = room.a.RoomNumber,
+                            DataRoom = room.a,
+                            DataStatus = room.c,
                             RoomCategory = room.b.Category,
-                            StatusID = room.c.Id,
-                            Status = room.c.Status,
-                            StatusColor = room.c.StatusColor,
                         };
 
                         return Json(new { success = true, data = roomModel });

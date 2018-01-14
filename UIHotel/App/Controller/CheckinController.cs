@@ -255,13 +255,9 @@ namespace UIHotel.App.Controller
                                   where a.RoomNumber.Contains(search) || d.Category.Contains(search)
                                   select new RoomModel()
                                   {
-                                      Id = a.Id,
-                                      RoomFloor = a.RoomFloor,
-                                      RoomNumber = a.RoomNumber,
+                                      DataRoom = a,
+                                      DataStatus = g,
                                       RoomCategory = d.Category,
-                                      StatusID = g.Id,
-                                      Status = g.Status,
-                                      StatusColor = g.StatusColor,
                                   }).ToList();
 
                     return Json(new { data = result, success = true });
