@@ -72,9 +72,13 @@
         methods: {
             getData(response) {
                 var data = response.data
+
+                console.log(data)
             },
             getDataApi() {
-                //
+                axios.post('http://localhost.com/checkin/post/getCheckinList', {})
+                    .then(this.getData)
+                    .catch(e => { })
             }
         },
         mounted() {

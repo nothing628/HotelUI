@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UIHotel.Data.Table;
 
 namespace UIHotel.ViewModel
 {
@@ -42,5 +44,16 @@ namespace UIHotel.ViewModel
 
             return this.retStr;
         }
+    }
+    public class CheckinContainer
+    {
+        [JsonIgnore]
+        public Checkin DataCheckin { get; set; }
+        [JsonIgnore]
+        public Guest DataGuest { get; set; }
+        [JsonIgnore]
+        public Room DataRoom { get; set; }
+        [JsonIgnore]
+        public Invoice DataInvoice { get; set; }
     }
 }

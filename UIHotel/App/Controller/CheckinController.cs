@@ -38,7 +38,7 @@ namespace UIHotel.App.Controller
         {
             return View("Booking.List");
         }
-        
+
         public IResourceHandler listCheckin()
         {
             return View("Checkin.List");
@@ -51,7 +51,7 @@ namespace UIHotel.App.Controller
             var guest = jToken["guest"];
             var registration = jToken["registration"];
             var room = jToken["room"];
-            
+
             try
             {
                 var dataGuest = ProcessGuest(guest);
@@ -59,8 +59,9 @@ namespace UIHotel.App.Controller
                 var dataInvoice = ProcessInvoice(dataCheckin, registration, dataGuest);
                 var retUrl = string.Format("http://localhost.com/guest/get/invoice?id={0}", dataInvoice.Id);
 
-                return Json(new { success = true, redirect_url = retUrl});
-            } catch (Exception ex)
+                return Json(new { success = true, redirect_url = retUrl });
+            }
+            catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.ToString() });
             }
@@ -69,7 +70,7 @@ namespace UIHotel.App.Controller
         public Guest ProcessGuest(JToken token)
         {
             var guestId = token.Value<string>("id_number");
-            
+
             try
             {
                 var dataGuest = (from a in Model.Guests
@@ -120,11 +121,13 @@ namespace UIHotel.App.Controller
                     Model.SaveChanges();
                     // Create new User Data
                     return guest;
-                } else
+                }
+                else
                 {
                     return dataGuest;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw;
             }
@@ -140,7 +143,7 @@ namespace UIHotel.App.Controller
             var deptAt = tokenReg.Value<DateTime>("dep_date");
             var countAdl = tokenReg.Value<short>("adl_count");
             var countChl = tokenReg.Value<short>("chl_count");
-            
+
             var dataCheckin = new Checkin()
             {
                 Id = Checkin.GenerateID(),
@@ -225,10 +228,14 @@ namespace UIHotel.App.Controller
                     throw;
                 }
             }
-            
+
             return inv;
         }
 
+        /// <summary>
+        /// Get available room
+        /// </summary>
+        /// <returns></returns>
         public IResourceHandler getRooms()
         {
             try
@@ -253,10 +260,22 @@ namespace UIHotel.App.Controller
                               }).ToList();
 
                 return Json(new { data = result, success = true });
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { message = ex.Message, success = false });
             }
+        }
+        #endregion
+
+        #region API
+        /// <summary>
+        /// Get Checkin list, including the late checkout
+        /// </summary>
+        /// <returns></returns>
+        public IResourceHandler getCheckinList()
+        {
+            return Json(new { });
         }
         #endregion
     }
