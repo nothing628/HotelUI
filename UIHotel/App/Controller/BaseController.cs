@@ -1,27 +1,21 @@
 ﻿using CefSharp;
-using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RazorEngine.Templating;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using UIHotel.App.Provider;
 using UIHotel.App.View;
-using UIHotel.Data;
 
 namespace UIHotel.App.Controller
 {
     public class BaseController
     {
-        public DataContext Model { get; set; }
-        private MySqlConnection DBConnection { get; set; }
         public IPostData PostData { get => Request.PostData; }
         private DynamicViewBag _ViewBag
         {
@@ -68,15 +62,11 @@ namespace UIHotel.App.Controller
 
         public BaseController()
         {
-            DBConnection = new MySqlConnection(Properties.Settings.Default.MyDB);
-            Model = new DataContext(DBConnection, false);
         }
 
         public BaseController(IRequest Request)
         {
             this.Request = Request;
-            this.DBConnection = new MySqlConnection(Properties.Settings.Default.MyDB);
-            this.Model = new DataContext(DBConnection, false);
         }
 
         public IResourceHandler View(string viewName)

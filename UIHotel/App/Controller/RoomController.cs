@@ -1,15 +1,10 @@
 ﻿using CefSharp;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UIHotel.Data;
 using UIHotel.Data.Table;
 using UIHotel.ViewModel;
 
@@ -38,21 +33,25 @@ namespace UIHotel.App.Controller
             var id = Query["roomId"];
             var roomId = Convert.ToInt64(id);
 
-            try
+            using (var model = new DataContext())
             {
-                var room = (from a in Model.Rooms
-                            where a.Id == roomId
-                            select a).FirstOrDefault();
-
-                if (room != null)
+                try
                 {
-                    return View("Room.Detail", room);
-                }
+                    var room = (from a in model.Rooms
+                                where a.Id == roomId
+                                select a).FirstOrDefault();
 
-                return Redirect("http://localhost.com/room/get/index");
-            } catch (Exception ex)
-            {
-                return Redirect("http://localhost.com/room/get/index");
+                    if (room != null)
+                    {
+                        return View("Room.Detail", room);
+                    }
+
+                    return Redirect("http://localhost.com/room/get/index");
+                }
+                catch (Exception ex)
+                {
+                    return Redirect("http://localhost.com/room/get/index");
+                }
             }
         }
 
@@ -72,30 +71,34 @@ namespace UIHotel.App.Controller
             var search = jToken.Value<string>("search");
             var page = jToken.Value<int>("page");
             var rowPerPage = jToken.Value<int>("rowsPerPage");
-            var iQuery = (from a in Model.Rooms
-                          join b in Model.RoomCategory on a.IdCategory equals b.Id into c
-                          from f in c
-                          join d in Model.RoomStatus on a.Status equals d.Id into e
-                          from g in e
-                          where (search != null) ? a.RoomNumber.StartsWith(search) : true
-                          orderby a.RoomNumber ascending
-                          select new
-                          {
-                              Id = a.Id,
-                              IdCategory = a.IdCategory,
-                              RoomFloor = a.RoomFloor,
-                              Status = a.Status,
-                              RoomNumber = a.RoomNumber,
-                              RoomCategory = f.Category,
-                              RoomStatus = g.Status,
-                          });
-            var count = iQuery.Count();
-            var tmpData = iQuery
-                .Skip(rowPerPage * (page - 1))
-                .Take(rowPerPage)
-                .ToList();
 
-            return Json(new { data = tmpData, total = count });
+            using (var model = new DataContext())
+            {
+                var iQuery = (from a in model.Rooms
+                              join b in model.RoomCategory on a.IdCategory equals b.Id into c
+                              from f in c
+                              join d in model.RoomStatus on a.Status equals d.Id into e
+                              from g in e
+                              where (search != null) ? a.RoomNumber.StartsWith(search) : true
+                              orderby a.RoomNumber ascending
+                              select new
+                              {
+                                  Id = a.Id,
+                                  IdCategory = a.IdCategory,
+                                  RoomFloor = a.RoomFloor,
+                                  Status = a.Status,
+                                  RoomNumber = a.RoomNumber,
+                                  RoomCategory = f.Category,
+                                  RoomStatus = g.Status,
+                              });
+                var count = iQuery.Count();
+                var tmpData = iQuery
+                    .Skip(rowPerPage * (page - 1))
+                    .Take(rowPerPage)
+                    .ToList();
+
+                return Json(new { data = tmpData, total = count });
+            }
         }
 
         public IResourceHandler storeRoom()
@@ -108,75 +111,84 @@ namespace UIHotel.App.Controller
                 Status = 1
             };
 
-            try
+            using (var model = new DataContext())
             {
-                Model.Rooms.Add(room);
-                Model.SaveChanges();
+                try
+                {
+                    model.Rooms.Add(room);
+                    model.SaveChanges();
 
-                return Json(new { success = true, message = "Success insert data" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                    return Json(new { success = true, message = "Success insert data" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
 
         public IResourceHandler updateRoom()
         {
-            try
+            using (var model = new DataContext())
             {
-                var roomId = Convert.ToInt64(jToken.Value<string>("id"));
-                var room = (from a in Model.Rooms
-                            where a.Id == roomId
-                            select a).FirstOrDefault();
-
-                if (room != null)
+                try
                 {
-                    room.RoomNumber = jToken.Value<string>("roomNumber");
-                    room.RoomFloor = jToken.Value<short>("roomFloor");
-                    room.IdCategory = jToken.Value<long>("roomCategory");
+                    var roomId = Convert.ToInt64(jToken.Value<string>("id"));
+                    var room = (from a in model.Rooms
+                                where a.Id == roomId
+                                select a).FirstOrDefault();
 
-                    Model.Entry(room).State = EntityState.Modified;
-                    Model.SaveChanges();
+                    if (room != null)
+                    {
+                        room.RoomNumber = jToken.Value<string>("roomNumber");
+                        room.RoomFloor = jToken.Value<short>("roomFloor");
+                        room.IdCategory = jToken.Value<long>("roomCategory");
 
-                    return Json(new { success = true, message = "Success update data" });
+                        model.Entry(room).State = EntityState.Modified;
+                        model.SaveChanges();
+
+                        return Json(new { success = true, message = "Success update data" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Room not found" });
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return Json(new { success = false, message = "Room not found" });
+                    return Json(new { success = false, message = ex.Message });
                 }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
             }
         }
 
         public IResourceHandler deleteRoom()
         {
-            try
+            using (var model = new DataContext())
             {
-                var roomId = Convert.ToInt64(jToken.Value<string>("id"));
-                var room = (from a in Model.Rooms
-                            where a.Id == roomId
-                            where a.Status == 1
-                            select a).FirstOrDefault();
-
-                if (room != null)
+                try
                 {
-                    Model.Rooms.Remove(room);
-                    Model.SaveChanges();
+                    var roomId = Convert.ToInt64(jToken.Value<string>("id"));
+                    var room = (from a in model.Rooms
+                                where a.Id == roomId
+                                where a.Status == 1
+                                select a).FirstOrDefault();
 
-                    return Json(new { success = true, message = "Data deleted" });
+                    if (room != null)
+                    {
+                        model.Rooms.Remove(room);
+                        model.SaveChanges();
+
+                        return Json(new { success = true, message = "Data deleted" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Room status must be 'Vacant' or Room not exists!" });
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return Json(new { success = false, message = "Room status must be 'Vacant' or Room not exists!" });
+                    return Json(new { success = false, message = ex.Message });
                 }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
             }
         }
         #endregion
@@ -186,22 +198,26 @@ namespace UIHotel.App.Controller
             var search = jToken.Value<string>("search");
             var page = jToken.Value<int>("page");
             var rowPerPage = jToken.Value<int>("rowsPerPage");
-            var iQuery = (from a in Model.RoomCategory
-                          where (search != null) ? a.Category.StartsWith(search) : true
-                          orderby a.Category ascending
-                          select new
-                          {
-                              a.Id,
-                              a.Category,
-                              a.Description
-                          });
-            var count = iQuery.Count();
-            var tmpData = iQuery
-                .Skip(rowPerPage * (page - 1))
-                .Take(rowPerPage)
-                .ToList();
 
-            return Json(new { data = tmpData, total = count });
+            using (var model = new DataContext())
+            {
+                var iQuery = (from a in model.RoomCategory
+                              where (search != null) ? a.Category.StartsWith(search) : true
+                              orderby a.Category ascending
+                              select new
+                              {
+                                  a.Id,
+                                  a.Category,
+                                  a.Description
+                              });
+                var count = iQuery.Count();
+                var tmpData = iQuery
+                    .Skip(rowPerPage * (page - 1))
+                    .Take(rowPerPage)
+                    .ToList();
+
+                return Json(new { data = tmpData, total = count });
+            }
         }
 
         public IResourceHandler storeCategory()
@@ -212,183 +228,209 @@ namespace UIHotel.App.Controller
                 Description = jToken.Value<string>("description"),
             };
 
-            try
+            using (var model = new DataContext())
             {
-                Model.RoomCategory.Add(category);
-                Model.SaveChanges();
+                try
+                {
+                    model.RoomCategory.Add(category);
+                    model.SaveChanges();
 
-                return Json(new { success = true, message = "Success insert data" });
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                    return Json(new { success = true, message = "Success insert data" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
 
         public IResourceHandler updateCategory()
         {
-            try
+            using (var model = new DataContext())
             {
-                var categoryId = Convert.ToInt64(jToken.Value<string>("id"));
-                var category = (from a in Model.RoomCategory
-                                where a.Id == categoryId
-                                select a).FirstOrDefault();
-
-                if (category != null)
+                try
                 {
-                    category.Category = jToken.Value<string>("category");
-                    category.Description = jToken.Value<string>("description");
+                    var categoryId = Convert.ToInt64(jToken.Value<string>("id"));
+                    var category = (from a in model.RoomCategory
+                                    where a.Id == categoryId
+                                    select a).FirstOrDefault();
 
-                    Model.Entry(category).State = EntityState.Modified;
-                    Model.SaveChanges();
+                    if (category != null)
+                    {
+                        category.Category = jToken.Value<string>("category");
+                        category.Description = jToken.Value<string>("description");
 
-                    return Json(new { success = true, message = "Success update data" });
+                        model.Entry(category).State = EntityState.Modified;
+                        model.SaveChanges();
+
+                        return Json(new { success = true, message = "Success update data" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Category Not Found!" });
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return Json(new { success = false, message = "Category Not Found!" });
+                    return Json(new { success = false, message = ex.Message });
                 }
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
             }
         }
 
         public IResourceHandler deleteCategory()
         {
-            try
+            using (var model = new DataContext())
             {
-                var categoryId = Convert.ToInt64(jToken.Value<string>("id"));
-                var category = (from a in Model.RoomCategory
-                                where a.Id == categoryId
-                                select a).FirstOrDefault();
-
-                if (category != null)
+                try
                 {
-                    Model.RoomCategory.Remove(category);
-                    Model.SaveChanges();
+                    var categoryId = Convert.ToInt64(jToken.Value<string>("id"));
+                    var category = (from a in model.RoomCategory
+                                    where a.Id == categoryId
+                                    select a).FirstOrDefault();
 
-                    return Json(new { success = true, message = "Success remove data" });
-                } else
-                {
-                    return Json(new { success = false, message = "Category Not Found!" });
+                    if (category != null)
+                    {
+                        model.RoomCategory.Remove(category);
+                        model.SaveChanges();
+
+                        return Json(new { success = true, message = "Success remove data" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Category Not Found!" });
+                    }
                 }
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
         #endregion
         #region RoomList
         public IResourceHandler getRoomList()
         {
-            try
+            using (var model = new DataContext())
             {
-                var search = jToken.Value<string>("search");
-                var categories = GetCategoryList();
-                var status = GetStatusList();
-                var rooms = (from a in Model.Rooms
-                             where (search == "") ? true : a.RoomNumber.StartsWith(search)
-                             select a).ToList();
+                try
+                {
+                    var search = jToken.Value<string>("search");
+                    var categories = GetCategoryList();
+                    var status = GetStatusList();
+                    var rooms = (from a in model.Rooms
+                                 where (search == "") ? true : a.RoomNumber.StartsWith(search)
+                                 select a).ToList();
 
-                var result = (from a in rooms
-                             join b in categories on a.IdCategory equals b.Id into c
-                             from d in c
-                             join e in status on a.Status equals e.Id into f
-                             from g in f
-                             select new RoomModel()
-                             {
-                                 Id = a.Id,
-                                 RoomFloor = a.RoomFloor,
-                                 RoomNumber = a.RoomNumber,
-                                 RoomCategory = d.Category,
-                                 StatusID = g.Id,
-                                 Status = g.Status,
-                                 StatusColor = g.StatusColor,
-                             }).ToList();
+                    var result = (from a in rooms
+                                  join b in categories on a.IdCategory equals b.Id into c
+                                  from d in c
+                                  join e in status on a.Status equals e.Id into f
+                                  from g in f
+                                  select new RoomModel()
+                                  {
+                                      Id = a.Id,
+                                      RoomFloor = a.RoomFloor,
+                                      RoomNumber = a.RoomNumber,
+                                      RoomCategory = d.Category,
+                                      StatusID = g.Id,
+                                      Status = g.Status,
+                                      StatusColor = g.StatusColor,
+                                  }).ToList();
 
-                var grp = (from a in result
-                           group a by a.RoomCategory into b
-                           select new RoomContainer
-                           {
-                               Category = b.Key,
-                               Status = status,
-                               Rooms = b.ToList()
-                           }).ToList();
+                    var grp = (from a in result
+                               group a by a.RoomCategory into b
+                               select new RoomContainer
+                               {
+                                   Category = b.Key,
+                                   Status = status,
+                                   Rooms = b.ToList()
+                               }).ToList();
 
-                return Json(new { data = grp, status = status, success = true, message = "" });
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.ToString() });
+                    return Json(new { data = grp, status = status, success = true, message = "" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
             }
         }
         #endregion
         #region Day Maintain
         public IResourceHandler getDayEffect()
         {
-            var res = GetDayEffectList();
-            var days = (from a in Model.DayCycles
-                        select a).ToList();
-            var day = (from a in days
-                       join b in res on a.IdEffect equals b.Id into c
-                       from d in c
-                       select new { Date = a.DateAt, Effect = d.Effect })
-                       .ToList()
-                       .ToDictionary(x => x.Date.ToString("yyyy-MM-dd"), x => x.Effect);
-            var mutate = res.ToDictionary(x => x.Effect, x => x.EffectColor);
+            using (var model = new DataContext())
+            {
+                var res = GetDayEffectList();
+                var days = (from a in model.DayCycles
+                            select a).ToList();
+                var day = (from a in days
+                           join b in res on a.IdEffect equals b.Id into c
+                           from d in c
+                           select new { Date = a.DateAt, Effect = d.Effect })
+                           .ToList()
+                           .ToDictionary(x => x.Date.ToString("yyyy-MM-dd"), x => x.Effect);
+                var mutate = res.ToDictionary(x => x.Effect, x => x.EffectColor);
 
-            return Json(new { colors = mutate, items = day });
+                return Json(new { colors = mutate, items = day });
+            }
         }
         public IResourceHandler setDayEffect()
         {
             var date = jToken.Value<string>("date");
             var effect = jToken.Value<string>("type");
 
-            try
+            using (var model = new DataContext())
             {
-                var pdate = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.CurrentCulture);
-                var dayCycle = (from a in Model.DayCycles
-                                where a.DateAt == pdate
-                                select a).FirstOrDefault();
-                var effectID = (from a in Model.DayEffect
-                                where a.Effect == effect
-                                select a.Id).FirstOrDefault();
+                try
+                {
+                    var pdate = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.CurrentCulture);
+                    var dayCycle = (from a in model.DayCycles
+                                    where a.DateAt == pdate
+                                    select a).FirstOrDefault();
+                    dayCycle.IdEffect = (from a in model.DayEffect
+                                         where a.Effect == effect
+                                         select a.Id).FirstOrDefault();
 
-                dayCycle.IdEffect = effectID;
+                    model.Entry(dayCycle).State = EntityState.Modified;
+                    model.SaveChanges();
 
-                Model.Entry(dayCycle).State = EntityState.Modified;
-                Model.SaveChanges();
-
-                return Json(new { success = true, message = "Success update data" });
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                    return Json(new { success = true, message = "Success update data" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
         public IResourceHandler getPrice()
         {
-            try
+            using (var model = new DataContext())
             {
-                var type = jToken.Value<string>("type");
-                var eff = (from effect in Model.DayEffect
-                           join b in Model.RoomPrice on effect.Id equals b.IdEffect into c
-                           from price in c
-                           join e in Model.RoomCategory on price.IdCategory equals e.Id into f
-                           from category in f
-                           where effect.Effect == type
-                           select new { effect = effect, price = price, category = category }).ToList();
-                var arrPrice = (from a in eff
-                                select new RoomPriceModel()
-                                {
-                                    Category = a.category.Category,
-                                    IdCategory = a.category.Id,
-                                    IdEffect = a.effect.Id,
-                                    Price = a.price.Price,
-                                }).ToList();
+                try
+                {
+                    var type = jToken.Value<string>("type");
+                    var eff = (from effect in model.DayEffect
+                               join b in model.RoomPrice on effect.Id equals b.IdEffect into c
+                               from price in c
+                               join e in model.RoomCategory on price.IdCategory equals e.Id into f
+                               from category in f
+                               where effect.Effect == type
+                               select new { effect = effect, price = price, category = category }).ToList();
+                    var arrPrice = (from a in eff
+                                    select new RoomPriceModel()
+                                    {
+                                        Category = a.category.Category,
+                                        IdCategory = a.category.Id,
+                                        IdEffect = a.effect.Id,
+                                        Price = a.price.Price,
+                                    }).ToList();
 
-                return Json(new { success = true, data = arrPrice });
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                    return Json(new { success = true, data = arrPrice });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
         public IResourceHandler setPrice()
@@ -397,25 +439,29 @@ namespace UIHotel.App.Controller
             var idEffect = jToken.Value<int>("IdEffect");
             var price = jToken.Value<decimal>("Price");
 
-            try
+            using (var model = new DataContext())
             {
-                var data = (from a in Model.RoomPrice
-                            where a.IdCategory == idCategory
-                            where a.IdEffect == idEffect
-                            select a).FirstOrDefault();
-
-                if (data != null)
+                try
                 {
-                    data.Price = price;
+                    var data = (from a in model.RoomPrice
+                                where a.IdCategory == idCategory
+                                where a.IdEffect == idEffect
+                                select a).FirstOrDefault();
 
-                    Model.Entry(data).State = EntityState.Modified;
-                    Model.SaveChanges();
+                    if (data != null)
+                    {
+                        data.Price = price;
+
+                        model.Entry(data).State = EntityState.Modified;
+                        model.SaveChanges();
+                    }
+
+                    return Json(new { success = true, message = "Success update data" });
                 }
-
-                return Json(new { success = true, message = "Success update data" });
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
         #endregion
@@ -425,36 +471,40 @@ namespace UIHotel.App.Controller
             var roomId = jToken.Value<string>("roomId");
             var Id = Convert.ToInt64(roomId);
 
-            try
+            using (var model = new DataContext())
             {
-                var room = (from a in Model.Rooms
-                            join b in Model.RoomCategory on a.IdCategory equals b.Id into c
-                            from d in c
-                            join e in Model.RoomStatus on a.Status equals e.Id into f
-                            from g in f
-                            where a.Id == Id
-                            select new { a = a, b = d, c = g }).FirstOrDefault();
-
-                if (room != null)
+                try
                 {
-                    var roomModel = new RoomModel()
+                    var room = (from a in model.Rooms
+                                join b in model.RoomCategory on a.IdCategory equals b.Id into c
+                                from d in c
+                                join e in model.RoomStatus on a.Status equals e.Id into f
+                                from g in f
+                                where a.Id == Id
+                                select new { a = a, b = d, c = g }).FirstOrDefault();
+
+                    if (room != null)
                     {
-                        Id = room.a.Id,
-                        RoomFloor = room.a.RoomFloor,
-                        RoomNumber = room.a.RoomNumber,
-                        RoomCategory = room.b.Category,
-                        StatusID = room.c.Id,
-                        Status = room.c.Status,
-                        StatusColor = room.c.StatusColor,
-                    };
+                        var roomModel = new RoomModel()
+                        {
+                            Id = room.a.Id,
+                            RoomFloor = room.a.RoomFloor,
+                            RoomNumber = room.a.RoomNumber,
+                            RoomCategory = room.b.Category,
+                            StatusID = room.c.Id,
+                            Status = room.c.Status,
+                            StatusColor = room.c.StatusColor,
+                        };
 
-                    return Json(new { success = true, data = roomModel });
+                        return Json(new { success = true, data = roomModel });
+                    }
+
+                    return Json(new { success = false, message = "Room Not Found" });
                 }
-
-                return Json(new { success = false, message = "Room Not Found" });
-            } catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
         }
         #endregion
@@ -466,20 +516,29 @@ namespace UIHotel.App.Controller
 
         private List<RoomCategory> GetCategoryList()
         {
-            return (from a in Model.RoomCategory
-                    select a).ToList();
+            using (var model = new DataContext())
+            {
+                return (from a in model.RoomCategory
+                        select a).ToList();
+            }
         }
 
         private List<RoomStatus> GetStatusList()
         {
-            return (from a in Model.RoomStatus
-                    select a).ToList();
+            using (var model = new DataContext())
+            {
+                return (from a in model.RoomStatus
+                        select a).ToList();
+            }
         }
 
         private List<DayEffect> GetDayEffectList()
         {
-            return (from a in Model.DayEffect
-                    select a).ToList();
+            using (var model = new DataContext())
+            {
+                return (from a in model.DayEffect
+                        select a).ToList();
+            }
         }
     }
 }
