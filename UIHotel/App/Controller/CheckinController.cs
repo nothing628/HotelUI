@@ -38,10 +38,10 @@ namespace UIHotel.App.Controller
         {
             return View("Booking.List");
         }
-
-        public IResourceHandler invoice()
+        
+        public IResourceHandler listCheckin()
         {
-            return View("Booking.List");
+            return View("Checkin.List");
         }
         #endregion
 
@@ -57,7 +57,7 @@ namespace UIHotel.App.Controller
                 var dataGuest = ProcessGuest(guest);
                 var dataCheckin = ProcessCheckin(room, registration, dataGuest);
                 var dataInvoice = ProcessInvoice(dataCheckin, registration, dataGuest);
-                var retUrl = string.Format("http://localhost.com/checkin/get/invoice/{0}", dataInvoice.Id);
+                var retUrl = string.Format("http://localhost.com/guest/get/invoice?id={0}", dataInvoice.Id);
 
                 return Json(new { success = true, redirect_url = retUrl});
             } catch (Exception ex)

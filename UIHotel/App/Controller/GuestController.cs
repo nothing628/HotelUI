@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.Data;
 
 namespace UIHotel.App.Controller
 {
@@ -18,14 +19,28 @@ namespace UIHotel.App.Controller
             return View("Guest.List");
         }
 
-        public IResourceHandler listCheckin()
-        {
-            return View("Checkin.List");
-        }
-
         public IResourceHandler invoice()
         {
-            return View("Guest.Invoice");
+            var invoiceId = Query["id"];
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var invoice = (from a in model.Invoices
+                                   where a.Id == invoiceId
+                                   select a).FirstOrDefault();
+
+                    if (invoice != null)
+                        return View("Guest.Invoice", invoice);
+                }
+                catch
+                {
+
+                }
+            }
+
+            return Redirect("http://localhost.com/room/get/index");
         }
 
         public IResourceHandler pay()

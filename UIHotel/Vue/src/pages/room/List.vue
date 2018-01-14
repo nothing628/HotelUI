@@ -10,7 +10,7 @@
                               v-model="search"></v-text-field>
             </v-card-title>
             <v-expansion-panel expand>
-                <v-expansion-panel-content v-for="(category,i) in categories" :key="i">
+                <v-expansion-panel-content v-for="(category,i) in categories" :key="i" v-bind:value="true">
                     <div slot="header">
                         {{ category.Category }}
                         <div class="right">

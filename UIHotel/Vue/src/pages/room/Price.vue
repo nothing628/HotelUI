@@ -89,8 +89,12 @@
 </template>
 <script>
     import axios from 'axios'
+    import ComDate from '../../components/date/DatePicker'
 
     export default {
+        components: {
+            'v-date-control': ComDate
+        },
         data() {
             return {
                 type: null,

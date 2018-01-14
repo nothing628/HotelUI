@@ -4,9 +4,9 @@ import '../../node_modules/vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import router from './router'
-import ComDate from './components/date/DatePicker'
 import Booking from './pages/booking/Booking'
 import Checkin from './pages/checkin/Checkin'
+import CheckinList from './pages/checkin/List'
 import Checkout from './pages/checkin/Checkout'
 import RoomDetail from './pages/room/Detail'
 import RoomCategory from './pages/room/Category'
@@ -16,9 +16,9 @@ import RoomMaintain from './pages/settings/Room'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
-Vue.component('v-date-control', ComDate)
 Vue.component('booking', Booking)
 Vue.component('checkin', Checkin)
+Vue.component('checkin-list', CheckinList)
 Vue.component('checkout', Checkout)
 Vue.component('room-detail', RoomDetail)
 Vue.component('room-category', RoomCategory)
