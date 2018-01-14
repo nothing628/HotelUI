@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using UIHotel.Data;
@@ -277,7 +278,31 @@ namespace UIHotel.App.Controller
         /// <returns></returns>
         public IResourceHandler getCheckinList()
         {
-            return Json(new { });
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var data = (from a in model.CheckIn
+                                .Include(x => x.Room)
+                                .Include(x => x.Room.Category)
+                                .Include(x => x.Guest)
+                                join b in model.Invoices on a.Id equals b.IdCheckin into c
+                                from d in c
+                                select new CheckinContainer()
+                                {
+                                    DataCheckin = a,
+                                    DataGuest = a.Guest,
+                                    DataRoom = a.Room,
+                                    DataCategory = a.Room.Category,
+                                    DataInvoice = d,
+                                }).ToList();
+
+                    return Json(new { data = data, success = true });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
         }
         #endregion
     }

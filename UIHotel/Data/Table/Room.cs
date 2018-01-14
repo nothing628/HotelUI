@@ -26,6 +26,9 @@ namespace UIHotel.Data.Table
 
         [Column("status", Order = 4)]
         public int Status { get; set; }
+
+        [ForeignKey("IdCategory")]
+        public RoomCategory Category { get; set; }
         
         [NotMapped]
         public string RoomStatus { get; set; }

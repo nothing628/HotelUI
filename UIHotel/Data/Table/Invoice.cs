@@ -31,7 +31,7 @@ namespace UIHotel.Data.Table
 
         [Column("update_at", Order = 5)]
         public DateTime? UpdateAt { get; set; }
-
+        
         public static string GenerateID()
         {
             var CurrDate = DateTime.Now.ToString("yyyyMMdd");

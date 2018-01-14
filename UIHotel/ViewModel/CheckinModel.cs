@@ -54,6 +54,24 @@ namespace UIHotel.ViewModel
         [JsonIgnore]
         public Room DataRoom { get; set; }
         [JsonIgnore]
+        public RoomCategory DataCategory { get; set; }
+        [JsonIgnore]
         public Invoice DataInvoice { get; set; }
+
+        public string IdCheckin { get => DataCheckin.Id; }
+        public string RoomNumber { get => DataRoom.RoomNumber; }
+        public string RoomCategory { get => DataCategory.Category; }
+        public string GuestName { get => DataGuest.Fullname; }
+        public DateTime ArrivalDate { get => DataCheckin.ArriveAt; }
+        public DateTime DepartureDate { get => DataCheckin.DepartureAt; }
+        public DateTime CheckinDate { get => DataCheckin.CheckinAt; }
+
+        public bool IsLate {
+            get
+            {
+                // TODO: Should calculate hour
+                return !DataCheckin.CheckoutAt.HasValue && DateTime.Today > DataCheckin.DepartureAt;
+            }
+        }
     }
 }

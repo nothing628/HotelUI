@@ -47,12 +47,18 @@ namespace UIHotel.Data.Table
         public DateTime CheckinAt { get; set; }
 
         [Column("checkout_at", Order = 9)]
-        public DateTime CheckoutAt { get; set; }
+        public DateTime? CheckoutAt { get; set; }
 
         [Column("note", Order = 10)]
         [StringLength(255)]
         public string Note { get; set; }
 
+        [ForeignKey("IdRoom")]
+        public Room Room { get; set; }
+
+        [ForeignKey("IdGuest")]
+        public Guest Guest { get; set; }
+        
         public static string GenerateID()
         {
             using (var context = new DataContext())
