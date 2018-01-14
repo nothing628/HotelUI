@@ -1,104 +1,72 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-title">Check-in List</h2>
-        </div>
+    <v-card>
+        <v-card-title>
+            <h2 class="card-title mb-0">Check-in List</h2>
+        </v-card-title>
 
-        <div class="card-block">
-            <form class="form-row">
-                <div class="form-group row">
-                    <div class="col-3">
-                        <select class="form-control" id="select-data">
-                            <option value="3">ALL</option>
-                            <option value="1">Not Late Checkout</option>
-                            <option value="2">Late Checkout</option>
-                        </select>
-                    </div>
-                    <div class="col-9" id="online-field">
-                        <input type="text" class="form-control" placeholder="Search room..." />
-                    </div>
-                </div>
-            </form>
-
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <td>ID Checkin</td>
-                        <td>Room Number</td>
-                        <td>Guest</td>
-                        <td>Arrival Date</td>
-                        <td>Departure Date</td>
-                        <td>Arrive at</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>CHK-19999</td>
-                        <td>Big : 201</td>
-                        <td>SSS Name</td>
-                        <td>2017-2-2</td>
-                        <td>2017-2-3</td>
-                        <td>2017-2-2 14:00</td>
-                        <td>
-                            <div class="btn-group">
+        <v-container fluid grid-list-md>
+            <v-layout row>
+                <v-flex lg3 md3 sm12 xs12>
+                    <v-select v-model="filter" v-bind:items="filters" single-line auto></v-select>
+                </v-flex>
+                <v-flex lg9 md9 sm12 xs12>
+                    <v-text-field placeholder="Search" ></v-text-field>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
+                <v-flex lg12>
+                    <v-data-table v-bind:headers="tableData.headers"
+                                  v-bind:items="tableData.items"
+                                  v-bind:search="tableData.search"
+                                  v-bind:pagination.sync="tableData.pagination"
+                                  v-bind:total-items="tableData.totalItems"
+                                  v-bind:loading="tableData.loading"
+                                  class="elevation-1">
+                        <template slot="items" slot-scope="props">
+                            <td>CHK2012012100011</td>
+                            <td>Big : 201</td>
+                            <td>SSS Name</td>
+                            <td>2017-2-2</td>
+                            <td>2017-2-3</td>
+                            <td>2017-2-2 14:00</td>
+                            <td>
                                 <button class="btn success">Edit</button>
                                 <button class="btn warning">Change Room</button>
                                 <button class="btn error">Check Out</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CHK-42155</td>
-                        <td>Big : 202</td>
-                        <td>SSS Name</td>
-                        <td>2017-2-2</td>
-                        <td>2017-2-3</td>
-                        <td>2017-2-2 14:00</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn success">Edit</button>
-                                <button class="btn warning">Change Room</button>
-                                <button class="btn error">Check Out</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="orange lighten-4">
-                        <td>CHK-12511</td>
-                        <td>Big : 203</td>
-                        <td>SSS Name</td>
-                        <td>2017-2-2</td>
-                        <td>2017-2-3</td>
-                        <td>2017-2-2 14:00</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn success">Edit</button>
-                                <button class="btn warning">Change Room</button>
-                                <button class="btn error">Check Out</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item"><a class="paginate_button previous" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link paginate_button current" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="paginate_button next" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+                            </td>
+                        </template>
+                        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                            From {{ pageStart }} to {{ pageStop }}
+                        </template>
+                    </v-data-table>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-card>
 </template>
 <script>
     import axios from 'axios'
     export default {
         data() {
             return {
-                items: []
+                filter: 'All',
+                filters: ['All', 'Late Checkout', 'Not Late Checkout'],
+                tableData: {
+                    search: '',
+                    totalItems: 0,
+                    loading: false,
+                    pagination: {},
+                    headers: [
+                        { text: 'ID Checkin', sortable: false, value: 'Category' },
+                        { text: 'Room Number', sortable: false, value: 'Description' },
+                        { text: 'Guest', sortable: false, value: 'Description' },
+                        { text: 'Arrival Date', sortable: false, value: 'Description' },
+                        { text: 'Departure Date', sortable: false, value: 'Description' },
+                        { text: 'Checkin Date', sortable: false, value: 'Description' },
+                        { text: '', sortable: false },
+                    ],
+                    items: []
+                }
             }
         },
         methods: {

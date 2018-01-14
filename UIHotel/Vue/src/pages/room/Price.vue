@@ -1,91 +1,93 @@
 <template>
-    <v-app id="inspire">
-        <v-container fluid grid-list-md>
-            <v-layout row>
-                <v-flex md4>
-                    <v-card>
-                        <v-card-title>
-                            <h2 class="card-title mb-0">Calendar</h2>
-                        </v-card-title>
-                        <v-card-title>
-                            <v-date-control @dateclick="dateClicked" :items="items" :colors="colors"></v-date-control>
-                        </v-card-title>
-                    </v-card>
-                </v-flex>
-                <v-flex md8>
-                    <v-card>
-                        <v-card-title>
-                            <h2 class="card-title mb-0">Price List</h2>
-                            <v-spacer></v-spacer>
-                            <v-select v-bind:items="typeList"
-                                      v-model="type"
-                                      label="Date Type"
-                                      item-value="text"
-                                      item-text="text"></v-select>
-                        </v-card-title>
-                        <v-data-table v-bind:headers="tableData.headers"
-                                      v-bind:items="tableData.items"
-                                      v-bind:search="tableData.search"
-                                      v-bind:pagination.sync="tableData.pagination"
-                                      v-bind:total-items="tableData.totalItems"
-                                      v-bind:loading="tableData.loading"
-                                      v-bind:hide-actions="true"
-                                      class="elevation-1">
-                            <template slot="items" slot-scope="props">
-                                <td>{{ props.item.Category }}</td>
-                                <td class="text-xs-right">
-                                    <v-edit-dialog @open="tmp = props.item.Price"
-                                                   @save="storeDate(props.item, tmp)"
-                                                   large
-                                                   lazy>
-                                        <div>Rp. {{ props.item.Price }}</div>
-                                        <div slot="input" class="mt-3 title">Change Price</div>
-                                        <v-text-field slot="input"
-                                                      label="Edit"
-                                                      v-model="tmp"
-                                                      prefix="Rp."
-                                                      single-line
-                                                      counter
-                                                      autofocus></v-text-field>
-                                    </v-edit-dialog>
-                                </td>
-                            </template>
-                            <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-                                From {{ pageStart }} to {{ pageStop }}
-                            </template>
-                        </v-data-table>
-                    </v-card>
-                </v-flex>
-            </v-layout>
-        </v-container>
-        <v-dialog v-model="changeDialog" max-width="500px">
-            <v-card>
-                <v-card-title>Change Date Type </v-card-title>
-                <v-card-text>
-                    <v-form>
-                        <v-text-field label="Date"
-                                      v-model="dateForm.date"
-                                      readonly></v-text-field>
+    <v-container fluid grid-list-md>
+        <v-layout row>
+            <v-flex md4>
+                <v-card>
+                    <v-card-title>
+                        <h2 class="card-title mb-0">Calendar</h2>
+                    </v-card-title>
+                    <v-card-title>
+                        <v-date-control @dateclick="dateClicked" :items="items" :colors="colors"></v-date-control>
+                    </v-card-title>
+                </v-card>
+            </v-flex>
+            <v-flex md8>
+                <v-card>
+                    <v-card-title>
+                        <h2 class="card-title mb-0">Price List</h2>
+                        <v-spacer></v-spacer>
                         <v-select v-bind:items="typeList"
-                                  v-model="dateForm.type"
+                                  v-model="type"
                                   label="Date Type"
                                   item-value="text"
                                   item-text="text"></v-select>
-                    </v-form>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn color="primary" @click.stop="store">Submit</v-btn>
-                    <v-btn color="primary" flat @click.stop="changeDialog=false">Close</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-snackbar :timeout="1000"
-                    :top="true"
-                    :color="snackbar.color"
-                    v-model="snackbar.show">
-            {{ snackbar.text }}
-        </v-snackbar>
-    </v-app>
+                    </v-card-title>
+                    <v-data-table v-bind:headers="tableData.headers"
+                                  v-bind:items="tableData.items"
+                                  v-bind:search="tableData.search"
+                                  v-bind:pagination.sync="tableData.pagination"
+                                  v-bind:total-items="tableData.totalItems"
+                                  v-bind:loading="tableData.loading"
+                                  v-bind:hide-actions="true"
+                                  class="elevation-1">
+                        <template slot="items" slot-scope="props">
+                            <td>{{ props.item.Category }}</td>
+                            <td class="text-xs-right">
+                                <v-edit-dialog @open="tmp = props.item.Price"
+                                               @save="storeDate(props.item, tmp)"
+                                               large
+                                               lazy>
+                                    <div>Rp. {{ props.item.Price }}</div>
+                                    <div slot="input" class="mt-3 title">Change Price</div>
+                                    <v-text-field slot="input"
+                                                  label="Edit"
+                                                  v-model="tmp"
+                                                  prefix="Rp."
+                                                  single-line
+                                                  counter
+                                                  autofocus></v-text-field>
+                                </v-edit-dialog>
+                            </td>
+                        </template>
+                        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                            From {{ pageStart }} to {{ pageStop }}
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </v-flex>
+        </v-layout>
+        <v-layout>
+            <v-flex md12>
+                <v-dialog v-model="changeDialog" max-width="500px">
+                    <v-card>
+                        <v-card-title>Change Date Type </v-card-title>
+                        <v-card-text>
+                            <v-form>
+                                <v-text-field label="Date"
+                                              v-model="dateForm.date"
+                                              readonly></v-text-field>
+                                <v-select v-bind:items="typeList"
+                                          v-model="dateForm.type"
+                                          label="Date Type"
+                                          item-value="text"
+                                          item-text="text"></v-select>
+                            </v-form>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn color="primary" @click.stop="store">Submit</v-btn>
+                            <v-btn color="primary" flat @click.stop="changeDialog=false">Close</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-snackbar :timeout="1000"
+                            :top="true"
+                            :color="snackbar.color"
+                            v-model="snackbar.show">
+                    {{ snackbar.text }}
+                </v-snackbar>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 <script>
     import axios from 'axios'
