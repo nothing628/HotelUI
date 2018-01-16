@@ -291,6 +291,7 @@
     <None Include="View\Checkin\Checkout.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Checkin\Detail.cshtml" />
     <None Include="View\Checkin\List.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

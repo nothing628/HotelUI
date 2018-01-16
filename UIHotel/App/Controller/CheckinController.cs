@@ -33,6 +33,29 @@ namespace UIHotel.App.Controller
             return View("Checkin.Booking");
         }
 
+        public IResourceHandler detail()
+        {
+            var checkinID = Query["id"];
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var checkin = (from a in model.CheckIn
+                                   where a.Id == checkinID
+                                   select a).FirstOrDefault();
+
+                    if (checkin != null)
+                        return View("Checkin.Detail");
+                } catch 
+                {
+                    //
+                }
+            }
+
+            return Redirect("http://localhost.com/checkin/get/list");
+        }
+
         public IResourceHandler listBooking()
         {
             return View("Booking.List");

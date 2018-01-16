@@ -73,5 +73,27 @@ namespace UIHotel.ViewModel
                 return !DataCheckin.CheckoutAt.HasValue && DateTime.Today > DataCheckin.DepartureAt;
             }
         }
+
+        public bool IsCheckoutWarn
+        {
+            get
+            {
+                // TODO: Should calculate by setting hour
+                var tollerance = new TimeSpan(13, 0, 0);
+                var isToday = DataCheckin.DepartureAt == DateTime.Today;
+                var isCurrentHour = DateTime.Now.TimeOfDay < tollerance;
+                var isCheckedOut = DataCheckin.CheckoutAt.HasValue;
+
+                return isToday && isCurrentHour && !isCheckedOut;
+            }
+        }
+
+        public string DetailLink
+        {
+            get
+            {
+                return "http://localhost.com/checkin/get/detail?id=" + DataCheckin.Id;
+            }
+        }
     }
 }

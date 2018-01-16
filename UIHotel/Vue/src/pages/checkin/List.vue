@@ -23,17 +23,17 @@
                                   v-bind:loading="tableData.loading"
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
-                            <td>CHK2012012100011</td>
-                            <td>Big : 201</td>
-                            <td>SSS Name</td>
-                            <td>2017-2-2</td>
-                            <td>2017-2-3</td>
-                            <td>2017-2-2 14:00</td>
-                            <td>
-                                <button class="btn success">Edit</button>
-                                <button class="btn warning">Change Room</button>
-                                <button class="btn error">Check Out</button>
-                            </td>
+                            <tr :class="getClass(props.item)">
+                                <td>{{ props.item.IdCheckin }}</td>
+                                <td>{{ props.item.RoomCategory }} : {{ props.item.RoomNumber }}</td>
+                                <td>{{ props.item.GuestName }}</td>
+                                <td>{{ formatDate(props.item.ArrivalDate) }}</td>
+                                <td>{{ formatDate(props.item.DepartureDate) }}</td>
+                                <td>{{ formatDateTime(props.item.CheckinDate) }}</td>
+                                <td>
+                                    <v-btn color="success" :href="props.item.DetailLink">Detail</v-btn>
+                                </td>
+                            </tr>
                         </template>
                         <template slot="pageText" slot-scope="{ pageStart, pageStop }">
                             From {{ pageStart }} to {{ pageStop }}
@@ -46,6 +46,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import moment from 'moment'
     export default {
         data() {
             return {
@@ -57,12 +58,12 @@
                     loading: false,
                     pagination: {},
                     headers: [
-                        { text: 'ID Checkin', sortable: false, value: 'Category' },
-                        { text: 'Room Number', sortable: false, value: 'Description' },
-                        { text: 'Guest', sortable: false, value: 'Description' },
-                        { text: 'Arrival Date', sortable: false, value: 'Description' },
-                        { text: 'Departure Date', sortable: false, value: 'Description' },
-                        { text: 'Checkin Date', sortable: false, value: 'Description' },
+                        { text: 'ID Checkin', sortable: false, align: 'left', value: 'IdCheckin' },
+                        { text: 'Room Number', sortable: false, align: 'left', value: 'RoomNumber' },
+                        { text: 'Guest', sortable: false, align: 'left', value: 'GuestName' },
+                        { text: 'Arrival Date', sortable: false, align: 'left' },
+                        { text: 'Departure Date', sortable: false, align: 'left' },
+                        { text: 'Checkin Date', sortable: false, align: 'left' },
                         { text: '', sortable: false },
                     ],
                     items: []
@@ -73,12 +74,33 @@
             getData(response) {
                 var data = response.data
 
+                if (data.success) {
+                    this.tableData.items = []
+
+                    data.data.forEach(x => this.tableData.items.push(x))
+                }
                 console.log(data)
             },
             getDataApi() {
                 axios.post('http://localhost.com/checkin/post/getCheckinList', {})
                     .then(this.getData)
                     .catch(e => { })
+            },
+            formatDate(strDate) {
+                var momen = moment(strDate)
+                
+                return momen.format("DD-MM-YYYY")
+            },
+            formatDateTime(strDate) {
+                var momen = moment(strDate)
+
+                return momen.format("DD-MM-YYYY")
+            },
+            getClass(item) {
+                if (item.IsLate)
+                    return ['red', 'lighten-3']
+
+                return []
             }
         },
         mounted() {
