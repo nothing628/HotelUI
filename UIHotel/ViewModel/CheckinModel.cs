@@ -95,5 +95,13 @@ namespace UIHotel.ViewModel
                 return "http://localhost.com/checkin/get/detail?id=" + DataCheckin.Id;
             }
         }
+
+        public string DetailGuest
+        {
+            get
+            {
+                return "http://localhost.com/guest/get/detail?id_number=" + DataGuest.IdNumber;
+            }
+        }
     }
 }

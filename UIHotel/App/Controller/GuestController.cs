@@ -19,6 +19,28 @@ namespace UIHotel.App.Controller
             return View("Guest.List");
         }
 
+        public IResourceHandler detail()
+        {
+            var id_number = Query["id_number"];
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var guest = (from a in model.Guests
+                                 where a.IdNumber == id_number
+                                 select a).FirstOrDefault();
+
+                    return View("Guest.Detail", guest);
+                } catch
+                {
+                    //
+                }
+            }
+
+            return Redirect("http://localhost.com/guest/get/list");
+        }
+
         public IResourceHandler invoice()
         {
             var invoiceId = Query["id"];

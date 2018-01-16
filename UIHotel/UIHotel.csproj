@@ -160,6 +160,7 @@
     <Compile Include="App\Provider\ViewProvider.cs" />
     <Compile Include="App\Router\RouteModel.cs" />
     <Compile Include="App\Router\RouterControl.cs" />
+    <Compile Include="App\Routine\CalcPrice.cs" />
     <Compile Include="App\View\Template\HtmlHelper.cs" />
     <Compile Include="App\View\Template\HtmlTemplateBase.cs" />
     <Compile Include="App\View\ViewCompiler.cs" />
@@ -291,10 +292,13 @@
     <None Include="View\Checkin\Checkout.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="View\Checkin\Detail.cshtml" />
+    <None Include="View\Checkin\Detail.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="View\Checkin\List.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Guest\Detail.cshtml" />
     <None Include="View\Guest\Invoice.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

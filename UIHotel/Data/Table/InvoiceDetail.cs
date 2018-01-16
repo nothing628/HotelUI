@@ -19,17 +19,23 @@ namespace UIHotel.Data.Table
         [StringLength(500)]
         public string Description { get; set; }
 
-        [Column("ammount_in", Order = 3)]
+        [Column("is_system", Order = 3)]
+        public bool IsSystem { get; set; }
+
+        [Column("ammount_in", Order = 4)]
         public decimal AmmountIn { get; set; }
 
-        [Column("ammount_out", Order = 4)]
+        [Column("ammount_out", Order = 5)]
         public decimal AmmountOut { get; set; }
 
         [Required]
-        [Column("create_at", Order = 5)]
+        [Column("create_at", Order = 6)]
         public DateTime CreateAt { get; set; }
 
-        [Column("update_at", Order = 6)]
+        [Column("update_at", Order = 7)]
         public DateTime? UpdateAt { get; set; }
+
+        [ForeignKey("IdInvoice")]
+        public Invoice Invoice { get; set; }
     }
 }

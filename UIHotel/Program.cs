@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using MySql.Data.MySqlClient;
 using UIHotel.Data;
 using UIHotel.Data.Migrations;
 using UIHotel.Data.Seeds;
+using UIHotel.App.Routine;
 
 namespace UIHotel
 {
@@ -26,6 +28,9 @@ namespace UIHotel
             migrator.Run();
             DBSeeder.Seed();
 #else
+            var routine = new CalcPrice();
+            routine.DoWork();
+
             using (AppMain.Main = new AppMain())
             {
                 AppMain.Main.Init();

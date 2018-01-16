@@ -2,6 +2,8 @@
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace UIHotel.Data.Table
 {
@@ -32,6 +34,11 @@ namespace UIHotel.Data.Table
         [Column("update_at", Order = 5)]
         public DateTime? UpdateAt { get; set; }
         
+        public virtual ICollection<InvoiceDetail> Details { get; set; }
+
+        [ForeignKey("IdCheckin")]
+        public Checkin CheckinInfo { get; set; }
+
         public static string GenerateID()
         {
             var CurrDate = DateTime.Now.ToString("yyyyMMdd");
