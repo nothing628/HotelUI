@@ -612,6 +612,7 @@
     <None Include="Vue\src\pages\checkin\Checkin.vue" />
     <None Include="Vue\src\pages\checkin\Checkout.vue" />
     <None Include="Vue\src\pages\checkin\List.vue" />
+    <None Include="Vue\src\pages\guest\List.vue" />
     <None Include="Vue\src\pages\room\Category.vue" />
     <None Include="Vue\src\pages\room\Detail.vue" />
     <None Include="Vue\src\pages\room\List.vue" />

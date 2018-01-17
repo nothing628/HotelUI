@@ -69,5 +69,10 @@ namespace UIHotel.App.Controller
         {
             return View("Guest.Pay");
         }
+
+        public IResourceHandler getGuestList()
+        {
+            return Json(new { success = true, data = new string[] { } });
+        }
     }
 }
