@@ -86,5 +86,23 @@ namespace UIHotel.Data.Table
 
         [Column("update_at", Order = 18)]
         public DateTime? UpdateAt { get; set; }
+
+        [NotMapped]
+        public string FullAddress
+        {
+            get
+            {
+                return this.Address + ", " + this.City + ", " + this.Province + ", " + this.State;
+            }
+        }
+
+        [NotMapped]
+        public string DetailLink
+        {
+            get
+            {
+                return "http://localhost.com/guest/get/detail?id_number=" + this.IdNumber;
+            }
+        }
     }
 }

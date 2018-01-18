@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel.Data;
@@ -72,7 +73,24 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler getGuestList()
         {
-            return Json(new { success = true, data = new string[] { } });
+            var search = jToken.Value<string>("search");
+            var page = jToken.Value<int>("page");
+            var rowPerPage = jToken.Value<int>("rowsPerPage");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var guests = (from a in model.Guests
+                                  orderby a.Fullname ascending
+                                  select a).ToList();
+
+                    return Json(new { success = true, data = guests });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
+            }
         }
     }
 }

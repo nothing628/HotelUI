@@ -17,19 +17,18 @@
                 <v-flex lg12>
                     <v-data-table v-bind:headers="tableData.headers"
                                   v-bind:items="tableData.items"
-                                  v-bind:search="tableData.search"
                                   v-bind:pagination.sync="tableData.pagination"
                                   v-bind:total-items="tableData.totalItems"
                                   v-bind:loading="tableData.loading"
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
-                            <tr :class="getClass(props.item)">
-                                <td>{{ props.item.IdCheckin }}</td>
-                                <td>{{ props.item.RoomCategory }} : {{ props.item.RoomNumber }}</td>
-                                <td>{{ props.item.GuestName }}</td>
-                                <td>{{ formatDate(props.item.ArrivalDate) }}</td>
-                                <td>{{ formatDate(props.item.DepartureDate) }}</td>
-                                <td>{{ formatDateTime(props.item.CheckinDate) }}</td>
+                            <tr>
+                                <td>{{ props.item.IdNumber }}</td>
+                                <td>{{ props.item.Fullname }}</td>
+                                <td>{{ props.item.Phone1 }}/{{ props.item.Phone2 }}</td>
+                                <td>{{ props.item.Email }}</td>
+                                <td>{{ props.item.FullAddress }}</td>
+                                <td></td>
                                 <td>
                                     <v-btn color="success" :href="props.item.DetailLink">Detail</v-btn>
                                 </td>
@@ -54,16 +53,15 @@
                 filters: ['All', 'Checkin', 'Not Checkin'],
                 search: '',
                 tableData: {
-                    search: '',
                     totalItems: 0,
                     loading: false,
                     pagination: {},
                     headers: [
-                        { text: 'ID Checkin', sortable: false, align: 'left', value: 'IdCheckin' },
-                        { text: 'Guest', sortable: false, align: 'left', value: 'GuestName' },
-                        { text: 'Arrival Date', sortable: false, align: 'left' },
-                        { text: 'Departure Date', sortable: false, align: 'left' },
-                        { text: 'Checkin Date', sortable: false, align: 'left' },
+                        { text: 'ID', sortable: false, align: 'left', value: 'IdNumber' },
+                        { text: 'Fullname', sortable: false, align: 'left', value: 'Fullname' },
+                        { text: 'Phone', sortable: false, align: 'left' },
+                        { text: 'Email', sortable: false, align: 'left' },
+                        { text: 'Address', sortable: false, align: 'left' },
                         { text: '', sortable: false },
                     ],
                     items: []
@@ -78,10 +76,18 @@
                     this.tableData.items = []
 
                     data.data.forEach(x => this.tableData.items.push(x))
+                    console.log(data.data)
                 }
+
+                this.tableData.loading = false
             },
             getDataApi() {
-                axios.post('http://localhost.com/guest/post/getGuestList', {})
+                const { page, rowsPerPage } = this.tableData.pagination
+                const search = this.search
+                const filter = this.filter
+                this.tableData.loading = true
+
+                axios.post('http://localhost.com/guest/post/getGuestList', { page, rowsPerPage, search, filter })
                     .then(this.getData)
                     .catch(e => { })
             }
