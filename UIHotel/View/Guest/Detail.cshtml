@@ -1,4 +1,6 @@
-﻿@{
+﻿@using RazorEngine
+@inherits UIHotel.App.View.Template.HtmlTemplateBase<dynamic>
+@{
     Layout = "Layout";
 }
 
@@ -8,6 +10,6 @@
 
 <div class="row todo">
     <div class="col-md-12">
-        //Guest Detail
+        <guest-detail id-number="@Model.Id"></guest-detail>
     </div>
 </div>

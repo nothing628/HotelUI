@@ -32,8 +32,9 @@ namespace UIHotel.App.Controller
                                  where a.IdNumber == id_number
                                  select a).FirstOrDefault();
 
-                    return View("Guest.Detail", guest);
-                } catch
+                    if (guest != null)
+                        return View("Guest.Detail", guest);
+                } catch (Exception ex)
                 {
                     //
                 }
@@ -86,6 +87,27 @@ namespace UIHotel.App.Controller
                                   select a).ToList();
 
                     return Json(new { success = true, data = guests });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
+            }
+        }
+        public IResourceHandler getGuestDetail()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var id = jToken.Value<long>("id");
+                    var guest = (from a in model.Guests
+                                 where a.Id == id
+                                 select a).FirstOrDefault();
+
+                    if (guest != null)
+                        return Json(new { success = true, data = guest });
+                    else
+                        return Json(new { success = false, message = "User not found!" });
                 } catch (Exception ex)
                 {
                     return Json(new { success = false, message = ex.ToString() });
