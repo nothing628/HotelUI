@@ -104,5 +104,23 @@ namespace UIHotel.Data.Table
                 return "http://localhost.com/guest/get/detail?id_number=" + this.IdNumber;
             }
         }
+
+        [NotMapped]
+        public string PhotoUrl
+        {
+            get
+            {
+                return "http://localhost.com/Upload/" + this.PhotoGuest;
+            }
+        }
+
+        [NotMapped]
+        public string DocumentUrl
+        {
+            get
+            {
+                return "http://localhost.com/Upload/" + this.PhotoDoc;
+            }
+        }
     }
 }
