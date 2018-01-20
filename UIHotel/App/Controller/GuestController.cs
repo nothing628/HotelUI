@@ -67,6 +67,11 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/room/get/index");
         }
 
+        public IResourceHandler Edit()
+        {
+            return View("Guest.Edit");
+        }
+
         public IResourceHandler pay()
         {
             return View("Guest.Pay");
@@ -113,6 +118,14 @@ namespace UIHotel.App.Controller
                     return Json(new { success = false, message = ex.ToString() });
                 }
             }
+        }
+        public IResourceHandler udpateGuest()
+        {
+            return Json(new { });
+        }
+        public IResourceHandler deleteGuest()
+        {
+            return Json(new { });
         }
     }
 }

@@ -301,6 +301,7 @@
     <None Include="View\Guest\Detail.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="View\Guest\Edit.cshtml" />
     <None Include="View\Guest\Invoice.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -614,7 +615,9 @@
     <None Include="Vue\src\pages\checkin\Checkin.vue" />
     <None Include="Vue\src\pages\checkin\Checkout.vue" />
     <None Include="Vue\src\pages\checkin\List.vue" />
+    <None Include="Vue\src\pages\guest\Create.vue" />
     <None Include="Vue\src\pages\guest\Detail.vue" />
+    <None Include="Vue\src\pages\guest\Edit.vue" />
     <None Include="Vue\src\pages\guest\List.vue" />
     <None Include="Vue\src\pages\room\Category.vue" />
     <None Include="Vue\src\pages\room\Detail.vue" />
