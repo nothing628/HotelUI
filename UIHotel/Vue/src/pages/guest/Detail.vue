@@ -43,7 +43,7 @@
                                 <v-subheader>Address</v-subheader>
                             </v-flex>
                             <v-flex xs9>
-                                <v-text-field readonly rows="3" v-model="Address"></v-text-field>
+                                <v-text-field readonly multi-line rows="3" v-model="Address"></v-text-field>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
@@ -140,8 +140,6 @@
                     this.Address = data.data.Address
                     this.Birthday = data.data.BirthDay
                     this.PhotoUrl = data.data.PhotoUrl
-
-                    console.log(data.data)
                 }
             },
             getDataApi() {

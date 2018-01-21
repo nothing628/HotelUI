@@ -68,9 +68,14 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/room/get/index");
         }
 
-        public IResourceHandler Edit()
+        public IResourceHandler edit()
         {
             return View("Guest.Edit");
+        }
+
+        public IResourceHandler create()
+        {
+            return View("Guest.Create");
         }
 
         public IResourceHandler pay()

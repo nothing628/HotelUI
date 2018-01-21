@@ -14,7 +14,9 @@ namespace UIHotel.ViewModel
     public class CheckinModel
     {
         public string retStr;
-        public string Return()
+        public string originalName;
+
+        public object OpenDialog()
         {
             var oThread = new Thread(() => {
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -30,10 +32,12 @@ namespace UIHotel.ViewModel
 
                     file.CopyTo(newPath);
 
+                    this.originalName = file.Name;
                     this.retStr = newName;
                 }
                 else
                 {
+                    this.originalName = null;
                     this.retStr = null;
                 }
             });
@@ -42,7 +46,40 @@ namespace UIHotel.ViewModel
             oThread.Start();
             oThread.Join();
 
-            return this.retStr;
+            return new { hashname = this.retStr, filename = this.originalName };
+        }
+
+        public object OpenDialog(string Filter)
+        {
+            var oThread = new Thread(() => {
+                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                var dialog = new OpenFileDialog();
+                dialog.Filter = Filter;
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var file = new FileInfo(dialog.FileName);
+                    var ext = file.Extension;
+                    var newName = Guid.NewGuid() + ext;
+                    var newPath = Path.Combine(basePath, @"Upload\", newName);
+
+                    file.CopyTo(newPath);
+
+                    this.originalName = file.Name;
+                    this.retStr = newName;
+                }
+                else
+                {
+                    this.originalName = null;
+                    this.retStr = null;
+                }
+            });
+
+            oThread.SetApartmentState(ApartmentState.STA);
+            oThread.Start();
+            oThread.Join();
+
+            return new { hashname = this.retStr, filename = this.originalName };
         }
     }
     public class CheckinContainer

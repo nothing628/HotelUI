@@ -14,6 +14,13 @@
                 </v-flex>
             </v-layout>
             <v-layout row>
+                <v-flex md12>
+                    <v-btn color="teal" dark class="mx-0" href="http://localhost.com/guest/get/create">
+                        <v-icon>add</v-icon> Add
+                    </v-btn>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
                 <v-flex lg12>
                     <v-data-table v-bind:headers="tableData.headers"
                                   v-bind:items="tableData.items"
@@ -28,7 +35,6 @@
                                 <td>{{ props.item.Phone1 }}/{{ props.item.Phone2 }}</td>
                                 <td>{{ props.item.Email }}</td>
                                 <td>{{ props.item.FullAddress }}</td>
-                                <td></td>
                                 <td class="justify-center layout px-0">
                                     <v-btn icon class="mx-0" :href="props.item.DetailLink">
                                         <v-icon color="teal">edit</v-icon>

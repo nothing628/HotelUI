@@ -2,6 +2,10 @@
     <div></div>
 </template>
 <script>
+    import axios from 'axios'
+    import moment from 'moment'
+    import country from '../../components/CountryList'
+
     export default {
         data() {
             return {
@@ -10,6 +14,14 @@
         },
         props: {
             IdNumber: { type: String, required: true }
+        },
+        computed: {
+            country_list() {
+                return country.country_list
+            },
+            PhotoUrl() {
+                return ''
+            }
         },
         methods: {
             getData(response) {

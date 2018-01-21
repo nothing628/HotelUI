@@ -8,6 +8,7 @@ import Booking from './pages/booking/Booking'
 import Checkin from './pages/checkin/Checkin'
 import CheckinList from './pages/checkin/List'
 import Checkout from './pages/checkin/Checkout'
+import GuestCreate from './pages/guest/Create'
 import GuestList from './pages/guest/List'
 import GuestEdit from './pages/guest/Edit'
 import GuestDetail from './pages/guest/Detail'
@@ -23,6 +24,7 @@ Vue.component('booking', Booking)
 Vue.component('checkin', Checkin)
 Vue.component('checkin-list', CheckinList)
 Vue.component('checkout', Checkout)
+Vue.component('guest-create', GuestCreate)
 Vue.component('guest-list', GuestList)
 Vue.component('guest-edit', GuestEdit)
 Vue.component('guest-detail', GuestDetail)

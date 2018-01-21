@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -29,11 +30,9 @@ namespace UIHotel.ViewModel
                 BindingFlags.Instance |
                 BindingFlags.OptionalParamBinding, null, null, null);
             MethodInfo method = typeD.GetMethod(Method, typeParams);
+            var ret = method?.Invoke(p, s);
 
-            if (method == null)
-                return null;
-            
-            return method.Invoke(p, s);
+            return JsonConvert.SerializeObject(ret);
         }
 
         public object GetObject(string InstanceName, string Method)
@@ -47,8 +46,9 @@ namespace UIHotel.ViewModel
                 BindingFlags.Instance |
                 BindingFlags.OptionalParamBinding, null, null, null);
             MethodInfo method = typeD.GetMethod(Method);
-
-            return method.Invoke(p, null);
+            var ret = method?.Invoke(p, null);
+            
+            return JsonConvert.SerializeObject(ret);
         }
     }
 }

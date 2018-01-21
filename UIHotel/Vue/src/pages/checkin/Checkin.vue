@@ -2,9 +2,7 @@
     <v-app id="inspire">
         <v-card class="mb-4">
             <v-card-title primary-title>
-                <div>
-                    <h2 class="card-title mb-0">Registration Info</h2>
-                </div>
+                <h2 class="card-title mb-0">Registration Info</h2>
             </v-card-title>
             <div class="card-block">
                 <v-form v-model="registration.valid"  ref="form_registration" lazy-validation>
@@ -99,9 +97,7 @@
                 </v-form>
             </div>
             <v-card-title primary-title>
-                <div>
-                    <h2 class="card-title mb-0">Room Select</h2>
-                </div>
+                <h2 class="card-title mb-0">Room Select</h2>
             </v-card-title>
             <div class="card-block">
                 <v-form v-model="room.valid" ref="form_room" lazy-validation>
@@ -130,9 +126,7 @@
                 </v-form>
             </div>
             <v-card-title primary-title>
-                <div>
-                    <h2 class="card-title mb-0">Guest Info</h2>
-                </div>
+                <h2 class="card-title mb-0">Guest Info</h2>
             </v-card-title>
             <div class="card-block">
                 <v-form v-model="guest.valid" ref="form_guest" lazy-validation>
@@ -155,7 +149,7 @@
                     </v-layout>
                     <v-layout row>
                         <v-flex md2>
-                            <v-subheader class="text--lighten-1">Name*</v-subheader>
+                            <v-subheader class="text--lighten-1">Fullname*</v-subheader>
                         </v-flex>
                         <v-flex md8>
                             <v-text-field type="text"
@@ -465,11 +459,21 @@
                         .catch(e => { })
                 }
             },
+            uploadDocCallback(e) {
+                var objRet = JSON.parse(e)
+
+                this.guest.photo_doc = objRet.hashname
+            },
+            uploadPhotoCallback(e) {
+                var objRet = JSON.parse(e)
+
+                this.guest.photo_guest = objRet.hashname
+            },
             uploadDoc() {
-                window.CS.getObject("CheckinModel", "Return").then(e => this.guest.photo_doc = e).catch(e => { });
+                window.CS.getObject("CheckinModel", "OpenDialog").then(this.uploadDocCallback).catch(e => { });
             },
             uploadPhoto() {
-                window.CS.getObject("CheckinModel", "Return").then(e => this.guest.photo_guest = e).catch(e => { });
+                window.CS.getObject("CheckinModel", "OpenDialog").then(this.uploadPhotoCallback).catch(e => { });
             }
         },
         mounted() {
