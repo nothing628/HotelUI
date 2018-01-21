@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel.Data;
+using UIHotel.Data.Table;
 
 namespace UIHotel.App.Controller
 {
@@ -121,11 +122,70 @@ namespace UIHotel.App.Controller
         }
         public IResourceHandler udpateGuest()
         {
+            var idGuest = jToken.Value<long>("Id");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    //
+                } catch
+                {
+                    //
+                }
+            }
+
             return Json(new { });
         }
         public IResourceHandler deleteGuest()
         {
-            return Json(new { });
+            var idGuest = jToken.Value<long>("Id");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var guest = (from a in model.Guests
+                                 where a.Id == idGuest
+                                 select a).FirstOrDefault();
+
+                    if (guest != null && AllowDelete(guest))
+                    {
+                        //Delete guest
+                        model.Guests.Remove(guest);
+                        model.SaveChanges();
+
+                        return Json(new { success = true, message = "Guest Delete successfuly" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Guest still checkin!" });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+        }
+
+        public bool AllowDelete(Guest guest)
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var Checkin = (from a in model.CheckIn
+                                   where a.IdGuest == guest.Id
+                                   where !a.CheckoutAt.HasValue
+                                   select a).FirstOrDefault();
+
+                    return Checkin == null;
+                } catch
+                {
+                    return false;
+                }
+            }
         }
     }
 }
