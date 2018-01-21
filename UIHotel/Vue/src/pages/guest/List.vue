@@ -37,6 +37,9 @@
                                 <td>{{ props.item.FullAddress }}</td>
                                 <td class="justify-center layout px-0">
                                     <v-btn icon class="mx-0" :href="props.item.DetailLink">
+                                        <v-icon color="primary">visibility</v-icon>
+                                    </v-btn>
+                                    <v-btn icon class="mx-0" :href="props.item.EditLink">
                                         <v-icon color="teal">edit</v-icon>
                                     </v-btn>
                                     <v-btn icon class="mx-0" @click="confirmDelete(props.item)">

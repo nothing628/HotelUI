@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,6 +81,21 @@ namespace UIHotel.ViewModel
             oThread.Join();
 
             return new { hashname = this.retStr, filename = this.originalName };
+        }
+
+        public object OpenFile(string Filename)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string fullname = Path.Combine(path, "Upload", Filename);
+
+            if (File.Exists(fullname))
+            {
+                Process.Start(fullname);
+
+                return true;
+            }
+
+            return false;
         }
     }
     public class CheckinContainer

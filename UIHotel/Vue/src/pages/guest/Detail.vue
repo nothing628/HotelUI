@@ -40,6 +40,28 @@
                         </v-layout>
                         <v-layout row>
                             <v-flex xs3>
+                                <v-subheader>Birth Day</v-subheader>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-text-field v-model="Birthplace" label="Birth Place"></v-text-field>
+                            </v-flex>
+                            <v-flex md4>
+                                <v-text-field v-model="Birthday" prepend-icon="event" readonly></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-subheader>Guest Type</v-subheader>
+                            </v-flex>
+                            <v-flex xs6>
+                                <v-radio-group row v-model="Type">
+                                    <v-radio label="Regular" value="Regular"></v-radio>
+                                    <v-radio label="VIP" value="VIP"></v-radio>
+                                </v-radio-group>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex xs3>
                                 <v-subheader>Address</v-subheader>
                             </v-flex>
                             <v-flex xs9>
@@ -75,6 +97,16 @@
                             </v-flex>
                             <v-flex xs3>
                                 <v-text-field readonly v-model="Phone2" append-icon="phone"></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-subheader>Guest Document</v-subheader>
+                            </v-flex>
+                            <v-flex xs2>
+                                <v-btn fab dark icon small color="primary" @click.stop="openDocument">
+                                    <v-icon dark>cloud_upload</v-icon>
+                                </v-btn>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
@@ -117,6 +149,8 @@
                 Birthday: null,
                 Birthplace: null,
                 PhotoUrl: null,
+                DocUrl: null,
+                Type: null,
             }
         },
         props: {
@@ -139,13 +173,19 @@
                     this.State = data.data.State
                     this.Address = data.data.Address
                     this.Birthday = data.data.BirthDay
+                    this.Birthplace = data.data.BirthPlace
                     this.PhotoUrl = data.data.PhotoUrl
+                    this.DocUrl = data.data.PhotoDoc
+                    this.Type = (data.data.IsVIP) ?'VIP':'Regular'
                 }
             },
             getDataApi() {
                 axios.post('http://localhost.com/guest/post/getGuestDetail', { id: this.IdNumber })
                     .then(this.getData)
                     .catch(e => { })
+            },
+            openDocument() {
+                window.CS.getObjectParam("CheckinModel", "OpenFile", this.DocUrl).then(e => { }).catch(e => { });
             }
         },
         mounted() {

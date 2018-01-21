@@ -386,6 +386,14 @@
         computed: {
             country_list() {
                 return country.country_list
+            },
+            allowedDates() {
+                var max = moment().subtract(18, "y").toISOString().substr(0, 10)
+
+                return {
+                    max: max,
+                    min: null,
+                }
             }
         },
         watch: {
@@ -482,8 +490,7 @@
             this.registration.deposit = this.min_deposit
             this.registration.arr_date = momen.format('YYYY-MM-DD')
             this.registration.dep_date = momen.add(1, 'd').format('YYYY-MM-DD')
-            this.allowedDates.max = moment().subtract(18, "y").toISOString().substr(0, 10)
-            this.guest.birth_day = moment().subtract(18, "y").format('YYYY-MM-DD')
+            this.guest.birth_day = this.allowedDates.max
         }
     }
 </script>

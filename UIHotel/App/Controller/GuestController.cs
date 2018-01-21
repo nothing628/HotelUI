@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UIHotel.Data;
 using UIHotel.Data.Table;
+using System.Globalization;
 
 namespace UIHotel.App.Controller
 {
@@ -24,13 +25,14 @@ namespace UIHotel.App.Controller
         public IResourceHandler detail()
         {
             var id_number = Query["id_number"];
+            var id = Convert.ToInt64(Query["id"]);
 
             using (var model = new DataContext())
             {
                 try
                 {
                     var guest = (from a in model.Guests
-                                 where a.IdNumber == id_number
+                                 where a.IdNumber == id_number || a.Id == id
                                  select a).FirstOrDefault();
 
                     if (guest != null)
@@ -168,6 +170,47 @@ namespace UIHotel.App.Controller
                     }
                 }
                 catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+        }
+        public IResourceHandler storeGuest()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var type = jToken.Value<string>("Type");
+                    var birthDay = jToken.Value<string>("BirthDay");
+                    var BirthDay = DateTime.ParseExact(birthDay, "yyyy-MM-dd", CultureInfo.CurrentCulture);
+                    var guest = new Guest()
+                    {
+                        IdNumber = jToken.Value<string>("ID"),
+                        IdKind = jToken.Value<string>("Fullname"),
+                        Fullname = jToken.Value<string>("IdKind"),
+                        Email = jToken.Value<string>("Email"),
+                        Address = jToken.Value<string>("Address"),
+                        Province = jToken.Value<string>("Province"),
+                        City = jToken.Value<string>("City"),
+                        State = jToken.Value<string>("State"),
+                        PostCode = jToken.Value<string>("PostCode"),
+                        BirthPlace = jToken.Value<string>("BirthPlace"),
+                        BirthDay = BirthDay,
+                        Phone1 = jToken.Value<string>("Phone1"),
+                        Phone2 = jToken.Value<string>("Phone2"),
+                        PhotoDoc = jToken.Value<string>("DocHash"),
+                        PhotoGuest = jToken.Value<string>("PhotoHash"),
+                        IsVIP = (type == "VIP"),
+                        CreateAt = DateTime.Now,
+                        UpdateAt = DateTime.Now,
+                    };
+
+                    model.Guests.Add(guest);
+                    model.SaveChanges();
+
+                    return Json(new { success = true, message = "Success store data" });
+                } catch (Exception ex)
                 {
                     return Json(new { success = false, message = ex.Message });
                 }

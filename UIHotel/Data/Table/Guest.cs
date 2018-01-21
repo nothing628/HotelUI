@@ -101,7 +101,16 @@ namespace UIHotel.Data.Table
         {
             get
             {
-                return "http://localhost.com/guest/get/detail?id_number=" + this.IdNumber;
+                return "http://localhost.com/guest/get/detail?id=" + this.Id;
+            }
+        }
+
+        [NotMapped]
+        public string EditLink
+        {
+            get
+            {
+                return "http://localhost.com/guest/get/edit?id" + this.Id;
             }
         }
 
