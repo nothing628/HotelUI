@@ -155,14 +155,23 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
+                    var guest = (from a in model.Guests
+                                 where a.Id == idGuest
+                                 select a).FirstOrDefault();
+
+                    if (guest == null)
+                    {
+                        return Json(new { success = false, message = "Guest Not Found!" });
+                    }
+
                     //
-                } catch
+
+                    return Json(new { success = true, message = "Success Update" });
+                } catch (Exception ex)
                 {
-                    //
+                    return Json(new { success = true, message = ex.Message });
                 }
             }
-
-            return Json(new { });
         }
         public IResourceHandler deleteGuest()
         {
@@ -207,8 +216,8 @@ namespace UIHotel.App.Controller
                     var guest = new Guest()
                     {
                         IdNumber = jToken.Value<string>("ID"),
-                        IdKind = jToken.Value<string>("Fullname"),
-                        Fullname = jToken.Value<string>("IdKind"),
+                        IdKind = jToken.Value<string>("IdKind"),
+                        Fullname = jToken.Value<string>("Fullname"),
                         Email = jToken.Value<string>("Email"),
                         Address = jToken.Value<string>("Address"),
                         Province = jToken.Value<string>("Province"),

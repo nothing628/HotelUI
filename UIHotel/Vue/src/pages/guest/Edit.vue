@@ -147,7 +147,7 @@
                                         <v-icon>chevron_left</v-icon>
                                         <span>Cancel</span>
                                     </v-btn>
-                                    <v-btn color="success" @click.stop="saveDataApi">
+                                    <v-btn color="success" @click.stop="updateDataApi">
                                         <span>Save</span>
                                         <v-icon right>done_all</v-icon>
                                     </v-btn>
@@ -272,9 +272,10 @@
             },
             updateDataApi() {
                 const model = this.model
+                const data = Object.assign({}, model, { Id: this.id })
 
                 if (this.$refs.form.validate()) {
-                    axios.post('http://localhost.com/guest/post/udpateGuest', model)
+                    axios.post('http://localhost.com/guest/post/udpateGuest', data)
                         .then(this.updateData)
                         .catch(e => { })
                 }
