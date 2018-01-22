@@ -242,7 +242,6 @@
                 const model = this.model
 
                 if (this.$refs.form.validate()) {
-                    console.log(model)
                     axios.post('http://localhost.com/guest/post/storeGuest', model)
                         .then(this.saveData)
                         .catch(e => { })

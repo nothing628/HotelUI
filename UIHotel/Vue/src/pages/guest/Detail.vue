@@ -7,7 +7,7 @@
         <v-container fluid grid-list-md>
             <v-layout row>
                 <v-flex lg3 md3 sm12 xs12>
-                    <img class="img-fluid img-thumbnail rounded" :src="PhotoUrl"/>
+                    <img class="img-fluid img-thumbnail rounded" :src="PhotoUrl" @error="imageError"/>
                 </v-flex>
                 <v-flex lg9 md9 sm12 xs12>
                     <v-form>
@@ -116,7 +116,7 @@
                                         <v-icon>chevron_left</v-icon>
                                         <span>Back</span>
                                     </v-btn>
-                                    <v-btn color="success">
+                                    <v-btn color="success" :href="EditLink">
                                         <span>Edit</span>
                                         <v-icon right>edit</v-icon>
                                     </v-btn>
@@ -148,13 +148,22 @@
                 Address: null,
                 Birthday: null,
                 Birthplace: null,
-                PhotoUrl: null,
+                PhotoHash: null,
                 DocUrl: null,
+                EditLink: null,
                 Type: null,
             }
         },
         props: {
             IdNumber: { required: true, type: String }
+        },
+        computed: {
+            PhotoUrl() {
+                if (this.PhotoHash)
+                    return 'http://localhost.com/Upload/' + this.PhotoHash
+                else
+                    return 'http://localhost.com/images/users.png'
+            }
         },
         methods: {
             getData(response) {
@@ -174,8 +183,9 @@
                     this.Address = data.data.Address
                     this.Birthday = data.data.BirthDay
                     this.Birthplace = data.data.BirthPlace
-                    this.PhotoUrl = data.data.PhotoUrl
+                    this.PhotoHash = data.data.PhotoDoc
                     this.DocUrl = data.data.PhotoDoc
+                    this.EditLink = data.data.EditLink
                     this.Type = (data.data.IsVIP) ?'VIP':'Regular'
                 }
             },
@@ -186,6 +196,9 @@
             },
             openDocument() {
                 window.CS.getObjectParam("CheckinModel", "OpenFile", this.DocUrl).then(e => { }).catch(e => { });
+            },
+            imageError() {
+                this.PhotoHash = ''
             }
         },
         mounted() {

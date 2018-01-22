@@ -72,7 +72,27 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler edit()
         {
-            return View("Guest.Edit");
+            var id_number = Query["id_number"];
+            var id = Convert.ToInt64(Query["id"]);
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var guest = (from a in model.Guests
+                                 where a.IdNumber == id_number || a.Id == id
+                                 select a).FirstOrDefault();
+
+                    if (guest != null)
+                        return View("Guest.Edit", guest);
+                }
+                catch (Exception ex)
+                {
+                    //
+                }
+            }
+
+            return Redirect("http://localhost.com/guest/get/list");
         }
 
         public IResourceHandler create()

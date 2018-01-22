@@ -110,7 +110,7 @@ namespace UIHotel.Data.Table
         {
             get
             {
-                return "http://localhost.com/guest/get/edit?id" + this.Id;
+                return "http://localhost.com/guest/get/edit?id=" + this.Id;
             }
         }
 
