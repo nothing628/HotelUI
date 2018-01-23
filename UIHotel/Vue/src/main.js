@@ -35,6 +35,7 @@ Vue.component('room-price', RoomPrice)
 Vue.component("setting-room", RoomMaintain)
 
 /* eslint-disable no-new */
+Vue.prototype.$bus = new Vue()
 new Vue({
   el: '#app',
   //router,

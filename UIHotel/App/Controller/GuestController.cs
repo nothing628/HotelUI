@@ -116,10 +116,17 @@ namespace UIHotel.App.Controller
                 try
                 {
                     var guests = (from a in model.Guests
+                                  where a.Fullname.StartsWith(search)
                                   orderby a.Fullname ascending
                                   select a).ToList();
 
-                    return Json(new { success = true, data = guests });
+                    var count = guests.Count();
+                    var tmpData = guests
+                        .Skip(rowPerPage * (page - 1))
+                        .Take(rowPerPage)
+                        .ToList();
+
+                    return Json(new { success = true, data = tmpData, total = count });
                 } catch (Exception ex)
                 {
                     return Json(new { success = false, message = ex.ToString() });
@@ -155,6 +162,9 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
+                    var type = jToken.Value<string>("Type");
+                    var birthDay = jToken.Value<string>("BirthDay");
+                    var BirthDay = DateTime.ParseExact(birthDay, "yyyy-MM-dd", CultureInfo.CurrentCulture);
                     var guest = (from a in model.Guests
                                  where a.Id == idGuest
                                  select a).FirstOrDefault();
@@ -164,12 +174,31 @@ namespace UIHotel.App.Controller
                         return Json(new { success = false, message = "Guest Not Found!" });
                     }
 
-                    //
+                    guest.IdNumber = jToken.Value<string>("IdNumber");
+                    guest.IdKind = jToken.Value<string>("IdKind");
+                    guest.Fullname = jToken.Value<string>("Fullname");
+                    guest.Email = jToken.Value<string>("Email");
+                    guest.Address = jToken.Value<string>("Address");
+                    guest.Province = jToken.Value<string>("Province");
+                    guest.City = jToken.Value<string>("City");
+                    guest.State = jToken.Value<string>("State");
+                    guest.PostCode = jToken.Value<string>("PostCode");
+                    guest.BirthPlace = jToken.Value<string>("BirthPlace");
+                    guest.BirthDay = BirthDay;
+                    guest.Phone1 = jToken.Value<string>("Phone1");
+                    guest.Phone2 = jToken.Value<string>("Phone2");
+                    guest.PhotoDoc = jToken.Value<string>("DocHash");
+                    guest.PhotoGuest = jToken.Value<string>("PhotoHash");
+                    guest.IsVIP = (type == "VIP");
+                    guest.UpdateAt = DateTime.Now;
+
+                    model.Entry(guest).State = EntityState.Modified;
+                    model.SaveChanges();
 
                     return Json(new { success = true, message = "Success Update" });
                 } catch (Exception ex)
                 {
-                    return Json(new { success = true, message = ex.Message });
+                    return Json(new { success = false, message = ex.Message });
                 }
             }
         }

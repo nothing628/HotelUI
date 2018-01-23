@@ -67,12 +67,17 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <alert></alert>
     </v-card>
 </template>
 <script>
     import axios from 'axios'
+    import notify from '../../components/Notification'
 
     export default {
+        components: {
+            'alert': notify
+        },
         data() {
             return {
                 dialog: false,
@@ -96,16 +101,26 @@
                 }
             }
         },
+        watch: {
+            search() {
+                this.getDataApi()
+            },
+            filter() {
+                this.$bus.$emit('alert-show', {text:'Success upload~', color: 'success' })
+            }
+        },
         methods: {
             deleteData(response) {
                 var data = response.data
 
                 if (data.success) {
                     // Notification
+                    this.$bus.$emit('alert-show', { text: 'Success Delete Data', color: 'success' })
                 } else {
                     // Notification
+                    this.$bus.$emit('alert-show', { text: data.message, color: 'error' })
                 }
-                console.log(data)
+
                 this.getDataApi()
             },
             deleteItem() {
@@ -128,6 +143,8 @@
                     this.tableData.items = []
 
                     data.data.forEach(x => this.tableData.items.push(x))
+
+                    this.tableData.totalItems = data.total
                 }
 
                 this.tableData.loading = false

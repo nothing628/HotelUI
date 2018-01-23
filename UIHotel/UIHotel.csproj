@@ -619,6 +619,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Vue\src\components\Notification.vue" />
     <None Include="Vue\src\pages\booking\Booking.vue" />
     <None Include="Vue\src\pages\checkin\Checkin.vue" />
     <None Include="Vue\src\pages\checkin\Checkout.vue" />
