@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Data;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
@@ -20,6 +21,24 @@ namespace UIHotel.App.Controller
         #region Views
         public IResourceHandler index()
         {
+            var roomId = Query["roomId"];
+
+            if (roomId != null)
+            {
+                using (var model = new DataContext())
+                {
+                    var id = Convert.ToInt32(roomId);
+                    var room = (from a in model.Rooms.Include(x => x.Category).Include(x => x.Status)
+                                where a.Id == id
+                                select a).FirstOrDefault();
+
+                    if (room != null)
+                    {
+                        return View("Checkin.Checkin", room);
+                    }
+                }
+            }
+
             return View("Checkin.Checkin");
         }
 
@@ -198,8 +217,8 @@ namespace UIHotel.App.Controller
                     if (room != null)
                     {
                         //Change room status to Occupied
-                        room.Status = 3;
-                        model.Entry(room).State = System.Data.Entity.EntityState.Modified;
+                        room.IdStatus = 3;
+                        model.Entry(room).State = EntityState.Modified;
                     }
 
                     //Add checkin record
@@ -273,7 +292,7 @@ namespace UIHotel.App.Controller
                     var result = (from a in model.Rooms
                                   join b in model.RoomCategory on a.IdCategory equals b.Id into c
                                   from d in c
-                                  join e in model.RoomStatus on a.Status equals e.Id into f
+                                  join e in model.RoomStatus on a.IdStatus equals e.Id into f
                                   from g in f
                                   where g.Id == 1 || g.Id == 2
                                   where a.RoomNumber.Contains(search) || d.Category.Contains(search)

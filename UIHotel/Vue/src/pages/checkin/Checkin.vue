@@ -142,7 +142,7 @@
                                           v-model="guest.id_number"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark icon small color="primary">
+                            <v-btn fab dark icon small color="primary" @click.stop="selectGuest">
                                 <v-icon dark>search</v-icon>
                             </v-btn>
                         </v-flex>
@@ -314,10 +314,6 @@
         },
         data() {
             return {
-                allowedDates: {
-                    min: null,
-                    max: null
-                },
                 modal1: false,
                 modal2: false,
                 modal3: false,
@@ -381,7 +377,9 @@
             }
         },
         props: {
-            min_deposit: { type: Number, default: 50000 }
+            min_deposit: { type: Number, default: 50000 },
+            roomId: { type: String, default: null },
+            roomName: { type: String, default: null }
         },
         computed: {
             country_list() {
@@ -401,8 +399,6 @@
                 handler() {
                     if (this.registration.deposit < this.min_deposit)
                         this.registration.deposit = this.min_deposit
-
-                    console.log(this.registration.deposit)
                 }
             },
             dialog_room: {
@@ -411,23 +407,21 @@
                         var room = this.dialog_room.room
                         var roomNumber = ""
 
-                        if ("Id" in room) {
-                            this.room.room_id = room.Id
-                        }
+                        this.room.room_id = room.Id || null
 
-                        if ("RoomCategory" in room) {
+                        if ("RoomCategory" in room)
                             roomNumber += room.RoomCategory + ": "
-                        }
 
-                        if ("RoomNumber" in room) {
+                        if ("RoomNumber" in room)
                             roomNumber += room.RoomNumber + ", Floor "
-                        }
 
-                        if ("RoomFloor" in room) {
+                        if ("RoomFloor" in room)
                             roomNumber += room.RoomFloor
-                        }
 
-                        this.room.room_number = roomNumber
+                        if (roomNumber != "")
+                            this.room.room_number = roomNumber
+
+                        console.log(this.room)
                     }
                 },
                 deep: true
@@ -439,6 +433,9 @@
             },
             selectBook() {
                 this.dialog_book.show = !this.dialog_book.show
+            },
+            selectGuest() {
+                this.dialog_guest.show = !this.dialog_guest.show
             },
             checkinData(response) {
                 var data = response.data
@@ -469,7 +466,7 @@
             },
             uploadDocCallback(e) {
                 var objRet = JSON.parse(e)
-
+                //Big: 201, Floor 1
                 this.guest.photo_doc = objRet.hashname
             },
             uploadPhotoCallback(e) {
@@ -491,6 +488,9 @@
             this.registration.arr_date = momen.format('YYYY-MM-DD')
             this.registration.dep_date = momen.add(1, 'd').format('YYYY-MM-DD')
             this.guest.birth_day = this.allowedDates.max
+
+            this.room.room_id = this.roomId || ""
+            this.room.room_number = this.roomName || ""
         }
     }
 </script>

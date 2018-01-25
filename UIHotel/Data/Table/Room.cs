@@ -25,15 +25,26 @@ namespace UIHotel.Data.Table
         public short RoomFloor { get; set; } = 1;
 
         [Column("status", Order = 4)]
-        public int Status { get; set; }
+        public int IdStatus { get; set; }
 
         [ForeignKey("IdCategory")]
         public RoomCategory Category { get; set; }
+
+        [ForeignKey("IdStatus")]
+        public RoomStatus Status { get; set; }
         
         [NotMapped]
-        public string RoomStatus { get; set; }
+        public string RoomStatus { get => Status.Status; }
 
         [NotMapped]
-        public string RoomCategory { get; set; }
+        public string RoomCategory { get => Category.Category; }
+
+        public string RoomName
+        {
+            get
+            {
+                return RoomCategory + ": " + RoomNumber + ", Floor " + RoomFloor;
+            }
+        }
     }
 }

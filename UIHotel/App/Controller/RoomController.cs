@@ -77,7 +77,7 @@ namespace UIHotel.App.Controller
                 var iQuery = (from a in model.Rooms
                               join b in model.RoomCategory on a.IdCategory equals b.Id into c
                               from f in c
-                              join d in model.RoomStatus on a.Status equals d.Id into e
+                              join d in model.RoomStatus on a.IdStatus equals d.Id into e
                               from g in e
                               where (search != null) ? a.RoomNumber.StartsWith(search) : true
                               orderby a.RoomNumber ascending
@@ -108,7 +108,7 @@ namespace UIHotel.App.Controller
                 RoomNumber = jToken.Value<string>("roomNumber"),
                 RoomFloor = jToken.Value<short>("roomFloor"),
                 IdCategory = jToken.Value<long>("roomCategory"),
-                Status = 1
+                IdStatus = 1
             };
 
             using (var model = new DataContext())
@@ -170,7 +170,7 @@ namespace UIHotel.App.Controller
                     var roomId = Convert.ToInt64(jToken.Value<string>("id"));
                     var room = (from a in model.Rooms
                                 where a.Id == roomId
-                                where a.Status == 1
+                                where a.IdStatus == 1
                                 select a).FirstOrDefault();
 
                     if (room != null)
@@ -324,7 +324,7 @@ namespace UIHotel.App.Controller
                     var result = (from a in rooms
                                   join b in categories on a.IdCategory equals b.Id into c
                                   from d in c
-                                  join e in status on a.Status equals e.Id into f
+                                  join e in status on a.IdStatus equals e.Id into f
                                   from g in f
                                   select new RoomModel()
                                   {
@@ -474,7 +474,7 @@ namespace UIHotel.App.Controller
                     var room = (from a in model.Rooms
                                 join b in model.RoomCategory on a.IdCategory equals b.Id into c
                                 from d in c
-                                join e in model.RoomStatus on a.Status equals e.Id into f
+                                join e in model.RoomStatus on a.IdStatus equals e.Id into f
                                 from g in f
                                 where a.Id == Id
                                 select new { a = a, b = d, c = g }).FirstOrDefault();
