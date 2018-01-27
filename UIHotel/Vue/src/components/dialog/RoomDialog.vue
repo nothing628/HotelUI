@@ -18,13 +18,12 @@
                               v-bind:hide-actions="true"
                               class="elevation-1">
                     <template slot="items" slot-scope="props">
-                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomCategory }}</td>
-                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomNumber }}</td>
-                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomFloor }}</td>
-                        <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.Status }}</td>
-                        <td class="text-xs-center">
-                            <v-btn dark color="success" @click.stop="setValue(props.item)">Select</v-btn>
-                        </td>
+                        <tr style="cursor:pointer;" @click="setValue(props.item)">
+                            <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomCategory }}</td>
+                            <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomNumber }}</td>
+                            <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.RoomFloor }}</td>
+                            <td class="text-xs-center" :style="getStyle(props.item)">{{ props.item.Status }}</td>
+                        </tr>
                     </template>
                     <template slot="pageText" slot-scope="{ pageStart, pageStop }">
                         From {{ pageStart }} to {{ pageStop }}
@@ -51,10 +50,10 @@
                         rowsPerPage: -1
                     },
                     headers: [
-                        { text: 'TYPE', sortable: false },
-                        { text: 'NUMBER', sortable: false },
-                        { text: 'FLOOR', sortable: false },
-                        { text: '', sortable: false },
+                        { text: 'TYPE', sortable: false, align: 'center' },
+                        { text: 'NUMBER', sortable: false, align: 'center' },
+                        { text: 'FLOOR', sortable: false, align: 'center' },
+                        { text: 'Status', sortable: false, align: 'center' },
                     ],
                     items: []
                 },
