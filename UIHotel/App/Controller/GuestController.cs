@@ -86,7 +86,7 @@ namespace UIHotel.App.Controller
                     if (guest != null)
                         return View("Guest.Edit", guest);
                 }
-                catch (Exception ex)
+                catch
                 {
                     //
                 }
@@ -115,12 +115,22 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
-                    var guests = (from a in model.Guests
+                    var guests = new List<Guest>();
+
+                    if (search != "")
+                    {
+                        guests = (from a in model.Guests
                                   where a.Fullname.StartsWith(search)
                                   orderby a.Fullname ascending
                                   select a).ToList();
+                    } else
+                    {
+                        guests = (from a in model.Guests
+                                  orderby a.Fullname ascending
+                                  select a).ToList();
+                    }
 
-                    var count = guests.Count();
+                    var count = guests.Count;
                     var tmpData = guests
                         .Skip(rowPerPage * (page - 1))
                         .Take(rowPerPage)

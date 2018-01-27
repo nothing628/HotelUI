@@ -134,7 +134,15 @@
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">ID Number*</v-subheader>
                         </v-flex>
-                        <v-flex md6>
+                        <v-flex md2>
+                            <v-text-field type="text"
+                                          label="Enter ID Kind"
+                                          single-line
+                                          :rules="rules.id_number"
+                                          v-model="guest.id_kind"></v-text-field>
+                        </v-flex>
+                        <v-flex md1></v-flex>
+                        <v-flex md4>
                             <v-text-field type="text"
                                           label="Enter ID Number"
                                           single-line
@@ -287,7 +295,7 @@
 
                 <v-layout row class="mb-3">
                     <v-flex md6>
-                        <v-btn color="error">Cancel</v-btn>
+                        <v-btn color="error" href="http://localhost.com/room/get/index">Cancel</v-btn>
                         <v-btn color="success" dark @click.stop="checkin">Checkin <v-icon dark right>check_circle</v-icon></v-btn>
                     </v-flex>
                 </v-layout>
@@ -337,6 +345,8 @@
                 },
                 guest: {
                     valid: false,
+                    id: null,
+                    id_kind: null,
                     id_number: null,
                     name: null,
                     type: 'Regular',
@@ -407,7 +417,7 @@
                         var room = this.dialog_room.room
                         var roomNumber = ""
 
-                        this.room.room_id = room.Id || null
+                        this.room.room_id = room.Id || this.room.room_id
 
                         if ("RoomCategory" in room)
                             roomNumber += room.RoomCategory + ": "
@@ -420,8 +430,31 @@
 
                         if (roomNumber != "")
                             this.room.room_number = roomNumber
+                    }
+                },
+                deep: true
+            },
+            dialog_guest: {
+                handler() {
+                    if ('guest' in this.dialog_guest) {
+                        var guest = this.dialog_guest.guest
 
-                        console.log(this.room)
+                        this.guest.id = guest.Id
+                        this.guest.id_kind = guest.IdKind
+                        this.guest.id_number = guest.IdNumber
+                        this.guest.name = guest.Fullname
+                        this.guest.type = (guest.IsVIP) ? 'VIP' : 'Regular'
+                        this.guest.birth_place = guest.BirthPlace
+                        this.guest.address.state = guest.State
+                        this.guest.address.province = guest.Province
+                        this.guest.address.city = guest.City
+                        this.guest.address.postcode = guest.PostCode
+                        this.guest.address.note = guest.Address
+                        this.guest.email = guest.Email
+                        this.guest.phone.phone1 = guest.Phone1
+                        this.guest.phone.phone2 = guest.Phone2
+                        this.guest.photo_doc = guest.PhotoDoc
+                        this.guest.photo_guest = guest.PhotoGuest
                     }
                 },
                 deep: true

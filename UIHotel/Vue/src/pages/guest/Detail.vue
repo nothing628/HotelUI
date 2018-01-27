@@ -183,10 +183,10 @@
                     this.Address = data.data.Address
                     this.Birthday = data.data.BirthDay
                     this.Birthplace = data.data.BirthPlace
-                    this.PhotoHash = data.data.PhotoDoc
+                    this.PhotoHash = data.data.PhotoGuest
                     this.DocUrl = data.data.PhotoDoc
                     this.EditLink = data.data.EditLink
-                    this.Type = (data.data.IsVIP) ?'VIP':'Regular'
+                    this.Type = (data.data.IsVIP) ? 'VIP' : 'Regular'
                 }
             },
             getDataApi() {

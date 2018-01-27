@@ -80,6 +80,8 @@
                 handler() {
                     if ('show' in this.value)
                         this.dataValue.show = this.value.show
+                    if ('room' in this.value)
+                        this.dataValue.room = this.value.room
                 },
                 deep: true
             }
