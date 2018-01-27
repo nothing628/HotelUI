@@ -68,7 +68,7 @@ namespace UIHotel.App.Routine
                         }
 
                         pointDate = pointDate.AddDays(1.0d);
-                    } while (pointDate == todayDate);
+                    } while (pointDate != todayDate);
 
                     trans.Commit();
                 } catch
