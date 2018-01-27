@@ -150,8 +150,11 @@
                                           v-model="guest.id_number"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark icon small color="primary" @click.stop="selectGuest">
+                            <v-btn fab dark icon small color="primary" v-if="guest.id == null" @click.stop="selectGuest">
                                 <v-icon dark>search</v-icon>
+                            </v-btn>
+                            <v-btn fab dark icon small color="error" v-else @click.stop="clearGuest">
+                                <v-icon dark>clear</v-icon>
                             </v-btn>
                         </v-flex>
                     </v-layout>
@@ -346,7 +349,7 @@
                 guest: {
                     valid: false,
                     id: null,
-                    id_kind: null,
+                    id_kind: 'KTP',
                     id_number: null,
                     name: null,
                     type: 'Regular',
@@ -438,6 +441,7 @@
                 handler() {
                     if ('guest' in this.dialog_guest) {
                         var guest = this.dialog_guest.guest
+                        var birth = moment(guest.BirthDay)
 
                         this.guest.id = guest.Id
                         this.guest.id_kind = guest.IdKind
@@ -445,6 +449,7 @@
                         this.guest.name = guest.Fullname
                         this.guest.type = (guest.IsVIP) ? 'VIP' : 'Regular'
                         this.guest.birth_place = guest.BirthPlace
+                        this.guest.birth_day = birth.format("YYYY-MM-DD")
                         this.guest.address.state = guest.State
                         this.guest.address.province = guest.Province
                         this.guest.address.city = guest.City
@@ -469,6 +474,25 @@
             },
             selectGuest() {
                 this.dialog_guest.show = !this.dialog_guest.show
+            },
+            clearGuest() {
+                this.guest.id = null
+                this.guest.id_kind = 'KTP'
+                this.guest.id_number = null
+                this.guest.name = null
+                this.guest.type = 'Regular'
+                this.guest.birth_place = null
+                this.guest.birth_day = this.allowedDates.max
+                this.guest.address.state = null
+                this.guest.address.province = null
+                this.guest.address.city = null
+                this.guest.address.postcode = null
+                this.guest.address.note = null
+                this.guest.email = null
+                this.guest.phone.phone1 = null
+                this.guest.phone.phone2 = null
+                this.guest.photo_doc = null
+                this.guest.photo_guest = null
             },
             checkinData(response) {
                 var data = response.data
