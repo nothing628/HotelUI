@@ -31,7 +31,9 @@
                                 <td>{{ formatDate(props.item.DepartureDate) }}</td>
                                 <td>{{ formatDateTime(props.item.CheckinDate) }}</td>
                                 <td>
-                                    <v-btn color="success" :href="props.item.DetailLink">Detail</v-btn>
+                                    <v-btn icon class="mx-0" :href="props.item.DetailLink">
+                                        <v-icon color="teal">visibility</v-icon>
+                                    </v-btn>
                                 </td>
                             </tr>
                         </template>
@@ -79,7 +81,6 @@
 
                     data.data.forEach(x => this.tableData.items.push(x))
                 }
-                console.log(data)
             },
             getDataApi() {
                 axios.post('http://localhost.com/checkin/post/getCheckinList', {})
