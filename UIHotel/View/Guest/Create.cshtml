@@ -4,12 +4,14 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>New Guest</h1>
-</header>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>New Guest</h1>
+            </header>
 
-<div class="row todo">
-    <div class="col-md-12">
-        <guest-create></guest-create>
-    </div>
-</div>
+            <guest-create></guest-create>
+        </v-flex>
+    </v-layout>
+</v-container>

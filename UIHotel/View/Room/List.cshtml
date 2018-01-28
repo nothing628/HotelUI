@@ -2,13 +2,15 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>Room Status</h1>
-    <small>Check for room status</small>
-</header>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Room Status</h1>
+                <small>Check for room status</small>
+            </header>
 
-<div class="row todo">
-    <div class="col-md-12">
-        <room-list></room-list>
-    </div>
-</div>
+            <room-list></room-list>
+        </v-flex>
+    </v-layout>
+</v-container>

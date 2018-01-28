@@ -18,6 +18,10 @@
     background-size: cover;
 }
 
+.container {
+    margin: inherit;
+}
+
 .toolbar {
     margin-bottom: 5px;
 }

@@ -4,19 +4,21 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>Check In Registration</h1>
-</header>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Check In Registration</h1>
+            </header>
 
-<div class="row todo">
-    <div class="col-md-12">
-        @if (Model != null)
-        {
-            <checkin room-id="@Model.Id" room-name="@Model.RoomName"></checkin>
-        } else
-        {
-            <checkin></checkin>
-        }
-    </div>
-</div>
-
+            @if (Model != null)
+            {
+                <checkin room-id="@Model.Id" room-name="@Model.RoomName"></checkin>
+            }
+            else
+            {
+                <checkin></checkin>
+            }
+        </v-flex>
+    </v-layout>
+</v-container>

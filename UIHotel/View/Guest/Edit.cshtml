@@ -4,12 +4,14 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>Guest Edit</h1>
-</header>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Guest Edit</h1>
+            </header>
 
-<div class="row todo">
-    <div class="col-md-12">
-        <guest-edit id="@Model.Id"></guest-edit>
-    </div>
-</div>
+            <guest-edit id="@Model.Id"></guest-edit>
+        </v-flex>
+    </v-layout>
+</v-container>
