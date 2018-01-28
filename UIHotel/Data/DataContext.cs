@@ -46,16 +46,14 @@ namespace UIHotel.Data
             base.OnModelCreating(modelBuilder);
 
             //Table Relation One to One
-            modelBuilder.Entity<Invoice>().HasKey(x => x.IdCheckin);
+            modelBuilder.Entity<Invoice>().HasKey(x => x.Id);
             modelBuilder.Entity<InvoiceDetail>()
                 .HasRequired<Invoice>(s => s.Invoice)
                 .WithMany(g => g.Details)
                 .HasForeignKey<string>(s => s.IdInvoice);
-            //modelBuilder.Entity<Invoice>()
-            //    .HasMany<InvoiceDetail>(x => x.Details)
-            //    .WithRequired(x => x.Invoice)
-            //    .HasForeignKey<string>(x => x.IdInvoice);
-            modelBuilder.Entity<Checkin>().HasOptional(x => x.Invoice).WithRequired(x => x.CheckinInfo);
+
+            modelBuilder.Entity<Invoice>().HasOptional(x => x.CheckinInfo).WithRequired(x => x.Invoice);
+            modelBuilder.Entity<Checkin>().HasRequired(x => x.Invoice).WithOptional(x => x.CheckinInfo);
         }
     }
 }
