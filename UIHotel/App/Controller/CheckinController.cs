@@ -65,7 +65,7 @@ namespace UIHotel.App.Controller
                                    select a).FirstOrDefault();
 
                     if (checkin != null)
-                        return View("Checkin.Detail");
+                        return View("Checkin.Detail", checkin);
                 } catch 
                 {
                     //
@@ -333,6 +333,33 @@ namespace UIHotel.App.Controller
                 {
                     return Json(new { success = false, message = ex.Message });
                 }
+            }
+        }
+
+        public IResourceHandler getCheckinDetail()
+        {
+            var checkId = jToken.Value<string>("id");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var checkin = (from a in model.CheckIn
+                                   .Include(x => x.Guest)
+                                   .Include(x => x.Room)
+                                   .Include(x => x.Room.Status)
+                                   .Include(x => x.Room.Category)
+                                   where a.Id == checkId
+                                   select a).FirstOrDefault();
+
+                    if (checkin != null)
+                        return Json(new { success = true, data = checkin });
+                    else
+                        return Json(new { success = false, message = "Checkin Not Found" });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }   
             }
         }
         #endregion

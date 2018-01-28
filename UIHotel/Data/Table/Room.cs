@@ -39,11 +39,21 @@ namespace UIHotel.Data.Table
         [NotMapped]
         public string RoomCategory { get => Category.Category; }
 
+        [NotMapped]
         public string RoomName
         {
             get
             {
                 return RoomCategory + ": " + RoomNumber + ", Floor " + RoomFloor;
+            }
+        }
+
+        [NotMapped]
+        public string DetailLink
+        {
+            get
+            {
+                return string.Format("http://localhost.com/room/get/detail?roomId={0}", Id);
             }
         }
     }
