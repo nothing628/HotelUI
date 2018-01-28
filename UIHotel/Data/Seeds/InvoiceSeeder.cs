@@ -20,6 +20,7 @@ namespace UIHotel.Data.Seeds
             context.InvoiceDetails.Add(new InvoiceDetail()
             {
                 IdInvoice = "TEST_INVOICE",
+                TransactionDate = DateTime.Now,
                 AmmountIn = 100000,
                 Description = "Deposito",
                 CreateAt = DateTime.Now
@@ -28,6 +29,7 @@ namespace UIHotel.Data.Seeds
             context.InvoiceDetails.Add(new InvoiceDetail()
             {
                 IdInvoice = "TEST_INVOICE",
+                TransactionDate = DateTime.Now,
                 AmmountOut = 20000,
                 Description = "Room Invoice",
                 CreateAt = DateTime.Now

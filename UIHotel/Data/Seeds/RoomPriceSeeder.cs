@@ -41,7 +41,7 @@ namespace UIHotel.Data.Seeds
             context.DayEffect.Add(Holiday);
             context.SaveChanges();
 
-            for (var i = currDate; i < new DateTime(currYear + 1, 1, 1);)
+            for (var i = new DateTime(currYear, 1, 1); i < new DateTime(currYear + 1, 1, 1);)
             {
                 var cycle = new DayCycle()
                 {
@@ -66,7 +66,7 @@ namespace UIHotel.Data.Seeds
                     {
                         IdCategory = category.Id,
                         IdEffect = effect.Id,
-                        Price = 0
+                        Price = (new Random().Next(100, 200)) * 1000
                     };
 
                     context.RoomPrice.Add(price);

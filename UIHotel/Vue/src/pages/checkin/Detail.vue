@@ -159,10 +159,27 @@
                 axios.post('http://localhost.com/checkin/post/getCheckinDetail', { id })
                     .then(this.getData)
                     .catch(e => { })
+            },
+            getInvoice(response) {
+                var data = response.data
+
+                if (data.success) {
+                    var realdata = data.data
+
+                    console.log(realdata)
+                }
+            },
+            getInvoiceApi() {
+                const id = this.checkid
+
+                axios.post('http://localhost.com/checkin/post/getCheckinInvoice', { id })
+                    .then(this.getInvoice)
+                    .catch(e => { })
             }
         },
         mounted() {
             this.getDataApi()
+            this.getInvoiceApi()
         }
     }
 </script>

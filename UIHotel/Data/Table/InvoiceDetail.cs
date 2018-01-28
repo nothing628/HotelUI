@@ -22,20 +22,24 @@ namespace UIHotel.Data.Table
         [Column("is_system", Order = 3)]
         public bool IsSystem { get; set; }
 
-        [Column("ammount_in", Order = 4)]
+        [Required]
+        [Column("date_transaction", Order = 4)]
+        [DataType(DataType.Date)]
+        public DateTime TransactionDate { get; set; }
+
+        [Column("ammount_in", Order = 5)]
         public decimal AmmountIn { get; set; }
 
-        [Column("ammount_out", Order = 5)]
+        [Column("ammount_out", Order = 6)]
         public decimal AmmountOut { get; set; }
 
         [Required]
-        [Column("create_at", Order = 6)]
+        [Column("create_at", Order = 7)]
         public DateTime CreateAt { get; set; }
 
-        [Column("update_at", Order = 7)]
+        [Column("update_at", Order = 8)]
         public DateTime? UpdateAt { get; set; }
-
-        [ForeignKey("IdInvoice")]
-        public Invoice Invoice { get; set; }
+        
+        public virtual Invoice Invoice { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace UIHotel.App.Routine
 
                     foreach (var invoice in invoices)
                         this.CalculateInvoice(invoice);
-                } catch
+                } catch (Exception ex)
                 {
                     //
                 }
@@ -43,9 +43,10 @@ namespace UIHotel.App.Routine
 
                     do
                     {
+                        var cnt = invoice.Details.Count;
                         var detail = (from a in invoice.Details
                                       where a.IsSystem
-                                      where a.CreateAt.Date == pointDate
+                                      where a.TransactionDate == pointDate
                                       select a).FirstOrDefault();
 
                         if (detail == null)
@@ -55,6 +56,7 @@ namespace UIHotel.App.Routine
                             var newDetail = new InvoiceDetail()
                             {
                                 IsSystem = true,
+                                TransactionDate = pointDate,
                                 CreateAt = DateTime.Now,
                                 UpdateAt = DateTime.Now,
                                 IdInvoice = invoice.Id,

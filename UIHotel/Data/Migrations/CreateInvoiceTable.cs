@@ -31,6 +31,7 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("id_invoice").AsString(25).NotNullable()
                 .WithColumn("description").AsString(500).Nullable()
                 .WithColumn("is_system").AsBoolean().WithDefaultValue(false)
+                .WithColumn("date_transaction").AsDate().NotNullable()
                 .WithColumn("ammount_in").AsDecimal().WithDefaultValue(0)
                 .WithColumn("ammount_out").AsDecimal().WithDefaultValue(0)
                 .WithColumn("create_at").AsDateTime().NotNullable()

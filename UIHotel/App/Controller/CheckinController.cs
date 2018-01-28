@@ -80,7 +80,7 @@ namespace UIHotel.App.Controller
             return View("Booking.List");
         }
 
-        public IResourceHandler listCheckin()
+        public IResourceHandler list()
         {
             return View("Checkin.List");
         }
@@ -242,6 +242,7 @@ namespace UIHotel.App.Controller
             {
                 IdInvoice = inv.Id,
                 AmmountIn = deposit,
+                TransactionDate = DateTime.Now,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 Description = "Deposit",
@@ -361,6 +362,29 @@ namespace UIHotel.App.Controller
                 {
                     return Json(new { success = false, message = ex.ToString() });
                 }   
+            }
+        }
+
+        public IResourceHandler getCheckinInvoice()
+        {
+            var id = jToken.Value<string>("id");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var invoices = (from a in model.Invoices.Include(x => x.Details)
+                                    where a.IdCheckin == id
+                                    select a).FirstOrDefault();
+
+                    if (invoices != null)
+                        return Json(new { success = true, data = invoices });
+                    else
+                        return Json(new { success = false, message = "Invoice not found!" });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
             }
         }
         #endregion
