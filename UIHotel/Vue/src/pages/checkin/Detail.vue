@@ -8,7 +8,7 @@
             <v-container fluid grid-list-md>
                 <v-layout row>
                     <v-flex lg3 md3 sm12 xs12>
-                        <img style="max-height: 170px;" class="img-fluid img-thumbnail rounded" :src="PhotoUrl" @error="imageError" />
+                        <img style="max-height: 190px;" class="img-fluid img-thumbnail rounded" :src="PhotoUrl" @error="imageError" />
                     </v-flex>
                     <v-flex lg9 md9 sm12 xs12>
                         <v-layout row>
@@ -17,6 +17,14 @@
                             </v-flex>
                             <v-flex xs4>
                                 <v-subheader>{{ checkin.Id }}</v-subheader>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-subheader>Invoice Number</v-subheader>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-subheader>{{ checkin.InvoiceId }}</v-subheader>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
@@ -94,6 +102,7 @@
                     RoomName: null,
                     CheckinAt: null,
                     DepartureAt: null,
+                    InvoiceId: null,
                     Note: null,
                 }
             }
@@ -123,6 +132,7 @@
                     this.checkin.CheckinAt = check.CheckinAt
                     this.checkin.DepartureAt = check.DepartureAt
                     this.checkin.Note = check.Note
+                    this.checkin.InvoiceId = check.Invoice.Id
                     this.checkin.Fullname = check.Guest.Fullname
                     this.checkin.PhotoGuest = check.Guest.PhotoGuest
                     this.checkin.DetailGuest = check.Guest.DetailLink

@@ -66,7 +66,7 @@ namespace UIHotel.App.Controller
 
                     if (checkin != null)
                         return View("Checkin.Detail", checkin);
-                } catch 
+                } catch (Exception ex)
                 {
                     //
                 }
@@ -349,6 +349,7 @@ namespace UIHotel.App.Controller
                                    .Include(x => x.Room)
                                    .Include(x => x.Room.Status)
                                    .Include(x => x.Room.Category)
+                                   .Include(x => x.Invoice)
                                    where a.Id == checkId
                                    select a).FirstOrDefault();
 

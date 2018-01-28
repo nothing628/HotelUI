@@ -59,6 +59,8 @@ namespace UIHotel.Data.Table
         [ForeignKey("IdGuest")]
         public Guest Guest { get; set; }
         
+        public virtual Invoice Invoice { get; set; }
+
         public static string GenerateID()
         {
             using (var context = new DataContext())

@@ -44,6 +44,10 @@ namespace UIHotel.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Table Relation One to One
+            modelBuilder.Entity<Invoice>().HasKey(x => x.IdCheckin);
+            modelBuilder.Entity<Checkin>().HasOptional(x => x.Invoice).WithRequired(x => x.CheckinInfo);
         }
     }
 }

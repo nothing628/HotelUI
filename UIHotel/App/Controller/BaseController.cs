@@ -103,7 +103,11 @@ namespace UIHotel.App.Controller
         {
             try
             {
-                var dataJson = JsonConvert.SerializeObject(data, Formatting.None);
+                var config = new JsonSerializerSettings();
+
+                config.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+                var dataJson = JsonConvert.SerializeObject(data, Formatting.None, config);
                 var retValue = ResourceHandler.FromString(dataJson);
 
                 retValue.MimeType = "application/json";

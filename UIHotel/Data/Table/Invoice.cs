@@ -35,9 +35,8 @@ namespace UIHotel.Data.Table
         public DateTime? UpdateAt { get; set; }
         
         public virtual ICollection<InvoiceDetail> Details { get; set; }
-
-        [ForeignKey("IdCheckin")]
-        public Checkin CheckinInfo { get; set; }
+        
+        public virtual Checkin CheckinInfo { get; set; }
 
         public static string GenerateID()
         {
