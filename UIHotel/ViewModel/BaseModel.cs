@@ -45,7 +45,7 @@ namespace UIHotel.ViewModel
                 BindingFlags.Public |
                 BindingFlags.Instance |
                 BindingFlags.OptionalParamBinding, null, null, null);
-            MethodInfo method = typeD.GetMethod(Method);
+            MethodInfo method = typeD.GetMethod(Method, Type.EmptyTypes);
             var ret = method?.Invoke(p, null);
             
             return JsonConvert.SerializeObject(ret);

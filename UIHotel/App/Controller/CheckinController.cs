@@ -110,17 +110,16 @@ namespace UIHotel.App.Controller
 
         public Guest ProcessGuest(JToken token)
         {
-            var id = token.Value<long>("id");
-            
             using (var model = new DataContext())
             {
                 try
                 {
+                    var id = token.Value<long?>("id");
                     var dataGuest = (from a in model.Guests
                                      where a.Id == id
                                      select a).FirstOrDefault();
 
-                    if (dataGuest == null)
+                    if (dataGuest == null || !id.HasValue)
                     {
                         var birth_day = token.Value<string>("birth_day");
                         var type = token.Value<string>("type");

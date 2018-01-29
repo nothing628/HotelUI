@@ -50,25 +50,24 @@
                                 <v-text-field v-model="model.BirthPlace" label="Birth Place"></v-text-field>
                             </v-flex>
                             <v-flex md4>
-                                <v-dialog persistent
-                                          v-model="modal3"
-                                          lazy
-                                          full-width
-                                          width="290px">
+                                <v-menu ref="menu3"
+                                        lazy
+                                        :close-on-content-click="false"
+                                        v-model="modal3"
+                                        transition="scale-transition"
+                                        offset-y
+                                        full-width
+                                        :nudge-right="40"
+                                        min-width="330px"
+                                        :return-value.sync="model.BirthDay">
                                     <v-text-field slot="activator"
                                                   v-model="model.BirthDay"
                                                   prepend-icon="event"
                                                   readonly></v-text-field>
-                                    <v-date-picker v-model="model.BirthDay" :allowed-dates="allowedDates" scrollable actions>
-                                        <template slot-scope="{ save, cancel }">
-                                            <v-card-actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-                                                <v-btn flat color="primary" @click="save">OK</v-btn>
-                                            </v-card-actions>
-                                        </template>
+                                    <v-date-picker v-model="model.BirthDay" :max="allowBir" no-title scrollable>
+                                        <v-btn flat color="primary" @click="$refs.menu3.save(model.BirthDay)">OK</v-btn>
                                     </v-date-picker>
-                                </v-dialog>
+                                </v-menu>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
@@ -192,13 +191,10 @@
             }
         },
         computed: {
-            allowedDates() {
-                var max = moment().subtract(18, "y").toISOString().substr(0, 10)
+            allowBir() {
+                var max = moment().subtract(18, "y")
 
-                return {
-                    max: max,
-                    min: null,
-                }
+                return max.format('YYYY-MM-DD')
             },
             country_list() {
                 return country.country_list
@@ -266,7 +262,7 @@
             }
         },
         mounted() {
-            this.model.BirthDay = this.allowedDates.max
+            this.model.BirthDay = this.allowBir
         }
     }
 </script>
