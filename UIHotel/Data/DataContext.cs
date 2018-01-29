@@ -51,9 +51,6 @@ namespace UIHotel.Data
                 .HasRequired<Invoice>(s => s.Invoice)
                 .WithMany(g => g.Details)
                 .HasForeignKey<string>(s => s.IdInvoice);
-
-            modelBuilder.Entity<Invoice>().HasOptional(x => x.CheckinInfo).WithRequired(x => x.Invoice);
-            modelBuilder.Entity<Checkin>().HasRequired(x => x.Invoice).WithOptional(x => x.CheckinInfo);
         }
     }
 }

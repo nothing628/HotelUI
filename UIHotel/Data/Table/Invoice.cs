@@ -36,7 +36,22 @@ namespace UIHotel.Data.Table
         
         public virtual ICollection<InvoiceDetail> Details { get; set; }
         
-        public virtual Checkin CheckinInfo { get; set; }
+        public virtual Checkin CheckinInfo
+        {
+            get {
+                Checkin checkin = null;
+
+                try
+                {
+                    using (var model = new DataContext())
+                    {
+                        checkin = model.CheckIn.Where(x => x.Id == IdCheckin).Select(x => x).FirstOrDefault();
+                    }
+                } catch { }
+                
+                return checkin;
+            }
+        }
 
         public static string GenerateID()
         {

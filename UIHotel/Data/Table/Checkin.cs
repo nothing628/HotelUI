@@ -59,7 +59,23 @@ namespace UIHotel.Data.Table
         [ForeignKey("IdGuest")]
         public Guest Guest { get; set; }
         
-        public virtual Invoice Invoice { get; set; }
+        public virtual Invoice Invoice
+        {
+            get
+            {
+                Invoice invoice = null;
+
+                try
+                {
+                    using (var model = new DataContext())
+                    {
+                        invoice = model.Invoices.Where(x => x.IdCheckin == Id).Select(x => x).FirstOrDefault();
+                    }
+                } catch { }
+
+                return invoice;
+            }
+        }
 
         public static string GenerateID()
         {
