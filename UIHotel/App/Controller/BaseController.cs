@@ -106,14 +106,16 @@ namespace UIHotel.App.Controller
                 var config = new JsonSerializerSettings();
 
                 config.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                config.Formatting = Formatting.None;
 
-                var dataJson = JsonConvert.SerializeObject(data, Formatting.None, config);
+                var dataJson = JsonConvert.SerializeObject(data, config);
                 var retValue = ResourceHandler.FromString(dataJson);
 
                 retValue.MimeType = "application/json";
 
-                return retValue; 
-            } catch (Exception ex)
+                return retValue;
+            }
+            catch (Exception ex)
             {
                 return ResourceHandler.FromString(ex.ToString());
             }

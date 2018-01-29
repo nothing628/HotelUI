@@ -248,7 +248,7 @@ namespace UIHotel.App.Controller
             };
 
             using (var model = new DataContext())
-            using (var trans = model.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (var trans = model.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 try
                 {
@@ -349,7 +349,6 @@ namespace UIHotel.App.Controller
                                    .Include(x => x.Room)
                                    .Include(x => x.Room.Status)
                                    .Include(x => x.Room.Category)
-                                   .Include(x => x.Invoice)
                                    where a.Id == checkId
                                    select a).FirstOrDefault();
 

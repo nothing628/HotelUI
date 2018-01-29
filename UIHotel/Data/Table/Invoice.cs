@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace UIHotel.Data.Table
 {
@@ -35,21 +36,26 @@ namespace UIHotel.Data.Table
         public DateTime? UpdateAt { get; set; }
         
         public virtual ICollection<InvoiceDetail> Details { get; set; }
-        
+
+        private Checkin _Checkin = null;
+
+        [JsonIgnore]
         public virtual Checkin CheckinInfo
         {
             get {
-                Checkin checkin = null;
-
-                try
+                if (_Checkin == null)
                 {
-                    using (var model = new DataContext())
+                    try
                     {
-                        checkin = model.CheckIn.Where(x => x.Id == IdCheckin).Select(x => x).FirstOrDefault();
+                        using (var model = new DataContext())
+                        {
+                            _Checkin = model.CheckIn.Where(x => x.Id == IdCheckin).Select(x => x).FirstOrDefault();
+                        }
                     }
-                } catch { }
-                
-                return checkin;
+                    catch { }
+                }
+
+                return _Checkin;
             }
         }
 

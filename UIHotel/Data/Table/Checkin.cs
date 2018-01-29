@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -58,22 +59,25 @@ namespace UIHotel.Data.Table
 
         [ForeignKey("IdGuest")]
         public Guest Guest { get; set; }
-        
+
+        private Invoice _Invoice = null;
         public virtual Invoice Invoice
         {
             get
             {
-                Invoice invoice = null;
-
-                try
+                if (_Invoice == null)
                 {
-                    using (var model = new DataContext())
+                    try
                     {
-                        invoice = model.Invoices.Where(x => x.IdCheckin == Id).Select(x => x).FirstOrDefault();
+                        using (var model = new DataContext())
+                        {
+                            _Invoice = model.Invoices.Include(x => x.Details).Where(x => x.IdCheckin == Id).Select(x => x).FirstOrDefault();
+                        }
                     }
-                } catch { }
+                    catch { }
+                }
 
-                return invoice;
+                return _Invoice;
             }
         }
 

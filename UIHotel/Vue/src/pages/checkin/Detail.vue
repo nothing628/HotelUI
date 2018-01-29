@@ -1,13 +1,11 @@
 <template>
     <div>
-        <v-toolbar color="cyan" dark tabs>
-            <v-tabs color="cyan" slot="extension" v-model="tab" grow>
-                <v-tabs-slider color="yellow"></v-tabs-slider>
-                <v-tab>Detail</v-tab>
-                <v-tab>Invoice</v-tab>
-            </v-tabs>
-        </v-toolbar>
-        
+        <v-tabs color="blue-grey darken-1" slot="extension" v-model="tab" centered dark>
+            <v-tabs-slider color="yellow"></v-tabs-slider>
+            <v-tab>Detail</v-tab>
+            <v-tab>Invoice</v-tab>
+        </v-tabs>
+
         <v-tabs-items v-model="tab">
             <v-tab-item>
                 <v-card>

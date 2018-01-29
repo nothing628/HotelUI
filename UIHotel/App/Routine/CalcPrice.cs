@@ -17,7 +17,7 @@ namespace UIHotel.App.Routine
             {
                 try
                 {
-                    var invoices = (from a in model.Invoices.Include(x => x.CheckinInfo).Include(x => x.Details)
+                    var invoices = (from a in model.Invoices.Include(x => x.Details)
                                    where !a.IsClosed
                                    select a).ToList();
 
@@ -43,7 +43,6 @@ namespace UIHotel.App.Routine
 
                     do
                     {
-                        var cnt = invoice.Details.Count;
                         var detail = (from a in invoice.Details
                                       where a.IsSystem
                                       where a.TransactionDate == pointDate

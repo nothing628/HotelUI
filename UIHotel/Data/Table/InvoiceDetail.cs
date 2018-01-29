@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -40,6 +41,7 @@ namespace UIHotel.Data.Table
         [Column("update_at", Order = 8)]
         public DateTime? UpdateAt { get; set; }
         
+        [ForeignKey("IdInvoice")]
         public virtual Invoice Invoice { get; set; }
     }
 }
