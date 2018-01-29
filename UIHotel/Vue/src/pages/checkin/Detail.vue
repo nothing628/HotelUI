@@ -31,7 +31,9 @@
                                         <v-subheader>Invoice Number</v-subheader>
                                     </v-flex>
                                     <v-flex xs4>
-                                        <v-subheader>{{ checkin.InvoiceId }}</v-subheader>
+                                        <v-subheader>
+                                            <a href="#" @click="tab = 1">{{ checkin.InvoiceId }}</a>
+                                        </v-subheader>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
@@ -90,7 +92,35 @@
                     </v-card-title>
                     <v-container fluid grid-list-md>
                         <v-layout row>
-                            <v-flex lg12 md12 sm12 xs12></v-flex>
+                            <v-flex lg12 md12 sm12 xs12>
+                                <v-btn dark color="success" class="mb-4 ml-0">
+                                    <span>Pay Invoice</span>
+                                    <v-icon right dark>move_to_inbox</v-icon>
+                                </v-btn>
+                                <v-btn dark color="primary" class="mb-4 ml-0">
+                                    <span>Print</span>
+                                    <v-icon right dark>print</v-icon>
+                                </v-btn>
+                                <v-data-table v-bind:headers="tableData.headers"
+                                              v-bind:items="tableData.items"
+                                              v-bind:pagination.sync="tableData.pagination"
+                                              v-bind:total-items="tableData.totalItems"
+                                              v-bind:loading="tableData.loading"
+                                              class="elevation-1">
+                                    <template slot="items" slot-scope="props">
+                                        <tr>
+                                            <td>{{ props.item.Id }}</td>
+                                            <td>{{ props.item.TransactionDate }}</td>
+                                            <td v-html="props.item.Description"></td>
+                                            <td>{{ props.item.AmmountIn | currency }}</td>
+                                            <td>{{ props.item.AmmountOut | currency }}</td>
+                                        </tr>
+                                    </template>
+                                    <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                                        From {{ pageStart }} to {{ pageStop }}
+                                    </template>
+                                </v-data-table>
+                            </v-flex>
                         </v-layout>
                     </v-container>
                 </v-card>
@@ -115,11 +145,38 @@
                     DepartureAt: null,
                     InvoiceId: null,
                     Note: null,
+                },
+                tableData: {
+                    totalItems: 0,
+                    loading: false,
+                    pagination: {},
+                    headers: [
+                        { text: '#', sortable: false, align: 'left' },
+                        { text: 'Date', sortable: false, align: 'left'  },
+                        { text: 'Description', sortable: false, align: 'left' },
+                        { text: 'In', sortable: false, align: 'left' },
+                        { text: 'Out', sortable: false, align: 'left' },
+                    ],
+                    items: []
                 }
+            }
+        },
+        filters: {
+            currency(val) {
+                var Nform = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' })
+
+                return Nform.format(val)
             }
         },
         props: {
             checkid: { type: String, required: true }
+        },
+        watch: {
+            tab: {
+                handler() {
+                    console.log(this.tab)
+                }
+            }
         },
         computed: {
             PhotoUrl() {
@@ -164,7 +221,9 @@
                 if (data.success) {
                     var realdata = data.data
 
-                    console.log(realdata)
+                    this.tableData.items = []
+
+                    realdata.Details.forEach(x => this.tableData.items.push(x))
                 }
             },
             getInvoiceApi() {
