@@ -80,6 +80,22 @@
                                         <v-subheader>{{ checkin.Note }}</v-subheader>
                                     </v-flex>
                                 </v-layout>
+                                <v-layout row>
+                                    <v-flex xs9>
+                                        <v-btn dark color="success" class="mb-4 ml-0">
+                                            <span>Pay Invoice</span>
+                                            <v-icon right dark>move_to_inbox</v-icon>
+                                        </v-btn>
+                                        <v-btn dark color="error" class="mb-4 ml-0">
+                                            <span>Checkout</span>
+                                            <v-icon right dark>move_to_inbox</v-icon>
+                                        </v-btn>
+                                        <v-btn dark disabled depressed class="mb-4 ml-0">
+                                            <span>Checkout</span>
+                                            <v-icon right dark>move_to_inbox</v-icon>
+                                        </v-btn>
+                                    </v-flex>
+                                </v-layout>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -106,18 +122,36 @@
                                               v-bind:pagination.sync="tableData.pagination"
                                               v-bind:total-items="tableData.totalItems"
                                               v-bind:loading="tableData.loading"
+                                              hide-actions
                                               class="elevation-1">
                                     <template slot="items" slot-scope="props">
                                         <tr>
-                                            <td>{{ props.item.Id }}</td>
+                                            <td>{{ (props.index + 1) }}</td>
                                             <td>{{ props.item.TransactionDate }}</td>
                                             <td v-html="props.item.Description"></td>
                                             <td>{{ props.item.AmmountIn | currency }}</td>
                                             <td>{{ props.item.AmmountOut | currency }}</td>
                                         </tr>
                                     </template>
-                                    <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-                                        From {{ pageStart }} to {{ pageStop }}
+                                    <template slot="footer">
+                                        <tr>
+                                            <td colspan="4">
+                                                <strong>Total Balance</strong>
+                                            </td>
+                                            <td>{{ TotalBalance | currency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <strong>Deposit</strong>
+                                            </td>
+                                            <td>{{ deposit | currency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <strong>Total Pay</strong>
+                                            </td>
+                                            <td>{{ TotalPay | currency }}</td>
+                                        </tr>
                                     </template>
                                 </v-data-table>
                             </v-flex>
@@ -133,6 +167,7 @@
     export default {
         data() {
             return {
+                deposit: 50000,
                 tab: null,
                 checkin: {
                     Id: null,
@@ -173,12 +208,24 @@
         },
         watch: {
             tab: {
-                handler() {
-                    console.log(this.tab)
-                }
+                handler() {}
             }
         },
         computed: {
+            TotalBalance() {
+                var inVal = 0
+                var outVal = 0
+
+                this.tableData.items.forEach((item) => {
+                    inVal += item.AmmountIn
+                    outVal += item.AmmountOut
+                })
+
+                return (inVal - outVal)
+            },
+            TotalPay() {
+                return 0 - (this.TotalBalance) - this.deposit
+            },
             PhotoUrl() {
                 if (this.checkin.PhotoGuest)
                     return 'http://localhost.com/Upload/' + this.checkin.PhotoGuest

@@ -240,7 +240,7 @@ namespace UIHotel.App.Controller
             var invDet = new InvoiceDetail()
             {
                 IdInvoice = inv.Id,
-                AmmountIn = deposit,
+                AmmountOut = deposit,
                 TransactionDate = DateTime.Now,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
@@ -374,6 +374,8 @@ namespace UIHotel.App.Controller
                     var invoices = (from a in model.Invoices.Include(x => x.Details)
                                     where a.IdCheckin == id
                                     select a).FirstOrDefault();
+
+                    invoices.Details = invoices.Details.OrderBy(x => x.TransactionDate).ToList();
 
                     if (invoices != null)
                         return Json(new { success = true, data = invoices });
