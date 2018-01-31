@@ -8,7 +8,7 @@
             return {}
         },
         props: {
-            Id: { type: String, required: true }
+            id: { type: String, required: true }
         },
         methods: {
             getDataApi() {

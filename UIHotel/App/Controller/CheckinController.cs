@@ -363,7 +363,7 @@ namespace UIHotel.App.Controller
             }
         }
 
-        public IResourceHandler getCheckinInvoice()
+        public IResourceHandler getInvoiceDetail()
         {
             var id = jToken.Value<string>("id");
 
@@ -372,7 +372,7 @@ namespace UIHotel.App.Controller
                 try
                 {
                     var invoices = (from a in model.Invoices.Include(x => x.Details)
-                                    where a.IdCheckin == id
+                                    where a.Id == id
                                     select a).FirstOrDefault();
 
                     invoices.Details = invoices.Details.OrderBy(x => x.TransactionDate).ToList();

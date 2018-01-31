@@ -109,11 +109,11 @@
                     <v-container fluid grid-list-md>
                         <v-layout row>
                             <v-flex lg12 md12 sm12 xs12>
-                                <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.InvoiceLink">
+                                <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.PayLink">
                                     <span>Pay Invoice</span>
                                     <v-icon right dark>move_to_inbox</v-icon>
                                 </v-btn>
-                                <v-btn dark color="primary" class="mb-4 ml-0" :href="checkin.PayLink">
+                                <v-btn dark color="primary" class="mb-4 ml-0" :href="checkin.InvoiceLink">
                                     <span>Print</span>
                                     <v-icon right dark>print</v-icon>
                                 </v-btn>
@@ -266,6 +266,8 @@
                     this.checkin.PayLink = check.Invoice.PayLink
                     this.checkin.CheckoutLink = check.CheckoutLink
                     this.checkin.RoomName = check.Room.RoomName
+
+                    this.getInvoiceApi()
                 }
             },
             getDataApi() {
@@ -287,16 +289,15 @@
                 }
             },
             getInvoiceApi() {
-                const id = this.checkid
+                const id = this.checkin.InvoiceId
 
-                axios.post('http://localhost.com/checkin/post/getCheckinInvoice', { id })
+                axios.post('http://localhost.com/checkin/post/getInvoiceDetail', { id })
                     .then(this.getInvoice)
                     .catch(e => { })
             }
         },
         mounted() {
             this.getDataApi()
-            this.getInvoiceApi()
         }
     }
 </script>
