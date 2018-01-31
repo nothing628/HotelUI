@@ -628,7 +628,9 @@
     <None Include="Vue\src\pages\guest\Create.vue" />
     <None Include="Vue\src\pages\guest\Detail.vue" />
     <None Include="Vue\src\pages\guest\Edit.vue" />
+    <None Include="Vue\src\pages\guest\Invoice.vue" />
     <None Include="Vue\src\pages\guest\List.vue" />
+    <None Include="Vue\src\pages\guest\Pay.vue" />
     <None Include="Vue\src\pages\room\Category.vue" />
     <None Include="Vue\src\pages\room\Detail.vue" />
     <None Include="Vue\src\pages\room\List.vue" />

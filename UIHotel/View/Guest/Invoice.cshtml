@@ -1,3 +1,17 @@
-﻿@{
+﻿@using RazorEngine
+@inherits UIHotel.App.View.Template.HtmlTemplateBase<dynamic>
+@{
     Layout = "Layout";
 }
+
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Invoice Detail</h1>
+            </header>
+
+            <invoice-detail id="@Model.Id"></invoice-detail>
+        </v-flex>
+    </v-layout>
+</v-container>

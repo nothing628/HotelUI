@@ -9,6 +9,8 @@ import Checkin from './pages/checkin/Checkin'
 import CheckinList from './pages/checkin/List'
 import CheckinDetail from './pages/checkin/Detail'
 import Checkout from './pages/checkin/Checkout'
+import InvoiceDetail from './pages/guest/Invoice'
+import InvoicePay from './pages/guest/Pay'
 import GuestCreate from './pages/guest/Create'
 import GuestList from './pages/guest/List'
 import GuestEdit from './pages/guest/Edit'
@@ -26,6 +28,8 @@ Vue.component('checkin', Checkin)
 Vue.component('checkin-list', CheckinList)
 Vue.component('checkin-detail', CheckinDetail)
 Vue.component('checkout', Checkout)
+Vue.component('invoice-detail', InvoiceDetail)
+Vue.component('invoice-pay', InvoicePay)
 Vue.component('guest-create', GuestCreate)
 Vue.component('guest-list', GuestList)
 Vue.component('guest-edit', GuestEdit)

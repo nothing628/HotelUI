@@ -82,7 +82,7 @@
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex xs12>
-                                        <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.InvoiceLink">
+                                        <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.PayLink">
                                             <span>Pay Invoice</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>

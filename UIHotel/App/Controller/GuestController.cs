@@ -67,7 +67,7 @@ namespace UIHotel.App.Controller
                 }
             }
 
-            return Redirect("http://localhost.com/room/get/index");
+            return Redirect("http://localhost.com/checkin/get/list");
         }
 
         public IResourceHandler edit()
@@ -102,7 +102,25 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler pay()
         {
-            return View("Guest.Pay");
+            var invoiceId = Query["id"];
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var invoice = (from a in model.Invoices
+                                   where a.Id == invoiceId
+                                   select a).FirstOrDefault();
+
+                    if (invoice != null)
+                        return View("Guest.Pay", invoice);
+                } catch
+                {
+                    //
+                }
+            }
+
+            return Redirect("http://localhost.com/checkin/get/list");
         }
 
         public IResourceHandler getGuestList()
