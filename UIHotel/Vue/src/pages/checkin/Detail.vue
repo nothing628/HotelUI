@@ -127,7 +127,7 @@
                                     <template slot="items" slot-scope="props">
                                         <tr>
                                             <td>{{ (props.index + 1) }}</td>
-                                            <td>{{ props.item.TransactionDate }}</td>
+                                            <td>{{ props.item.TransactionDate | dateformat }}</td>
                                             <td v-html="props.item.Description"></td>
                                             <td>{{ props.item.AmmountIn | currency }}</td>
                                             <td>{{ props.item.AmmountOut | currency }}</td>
@@ -201,6 +201,11 @@
                 var Nform = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' })
 
                 return Nform.format(val)
+            },
+            dateformat(val) {
+                var momen = moment(val)
+
+                return momen.format('YYYY-MM-DD');
             }
         },
         props: {

@@ -38,6 +38,7 @@ namespace UIHotel.App.Routine
                 try
                 {
                     var startDate = invoice.CheckinInfo.ArriveAt.Date;
+                    var endDate = invoice.CheckinInfo.DepartureAt.Date;
                     var todayDate = DateTime.Today.Date;
                     var pointDate = startDate;
 
@@ -69,8 +70,43 @@ namespace UIHotel.App.Routine
                         }
 
                         pointDate = pointDate.AddDays(1.0d);
-                    } while (pointDate <= todayDate);
+                    } while (pointDate <= todayDate && pointDate <= endDate);
 
+                    var startPinalty = endDate.Add(new TimeSpan(13, 0, 0));
+                    var pinaltyHour = (DateTime.Today - startPinalty).TotalHours;
+                    var pinaltyCount = Convert.ToDecimal(Math.Ceiling(pinaltyHour) * 40000);           //TODO : Change to setting
+
+                    var pinalty = (from a in model.InvoiceDetails
+                                   where a.IdInvoice == invoice.Id
+                                   where a.IsSystem
+                                   where a.Description == "Pinalty"
+                                   select a).FirstOrDefault();
+
+                    if (pinalty == null)
+                    {
+                        pinalty = new InvoiceDetail()
+                        {
+                            AmmountIn = 0,
+                            AmmountOut = pinaltyCount,
+                            Description = "Pinalty",
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                            IdInvoice = invoice.Id,
+                            IsSystem = true,
+                            TransactionDate = endDate
+                        };
+
+                        model.InvoiceDetails.Add(pinalty);
+                        model.SaveChanges();
+                    } else
+                    {
+                        pinalty.AmmountOut = pinaltyCount;
+                        pinalty.UpdateAt = DateTime.Now;
+
+                        model.Entry(pinalty).State = EntityState.Modified;
+                        model.SaveChanges();
+                    }
+                    
                     trans.Commit();
                 } catch
                 {
