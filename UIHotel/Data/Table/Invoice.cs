@@ -85,5 +85,21 @@ namespace UIHotel.Data.Table
 
             return PrefixID + string.Format("{0:D5}", newId);
         }
+
+        public string InvoiceLink
+        {
+            get
+            {
+                return "http://localhost.com/guest/get/invoice?id=" + this.Id;
+            }
+        }
+
+        public string PayLink
+        {
+            get
+            {
+                return "http://localhost.com/guest/get/pay?id=" + this.Id;
+            }
+        }
     }
 }

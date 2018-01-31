@@ -82,11 +82,11 @@
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex xs9>
-                                        <v-btn dark color="success" class="mb-4 ml-0">
+                                        <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.InvoiceLink">
                                             <span>Pay Invoice</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
-                                        <v-btn dark color="error" class="mb-4 ml-0">
+                                        <v-btn dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
@@ -109,11 +109,11 @@
                     <v-container fluid grid-list-md>
                         <v-layout row>
                             <v-flex lg12 md12 sm12 xs12>
-                                <v-btn dark color="success" class="mb-4 ml-0">
+                                <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.InvoiceLink">
                                     <span>Pay Invoice</span>
                                     <v-icon right dark>move_to_inbox</v-icon>
                                 </v-btn>
-                                <v-btn dark color="primary" class="mb-4 ml-0">
+                                <v-btn dark color="primary" class="mb-4 ml-0" :href="checkin.PayLink">
                                     <span>Print</span>
                                     <v-icon right dark>print</v-icon>
                                 </v-btn>
@@ -179,6 +179,9 @@
                     CheckinAt: null,
                     DepartureAt: null,
                     InvoiceId: null,
+                    InvoiceLink: null,
+                    PayLink: null,
+                    CheckoutLink: null,
                     Note: null,
                 },
                 tableData: {
@@ -257,6 +260,9 @@
                     this.checkin.PhotoGuest = check.Guest.PhotoGuest
                     this.checkin.DetailGuest = check.Guest.DetailLink
                     this.checkin.DetailRoom = check.Room.DetailLink
+                    this.checkin.InvoiceLink = check.Invoice.InvoiceLink
+                    this.checkin.PayLink = check.Invoice.PayLink
+                    this.checkin.CheckoutLink = check.CheckoutLink
                     this.checkin.RoomName = check.Room.RoomName
                 }
             },

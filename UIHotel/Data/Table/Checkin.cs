@@ -106,5 +106,13 @@ namespace UIHotel.Data.Table
                 return PrefixID + string.Format("{0:D5}", newId);
             }
         }
+
+        public string CheckoutLink
+        {
+            get
+            {
+                return "http://location.com/checkin/get/checkout?id=" + this.Id;
+            }
+        }
     }
 }
