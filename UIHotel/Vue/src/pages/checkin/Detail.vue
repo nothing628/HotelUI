@@ -81,16 +81,16 @@
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
-                                    <v-flex xs9>
+                                    <v-flex xs12>
                                         <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.InvoiceLink">
                                             <span>Pay Invoice</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
-                                        <v-btn dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
+                                        <v-btn v-if="checkin.IsInvoiceClose" dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
-                                        <v-btn dark disabled depressed class="mb-4 ml-0">
+                                        <v-btn v-else dark disabled depressed class="mb-4 ml-0">
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
@@ -182,6 +182,7 @@
                     InvoiceLink: null,
                     PayLink: null,
                     CheckoutLink: null,
+                    IsInvoiceClose: false,
                     Note: null,
                 },
                 tableData: {
@@ -256,6 +257,7 @@
                     this.checkin.DepartureAt = check.DepartureAt
                     this.checkin.Note = check.Note
                     this.checkin.InvoiceId = check.Invoice.Id
+                    this.checkin.IsInvoiceClose = check.Invoice.IsClosed
                     this.checkin.Fullname = check.Guest.Fullname
                     this.checkin.PhotoGuest = check.Guest.PhotoGuest
                     this.checkin.DetailGuest = check.Guest.DetailLink

@@ -97,3 +97,15 @@
     margin-right: auto;
     display: block;
 }
+
+.application .theme--dark.btn.btn--disabled,
+.application .theme--dark.btn.btn--disabled .icon,
+.theme--dark .btn.btn--disabled,
+.theme--dark .btn.btn--disabled .icon {
+    color: rgba(0,0,0,.26) !important;
+}
+
+    .application .theme--dark.btn.btn--disabled:not(.btn--icon):not(.btn--flat),
+    .theme--dark .btn.btn--disabled:not(.btn--icon):not(.btn--flat) {
+        background-color: rgba(0,0,0,.12) !important;
+    }
