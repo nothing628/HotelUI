@@ -37,6 +37,9 @@ namespace UIHotel.Data.Table
         
         public virtual ICollection<InvoiceDetail> Details { get; set; }
 
+        [ForeignKey("IdGuest")]
+        public virtual Guest Guest { get; set; }
+
         private Checkin _Checkin = null;
 
         [JsonIgnore]

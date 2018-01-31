@@ -25,7 +25,7 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("is_closed").AsBoolean().WithDefaultValue(false)
                 .WithColumn("create_at").AsDateTime().NotNullable()
                 .WithColumn("update_at").AsDateTime().Nullable();
-
+            
             Create.Table("invoice_detail")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("id_invoice").AsString(25).NotNullable()
