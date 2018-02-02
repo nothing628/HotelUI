@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -86,6 +88,8 @@ namespace UIHotel.Data.Table
 
         [Column("update_at", Order = 18)]
         public DateTime? UpdateAt { get; set; }
+
+        public virtual ICollection<Invoice> Invoices { get; set; }
 
         [NotMapped]
         public string FullAddress
