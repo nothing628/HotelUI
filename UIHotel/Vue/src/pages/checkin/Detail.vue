@@ -193,8 +193,8 @@
                         { text: '#', sortable: false, align: 'left' },
                         { text: 'Date', sortable: false, align: 'left'  },
                         { text: 'Description', sortable: false, align: 'left' },
-                        { text: 'In', sortable: false, align: 'left' },
-                        { text: 'Out', sortable: false, align: 'left' },
+                        { text: 'Debit', sortable: false, align: 'left' },
+                        { text: 'Kredit', sortable: false, align: 'left' },
                     ],
                     items: []
                 }

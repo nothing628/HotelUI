@@ -6,6 +6,37 @@
 
         <v-container fluid grid-list-md>
             <v-layout row>
+                <v-flex lg4 md4 sm12 xs12>
+                    <v-list three-line>
+                        <v-list-tile>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Issued To :</v-list-tile-title>
+                                <v-list-tile-sub-title class="text--primary">Yogy Phang</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>Jl Tengku Umar, Tangerang Banten 15122</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-flex>
+                <v-flex lg4 md4 sm12 xs12>
+                    <v-list three-line>
+                        <v-list-tile>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Invoice No :</v-list-tile-title>
+                                <v-list-tile-sub-title class="text--primary"><a href="#">INV201802020001</a></v-list-tile-sub-title>
+                                <v-list-tile-title class="mt-4">Issued Date :</v-list-tile-title>
+                                <v-list-tile-sub-title class="text--primary">12/12/2018</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-flex>
+                <v-flex lg4 md4 sm12 xs12>
+                    <v-btn dark color="primary" class="mb-4 ml-0 float-right">
+                        <span>Print</span>
+                        <v-icon right dark>print</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
                 <v-flex lg12 md12 sm12 xs12>
                     <v-data-table v-bind:headers="tableData.headers"
                                   v-bind:items="tableData.items"
@@ -32,15 +63,42 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <strong>Deposit</strong>
+                                    <strong>Tax (5%)</strong>
                                 </td>
-                                <td>{{ Deposit | currency }}</td>
+                                <td>{{ Tax | currency }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4">
                                     <strong>Total Pay</strong>
                                 </td>
                                 <td>{{ TotalPay | currency }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <strong>Deposit</strong>
+                                </td>
+                                <td>{{ Deposit | currency }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <strong>Cash</strong>
+                                </td>
+                                <td><v-text-field prefix="Rp" type="number" v-model="Cash" label="Cash"></v-text-field></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <strong>Cash Back</strong>
+                                </td>
+                                <td>{{ CashBack | currency }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td>
+                                    <v-btn dark color="success" class="mb-4 ml-0">
+                                        <span>Close Invoice</span>
+                                        <v-icon right dark>move_to_inbox</v-icon>
+                                    </v-btn>
+                                </td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -55,6 +113,7 @@
         data() {
             return {
                 Deposit: 50000,
+                Cash: 0,
                 tableData: {
                     totalItems: 0,
                     loading: false,
@@ -63,8 +122,8 @@
                         { text: '#', sortable: false, align: 'left' },
                         { text: 'Date', sortable: false, align: 'left' },
                         { text: 'Description', sortable: false, align: 'left' },
-                        { text: 'In', sortable: false, align: 'left' },
-                        { text: 'Out', sortable: false, align: 'left' },
+                        { text: 'Debit', sortable: false, align: 'left' },
+                        { text: 'Kredit', sortable: false, align: 'left' },
                     ],
                     items: []
                 }
@@ -74,6 +133,9 @@
             id: { type: String, required: true }
         },
         computed: {
+            Tax() {
+                return this.TotalBalance * .05
+            },
             TotalBalance() {
                 var inVal = 0
                 var outVal = 0
@@ -83,10 +145,13 @@
                     outVal += item.AmmountOut
                 })
 
-                return (inVal - outVal)
+                return Math.abs(inVal - outVal) + this.Deposit
             },
             TotalPay() {
-                return 0 - (this.TotalBalance) - this.Deposit
+                return this.TotalBalance + this.Tax
+            },
+            CashBack() {
+                return this.Cash - this.TotalPay + this.Deposit
             }
         },
         filters: {

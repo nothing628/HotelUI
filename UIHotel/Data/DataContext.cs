@@ -51,11 +51,6 @@ namespace UIHotel.Data
                 .HasRequired<Invoice>(s => s.Invoice)
                 .WithMany(g => g.Details)
                 .HasForeignKey<string>(s => s.IdInvoice);
-
-            modelBuilder.Entity<Invoice>()
-                .HasRequired<Guest>(s => s.Guest)
-                .WithMany(g => g.Invoices)
-                .HasForeignKey<long>(s => s.IdGuest);
         }
     }
 }
