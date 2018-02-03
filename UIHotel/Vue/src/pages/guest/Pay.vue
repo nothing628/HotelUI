@@ -5,7 +5,7 @@
                 <v-flex lg4 md4 sm12 xs12>
                     <v-list three-line>
                         <v-list-tile>
-                            <v-list-tile-content>
+                            <v-list-tile-content class="top">
                                 <v-list-tile-title>Issued To :</v-list-tile-title>
                                 <v-list-tile-sub-title class="text--primary"><a href="#">{{ guest.fullname }}</a></v-list-tile-sub-title>
                                 <v-list-tile-sub-title>{{ guest.address }}</v-list-tile-sub-title>
@@ -36,7 +36,6 @@
                 <v-flex lg12 md12 sm12 xs12>
                     <v-data-table v-bind:headers="tableData.headers"
                                   v-bind:items="tableData.items"
-                                  v-bind:pagination.sync="tableData.pagination"
                                   v-bind:total-items="tableData.totalItems"
                                   v-bind:loading="tableData.loading"
                                   hide-actions
@@ -82,10 +81,18 @@
                                 <td>{{ CashBack | currency }}</td>
                             </tr>
                             <tr>
-                                <td colspan="4"></td>
-                                <td>
-                                    <v-btn dark color="success" class="mb-4 ml-0">
-                                        <span>Close Invoice</span>
+                                <td colspan="3"></td>
+                                <td colspan="2">
+                                    <v-btn dark color="warning" @click="detail" class="mb-4 ml-0">
+                                        <span>Back</span>
+                                        <v-icon right dark>reply</v-icon>
+                                    </v-btn>
+                                    <v-btn dark color="primary" v-if="AllowClose" @click="closeInvoice" class="mb-4 ml-0">
+                                        <span>Close</span>
+                                        <v-icon right dark>done_all</v-icon>
+                                    </v-btn>
+                                    <v-btn dark color="success" v-if="AllowPay" @click="pay" class="mb-4 ml-0">
+                                        <span>Pay</span>
                                         <v-icon right dark>move_to_inbox</v-icon>
                                     </v-btn>
                                 </td>
@@ -119,6 +126,7 @@
                 },
                 invoice: {
                     invoice_no: null,
+                    invoice_close: false,
                     issued_date: null,
                 },
                 guest: {
@@ -132,18 +140,31 @@
         },
         computed: {
             Tax() {
-                return this.TotalBalance * .05
+                return this.TotalKredit * .05
             },
-            TotalBalance() {
-                var inVal = 0
+            TotalKredit() {
                 var outVal = 0
 
                 this.tableData.items.forEach((item) => {
-                    inVal += item.AmmountIn
                     outVal += item.AmmountOut
                 })
 
-                return Math.abs(inVal - outVal)
+                return outVal
+            },
+            TotalDebit() {
+                var inVal = 0
+
+                this.tableData.items.forEach((item) => {
+                    inVal += item.AmmountIn
+                })
+
+                return inVal
+            },
+            TotalBalance() {
+                var inVal = this.TotalDebit
+                var outVal = this.TotalKredit
+
+                return outVal - inVal
             },
             TotalPay() {
                 return this.TotalBalance + this.Tax
@@ -155,6 +176,12 @@
                 var momen = moment(this.invoice.issued_date)
 
                 return momen.format('DD/MM/YYYY');
+            },
+            AllowClose() {
+                return this.TotalPay < 0 && !this.invoice.invoice_close
+            },
+            AllowPay() {
+                return this.Cash > 0 && !this.invoice.invoice_close
             }
         },
         filters: {
@@ -185,6 +212,7 @@
                     var guest = data.guest
 
                     this.invoice.invoice_no = invoice.Id
+                    this.invoice.invoice_close = invoice.IsClosed
                     this.invoice.issued_date = invoice.UpdateAt
                     this.guest.fullname = guest.Fullname
                     this.guest.address = guest.FullAddress
@@ -192,8 +220,41 @@
 
                     invoice.Details.forEach(x => this.tableData.items.push(x))
 
-                    console.log(data)
+                    this.tableData.totalItems = this.tableData.items.length
                 }
+            },
+            pay() {
+                const invoiceId = this.invoice.invoice_no
+                const countPay = this.Cash
+
+                axios.post('http://localhost.com/checkin/post/payInvoice', { id: invoiceId, pay: countPay })
+                    .then(this.payData)
+                    .catch(() => { })
+            },
+            payData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    this.Cash = 0
+                    this.getDataApi()
+                }
+            },
+            closeInvoice() {
+                const invoiceId = this.invoice.invoice_no
+
+                axios.post('http://localhost.com/checkin/post/closeInvoice', { id: invoiceId })
+                    .then(this.closeInvoiceData)
+                    .catch(() => { })
+            },
+            closeInvoiceData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    this.getDataApi()
+                }
+            },
+            detail() {
+                //
             }
         },
         mounted() {

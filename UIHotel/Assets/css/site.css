@@ -41,6 +41,9 @@
     border-bottom: 1px solid #c1c1c1;
 }
 
+.list__tile__content.top {
+    justify-content: flex-start;
+}
 
 .actions:not(.actions--inverse) .actions__item {
     color: #ffffff;

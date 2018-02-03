@@ -390,6 +390,81 @@ namespace UIHotel.App.Controller
                 }
             }
         }
+
+        public IResourceHandler payInvoice()
+        {
+            var id = jToken.Value<string>("id");
+            var pay = jToken.Value<decimal>("pay");
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoice = (from a in model.Invoices
+                                   where a.Id == id
+                                   select a).FirstOrDefault();
+
+                    if (invoice != null && pay > 0)
+                    {
+                        var description = "Payment<br><i>" + DateTime.Now.ToString("dd-MM-yyyy") + "</i>";
+                        var detail = new InvoiceDetail()
+                        {
+                            AmmountIn = pay,
+                            AmmountOut = 0,
+                            Description = description,
+                            IsSystem = false,
+                            IdInvoice = invoice.Id,
+                            TransactionDate = DateTime.Now,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                        };
+
+                        model.InvoiceDetails.Add(detail);
+                        model.SaveChanges();
+                    }
+
+                    trans.Commit();
+                    return Json(new { success = true, message = "Success update data" });
+                } catch
+                {
+                    trans.Rollback();
+                    return Json(new { success = false, message = "Failed to update invoice table" });
+                }
+            }
+        }
+
+        public IResourceHandler closeInvoice()
+        {
+            var id = jToken.Value<string>("id");
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoice = (from a in model.Invoices
+                                   where a.Id == id
+                                   select a).FirstOrDefault();
+
+                    if (invoice != null)
+                    {
+                        invoice.IsClosed = true;
+
+                        model.Entry(invoice).State = EntityState.Modified;
+                        model.SaveChanges();
+                    }
+
+                    trans.Commit();
+                    return Json(new { success = true, message = "Success update data" });
+                }
+                catch
+                {
+                    trans.Rollback();
+                    return Json(new { success = false, message = "Failed to update invoice table" });
+                }
+            }
+        }
         #endregion
     }
 }

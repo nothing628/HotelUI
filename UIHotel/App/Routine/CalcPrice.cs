@@ -52,7 +52,7 @@ namespace UIHotel.App.Routine
                         if (detail == null)
                         {
                             var roomPrice = GetRoomPrice(invoice.CheckinInfo.IdRoom, pointDate);
-                            var description = "PAY ROOM<br><i>" + pointDate.ToString("dd-MM-yyyy") + "</i>";
+                            var description = "INVOICE ROOM<br><i>" + pointDate.ToString("dd-MM-yyyy") + "</i>";
                             var newDetail = new InvoiceDetail()
                             {
                                 IsSystem = true,
