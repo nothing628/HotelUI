@@ -1,9 +1,5 @@
 <template>
     <v-card>
-        <v-card-title>
-            <h2 class="card-title mb-0">Invoice Payment</h2>
-        </v-card-title>
-
         <v-container fluid grid-list-md>
             <v-layout row>
                 <v-flex lg4 md4 sm12 xs12>
@@ -11,8 +7,8 @@
                         <v-list-tile>
                             <v-list-tile-content>
                                 <v-list-tile-title>Issued To :</v-list-tile-title>
-                                <v-list-tile-sub-title class="text--primary">Yogy Phang</v-list-tile-sub-title>
-                                <v-list-tile-sub-title>Jl Tengku Umar, Tangerang Banten 15122</v-list-tile-sub-title>
+                                <v-list-tile-sub-title class="text--primary"><a href="#">{{ guest.fullname }}</a></v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{ guest.address }}</v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
@@ -22,15 +18,15 @@
                         <v-list-tile>
                             <v-list-tile-content>
                                 <v-list-tile-title>Invoice No :</v-list-tile-title>
-                                <v-list-tile-sub-title class="text--primary"><a href="#">INV201802020001</a></v-list-tile-sub-title>
+                                <v-list-tile-sub-title class="text--primary"><a href="#">{{ invoice.invoice_no }}</a></v-list-tile-sub-title>
                                 <v-list-tile-title class="mt-4">Issued Date :</v-list-tile-title>
-                                <v-list-tile-sub-title class="text--primary">12/12/2018</v-list-tile-sub-title>
+                                <v-list-tile-sub-title class="text--primary">{{ IssuedDate }}</v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
                 </v-flex>
                 <v-flex lg4 md4 sm12 xs12>
-                    <v-btn dark color="primary" class="mb-4 ml-0 float-right">
+                    <v-btn dark color="primary" class="mb-4 mt-0 ml-0 float-right">
                         <span>Print</span>
                         <v-icon right dark>print</v-icon>
                     </v-btn>
@@ -75,12 +71,6 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <strong>Deposit</strong>
-                                </td>
-                                <td>{{ Deposit | currency }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
                                     <strong>Cash</strong>
                                 </td>
                                 <td><v-text-field prefix="Rp" type="number" v-model="Cash" label="Cash"></v-text-field></td>
@@ -109,10 +99,10 @@
 </template>
 <script>
     import axios from 'axios'
+    import moment from 'moment'
     export default {
         data() {
             return {
-                Deposit: 50000,
                 Cash: 0,
                 tableData: {
                     totalItems: 0,
@@ -126,6 +116,14 @@
                         { text: 'Kredit', sortable: false, align: 'left' },
                     ],
                     items: []
+                },
+                invoice: {
+                    invoice_no: null,
+                    issued_date: null,
+                },
+                guest: {
+                    fullname: null,
+                    address: null,
                 }
             }
         },
@@ -145,13 +143,18 @@
                     outVal += item.AmmountOut
                 })
 
-                return Math.abs(inVal - outVal) + this.Deposit
+                return Math.abs(inVal - outVal)
             },
             TotalPay() {
                 return this.TotalBalance + this.Tax
             },
             CashBack() {
-                return this.Cash - this.TotalPay + this.Deposit
+                return this.Cash - this.TotalPay
+            },
+            IssuedDate() {
+                var momen = moment(this.invoice.issued_date)
+
+                return momen.format('DD/MM/YYYY');
             }
         },
         filters: {
@@ -163,7 +166,7 @@
             dateformat(val) {
                 var momen = moment(val)
 
-                return momen.format('YYYY-MM-DD');
+                return momen.format('DD/MM/YYYY');
             }
         },
         methods: {
@@ -179,12 +182,17 @@
 
                 if (data.success) {
                     var invoice = data.data
+                    var guest = data.guest
 
+                    this.invoice.invoice_no = invoice.Id
+                    this.invoice.issued_date = invoice.UpdateAt
+                    this.guest.fullname = guest.Fullname
+                    this.guest.address = guest.FullAddress
                     this.tableData.items = []
 
                     invoice.Details.forEach(x => this.tableData.items.push(x))
 
-                    console.log(invoice)
+                    console.log(data)
                 }
             }
         },

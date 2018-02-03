@@ -374,11 +374,14 @@ namespace UIHotel.App.Controller
                     var invoices = (from a in model.Invoices.Include(x => x.Details)
                                     where a.Id == id
                                     select a).FirstOrDefault();
+                    var guest = (from a in model.Guests
+                                 where a.Id == invoices.IdGuest
+                                 select a).FirstOrDefault();
 
                     invoices.Details = invoices.Details.OrderBy(x => x.TransactionDate).ToList();
 
-                    if (invoices != null)
-                        return Json(new { success = true, data = invoices });
+                    if (invoices != null && guest != null)
+                        return Json(new { success = true, data = invoices, guest });
                     else
                         return Json(new { success = false, message = "Invoice not found!" });
                 } catch (Exception ex)
