@@ -481,7 +481,7 @@
                 this.guest.name = null
                 this.guest.type = 'Regular'
                 this.guest.birth_place = null
-                this.guest.birth_day = this.allowedDates.max
+                this.guest.birth_day = this.allowBir
                 this.guest.address.state = null
                 this.guest.address.province = null
                 this.guest.address.city = null
