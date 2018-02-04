@@ -134,10 +134,35 @@
                         </v-flex>
                         <v-flex md6>
                             <v-select label="Select"
-                                      v-bind:items="booktype"
+                                      :items="rooms"
+                                      v-model="room.rooms"
+                                      item-text="name"
+                                      item-value="id"
                                       multiple
                                       chips
-                                      max-height="400"></v-select>
+                                      max-height="auto"
+                                      autocomplete>
+                                <template slot="selection" slot-scope="data">
+                                    <v-chip close
+                                            @input="data.parent.selectItem(data.item)"
+                                            :selected="data.selected"
+                                            class="chip--select-multi"
+                                            :key="JSON.stringify(data.item)">
+                                        {{ data.item.name }}
+                                    </v-chip>
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                    <template v-if="typeof data.item !== 'object'">
+                                        <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                                    </template>
+                                    <template v-else>
+                                        <v-list-tile-content>
+                                            <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                            <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                                        </v-list-tile-content>
+                                    </template>
+                                </template>
+                            </v-select>
                         </v-flex>
                         <v-flex md2>
                             <v-btn fab dark small color="primary">
@@ -365,6 +390,7 @@
                     'TRAVELOKA',
                     'AGODA'
                 ],
+                rooms: [],
                 modal1: false,
                 modal2: false,
                 modal3: false,
@@ -499,6 +525,24 @@
                 this.guest.phone.phone2 = null
                 this.guest.photo_doc = null
                 this.guest.photo_guest = null
+            },
+            getRoom() {
+                axios.post('http://localhost.com/room/post/getVacantRoomList', {search:''})
+                    .then(this.getRoomData)
+                    .catch(() => { })
+            },
+            getRoomData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    this.rooms = []
+
+                    data.data.forEach(x => {
+                        var room = { id: x.Id, name: x.RoomName, group: x.RoomCategory }
+
+                        this.rooms.push(room)
+                    })
+                }
             }
         },
         mounted() {
@@ -507,6 +551,8 @@
             this.registration.arr_date = momen.format('YYYY-MM-DD')
             this.registration.dep_date = momen.add(1, 'd').format('YYYY-MM-DD')
             this.guest.birth_day = this.allowBir
+
+            this.getRoom()
         }
     }
 </script>

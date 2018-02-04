@@ -342,9 +342,26 @@ namespace UIHotel.App.Controller
                                    Rooms = b.ToList()
                                }).ToList();
 
-                    return Json(new { data = grp, status = status, success = true, message = "" });
+                    return Json(new { data = grp, status, success = true, message = "" });
                 }
                 catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
+            }
+        }
+        public IResourceHandler getVacantRoomList()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var rooms = (from a in model.Rooms.Include(x => x.Status).Include(x => x.Category)
+                                 where a.IdStatus == 1
+                                 select a).ToList();
+
+                    return Json(new { success = true, data = rooms });
+                } catch (Exception ex)
                 {
                     return Json(new { success = false, message = ex.ToString() });
                 }
