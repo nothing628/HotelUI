@@ -82,15 +82,11 @@
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex xs12>
-                                        <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.PayLink">
+                                        <v-btn dark :disabled="checkin.IsInvoiceClose" color="success" class="mb-4 ml-0" :href="checkin.PayLink">
                                             <span>Pay Invoice</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
-                                        <v-btn v-if="checkin.IsInvoiceClose" dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
-                                            <span>Checkout</span>
-                                            <v-icon right dark>move_to_inbox</v-icon>
-                                        </v-btn>
-                                        <v-btn v-else dark disabled depressed class="mb-4 ml-0">
+                                        <v-btn :disabled="!checkin.IsInvoiceClose" dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>

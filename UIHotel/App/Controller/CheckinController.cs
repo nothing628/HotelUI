@@ -44,7 +44,40 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler checkout()
         {
-            return View("Checkin.Checkout");
+            var id = Query["id"];
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var checkin = (from a in model.CheckIn
+                                   where a.Id == id
+                                   select a).FirstOrDefault();
+
+                    if (checkin != null)
+                    {
+                        checkin.CheckoutAt = DateTime.Now;
+
+                        var room = (from a in model.Rooms
+                                    where a.Id == checkin.IdRoom
+                                    select a).FirstOrDefault();
+
+                        if (room != null)
+                            room.IdStatus = 4;
+
+                        model.SaveChanges();
+                    }
+
+                    trans.Commit();
+                }
+                catch
+                {
+                    trans.Rollback();
+                }
+            }
+
+            return Redirect("http://localhost.com/checkin/get/list");
         }
 
         public IResourceHandler booking()
@@ -62,11 +95,12 @@ namespace UIHotel.App.Controller
                 {
                     var checkin = (from a in model.CheckIn
                                    where a.Id == checkinID
+                                   where a.CheckoutAt == null
                                    select a).FirstOrDefault();
 
                     if (checkin != null)
                         return View("Checkin.Detail", checkin);
-                } catch (Exception ex)
+                } catch
                 {
                     //
                 }
@@ -319,6 +353,7 @@ namespace UIHotel.App.Controller
                                 .Include(x => x.Guest)
                                 join b in model.Invoices on a.Id equals b.IdCheckin into c
                                 from d in c
+                                where a.CheckoutAt == null
                                 select new CheckinContainer()
                                 {
                                     DataCheckin = a,
@@ -328,7 +363,7 @@ namespace UIHotel.App.Controller
                                     DataInvoice = d,
                                 }).ToList();
 
-                    return Json(new { data = data, success = true });
+                    return Json(new { data, success = true });
                 } catch (Exception ex)
                 {
                     return Json(new { success = false, message = ex.Message });

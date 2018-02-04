@@ -111,7 +111,7 @@ namespace UIHotel.Data.Table
         {
             get
             {
-                return "http://location.com/checkin/get/checkout?id=" + this.Id;
+                return "http://localhost.com/checkin/get/checkout?id=" + this.Id;
             }
         }
     }

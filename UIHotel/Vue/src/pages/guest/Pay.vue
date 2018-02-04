@@ -83,7 +83,7 @@
                             <tr>
                                 <td colspan="3"></td>
                                 <td colspan="2">
-                                    <v-btn dark color="warning" @click="detail" class="mb-4 ml-0">
+                                    <v-btn dark color="warning" :href="CheckinLink" @click="detail" class="mb-4 ml-0">
                                         <span>Back</span>
                                         <v-icon right dark>reply</v-icon>
                                     </v-btn>
@@ -127,6 +127,7 @@
                 invoice: {
                     invoice_no: null,
                     invoice_close: false,
+                    checkin_id: null,
                     issued_date: null,
                 },
                 guest: {
@@ -182,6 +183,9 @@
             },
             AllowPay() {
                 return this.Cash > 0 && !this.invoice.invoice_close
+            },
+            CheckinLink() {
+                return "http://localhost.com/checkin/get/detail?id=" + this.invoice.checkin_id
             }
         },
         filters: {
@@ -212,6 +216,7 @@
                     var guest = data.guest
 
                     this.invoice.invoice_no = invoice.Id
+                    this.invoice.checkin_id = invoice.IdCheckin
                     this.invoice.invoice_close = invoice.IsClosed
                     this.invoice.issued_date = invoice.UpdateAt
                     this.guest.fullname = guest.Fullname
