@@ -52,49 +52,47 @@
                             <v-subheader class="text--lighten-1">Arrival Date</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-dialog persistent
-                                      v-model="modal1"
-                                      lazy
-                                      full-width
-                                      width="290px">
+                            <v-menu ref="menu1"
+                                    lazy
+                                    :close-on-content-click="false"
+                                    v-model="modal1"
+                                    transition="scale-transition"
+                                    offset-y
+                                    full-width
+                                    :nudge-right="40"
+                                    min-width="330px"
+                                    :return-value.sync="date1">
                                 <v-text-field slot="activator"
                                               v-model="date1"
                                               prepend-icon="event"
                                               readonly></v-text-field>
-                                <v-date-picker v-model="date1" scrollable actions>
-                                    <template slot-scope="{ save, cancel }">
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-                                            <v-btn flat color="primary" @click="save">OK</v-btn>
-                                        </v-card-actions>
-                                    </template>
+                                <v-date-picker v-model="date1" :min="allowArr" no-title scrollable>
+                                    <v-btn flat color="primary" @click="$refs.menu1.save(date1)">OK</v-btn>
                                 </v-date-picker>
-                            </v-dialog>
+                            </v-menu>
                         </v-flex>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Departure Date</v-subheader>
                         </v-flex>
                         <v-flex md4>
-                            <v-dialog persistent
-                                      v-model="modal2"
-                                      lazy
-                                      full-width
-                                      width="290px">
+                            <v-menu ref="menu2"
+                                    lazy
+                                    :close-on-content-click="false"
+                                    v-model="modal2"
+                                    transition="scale-transition"
+                                    offset-y
+                                    full-width
+                                    :nudge-right="40"
+                                    min-width="330px"
+                                    :return-value.sync="date2">
                                 <v-text-field slot="activator"
                                               v-model="date2"
                                               prepend-icon="event"
                                               readonly></v-text-field>
-                                <v-date-picker v-model="date2" scrollable actions>
-                                    <template slot-scope="{ save, cancel }">
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-                                            <v-btn flat color="primary" @click="save">OK</v-btn>
-                                        </v-card-actions>
-                                    </template>
+                                <v-date-picker v-model="date2" :min="allowArr" no-title scrollable>
+                                    <v-btn flat color="primary" @click="$refs.menu2.save(date2)">OK</v-btn>
                                 </v-date-picker>
-                            </v-dialog>
+                            </v-menu>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -337,6 +335,11 @@
         computed: {
             canShow() {
                 return this.selectedbook == 'ONLINE'
+            },
+            allowArr() {
+                var min = moment()
+
+                return min.format('YYYY-MM-DD')
             }
         }
     }
