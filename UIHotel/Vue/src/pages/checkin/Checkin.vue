@@ -294,6 +294,7 @@
                 </v-form>
 
                 <v-layout row class="mb-3">
+                    <v-flex md3></v-flex>
                     <v-flex md6>
                         <v-btn color="error" href="http://localhost.com/room/get/index">Cancel</v-btn>
                         <v-btn color="success" dark @click.stop="checkin">Checkin <v-icon dark right>check_circle</v-icon></v-btn>

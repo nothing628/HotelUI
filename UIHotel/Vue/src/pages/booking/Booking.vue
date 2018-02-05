@@ -15,6 +15,8 @@
                         <v-flex md2>
                             <v-select v-bind:items="booktype"
                                       v-model="registration.book_type"
+                                      item-text="name"
+                                      item-value="id"
                                       label="Select"
                                       single-line
                                       auto
@@ -26,6 +28,8 @@
                         <v-flex md3 v-show="canShow">
                             <v-select v-bind:items="onlinetype"
                                       v-model="registration.book_oltype"
+                                      item-text="name"
+                                      item-value="id"
                                       label="Select"
                                       single-line
                                       auto
@@ -355,9 +359,11 @@
                 </v-form>
 
                 <v-layout row class="mb-3">
-                    <v-flex md6>
+                    <v-flex md2></v-flex>
+                    <v-flex md8>
                         <v-btn color="error" href="http://localhost.com/room/get/index">Cancel</v-btn>
-                        <v-btn color="success" dark @click.stop="booking">Booking <v-icon dark right>check_circle</v-icon></v-btn>
+                        <v-btn color="success" dark @click.stop="booking(false)">Booking <v-icon dark right>check_circle</v-icon></v-btn>
+                        <v-btn color="success" dark @click.stop="booking(true)">Booking & Checkin<v-icon dark right>check_circle</v-icon></v-btn>
                     </v-flex>
                 </v-layout>
             </div>
@@ -382,15 +388,8 @@
         },
         data() {
             return {
-                booktype: [
-                    'WALK-IN',
-                    'TELEPHONE',
-                    'ONLINE',
-                ],
-                onlinetype: [
-                    'TRAVELOKA',
-                    'AGODA'
-                ],
+                booktype: [],
+                onlinetype: [],
                 rooms: [],
                 modal1: false,
                 modal2: false,
@@ -400,8 +399,8 @@
                 registration: {
                     valid: false,
                     book_no: '',
-                    book_type: 'WALK-IN',
-                    book_oltype: 'TRAVELOKA',
+                    book_type: 0,
+                    book_oltype: 0,
                     price: 0,
                     deposit: 0,
                     arr_date: null,
@@ -459,7 +458,7 @@
         },
         computed: {
             canShow() {
-                return this.registration.book_type == 'ONLINE'
+                return this.registration.book_type == -1
             },
             country_list() {
                 return country.country_list
@@ -545,6 +544,39 @@
                     })
                 }
             },
+            getBookingType() {
+                axios.post('http://localhost.com/checkin/post/getBookingType')
+                    .then(this.getBookingTypeData)
+                    .catch(() => { })
+            },
+            getBookingTypeData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    var lst = data.data
+                    var oltype = lst.filter(x => x.IsOnline)
+                    var oftype = lst.filter(x => !x.IsOnline)
+
+                    this.booktype = []
+                    this.onlinetype = []
+
+                    oltype.forEach(x => {
+                        this.onlinetype.push({
+                            name: x.OnlineProvider,
+                            id: x.Id
+                        })
+                    });
+
+                    oftype.forEach(x => {
+                        this.booktype.push({
+                            name: x.TypeBooking,
+                            id: x.Id
+                        })
+                    });
+
+                    this.booktype.push({ name: 'Online', id: -1 })
+                }
+            },
             uploadDocCallback(e) {
                 var objRet = JSON.parse(e)
                 //Big: 201, Floor 1
@@ -561,7 +593,7 @@
             uploadPhoto() {
                 window.CS.getObject("CheckinModel", "OpenDialog").then(this.uploadPhotoCallback).catch(e => { });
             },
-            booking() {
+            booking(checkin) {
                 this.$refs.form_registration.validate()
                 this.$refs.form_room.validate()
                 this.$refs.form_guest.validate()
@@ -572,16 +604,29 @@
                 const data = { registration, room, guest }
 
                 if (registration.valid && room.valid && guest.valid) {
-                    axios.post('http://localhost.com/checkin/post/postBooking', data)
-                        .then(this.bookingData)
-                        .catch(e => { })
+                    if (checkin) {
+                        axios.post('http://localhost.com/checkin/post/postBooking', data)
+                            .then(this.checkinData)
+                            .catch(e => { })
+                    } else {
+                        axios.post('http://localhost.com/checkin/post/postBooking', data)
+                            .then(this.bookingData)
+                            .catch(e => { })
+                    }
                 }
             },
             bookingData(response) {
                 var data = response.data
 
                 if (data.success) {
-                    //
+                    window.location = data.redirect_url
+                }
+            },
+            checkinData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    window.location = data.checkin_url
                 }
             }
         },
@@ -593,6 +638,7 @@
             this.guest.birth_day = this.allowBir
 
             this.getRoom()
+            this.getBookingType()
         }
     }
 </script>

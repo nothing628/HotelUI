@@ -22,6 +22,7 @@ namespace UIHotel.App.Controller
         public IResourceHandler index()
         {
             var roomId = Query["roomId"];
+            var bookId = Query["bookid"];
 
             if (roomId != null)
             {
@@ -37,6 +38,11 @@ namespace UIHotel.App.Controller
                         return View("Checkin.Checkin", room);
                     }
                 }
+            }
+
+            if (bookId != null)
+            {
+                // If this from booking list
             }
 
             return View("Checkin.Checkin");
@@ -120,7 +126,7 @@ namespace UIHotel.App.Controller
         }
         #endregion
 
-        #region Process Checkin
+        #region Process Checkin & Booking
         public IResourceHandler postCheckin()
         {
             var guest = jToken["guest"];
@@ -153,8 +159,13 @@ namespace UIHotel.App.Controller
                 var dataGuest = ProcessGuest(guest);
                 var dataBooking = ProcessBooking(room, registration, dataGuest);
                 var retUrl = string.Format("http://localhost.com/checkin/get/listBooking");
+                var checkinUrl = string.Format("http://localhost.com/chekin/get/index?bookid={0}", dataBooking.Id);
 
-                return Json(new { success = true, redirect_url = retUrl });
+                return Json(new {
+                    success = true,
+                    redirect_url = retUrl,
+                    checkin_url = checkinUrl,
+                });
             }
             catch (Exception ex)
             {
@@ -228,31 +239,47 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
+                    var rooms = tokenRoom["rooms"].Values<int>();
                     var bookno = tokenReg.Value<string>("book_no");
-                    var type = tokenReg.Value<string>("book_type");
-                    var oltype = tokenReg.Value<string>("book_oltype");
+                    var type = tokenReg.Value<int>("book_type");
+                    var oltype = tokenReg.Value<int>("book_oltype");
                     var arrAt = tokenReg.Value<DateTime>("arr_date");
                     var deptAt = tokenReg.Value<DateTime>("dep_date");
                     var countAdl = tokenReg.Value<short>("adl_count");
                     var countChl = tokenReg.Value<short>("chl_count");
 
-                    if (type != "ONLINE")
+                    result = new Booking()
                     {
-                        result = new Booking()
+                        ArriveAt = arrAt,
+                        DepartureAt = deptAt,
+                        CountAdult = countAdl,
+                        CountChild = countChl,
+                        CreateAt = DateTime.Now,
+                        UpdateAt = DateTime.Now,
+                        IdGuest = guest.Id,
+                        Id = Booking.GenerateID(),
+                    };
+
+                    result.IdType = (type != -1) ? type : oltype;
+                    result.Id = (type != -1) ? Booking.GenerateID() : bookno;
+
+                    model.Bookings.Add(result);
+                    model.SaveChanges();
+
+                    foreach(var room_id in rooms)
+                    {
+                        var room = (from a in model.Rooms where a.Id == room_id select a).FirstOrDefault();
+                        var detail = new BookingDetail()
                         {
-                            ArriveAt = arrAt,
-                            DepartureAt = deptAt,
-                            CountAdult = countAdl,
-                            CountChild = countChl,
-                            CreateAt = DateTime.Now,
-                            UpdateAt = DateTime.Now,
-                            IdGuest = guest.Id,
-                            Id = Booking.GenerateID(),
-                            IdType = 1,
+                            IdBooking = result.Id,
+                            IdRoom = room_id,
+                            IsCheckedIn = false,
                         };
-                    } else
-                    {
-                        //
+
+                        room.IdStatus = 2;
+
+                        model.BookingDetails.Add(detail);
+                        model.SaveChanges();
                     }
 
                     trans.Commit();
@@ -485,6 +512,23 @@ namespace UIHotel.App.Controller
                         return Json(new { success = true, data = invoices, guest });
                     else
                         return Json(new { success = false, message = "Invoice not found!" });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
+            }
+        }
+
+        public IResourceHandler getBookingType()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var lstType = (from a in model.BookingType
+                                   select a).ToList();
+
+                    return Json(new { success = true, data = lstType });
                 } catch (Exception ex)
                 {
                     return Json(new { success = false, message = ex.ToString() });
