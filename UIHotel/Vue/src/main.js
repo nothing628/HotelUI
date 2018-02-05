@@ -5,6 +5,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import router from './router'
 import Booking from './pages/booking/Booking'
+import BookingList from './pages/booking/List'
 import Checkin from './pages/checkin/Checkin'
 import CheckinList from './pages/checkin/List'
 import CheckinDetail from './pages/checkin/Detail'
@@ -24,6 +25,7 @@ import RoomMaintain from './pages/settings/Room'
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 Vue.component('booking', Booking)
+Vue.component('booking-list', BookingList)
 Vue.component('checkin', Checkin)
 Vue.component('checkin-list', CheckinList)
 Vue.component('checkin-detail', CheckinDetail)

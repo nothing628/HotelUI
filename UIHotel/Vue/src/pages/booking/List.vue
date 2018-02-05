@@ -1,0 +1,113 @@
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Booking List</h2>
+        </div>
+
+        <div class="card-block">
+            <form class="form-row">
+                <div class="form-group row">
+                    <div class="col-2">
+                        <select class="form-control" id="select-data">
+                            <option>Booking Type</option>
+                            <option value="1">WALK-IN</option>
+                            <option value="2">TELEPHONE</option>
+                            <option value="3">ONLINE</option>
+                        </select>
+                    </div>
+                    <div class="col-3" id="online-field">
+                        <select class="form-control">
+                            <option>Room Type</option>
+                            <option value="2">Big</option>
+                            <option value="3">Medium</option>
+                            <option value="4">Small</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>ID Booking</td>
+                        <td>Room Number</td>
+                        <td>Arrival Date</td>
+                        <td>Departure Date</td>
+                        <td>Count Child</td>
+                        <td>Count Adult</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BBK-3939495</td>
+                        <td>
+                            <span class="badge badge-success">BIG : 201</span>,
+                            <span class="badge badge-success">BIG : 202</span>
+                        </td>
+                        <td>2017-12-19</td>
+                        <td>2017-12-20</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn success">Check In</button>
+                                <button class="btn warning">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="green lighten-5">
+                        <td>BBK-4562333</td>
+                        <td>
+                            <span class="badge badge-success">MEDIUM : 301</span>
+                        </td>
+                        <td>2017-12-19</td>
+                        <td>2017-12-20</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn success">Check In</button>
+                                <button class="btn warning">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>BBK-3939422</td>
+                        <td>
+                            <span class="badge badge-success">SMALL : 401</span>,
+                            <span class="badge badge-success">SMALL : 402</span>
+                        </td>
+                        <td>2017-12-19</td>
+                        <td>2017-12-20</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn success">Check In</button>
+                                <button class="btn warning">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item"><a class="paginate_button previous" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link paginate_button current" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="paginate_button next" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        data() {
+            return {}
+        }
+    }
+</script>
