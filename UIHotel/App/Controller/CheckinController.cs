@@ -142,6 +142,26 @@ namespace UIHotel.App.Controller
             }
         }
 
+        public IResourceHandler postBooking()
+        {
+            var guest = jToken["guest"];
+            var registration = jToken["registration"];
+            var room = jToken["room"];
+
+            try
+            {
+                var dataGuest = ProcessGuest(guest);
+                var dataBooking = ProcessBooking(room, registration, dataGuest);
+                var retUrl = string.Format("http://localhost.com/checkin/get/listBooking");
+
+                return Json(new { success = true, redirect_url = retUrl });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.ToString() });
+            }
+        }
+
         public Guest ProcessGuest(JToken token)
         {
             using (var model = new DataContext())
@@ -197,6 +217,52 @@ namespace UIHotel.App.Controller
                     throw;
                 }
             }
+        }
+
+        public Booking ProcessBooking(JToken tokenRoom, JToken tokenReg, Guest guest)
+        {
+            Booking result = null;
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var bookno = tokenReg.Value<string>("book_no");
+                    var type = tokenReg.Value<string>("book_type");
+                    var oltype = tokenReg.Value<string>("book_oltype");
+                    var arrAt = tokenReg.Value<DateTime>("arr_date");
+                    var deptAt = tokenReg.Value<DateTime>("dep_date");
+                    var countAdl = tokenReg.Value<short>("adl_count");
+                    var countChl = tokenReg.Value<short>("chl_count");
+
+                    if (type != "ONLINE")
+                    {
+                        result = new Booking()
+                        {
+                            ArriveAt = arrAt,
+                            DepartureAt = deptAt,
+                            CountAdult = countAdl,
+                            CountChild = countChl,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                            IdGuest = guest.Id,
+                            Id = Booking.GenerateID(),
+                            IdType = 1,
+                        };
+                    } else
+                    {
+                        //
+                    }
+
+                    trans.Commit();
+                } catch
+                {
+                    trans.Rollback();
+                }
+            }
+
+            return result;
         }
 
         public Checkin ProcessCheckin(JToken tokenRoom, JToken tokenReg, Guest guest)

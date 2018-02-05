@@ -11,6 +11,8 @@ namespace UIHotel.Data.Seeds
         {
             context.BookingType.Add(new BookingType() { TypeBooking = "Walk-In" });
             context.BookingType.Add(new BookingType() { TypeBooking = "Telephone" });
+            context.BookingType.Add(new BookingType() { TypeBooking = "Online", IsOnline = true, OnlineProvider = "Traveloka" });
+            context.BookingType.Add(new BookingType() { TypeBooking = "Online", IsOnline = true, OnlineProvider = "Agoda" });
             context.SaveChanges();
 
             context.Rooms.Add(new Room() { IdCategory = 1, RoomNumber = "201", IdStatus = 1 });

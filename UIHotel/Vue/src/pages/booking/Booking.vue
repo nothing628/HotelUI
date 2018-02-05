@@ -7,7 +7,7 @@
                 </div>
             </v-card-title>
             <div class="card-block">
-                <v-form v-model="registration.valid">
+                <v-form v-model="registration.valid" ref="form_registration" lazy-validation>
                     <v-layout row>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Booking Type</v-subheader>
@@ -127,7 +127,7 @@
                 </div>
             </v-card-title>
             <div class="card-block">
-                <v-form v-model="room.valid">
+                <v-form v-model="room.valid" ref="form_room" lazy-validation>
                     <v-layout row>
                         <v-flex md2>
                             <v-subheader class="text--lighten-1">Select Room</v-subheader>
@@ -135,6 +135,7 @@
                         <v-flex md6>
                             <v-select label="Select"
                                       :items="rooms"
+                                      :rules="rules.room_num"
                                       v-model="room.rooms"
                                       item-text="name"
                                       item-value="id"
@@ -356,7 +357,7 @@
                 <v-layout row class="mb-3">
                     <v-flex md6>
                         <v-btn color="error" href="http://localhost.com/room/get/index">Cancel</v-btn>
-                        <v-btn color="success" dark @click.stop="checkin">Booking <v-icon dark right>check_circle</v-icon></v-btn>
+                        <v-btn color="success" dark @click.stop="booking">Booking <v-icon dark right>check_circle</v-icon></v-btn>
                     </v-flex>
                 </v-layout>
             </div>
@@ -451,7 +452,7 @@
                         (v) => !!v || 'Document is required'
                     ],
                     room_num: [
-                        (v) => !!v || 'Room Number is required'
+                        (v) => v.length > 0 || 'Room Number is required'
                     ],
                 }
             }
@@ -542,6 +543,45 @@
 
                         this.rooms.push(room)
                     })
+                }
+            },
+            uploadDocCallback(e) {
+                var objRet = JSON.parse(e)
+                //Big: 201, Floor 1
+                this.guest.photo_doc = objRet.hashname
+            },
+            uploadPhotoCallback(e) {
+                var objRet = JSON.parse(e)
+
+                this.guest.photo_guest = objRet.hashname
+            },
+            uploadDoc() {
+                window.CS.getObject("CheckinModel", "OpenDialog").then(this.uploadDocCallback).catch(e => { });
+            },
+            uploadPhoto() {
+                window.CS.getObject("CheckinModel", "OpenDialog").then(this.uploadPhotoCallback).catch(e => { });
+            },
+            booking() {
+                this.$refs.form_registration.validate()
+                this.$refs.form_room.validate()
+                this.$refs.form_guest.validate()
+
+                const registration = this.registration
+                const room = this.room
+                const guest = this.guest
+                const data = { registration, room, guest }
+
+                if (registration.valid && room.valid && guest.valid) {
+                    axios.post('http://localhost.com/checkin/post/postBooking', data)
+                        .then(this.bookingData)
+                        .catch(e => { })
+                }
+            },
+            bookingData(response) {
+                var data = response.data
+
+                if (data.success) {
+                    //
                 }
             }
         },

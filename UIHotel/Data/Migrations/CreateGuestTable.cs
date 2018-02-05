@@ -49,7 +49,8 @@ namespace UIHotel.Data.Migrations
             Create.Table("booking_type")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("type").AsString(50).NotNullable()
-                .WithColumn("is_online").AsBoolean().WithDefaultValue(false);
+                .WithColumn("is_online").AsBoolean().WithDefaultValue(false)
+                .WithColumn("online_provider").AsString(50).Nullable();
 
             Create.Table("booking")
                 .WithColumn("id").AsString(25).PrimaryKey()

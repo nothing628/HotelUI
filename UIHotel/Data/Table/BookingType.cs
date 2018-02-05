@@ -22,5 +22,9 @@ namespace UIHotel.Data.Table
 
         [Column("is_online", Order = 2)]
         public bool IsOnline { get; set; }
+
+        [Column("online_provider", Order = 3)]
+        [StringLength(50)]
+        public string OnlineProvider { get; set; }
     }
 }

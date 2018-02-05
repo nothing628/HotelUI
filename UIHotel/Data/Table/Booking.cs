@@ -45,5 +45,32 @@ namespace UIHotel.Data.Table
 
         [Column("update_at", Order = 8)]
         public DateTime? UpdateAt { get; set; }
+
+        public static string GenerateID()
+        {
+            using (var context = new DataContext())
+            {
+                var CurrDate = DateTime.Now.ToString("yyyyMMdd");
+                var Prefix = "BOK";
+                var PrefixID = Prefix + CurrDate;
+                var newId = 1;
+
+                try
+                {
+                    var chk = (from a in context.Bookings
+                               where a.Id.StartsWith(PrefixID)
+                               select a.Id).ToList();
+                    var trans = chk.Select(x => x.Replace(PrefixID, "")).Select(x => Convert.ToInt32(x)).Max();
+
+                    newId = trans + 1;
+                }
+                catch
+                {
+
+                }
+
+                return PrefixID + string.Format("{0:D5}", newId);
+            }
+        }
     }
 }
