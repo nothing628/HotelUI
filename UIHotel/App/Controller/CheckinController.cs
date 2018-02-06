@@ -536,6 +536,33 @@ namespace UIHotel.App.Controller
             }
         }
 
+        public IResourceHandler getBookingList()
+        {
+            var page = jToken.Value<int>("page");
+            var rowPerPage = jToken.Value<int>("rowsPerPage");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var iQuery = (from a in model.Bookings
+                                   orderby a.ArriveAt ascending
+                                   select a);
+
+                    var count = iQuery.Count();
+                    var tmpData = iQuery
+                        .Skip(rowPerPage * (page - 1))
+                        .Take(rowPerPage)
+                        .ToList();
+
+                    return Json(new { success = true, data = tmpData, total = count });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.ToString() });
+                }
+            }
+        }
+
         public IResourceHandler payInvoice()
         {
             var id = jToken.Value<string>("id");

@@ -46,6 +46,71 @@ namespace UIHotel.Data.Table
         [Column("update_at", Order = 8)]
         public DateTime? UpdateAt { get; set; }
 
+        List<BookingDetail> _details;
+        Guest _guest;
+
+        [NotMapped]
+        public Guest Guest
+        {
+            get
+            {
+                if (_guest == null)
+                {
+                    using (var model = new DataContext())
+                    {
+                        try
+                        {
+                            _guest = (from a in model.Guests
+                                      where a.Id == IdGuest
+                                      select a).First();
+                        } catch
+                        {
+                            _guest = new Guest();
+                        }
+                    }
+                }
+
+                return _guest;
+            }
+        }
+
+        [NotMapped]
+        public ICollection<BookingDetail> Details
+        {
+            get
+            {
+                if (_details == null)
+                {
+                    using (var model = new DataContext())
+                    {
+                        try
+                        {
+                            _details = (from a in model.BookingDetails
+                                        where a.IdBooking == Id
+                                        select a).ToList();
+                        } catch (Exception ex)
+                        {
+                            _details = new List<BookingDetail>();
+                        }
+                    }
+                }
+
+                return _details;
+            }
+        }
+
+        [NotMapped]
+        public ICollection<Room> Rooms
+        {
+            get
+            {
+                var details = Details;
+                var rooms = Details.Select(x => x.Room).ToList();
+
+                return rooms;
+            }
+        }
+
         public static string GenerateID()
         {
             using (var context = new DataContext())
