@@ -6,8 +6,12 @@
 
         <v-container fluid grid-list-md>
             <v-layout row>
-                <v-flex lg3 md3 sm12 xs12></v-flex>
-                <v-flex lg9 md9 sm12 xs12></v-flex>
+                <v-flex lg2 md2 sm12 xs12>
+                    <v-btn color="primary" href="http://localhost.com/checkin/get/booking" block>Booking <v-icon dark right>bookmark</v-icon></v-btn>
+                </v-flex>
+                <v-flex lg10 md10 sm12 xs12>
+                    <v-text-field placeholder="Search"></v-text-field>
+                </v-flex>
             </v-layout>
             <v-layout row>
                 <v-flex lg12>
@@ -31,8 +35,11 @@
                                 <td>{{ props.item.ArrivalDate | dateformat }}</td>
                                 <td>{{ props.item.DepartureDate | dateformat }}</td>
                                 <td>
-                                    <v-btn icon class="mx-0" :href="props.item.DetailLink">
-                                        <v-icon color="teal">visibility</v-icon>
+                                    <v-btn icon class="mx-0" :href="props.item.EditLink">
+                                        <v-icon color="warning">create</v-icon>
+                                    </v-btn>
+                                    <v-btn icon class="mx-0" :href="props.item.CheckinLink">
+                                        <v-icon color="success">assignment_turned_in</v-icon>
                                     </v-btn>
                                 </td>
                             </tr>
@@ -63,7 +70,7 @@
                         { text: 'Guest', sortable: false, align: 'left' },
                         { text: 'Arrival Date', sortable: false, align: 'left' },
                         { text: 'Departure Date', sortable: false, align: 'left' },
-                        { text: '', sortable: false },
+                        { text: 'Actions', sortable: false },
                     ],
                     items: []
                 }
@@ -90,7 +97,6 @@
                 var data = response.data
 
                 if (data.success) {
-                    console.log(data)
                     this.tableData.items = []
                     this.tableData.totalItems = data.total
 

@@ -277,6 +277,7 @@
       <SubType>Component</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="View\Booking\Edit.cshtml" />
     <None Include="View\Booking\List.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

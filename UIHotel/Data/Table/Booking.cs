@@ -111,6 +111,24 @@ namespace UIHotel.Data.Table
             }
         }
 
+        [NotMapped]
+        public string CheckinLink
+        {
+            get
+            {
+                return string.Format("http://localhost.com/chekin/get/index?bookid={0}", Id);
+            }
+        }
+
+        [NotMapped]
+        public string EditLink
+        {
+            get
+            {
+                return string.Format("http://localhost.com/checkin/get/editBooking?id={0}", Id);
+            }
+        }
+
         public static string GenerateID()
         {
             using (var context = new DataContext())

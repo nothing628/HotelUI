@@ -115,6 +115,29 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/checkin/get/list");
         }
 
+        public IResourceHandler editBooking()
+        {
+            var id = Query["id"];
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var booking = (from a in model.Bookings
+                                   where a.Id == id
+                                   select a).FirstOrDefault();
+
+                    if (booking != null)
+                        return View("Booking.Edit", booking);
+                } catch
+                {
+                    //
+                }
+            }
+
+            return Redirect("http://localhost.com/checkin/get/listBooking");
+        }
+
         public IResourceHandler listBooking()
         {
             return View("Booking.List");
