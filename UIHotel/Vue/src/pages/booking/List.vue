@@ -23,7 +23,7 @@
                                   v-bind:loading="tableData.loading"
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
-                            <tr>
+                            <tr :class="colorClass(props.item)">
                                 <td>{{ props.item.Id }}</td>
                                 <td>
                                     <v-chip v-for="room in props.item.Rooms" :key="room.Id">
@@ -32,11 +32,14 @@
                                     </v-chip>
                                 </td>
                                 <td>{{ props.item.Guest.Fullname }}</td>
-                                <td>{{ props.item.ArrivalDate | dateformat }}</td>
-                                <td>{{ props.item.DepartureDate | dateformat }}</td>
+                                <td>{{ props.item.ArriveAt | dateformat }}</td>
+                                <td>{{ props.item.DepartureAt | dateformat }}</td>
                                 <td>
                                     <v-btn icon class="mx-0" :href="props.item.EditLink">
                                         <v-icon color="warning">create</v-icon>
+                                    </v-btn>
+                                    <v-btn icon class="mx-0" :href="props.item.CheckinLink">
+                                        <v-icon color="error">remove</v-icon>
                                     </v-btn>
                                     <v-btn icon class="mx-0" :href="props.item.CheckinLink">
                                         <v-icon color="success">assignment_turned_in</v-icon>
@@ -84,6 +87,23 @@
             }
         },
         methods: {
+            colorClass(item) {
+                var cls = []
+
+                switch (item.LateLevel) {
+                    case 1:
+                        cls.push('red', 'lighten-4')
+                        break
+                    case 0:
+                        cls.push('yellow', 'lighten-4')
+                        break
+                    case -1:
+                        // no color
+                        break
+                }
+
+                return cls
+            },
             getApi() {
                 const { page, rowsPerPage } = this.tableData.pagination
                 const search = this.tableData.search
