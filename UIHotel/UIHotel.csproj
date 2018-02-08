@@ -416,6 +416,7 @@
     <None Include="Vue\src\App.vue" />
     <None Include="Vue\src\components\date\DatePicker.vue" />
     <None Include="Vue\src\components\dialog\BookDialog.vue" />
+    <None Include="Vue\src\components\dialog\ConfirmDialog.vue" />
     <None Include="Vue\src\components\dialog\GuestDialog.vue" />
     <None Include="Vue\src\components\dialog\RoomDialog.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
@@ -612,6 +613,7 @@
     <Content Include="Vue\src\assets\logo.png" />
     <Content Include="Vue\src\components\CountryList.js" />
     <Content Include="Vue\src\main.js" />
+    <None Include="Vue\src\pages\booking\Edit.vue" />
     <None Include="Vue\src\pages\booking\List.vue" />
     <None Include="Vue\src\pages\checkin\Detail.vue" />
     <Content Include="Vue\src\router\index.js" />

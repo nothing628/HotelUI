@@ -138,6 +138,58 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/checkin/get/listBooking");
         }
 
+        public IResourceHandler cancelBooking()
+        {
+            var id = Query["id"];
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var booking = (from a in model.Bookings
+                                   where a.Id == id
+                                   select a).FirstOrDefault();
+
+                    if (booking != null)
+                    {
+                        var books = booking.Details;
+
+                        foreach (var book in books)
+                        {
+                            var room = (from a in model.Rooms
+                                        where a.Id == book.Room.Id
+                                        select a).FirstOrDefault();
+
+                            if (room != null)
+                            {
+                                room.IdStatus = 1;
+
+                                model.Entry(room).State = EntityState.Modified;
+                                model.SaveChanges();
+                            }
+
+                            model.Entry(book).State = EntityState.Deleted;
+                            model.SaveChanges();
+                        }
+
+                        model.Entry(booking).State = EntityState.Deleted;
+                        model.SaveChanges();
+
+                        trans.Commit();
+
+                        return Json(new { success = true });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                }
+            }
+
+            return Json(new { success = false });
+        }
+
         public IResourceHandler listBooking()
         {
             return View("Booking.List");

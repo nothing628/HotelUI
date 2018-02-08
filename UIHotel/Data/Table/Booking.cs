@@ -116,7 +116,7 @@ namespace UIHotel.Data.Table
         {
             get
             {
-                return string.Format("http://localhost.com/chekin/get/index?bookid={0}", Id);
+                return string.Format("http://localhost.com/checkin/get/index?bookid={0}", Id);
             }
         }
 
@@ -126,6 +126,35 @@ namespace UIHotel.Data.Table
             get
             {
                 return string.Format("http://localhost.com/checkin/get/editBooking?id={0}", Id);
+            }
+        }
+
+        [NotMapped]
+        public string RemoveLink
+        {
+            get
+            {
+                return string.Format("http://localhost.com/checkin/post/cancelBooking?id={0}", Id);
+            }
+        }
+
+        [NotMapped]
+        public int LateLevel
+        {
+            get
+            {
+                var today = DateTime.Now;
+                var arrive = ArriveAt.Add(new TimeSpan(12, 0, 0)); //TODO: Get Checkin Time in setting
+
+                if (arrive.Date <= today.Date)
+                {
+                    if (arrive < today)
+                        return 1;
+                    else
+                        return 0;
+                }
+
+                return -1;
             }
         }
 

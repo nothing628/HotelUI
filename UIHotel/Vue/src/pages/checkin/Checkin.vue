@@ -305,6 +305,7 @@
         <book-dialog v-model="dialog_book"></book-dialog>
         <room-dialog v-model="dialog_room"></room-dialog>
         <guest-dialog v-model="dialog_guest"></guest-dialog>
+        <alert></alert>
     </v-app>
 </template>
 <script>
@@ -314,12 +315,14 @@
     import DialogBook from '../../components/dialog/BookDialog'
     import DialogRoom from '../../components/dialog/RoomDialog'
     import DialogGuest from '../../components/dialog/GuestDialog'
+    import Alert from '../../components/Notification'
 
     export default {
         components: {
             'book-dialog': DialogBook,
             'room-dialog': DialogRoom,
             'guest-dialog': DialogGuest,
+            'alert': Alert,
         },
         data() {
             return {
@@ -502,7 +505,7 @@
                     window.location = data.redirect_url
                 } else {
                     // show errors
-                    console.log(data.message)
+                    this.$bus.$emit('alert-show', { text: data.message, color: 'error' })
                 }
             },
             checkin() {
