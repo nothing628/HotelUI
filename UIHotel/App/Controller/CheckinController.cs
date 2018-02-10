@@ -504,6 +504,7 @@ namespace UIHotel.App.Controller
                     {
                         var bookDetail = (from a in model.BookingDetails
                                           where a.IdBooking == book_id
+                                          where !a.IsCheckedIn
                                           select a).ToList();
 
                         result = (from a in rawResult
