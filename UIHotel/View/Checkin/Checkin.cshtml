@@ -13,11 +13,19 @@
 
             @if (Model != null)
             {
-                <checkin room-id="@Model.Id" room-name="@Model.RoomName"></checkin>
+                if (Model.room != null)
+                {
+                    <checkin room-id="@Model.room.Id" room-name="@Model.room.RoomName"></checkin>
+                }
+                else
+                {
+                    <checkin book-id="@Model.booking.Id"></checkin>
+                }
+
             }
             else
             {
-                <checkin></checkin>
+            <checkin></checkin>
             }
         </v-flex>
     </v-layout>

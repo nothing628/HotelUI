@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Globalization;
@@ -35,7 +36,7 @@ namespace UIHotel.App.Controller
 
                     if (room != null)
                     {
-                        return View("Checkin.Checkin", room);
+                        return View("Checkin.Checkin", new CheckModel(){ room = room });
                     }
                 }
             }
@@ -43,6 +44,18 @@ namespace UIHotel.App.Controller
             if (bookId != null)
             {
                 // If this from booking list
+                using (var model = new DataContext())
+                {
+                    var id = bookId;
+                    var book = (from a in model.Bookings
+                                where a.Id == id
+                                select a).FirstOrDefault();
+
+                    if (book != null)
+                    {
+                        return View("Checkin.Checkin", new CheckModel() { booking = book });
+                    }
+                }
             }
 
             return View("Checkin.Checkin");
@@ -234,7 +247,7 @@ namespace UIHotel.App.Controller
                 var dataGuest = ProcessGuest(guest);
                 var dataBooking = ProcessBooking(room, registration, dataGuest);
                 var retUrl = string.Format("http://localhost.com/checkin/get/listBooking");
-                var checkinUrl = string.Format("http://localhost.com/chekin/get/index?bookid={0}", dataBooking.Id);
+                var checkinUrl = string.Format("http://localhost.com/checkin/get/index?bookid={0}", dataBooking.Id);
 
                 return Json(new {
                     success = true,
@@ -480,19 +493,38 @@ namespace UIHotel.App.Controller
                 try
                 {
                     var search = jToken.Value<string>("search");
-                    var result = (from a in model.Rooms
-                                  join b in model.RoomCategory on a.IdCategory equals b.Id into c
+                    var book_id = jToken.Value<string>("book_id");
+                    var result = new List<RoomModel>();
+                    var rawResult = (from a in model.Rooms.Include(x => x.Category).Include(x => x.Status)
+                                     where a.IdStatus == 1 || a.IdStatus == 2
+                                     where a.RoomNumber.Contains(search) || a.Category.Category.Contains(search)
+                                     select a).ToList();
+
+                    if (book_id != "")
+                    {
+                        var bookDetail = (from a in model.BookingDetails
+                                          where a.IdBooking == book_id
+                                          select a).ToList();
+
+                        result = (from a in rawResult
+                                  join b in bookDetail on a.Id equals b.IdRoom into c
                                   from d in c
-                                  join e in model.RoomStatus on a.IdStatus equals e.Id into f
-                                  from g in f
-                                  where g.Id == 1 || g.Id == 2
-                                  where a.RoomNumber.Contains(search) || d.Category.Contains(search)
                                   select new RoomModel()
                                   {
                                       DataRoom = a,
-                                      DataStatus = g,
-                                      RoomCategory = d.Category,
+                                      DataStatus = a.Status,
+                                      RoomCategory = a.RoomCategory,
                                   }).ToList();
+                    } else
+                    {
+                        result = (from a in rawResult
+                                  select new RoomModel()
+                                  {
+                                      DataRoom = a,
+                                      DataStatus = a.Status,
+                                      RoomCategory = a.RoomCategory,
+                                  }).ToList();
+                    }
 
                     return Json(new { data = result, success = true });
                 }
@@ -713,5 +745,10 @@ namespace UIHotel.App.Controller
             }
         }
         #endregion
+    }
+
+    public class CheckModel {
+        public Room room { get; set; }
+        public Booking booking { get; set; }
     }
 }

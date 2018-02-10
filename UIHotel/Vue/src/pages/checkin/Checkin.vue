@@ -14,7 +14,7 @@
                             <v-text-field type="text" readonly disabled v-model="registration.book_no"></v-text-field>
                         </v-flex>
                         <v-flex md2>
-                            <v-btn fab dark icon small color="primary">
+                            <v-btn fab dark icon small color="primary" @click.stop="selectBook">
                                 <v-icon dark>search</v-icon>
                             </v-btn>
                         </v-flex>
@@ -392,8 +392,16 @@
         },
         props: {
             min_deposit: { type: Number, default: 50000 },
+            bookId: { type: String, default: null },
             roomId: { type: String, default: null },
             roomName: { type: String, default: null }
+        },
+        filters: {
+            dateformat(val) {
+                var momen = moment(val)
+
+                return momen.format('YYYY-MM-DD');
+            }
         },
         computed: {
             country_list() {
@@ -416,6 +424,21 @@
                     if (this.registration.deposit < this.min_deposit)
                         this.registration.deposit = this.min_deposit
                 }
+            },
+            dialog_book: {
+                handler() {
+                    if ("book" in this.dialog_book) {
+                        let book = this.dialog_book.book
+
+                        this.registration.book_no = book.Id
+                        this.registration.arr_date = this.$options.filters.dateformat(book.ArriveAt)
+                        this.registration.dep_date = this.$options.filters.dateformat(book.DepartureAt)
+                        this.registration.adl_count = book.CountAdult
+                        this.registration.chl_count = book.CountChild
+                        this.dialog_room.book_id = book.Id
+                    }
+                },
+                deep: true,
             },
             dialog_room: {
                 handler() {
@@ -551,6 +574,7 @@
 
             this.room.room_id = this.roomId || ""
             this.room.room_number = this.roomName || ""
+            this.registration.book_no = this.bookId || ""
         }
     }
 </script>

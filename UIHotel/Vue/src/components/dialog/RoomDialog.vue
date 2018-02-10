@@ -58,6 +58,7 @@
                     items: []
                 },
                 dataValue: {
+                    book_id: '',
                     room: {},
                     show: false,
                 }
@@ -69,6 +70,12 @@
                     this.getDataApi()
                 }
             },
+            'dataValue.book_id': {
+                handler() {
+                    this.getDataApi()
+                },
+                deep: false,
+            },
             dataValue: {
                 handler() {
                     this.updateValue()
@@ -77,6 +84,8 @@
             },
             value: {
                 handler() {
+                    if ('book_id' in this.value)
+                        this.dataValue.book_id = this.value.book_id
                     if ('show' in this.value)
                         this.dataValue.show = this.value.show
                     if ('room' in this.value)
@@ -106,8 +115,9 @@
             },
             getDataApi() {
                 const search = this.tableData.search
+                const book_id = this.dataValue.book_id
 
-                axios.post('http://localhost.com/checkin/post/getRooms', { search })
+                axios.post('http://localhost.com/checkin/post/getRooms', { search, book_id })
                     .then(this.getData)
                     .catch(e => { })
             },
