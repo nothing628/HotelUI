@@ -32,6 +32,9 @@
         },
         mounted() {
             this.$bus.$on('alert-show', this.showAlert)
+        },
+        beforeDestroy() {
+            this.$bus.$off('alert-show', this.showAlert)
         }
     }
 </script>

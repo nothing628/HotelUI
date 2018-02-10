@@ -23,7 +23,7 @@
                                   v-bind:loading="tableData.loading"
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
-                            <tr :class="colorClass(props.item)">
+                            <tr :class="classColor(props.item.LateLevel)">
                                 <td>{{ props.item.Id }}</td>
                                 <td>
                                     <v-chip v-for="room in props.item.Rooms" :key="room.Id">
@@ -39,10 +39,10 @@
                                         <v-icon color="warning">create</v-icon>
                                     </v-btn>
                                     <v-btn icon class="mx-0" :href="props.item.CheckinLink">
-                                        <v-icon color="error">remove</v-icon>
-                                    </v-btn>
-                                    <v-btn icon class="mx-0" :href="props.item.CheckinLink">
                                         <v-icon color="success">assignment_turned_in</v-icon>
+                                    </v-btn>
+                                    <v-btn icon class="mx-0" @click.stop="confirmCancel(props.item)">
+                                        <v-icon color="error">clear</v-icon>
                                     </v-btn>
                                 </td>
                             </tr>
@@ -51,6 +51,8 @@
                             From {{ pageStart }} to {{ pageStop }}
                         </template>
                     </v-data-table>
+                    <confirm></confirm>
+                    <alert></alert>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -59,7 +61,13 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
+    import confirm from '../../components/dialog/ConfirmDialog'
+    import alert from '../../components/Notification'
     export default {
+        components: {
+            'confirm': confirm,
+            'alert': alert,
+        },
         data() {
             return {
                 tableData: {
@@ -87,22 +95,36 @@
             }
         },
         methods: {
-            colorClass(item) {
-                var cls = []
+            confirmCancel(item) {
+                let cancel = this.cancelBook
 
-                switch (item.LateLevel) {
-                    case 1:
-                        cls.push('red', 'lighten-4')
-                        break
-                    case 0:
-                        cls.push('yellow', 'lighten-4')
-                        break
-                    case -1:
-                        // no color
-                        break
+                this.$bus.$emit('dialog-show', {
+                    title: 'Cancel Booking',
+                    message: 'Are you sure to cancel this booking?',
+                    onYes() { cancel(item) },
+                    onNo() { }
+                })
+            },
+            cancelBook(item) {
+                axios.post(item.RemoveLink).then(this.cancelBookCallback);
+            },
+            cancelBookCallback(response) {
+                let data = response.data
+
+                if (data.success) {
+                    this.getApi()
+                    this.$bus.$emit('alert-show', { text: 'Success Delete', color: 'success' })
+                } else {
+                    this.$bus.$emit('alert-show', { text: 'Failed Delete', color: 'error' })
                 }
-
-                return cls
+            },
+            classColor(level) {
+                if (level == 1)
+                    return ['red', 'lighten-5']
+                else if (level == 0)
+                    return ['yellow', 'lighten-5']
+                else
+                    return []
             },
             getApi() {
                 const { page, rowsPerPage } = this.tableData.pagination
@@ -114,7 +136,7 @@
                     .catch(() => { })
             },
             getApiData(response) {
-                var data = response.data
+                let data = response.data
 
                 if (data.success) {
                     this.tableData.items = []

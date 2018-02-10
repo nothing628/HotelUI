@@ -133,11 +133,6 @@
                 handler() {
                     this.getPriceApi()
                 }
-            },
-            'tableData.pagination': {
-                handler() {
-                    console.log(this.tableData)
-                }
             }
         },
         computed: {

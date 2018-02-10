@@ -130,19 +130,28 @@ namespace UIHotel.Data.Table
         }
 
         [NotMapped]
+        public string RemoveLink
+        {
+            get
+            {
+                return string.Format("http://localhost.com/checkin/post/cancelBooking?id={0}", Id);
+            }
+        }
+
+        [NotMapped]
         public int LateLevel
         {
             get
             {
                 var today = DateTime.Now;
-                var arrive = ArriveAt.Date.Add(new TimeSpan(12, 0, 0));//TODO: Add checkin time 12:00
+                var arrive = ArriveAt.Add(new TimeSpan(12, 0, 0)); //TODO: Get Checkin Time in setting
 
                 if (arrive.Date <= today.Date)
                 {
-                    if (arrive > today)
-                        return 0;
-                    else
+                    if (arrive < today)
                         return 1;
+                    else
+                        return 0;
                 }
 
                 return -1;
