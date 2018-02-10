@@ -104,6 +104,13 @@
             setValue(item) {
                 this.dataValue.book = item
                 this.dataValue.show = false
+                this.updateValue()
+            },
+            setBook(param) {
+                let id = param.id
+                let filt = this.tableData.items.filter(item => item.Id == id)
+
+                if (filt.length > 0) this.setValue(filt[0])
             },
             getData(response) {
                 var data = response.data
@@ -123,6 +130,10 @@
         },
         mounted() {
             this.getDataApi()
+            this.$bus.$on('refresh-book', this.setBook)
+        },
+        beforeDestroy() {
+            this.$bus.$off('refresh-book', this.setBook)
         }
     }
 </script>

@@ -329,7 +329,10 @@
                 modal1: false,
                 modal2: false,
                 modal3: false,
-                dialog_book: { show: false },
+                dialog_book: {
+                    show: false,
+                    book: {}
+                },
                 dialog_room: { show: false },
                 dialog_guest: { show: false },
                 registration : {
@@ -575,6 +578,12 @@
             this.room.room_id = this.roomId || ""
             this.room.room_number = this.roomName || ""
             this.registration.book_no = this.bookId || ""
+
+            if (this.bookId != "") {
+                setTimeout(() => {
+                    this.$bus.$emit('refresh-book', { id: this.bookId })
+                }, 1000)
+            } 
         }
     }
 </script>
