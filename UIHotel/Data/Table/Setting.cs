@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel.Data.Table
 {
+    [Table("setting")]
     public class Setting
     {
         [Key]
