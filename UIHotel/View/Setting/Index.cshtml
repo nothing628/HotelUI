@@ -2,62 +2,14 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>Settings</h1>
-</header>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Settings</h1>
+            </header>
 
-<div class="row todo">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">General Setting</h2>
-            </div>
-
-            <div class="card-block">
-                <form class="form-row">
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label">Time Checkout</label>
-                        <div class="col-2">
-                            <input value="12:00" class="form-control" type="time"/>
-                        </div>
-                        <label class="col-2 col-form-label">Time Checkin</label>
-                        <div class="col-2" id="online-field">
-                            <input value="00:00" class="form-control" type="time" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label">Late Checkout Charge</label>
-                        <div class="col-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Rp.</span>
-                                <div class="form-group">
-                                    <input class="form-control" value="20000" type="number">
-                                    <i class="form-group__bar"></i>
-                                </div>
-                                <span class="input-group-addon">Per Hours</span>
-                            </div>
-                        </div>
-                    </div> 
-
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label">Minimum Deposit</label>
-                        <div class="col-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Rp.</span>
-                                <div class="form-group">
-                                    <input class="form-control" value="50000" type="number">
-                                    <i class="form-group__bar"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <button type="button" class="btn btn-lg btn--icon-text primary waves-effect">Save Setting <i class="zmdi zmdi-check-all"></i></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+            <setting-basic></setting-basic>
+        </v-flex>
+    </v-layout>
+</v-container>
