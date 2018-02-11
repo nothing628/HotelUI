@@ -26,7 +26,10 @@ namespace UIHotel.App
         public void RegisterProvider()
         {
             foreach (ServiceProvider provider in listServiceProvider)
+            {
+                provider.RegisterContainer(this);
                 provider.Register();
+            }
         }
 
         public void BootProvider()

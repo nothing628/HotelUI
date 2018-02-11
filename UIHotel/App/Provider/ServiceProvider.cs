@@ -11,5 +11,8 @@ namespace UIHotel.App.Provider
         public abstract void Register();
         public abstract void Boot();
         public abstract string Provide();
+
+        public AppMain Container;
+        public void RegisterContainer(AppMain container) => this.Container = container;
     }
 }

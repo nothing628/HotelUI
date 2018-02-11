@@ -161,6 +161,7 @@
     <Compile Include="App\Router\RouteModel.cs" />
     <Compile Include="App\Router\RouterControl.cs" />
     <Compile Include="App\Routine\CalcPrice.cs" />
+    <Compile Include="App\Provider\SettingProvider.cs" />
     <Compile Include="App\View\Template\HtmlHelper.cs" />
     <Compile Include="App\View\Template\HtmlTemplateBase.cs" />
     <Compile Include="App\View\ViewCompiler.cs" />
