@@ -425,6 +425,8 @@
     <None Include="Vue\src\components\dialog\GuestDialog.vue" />
     <None Include="Vue\src\components\dialog\RoomDialog.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
+    <None Include="Vue\src\pages\settings\Basic.vue" />
+    <None Include="Vue\src\pages\settings\User.vue" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -644,7 +646,7 @@
     <None Include="Vue\src\pages\room\Detail.vue" />
     <None Include="Vue\src\pages\room\List.vue" />
     <None Include="Vue\src\pages\room\Price.vue" />
-    <None Include="Vue\src\pages\settings\Room.vue" />
+    <None Include="Vue\src\pages\room\Setting.vue" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\cef.redist.x64.3.2987.1601\build\cef.redist.x64.targets" Condition="Exists('..\packages\cef.redist.x64.3.2987.1601\build\cef.redist.x64.targets')" />

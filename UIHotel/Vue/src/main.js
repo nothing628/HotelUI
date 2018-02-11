@@ -20,7 +20,7 @@ import RoomDetail from './pages/room/Detail'
 import RoomCategory from './pages/room/Category'
 import RoomPrice from './pages/room/Price'
 import RoomList from './pages/room/List'
-import RoomMaintain from './pages/settings/Room'
+import RoomMaintain from './pages/room/Setting'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -40,7 +40,7 @@ Vue.component('room-detail', RoomDetail)
 Vue.component('room-category', RoomCategory)
 Vue.component('room-list', RoomList)
 Vue.component('room-price', RoomPrice)
-Vue.component("setting-room", RoomMaintain)
+Vue.component("room-setting", RoomMaintain)
 
 /* eslint-disable no-new */
 Vue.prototype.$bus = new Vue()
