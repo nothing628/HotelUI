@@ -29,6 +29,7 @@ namespace UIHotel.Data
         public DbSet<RoomStatus> RoomStatus { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         public DataContext()
           : base(new MySqlConnection(Properties.Settings.Default.MyDB), false)

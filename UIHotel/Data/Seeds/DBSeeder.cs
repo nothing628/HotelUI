@@ -23,6 +23,8 @@ namespace UIHotel.Data.Seeds
                     new RoomStatusSeeder().Run(context);
                     new InvoiceSeeder().Run(context);
                     new RoomPriceSeeder().Run(context);
+                    new GuestSeeder().Run(context);
+                    new SettingSeeder().Run(context);
 
                     context.SaveChanges();
                 } catch

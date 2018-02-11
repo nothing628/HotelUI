@@ -168,7 +168,10 @@
     <Compile Include="App\View\ViewNotFoundException.cs" />
     <Compile Include="App\View\ViewTemplateManager.cs" />
     <Compile Include="Data\Migrations\CreatePriceTable.cs" />
+    <Compile Include="Data\Migrations\CreateSettingTable.cs" />
+    <Compile Include="Data\Seeds\GuestSeeder.cs" />
     <Compile Include="Data\Seeds\RoomPriceSeeder.cs" />
+    <Compile Include="Data\Seeds\SettingSeeder.cs" />
     <Compile Include="Data\Table\BookingDetail.cs" />
     <Compile Include="Data\Table\BookingType.cs" />
     <Compile Include="Data\Table\Booking.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Data\Seeds\InvoiceSeeder.cs" />
     <Compile Include="Data\Seeds\RoomSeeder.cs" />
     <Compile Include="Data\Seeds\RoomStatusSeeder.cs" />
+    <Compile Include="Data\Table\Setting.cs" />
     <Compile Include="Data\Table\User.cs" />
     <Compile Include="ViewModel\BaseModel.cs" />
     <Compile Include="Program.cs" />
