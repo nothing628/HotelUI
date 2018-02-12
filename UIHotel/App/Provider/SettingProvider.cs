@@ -75,22 +75,26 @@ namespace UIHotel.App.Provider
         {
             get
             {
-                return new TimeSpan();
+                var time = Accessor["checkin.time"];
+
+                return TimeSpan.Parse(time);
             }
             set
             {
-                //
+                Accessor["checkin.time"] = value.ToString();
             }
         }
-        public static TimeSpan ChekoutTime
+        public static TimeSpan CheckoutTime
         {
             get
             {
-                return new TimeSpan();
+                var time = Accessor["checkout.time"];
+
+                return TimeSpan.Parse(time);
             }
             set
             {
-
+                Accessor["checkout.time"] = value.ToString();
             }
         }
         public static void SaveSetting() => Accessor.SaveSetting();
@@ -146,7 +150,9 @@ namespace UIHotel.App.Provider
 
         public string GetSetting(string key)
         {
-            return this.SettingData[key];
+            if (this.SettingData.ContainsKey(key))
+                return this.SettingData[key];
+            return String.Empty;
         }
 
         public void SetSetting(string key, string value)

@@ -13,7 +13,7 @@
                                 <v-subheader>Hotel Name</v-subheader>
                             </v-flex>
                             <v-flex md6>
-                                <v-text-field hint="Choose your hotel name" persistent-hint></v-text-field>
+                                <v-text-field hint="Choose your hotel name" persistent-hint v-model="HotelName"></v-text-field>
                             </v-flex>
                         </v-layout>
 
@@ -22,7 +22,7 @@
                                 <v-subheader>Hotel Address</v-subheader>
                             </v-flex>
                             <v-flex md9>
-                                <v-text-field hint="Fill with your hotel address" persistent-hint multi-line :rows="2"></v-text-field>
+                                <v-text-field hint="Fill with your hotel address" persistent-hint multi-line :rows="2" v-model="HotelAddress"></v-text-field>
                             </v-flex>
                         </v-layout>
 
@@ -31,7 +31,7 @@
                                 <v-subheader>Hotel Logo</v-subheader>
                             </v-flex>
                             <v-flex md3>
-                                <img class="img-fluid img-thumbnail rounded" src="http://localhost.com/images/profile-pic.jpg" />
+                                <img class="img-fluid img-thumbnail rounded" :src="image_url" @error="imageError"/>
                                 <v-btn color="success" block @click="uploadPhoto">
                                     <span>Upload Logo</span>
                                     <v-icon right>cloud_upload</v-icon>
@@ -53,12 +53,12 @@
                                         full-width
                                         :nudge-right="40"
                                         min-width="290px"
-                                        :return-value.sync="checkinTime">
+                                        :return-value.sync="CheckinTime">
                                     <v-text-field slot="activator"
-                                                  v-model="checkinTime"
+                                                  v-model="CheckinTime"
                                                   prepend-icon="access_time"
                                                   readonly></v-text-field>
-                                    <v-time-picker v-model="checkinTime" @change="$refs.menu.save(checkinTime)"></v-time-picker>
+                                    <v-time-picker v-model="CheckinTime" @change="$refs.menu.save(CheckinTime)"></v-time-picker>
                                 </v-menu>
                             </v-flex>
                             <v-flex md3>
@@ -74,12 +74,12 @@
                                         full-width
                                         :nudge-right="40"
                                         min-width="290px"
-                                        :return-value.sync="checkoutTime">
+                                        :return-value.sync="CheckoutTime">
                                     <v-text-field slot="activator"
-                                                  v-model="checkoutTime"
+                                                  v-model="CheckoutTime"
                                                   prepend-icon="access_time"
                                                   readonly></v-text-field>
-                                    <v-time-picker v-model="checkoutTime" @change="$refs.menu4.save(checkoutTime)"></v-time-picker>
+                                    <v-time-picker v-model="CheckoutTime" @change="$refs.menu4.save(CheckoutTime)"></v-time-picker>
                                 </v-menu>
                             </v-flex>
                         </v-layout>
@@ -88,7 +88,7 @@
                                 <v-subheader>Late Checkout Charge</v-subheader>
                             </v-flex>
                             <v-flex md3>
-                                <v-text-field prefix="Rp" suffix="Per Hours"></v-text-field>
+                                <v-text-field prefix="Rp" suffix="Per Hours" type="number" v-model="Pinalty"></v-text-field>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
@@ -96,7 +96,7 @@
                                 <v-subheader>Minimum Deposit</v-subheader>
                             </v-flex>
                             <v-flex md3>
-                                <v-text-field prefix="Rp"></v-text-field>
+                                <v-text-field prefix="Rp" type="number" v-model="Deposit"></v-text-field>
                             </v-flex>
                         </v-layout>
 
@@ -111,44 +111,77 @@
     </v-card>
 </template>
 <script>
+    import axios from 'axios'
+
     export default {
         data() {
             return {
                 valid: true,
-                checkoutTime: null,
-                checkinTime: null,
+                CheckoutTime: null,
+                CheckinTime: null,
                 menu2: false,
                 menu1: false,
+                Pinalty: 0,
+                Deposit: 0,
+                HotelName: null,
+                HotelAddress: null,
+                HotelLogo: '',
+            }
+        },
+        computed: {
+            image_url() {
+                if (this.HotelLogo == '')
+                    return 'http://localhost.com/images/empty.png'
+                return 'http://localhost.com/Upload/' + this.HotelLogo
             }
         },
         methods: {
             getDataApi() {
-                //
+                axios.post('http://localhost.com/setting/post/GetSettings').then(this.getData)
             },
             getData(response) {
                 var data = response.data
 
                 if (data.success) {
-                    //
+                    this.Deposit = data.Deposit
+                    this.Pinalty = data.Pinalty
+                    this.CheckinTime = data.CheckinTime
+                    this.CheckoutTime = data.CheckoutTime
+                    this.HotelName = data.HotelName
+                    this.HotelAddress = data.HotelAddress
+                    this.HotelLogo = data.HotelLogo
                 }
             },
             saveDataApi() {
-                //
+                let data = {
+                    Pinalty: this.Pinalty,
+                    Deposit: this.Deposit,
+                    CheckinTime: this.CheckinTime,
+                    CheckoutTime: this.CheckoutTime,
+                    HotelLogo: this.HotelLogo,
+                    HotelName: this.HotelName,
+                    HotelAddress: this.HotelAddress,
+                }
+
+                axios.post('http://localhost.com/setting/post/SetSettings', data).then(this.saveData)
             },
             saveData(response) {
-                var data = response.data
+                let data = response.data
 
                 if (data.success) {
-                    //
+                    console.log(data)
                 }
             },
             uploadPhotoCallback(e) {
                 var retObj = JSON.parse(e)
 
-                console.log(retObj)
+                this.HotelLogo = retObj.hashname
             },
             uploadPhoto() {
                 window.CS.getObjectParam("CheckinModel", "OpenDialog", "Dialog|*.jpg;*.png;*.jpeg").then(this.uploadPhotoCallback).catch(e => { });
+            },
+            imageError() {
+                this.HotelLogo = ''
             }
         },
         mounted() {
