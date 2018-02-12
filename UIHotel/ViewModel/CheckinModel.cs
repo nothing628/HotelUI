@@ -45,7 +45,9 @@ namespace UIHotel.ViewModel
             
             oThread.SetApartmentState(ApartmentState.STA);
             oThread.Start();
-            oThread.Join();
+            var isSafe = oThread.Join(new TimeSpan(2, 0, 0));
+            if (isSafe)
+                oThread.Abort();
 
             return new { hashname = this.retStr, filename = this.originalName };
         }
@@ -78,7 +80,9 @@ namespace UIHotel.ViewModel
 
             oThread.SetApartmentState(ApartmentState.STA);
             oThread.Start();
-            oThread.Join();
+            var isSafe = oThread.Join(new TimeSpan(2, 0, 0));
+            if (isSafe)
+                oThread.Abort();
 
             return new { hashname = this.retStr, filename = this.originalName };
         }
