@@ -1,4 +1,6 @@
-﻿using UIHotel.Data.Table;
+﻿using System;
+using UIHotel.App.Auth;
+using UIHotel.Data.Table;
 
 namespace UIHotel.Data.Seeds
 {
@@ -13,6 +15,16 @@ namespace UIHotel.Data.Seeds
             context.Settings.Add(new Setting() { Key = "hotel.name", Value = "Hotel Test" });
             context.Settings.Add(new Setting() { Key = "hotel.address", Value = "Tangerang 15122" });
             context.Settings.Add(new Setting() { Key = "hotel.logo", Value = "" });
+            context.SaveChanges();
+
+            context.Users.Add(new User() {
+                Fullname = "Administrator",
+                Permission = (int)AuthLevel.Administrator,
+                Username = "admin",
+                Password = AuthHelper.HashText("123456", "appkey"),  //TODO Provide app key
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
+            });
             context.SaveChanges();
         }
     }

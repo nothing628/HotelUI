@@ -147,6 +147,7 @@
   <ItemGroup>
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
+    <Compile Include="App\Auth\AuthHelper.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
     <Compile Include="App\Controller\CheckinController.cs" />
     <Compile Include="App\Controller\GuestController.cs" />
