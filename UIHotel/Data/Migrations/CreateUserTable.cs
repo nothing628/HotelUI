@@ -18,7 +18,7 @@ namespace UIHotel.Data.Migrations
             Create.Table("user")
                 .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("username").AsString(50).NotNullable()
-                .WithColumn("password").AsString(50).NotNullable()
+                .WithColumn("password").AsString(255).NotNullable()
                 .WithColumn("fullname").AsString(50).NotNullable()
                 .WithColumn("permission").AsInt32().WithDefaultValue(0)
                 .WithColumn("create_at").AsDateTime().NotNullable()

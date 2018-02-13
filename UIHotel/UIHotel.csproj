@@ -148,6 +148,7 @@
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
     <Compile Include="App\Auth\AuthHelper.cs" />
+    <Compile Include="App\Auth\AuthState.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
     <Compile Include="App\Controller\CheckinController.cs" />
     <Compile Include="App\Controller\GuestController.cs" />
@@ -426,6 +427,7 @@
     <None Include="Vue\src\components\dialog\GuestDialog.vue" />
     <None Include="Vue\src\components\dialog\RoomDialog.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
+    <None Include="Vue\src\pages\Login.vue" />
     <None Include="Vue\src\pages\settings\Basic.vue" />
     <None Include="Vue\src\pages\settings\User.vue" />
   </ItemGroup>

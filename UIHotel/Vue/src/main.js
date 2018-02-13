@@ -4,6 +4,7 @@ import '../../node_modules/vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import router from './router'
+import Login from './pages/Login'
 import Booking from './pages/booking/Booking'
 import BookingList from './pages/booking/List'
 import Checkin from './pages/checkin/Checkin'
@@ -26,6 +27,7 @@ import SettingUser from './pages/settings/User'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
+Vue.component('login', Login)
 Vue.component('booking', Booking)
 Vue.component('booking-list', BookingList)
 Vue.component('checkin', Checkin)

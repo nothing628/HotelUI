@@ -9,32 +9,11 @@
     @Include("Layout.Parts.BaseCSS")
 </head>
 <body data-ma-theme="blue-grey">
-    <div class="login">
+    <div class="login" id="app">
         <div class="login-overlay"></div>
 
         <!-- Login -->
-        <div class="login__block active" id="l-login">
-            <div class="login__block__header">
-                <i class="zmdi zmdi-account-circle"></i>
-                Please Sign in
-            </div>
-
-            <div class="login__block__body">
-                <div class="form-group form-group--float form-group--centered">
-                    <input class="form-control" type="text">
-                    <label>User Account</label>
-                    <i class="form-group__bar"></i>
-                </div>
-
-                <div class="form-group form-group--float form-group--centered">
-                    <input class="form-control" type="password">
-                    <label>Password</label>
-                    <i class="form-group__bar"></i>
-                </div>
-
-                <a href="http://localhost.com/home/get/index" class="btn btn--icon login__block__btn waves-effect"><i class="zmdi zmdi-long-arrow-right"></i></a>
-            </div>
-        </div>
+        <login></login>
     </div>
 
     @Include("Layout.Parts.BaseJS")
