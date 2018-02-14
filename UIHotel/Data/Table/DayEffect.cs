@@ -22,7 +22,7 @@ namespace UIHotel.Data.Table
         
         [Required]
         [Column("effect_color", Order = 2)]
-        [StringLength(6)]
+        [StringLength(25)]
         public string EffectColor { get; set; }
 
         [Column("can_delete", Order = 3)]

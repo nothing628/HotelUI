@@ -7,7 +7,9 @@
                         <h2 class="card-title mb-0">Calendar</h2>
                     </v-card-title>
                     <v-card-title>
-                        <v-date-control @dateclick="dateClicked" :items="items" :colors="colors"></v-date-control>
+                        <v-date-picker v-model="date2"
+                                       :event-color="functionEventsColor"
+                                       :events="functionEvents"></v-date-picker>
                     </v-card-title>
                 </v-card>
             </v-flex>
@@ -91,16 +93,13 @@
 </template>
 <script>
     import axios from 'axios'
-    import ComDate from '../../components/date/DatePicker'
 
     export default {
-        components: {
-            'v-date-control': ComDate
-        },
         data() {
             return {
                 type: null,
                 tmp: null,
+                date2: null,
                 changeDialog: false,
                 dateForm: {
                     type: null,
@@ -146,6 +145,14 @@
             }
         },
         methods: {
+            functionEventsColor(date) {
+                let col = this.colors[this.items[date]]
+
+                return col
+            },
+            functionEvents(date) {
+                return true
+            },
             dateClicked(str) {
                 this.dateForm.date = str
                 this.dateForm.type = this.items[str]

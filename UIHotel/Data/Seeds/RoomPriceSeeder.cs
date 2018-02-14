@@ -19,21 +19,21 @@ namespace UIHotel.Data.Seeds
             {
                 CanDelete = false,
                 Effect = "WEEKDAY",
-                EffectColor = "32C787",
+                EffectColor = "green darken-1",
             };
 
             var WeekEnd = new DayEffect()
             {
                 CanDelete = false,
                 Effect = "WEEKEND",
-                EffectColor = "FF5652",
+                EffectColor = "red darken-2",
             };
 
             var Holiday = new DayEffect()
             {
                 CanDelete = false,
                 Effect = "HOLIDAY",
-                EffectColor = "FF9800",
+                EffectColor = "teal darken-4",
             };
 
             context.DayEffect.Add(WeekDay);

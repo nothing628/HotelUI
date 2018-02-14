@@ -19,7 +19,7 @@
                           class="elevation-1">
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.Category }}</td>
-                    <td class="text-xs-right">{{ props.item.Description }}</td>
+                    <td>{{ props.item.Description }}</td>
                     <td class="text-xs-right">
                         <v-btn color="warning" @click.stop="edit(props.item)">Edit</v-btn>
                         <v-btn color="error"  @click.stop="remove(props.item)">Remove</v-btn>
