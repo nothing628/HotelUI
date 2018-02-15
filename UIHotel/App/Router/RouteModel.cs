@@ -86,14 +86,21 @@ namespace UIHotel.App.Router
 
             if (IsMethodExists(ClassName, Action))
             {
-                Type type = Type.GetType(ClassName);
+                using (var worker = new BackgroundWorker())
+                {
+                    Type type = Type.GetType(ClassName);
 
-                var worker = new BackgroundWorker();
-                resetEvent = new AutoResetEvent(false);
-                worker.DoWork += Worker_DoWork;
-                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-                worker.RunWorkerAsync(new object[] { type, Action, request });
-                resetEvent.WaitOne();
+                    resetEvent = new AutoResetEvent(false);
+
+                    worker.DoWork += Worker_DoWork;
+                    worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                    worker.RunWorkerAsync(new object[] { type, Action, request });
+
+                    resetEvent.WaitOne();
+
+                    worker.DoWork -= Worker_DoWork;
+                    worker.RunWorkerCompleted -= Worker_RunWorkerCompleted;
+                }
 
                 return result;
             }
@@ -126,6 +133,8 @@ namespace UIHotel.App.Router
             ConstructorInfo constInfo = Type.GetConstructor(new[] { typeof(IRequest) });
             MethodInfo method = Type.GetMethod(Method);
             Object instance = constInfo.Invoke(new object[] { request });
+
+            var attrs = Attribute.GetCustomAttribute(Type,                                                                                                                                                                                                                                                                                                                                                                                                                                     )
 
             var result = method.Invoke(instance, BindingFlags.Default, null, new object[] { }, null);
 

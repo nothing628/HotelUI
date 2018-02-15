@@ -93,6 +93,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import colors from 'vuetify/es5/util/colors'
 
     export default {
         data() {
@@ -147,7 +148,7 @@
         methods: {
             functionEventsColor(date) {
                 let col = this.colors[this.items[date]]
-
+                
                 return col
             },
             functionEvents(date) {

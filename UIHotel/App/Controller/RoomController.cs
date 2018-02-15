@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using UIHotel.App.Attributes;
 using UIHotel.Data;
 using UIHotel.Data.Table;
 using UIHotel.ViewModel;
 
 namespace UIHotel.App.Controller
 {
+    [Authorize]
     public class RoomController : BaseController
     {
         public RoomController(IRequest request) : base(request)

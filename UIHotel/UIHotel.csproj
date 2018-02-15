@@ -147,6 +147,8 @@
   <ItemGroup>
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
+    <Compile Include="App\Attributes\Authorize.cs" />
+    <Compile Include="App\Attributes\Unauthorize.cs" />
     <Compile Include="App\Auth\AuthHelper.cs" />
     <Compile Include="App\Auth\AuthState.cs" />
     <Compile Include="App\Controller\BaseController.cs" />
