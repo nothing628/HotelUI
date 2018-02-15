@@ -22,10 +22,10 @@ namespace UIHotel.App.Auth
 
     public enum AuthLevel
     {
-        User = -1,
         Administrator = 0,
         Manager,
         Receptionist,
         Cleaner,
+        User
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using UIHotel.App.Attributes;
 
 namespace UIHotel.App.Router
 {
@@ -128,13 +129,45 @@ namespace UIHotel.App.Router
             e.Result = CreateInstance(type, method, request);
         }
 
-        private ResourceHandler CreateInstance(Type Type, string Method, IRequest request)
+        private bool IsAuthorize(Attribute attr)
         {
-            ConstructorInfo constInfo = Type.GetConstructor(new[] { typeof(IRequest) });
-            MethodInfo method = Type.GetMethod(Method);
+            if (attr is Authorize)
+            {
+                var att = attr as Authorize;
+                // Check valid user
+                return att.IsValidUser();
+            } else
+            {
+                return true;
+            }
+        }
+
+        private ResourceHandler CreateInstance(Type tipe, string Method, IRequest request)
+        {
+            ConstructorInfo constInfo = tipe.GetConstructor(new[] { typeof(IRequest) });
+            MethodInfo method = tipe.GetMethod(Method);
             Object instance = constInfo.Invoke(new object[] { request });
 
-            var attrs = Attribute.GetCustomAttribute(Type,                                                                                                                                                                                                                                                                                                                                                                                                                                     )
+            var controlAttr = Attribute.GetCustomAttributes(tipe);
+            var methodAttr = Attribute.GetCustomAttributes(method);
+
+            if (controlAttr.Length > 0 || methodAttr.Length > 0)
+            {
+                if (controlAttr.Length > 1 || methodAttr.Length > 1)
+                    return ErrorResponse(HttpStatusCode.InternalServerError, "Method or controller should have one attribute");
+
+                if (methodAttr.Length == 1)
+                {
+                    // method Attr have more priority
+                    if (!IsAuthorize(methodAttr[0]))
+                        return ErrorResponse(HttpStatusCode.Forbidden, "You don't have permission");
+                } else
+                {
+                    // controller attr
+                    if (!IsAuthorize(controlAttr[0]))
+                        return ErrorResponse(HttpStatusCode.Forbidden, "You don't have permission");
+                }
+            }
 
             var result = method.Invoke(instance, BindingFlags.Default, null, new object[] { }, null);
 
@@ -146,7 +179,16 @@ namespace UIHotel.App.Router
             if (result != null)
                 return (ResourceHandler)result;
             else
-                return new ResourceHandler() { StatusCode = (int)HttpStatusCode.NotFound, StatusText = "Method '" + Method + "' Not Found" };
+                return ErrorResponse(HttpStatusCode.NotFound, "Method '" + Method + "' Not Found");
+        }
+
+        private ResourceHandler ErrorResponse(HttpStatusCode status, string message)
+        {
+            return new ResourceHandler()
+            {
+                StatusCode = (int)status,
+                StatusText = message
+            };
         }
 
         private bool IsClassExists(string ClassName)

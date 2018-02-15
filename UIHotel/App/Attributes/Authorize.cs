@@ -11,6 +11,7 @@ namespace UIHotel.App.Attributes
     public class Authorize : Attribute
     {
         private AuthLevel Level = AuthLevel.User;
+        private bool IsSet = false;
 
         public Authorize()
         {
@@ -20,6 +21,20 @@ namespace UIHotel.App.Attributes
         public Authorize(AuthLevel auth)
         {
             Level = auth;
+            IsSet = true;
+        }
+
+        public bool IsValidUser()
+        {
+            if (AuthState.IsLogin)
+            {
+                if (IsSet)
+                    return Level == (AuthLevel)AuthState.User().Permission;
+                else
+                    return true;
+            }
+
+            return false;
         }
     }
 }
