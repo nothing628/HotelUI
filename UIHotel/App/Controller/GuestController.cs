@@ -13,6 +13,8 @@ using UIHotel.App.Attributes;
 namespace UIHotel.App.Controller
 {
     [Authorize(Auth.AuthLevel.Receptionist)]
+    [Authorize(Auth.AuthLevel.Administrator)]
+    [Authorize(Auth.AuthLevel.Manager)]
     public class GuestController : BaseController
     {
         public GuestController(IRequest request) : base(request)

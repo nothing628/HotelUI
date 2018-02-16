@@ -28,6 +28,9 @@ namespace UIHotel
             migrator.Run();
             DBSeeder.Seed();
 #else
+#if DEBUG
+            App.Auth.AuthState.CurrentUserId = 1;
+#endif
             var routine = new CalcPrice();
             routine.DoWork();
 

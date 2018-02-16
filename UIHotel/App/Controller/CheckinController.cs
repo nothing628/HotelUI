@@ -14,6 +14,8 @@ using UIHotel.ViewModel;
 namespace UIHotel.App.Controller
 {
     [Authorize(Auth.AuthLevel.Receptionist)]
+    [Authorize(Auth.AuthLevel.Administrator)]
+    [Authorize(Auth.AuthLevel.Manager)]
     public class CheckinController : BaseController
     {
         public CheckinController(IRequest request) : base(request)
