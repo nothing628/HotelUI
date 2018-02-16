@@ -6,12 +6,14 @@ using System.Data;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using UIHotel.App.Attributes;
 using UIHotel.Data;
 using UIHotel.Data.Table;
 using UIHotel.ViewModel;
 
 namespace UIHotel.App.Controller
 {
+    [Authorize(Auth.AuthLevel.Receptionist)]
     public class CheckinController : BaseController
     {
         public CheckinController(IRequest request) : base(request)

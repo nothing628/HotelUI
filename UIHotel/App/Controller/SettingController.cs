@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.App.Attributes;
 using UIHotel.App.Provider;
 
 namespace UIHotel.App.Controller
 {
+    [Authorize(Auth.AuthLevel.Administrator)]
+    [Authorize(Auth.AuthLevel.Manager)]
     public class SettingController : BaseController
     {
         public SettingController(IRequest request) : base(request)

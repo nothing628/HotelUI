@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.App.Attributes;
 using UIHotel.App.Auth;
 using UIHotel.Data;
 
 namespace UIHotel.App.Controller
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         public HomeController(IRequest request) : base(request)
@@ -25,6 +27,7 @@ namespace UIHotel.App.Controller
                 return Redirect("http://localhost.com/home/get/login");
         }
 
+        [Unauthorize]
         public IResourceHandler login()
         {
             return View("Login");
@@ -37,6 +40,7 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/home/get/login");
         }
 
+        [Unauthorize]
         public IResourceHandler postLogin()
         {
             var username = jToken.Value<string>("username");
@@ -65,18 +69,6 @@ namespace UIHotel.App.Controller
                     return Json(new { success = false });
                 }
             }
-        }
-
-        public IResourceHandler test()
-        {
-            var query = Query["foo"];
-            var data = Query["data"];
-            
-            var obj = new { Nama = "A" };
-
-            ViewBag.Name = "test";
-
-            return View("Test", obj);
         }
     }
 }

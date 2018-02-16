@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using UIHotel.App.Attributes;
+using UIHotel.App.Controller;
 
 namespace UIHotel.App.Router
 {
@@ -75,9 +76,9 @@ namespace UIHotel.App.Router
         }
 
         private AutoResetEvent resetEvent = new AutoResetEvent(false);
-        private ResourceHandler result;
+        private IResourceHandler result;
 
-        public ResourceHandler GetResponse(IRequest request)
+        public IResourceHandler GetResponse(IRequest request)
         {
             var Url = new Uri(request.Url);
             var Path = Url.AbsolutePath;
@@ -129,20 +130,25 @@ namespace UIHotel.App.Router
             e.Result = CreateInstance(type, method, request);
         }
 
-        private bool IsAuthorize(Attribute attr)
+        private bool IsAuthorize(Attribute[] attrs)
         {
-            if (attr is Authorize)
+            var valid = false;
+
+            foreach (var attr in attrs)
             {
-                var att = attr as Authorize;
-                // Check valid user
-                return att.IsValidUser();
-            } else
-            {
-                return true;
+                if (attr is IAuthAttribute)
+                {
+                    var att = attr as IAuthAttribute;
+                    // Check valid user
+                    if (att.IsValidUser())
+                        valid = true;
+                }
             }
+            
+            return valid;
         }
 
-        private ResourceHandler CreateInstance(Type tipe, string Method, IRequest request)
+        private IResourceHandler CreateInstance(Type tipe, string Method, IRequest request)
         {
             ConstructorInfo constInfo = tipe.GetConstructor(new[] { typeof(IRequest) });
             MethodInfo method = tipe.GetMethod(Method);
@@ -153,19 +159,15 @@ namespace UIHotel.App.Router
 
             if (controlAttr.Length > 0 || methodAttr.Length > 0)
             {
-                if (controlAttr.Length > 1 || methodAttr.Length > 1)
-                    return ErrorResponse(HttpStatusCode.InternalServerError, "Method or controller should have one attribute");
-
-                if (methodAttr.Length == 1)
+                if (methodAttr.Length > 0)
                 {
-                    // method Attr have more priority
-                    if (!IsAuthorize(methodAttr[0]))
-                        return ErrorResponse(HttpStatusCode.Forbidden, "You don't have permission");
+                    if (!IsAuthorize(methodAttr))
+                        return new BaseController().Redirect("http://localhost.com/home/get/login");
                 } else
                 {
-                    // controller attr
-                    if (!IsAuthorize(controlAttr[0]))
-                        return ErrorResponse(HttpStatusCode.Forbidden, "You don't have permission");
+                    if (!IsAuthorize(controlAttr))
+                        return new BaseController().Redirect("http://localhost.com/home/get/login");
+
                 }
             }
 
@@ -177,7 +179,7 @@ namespace UIHotel.App.Router
             GC.Collect();
 
             if (result != null)
-                return (ResourceHandler)result;
+                return (IResourceHandler)result;
             else
                 return ErrorResponse(HttpStatusCode.NotFound, "Method '" + Method + "' Not Found");
         }

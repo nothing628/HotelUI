@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 using UIHotel.Data;
 using UIHotel.Data.Table;
 using System.Globalization;
+using UIHotel.App.Attributes;
 
 namespace UIHotel.App.Controller
 {
+    [Authorize(Auth.AuthLevel.Receptionist)]
     public class GuestController : BaseController
     {
         public GuestController(IRequest request) : base(request)

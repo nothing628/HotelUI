@@ -27,7 +27,7 @@ namespace UIHotel.App.Provider
         {
         }
 
-        public ResourceHandler GetResponse(IRequest request)
+        public IResourceHandler GetResponse(IRequest request)
         {
             foreach (RouteModel model in listRoute)
             {

@@ -147,6 +147,7 @@
   <ItemGroup>
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppRequestHandler.cs" />
+    <Compile Include="App\Attributes\IAuthAttribute.cs" />
     <Compile Include="App\Attributes\Authorize.cs" />
     <Compile Include="App\Attributes\Unauthorize.cs" />
     <Compile Include="App\Auth\AuthHelper.cs" />
@@ -402,9 +403,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Setting\User.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="View\Test.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Vue\dist\static\js\app.js.map">

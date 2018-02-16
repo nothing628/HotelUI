@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.App.Attributes;
 
 namespace UIHotel.App.Controller
 {
+    [Authorize(Auth.AuthLevel.Manager)]
     public class ReportController : BaseController
     {
         public ReportController(IRequest request) : base(request)

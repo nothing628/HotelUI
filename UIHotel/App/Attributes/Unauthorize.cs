@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 namespace UIHotel.App.Attributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
-    public class Unauthorize : Attribute
+    public class Unauthorize : Attribute, IAuthAttribute
     {
+        public bool IsValidUser()
+        {
+            return true;
+        }
     }
 }

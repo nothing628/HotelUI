@@ -7,11 +7,11 @@ using UIHotel.App.Auth;
 
 namespace UIHotel.App.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
-    public class Authorize : Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    public class Authorize : Attribute, IAuthAttribute
     {
         private AuthLevel Level = AuthLevel.User;
-        private bool IsSet = false;
+        private bool IsSet;
 
         public Authorize()
         {
