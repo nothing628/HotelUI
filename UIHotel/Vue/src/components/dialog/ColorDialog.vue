@@ -63,6 +63,8 @@
                     return nameS.replace('lighten', 'lighten-')
                 else if (nameS.startsWith('darken'))
                     return nameS.replace('darken', 'darken-')
+                else if (nameS.startsWith('accent'))
+                    return nameS.replace('accent', 'accent-')
                 else
                     return nameS
             },
