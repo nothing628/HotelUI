@@ -1,22 +1,10 @@
 <template>
     <v-container fluid grid-list-md>
         <v-layout row>
-            <v-flex md4>
+            <v-flex md12>
                 <v-card>
                     <v-card-title>
-                        <h2 class="card-title mb-0">Calendar</h2>
-                    </v-card-title>
-                    <v-card-title>
-                        <v-date-picker v-model="date2"
-                                       :event-color="functionEventsColor"
-                                       :events="functionEvents"></v-date-picker>
-                    </v-card-title>
-                </v-card>
-            </v-flex>
-            <v-flex md8>
-                <v-card>
-                    <v-card-title>
-                        <h2 class="card-title mb-0">Price List</h2>
+                        <h2 class="card-title mb-0">Price Maintain</h2>
                         <v-spacer></v-spacer>
                         <v-select v-bind:items="typeList"
                                   v-model="type"
@@ -35,19 +23,16 @@
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.Category }}</td>
                             <td class="text-xs-right">
-                                <v-edit-dialog @open="tmp = props.item.Price"
-                                               @save="storeDate(props.item, tmp)"
-                                               large
+                                <v-edit-dialog :return-value.sync="props.item.Price"
                                                lazy>
                                     <div>Rp. {{ props.item.Price }}</div>
-                                    <div slot="input" class="mt-3 title">Change Price</div>
+                                    <div slot="input" class="mt-3 title">Update Price</div>
                                     <v-text-field slot="input"
                                                   label="Edit"
-                                                  v-model="tmp"
+                                                  v-model="props.item.Price"
                                                   prefix="Rp."
                                                   single-line
-                                                  counter
-                                                  autofocus></v-text-field>
+                                                  counter></v-text-field>
                                 </v-edit-dialog>
                             </td>
                         </template>
@@ -55,38 +40,21 @@
                             From {{ pageStart }} to {{ pageStop }}
                         </template>
                     </v-data-table>
+                    <v-layout row>
+                        <v-flex md12>
+                            <v-btn color="primary" v-if="tableData.items.length > 0" @click="storeDate">
+                                <v-icon>done_all</v-icon>
+                                <span>Save</span>
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+                    <v-snackbar :timeout="1000"
+                                :top="true"
+                                :color="snackbar.color"
+                                v-model="snackbar.show">
+                        {{ snackbar.text }}
+                    </v-snackbar>
                 </v-card>
-            </v-flex>
-        </v-layout>
-        <v-layout>
-            <v-flex md12>
-                <v-dialog v-model="changeDialog" max-width="500px">
-                    <v-card>
-                        <v-card-title>Change Date Type </v-card-title>
-                        <v-card-text>
-                            <v-form>
-                                <v-text-field label="Date"
-                                              v-model="dateForm.date"
-                                              readonly></v-text-field>
-                                <v-select v-bind:items="typeList"
-                                          v-model="dateForm.type"
-                                          label="Date Type"
-                                          item-value="text"
-                                          item-text="text"></v-select>
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn color="primary" @click.stop="store">Submit</v-btn>
-                            <v-btn color="primary" flat @click.stop="changeDialog=false">Close</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                <v-snackbar :timeout="1000"
-                            :top="true"
-                            :color="snackbar.color"
-                            v-model="snackbar.show">
-                    {{ snackbar.text }}
-                </v-snackbar>
             </v-flex>
         </v-layout>
     </v-container>
@@ -99,13 +67,6 @@
         data() {
             return {
                 type: null,
-                tmp: null,
-                date2: null,
-                changeDialog: false,
-                dateForm: {
-                    type: null,
-                    date: null,
-                },
                 tableData: {
                     search: '',
                     totalItems: 0,
@@ -119,13 +80,12 @@
                     ],
                     items: []
                 },
-                colors: {},
-                items: {},
                 snackbar: {
                     color: 'success',
                     text: '',
                     show: false,
-                }
+                },
+                colors: {},
             }
         },
         watch: {
@@ -146,33 +106,20 @@
             }
         },
         methods: {
-            functionEventsColor(date) {
-                let col = this.colors[this.items[date]]
-                
-                return col
-            },
-            functionEvents(date) {
-                return true
-            },
-            dateClicked(str) {
-                this.dateForm.date = str
-                this.dateForm.type = this.items[str]
-                this.changeDialog = true
+            getColorsApi() {
+                axios.post('http://localhost.com/room/post/getDayEffect').then(this.getColorsData).catch(e => { })
             },
             getColorsData(response) {
                 var data = response.data
 
                 this.colors = data.colors
-                this.items = data.items
             },
             getPriceData(response) {
                 var data = response.data
 
                 if (data.success) {
                     //process
-                    this.tableData.items = []
-
-                    data.data.forEach(x => this.tableData.items.push(x))
+                    this.tableData.items = data.data
                 } else {
                     this.snackbar.color = 'error'
                     this.snackbar.text = data.message
@@ -181,34 +128,21 @@
 
                 this.tableData.loading = false
             },
-            getColorsApi() {
-                axios.post('http://localhost.com/room/post/getDayEffect').then(this.getColorsData).catch(e => { })
-            },
             getPriceApi() {
                 var type = this.type
-                axios.post('http://localhost.com/room/post/getPrice', { type: type }).then(this.getPriceData).catch(e => { })
-            },
-            store() {
-                axios.post('http://localhost.com/room/post/setDayEffect', this.dateForm).then(this.onSuccess).catch(e => { })
 
-                this.changeDialog = false
+                this.tableData.items = []
+                this.tableData.loading = true
+
+                axios.post('http://localhost.com/room/post/getPrice', { type: type }).then(this.getPriceData)
             },
-            storeDate(item, newprice) {
-                var newObject = {
-                    IdCategory: item.IdCategory,
-                    IdEffect: item.IdEffect,
-                    Price: newprice
-                }
+            storeDate() {
+                let items = this.tableData.items
 
                 this.tableData.loading = true
-                axios.post('http://localhost.com/room/post/setPrice', newObject).then(this.storeResponse).catch(e => { })
+                axios.post('http://localhost.com/room/post/setPrice', items).then(this.storeResponse).catch(e => { })
             },
             storeResponse(response) {
-                var data = response.data
-                
-                this.getPriceApi()
-            },
-            onSuccess(response) {
                 var data = response.data
 
                 if (data.success) {
@@ -219,8 +153,9 @@
 
                 this.snackbar.text = data.message
                 this.snackbar.show = true
-                this.getColorsApi()
-            }
+
+                this.getPriceApi()
+            },
         },
         mounted() {
             this.getColorsApi()

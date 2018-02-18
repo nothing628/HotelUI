@@ -422,6 +422,7 @@
     <None Include="Vue\src\components\dialog\RoomDialog.vue" />
     <None Include="Vue\src\components\HelloWorld.vue" />
     <None Include="Vue\src\pages\Login.vue" />
+    <None Include="Vue\src\pages\room\Calendar.vue" />
     <None Include="Vue\src\pages\settings\Basic.vue" />
     <None Include="Vue\src\pages\settings\User.vue" />
   </ItemGroup>

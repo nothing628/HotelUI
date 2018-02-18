@@ -19,6 +19,7 @@ import GuestEdit from './pages/guest/Edit'
 import GuestDetail from './pages/guest/Detail'
 import RoomDetail from './pages/room/Detail'
 import RoomCategory from './pages/room/Category'
+import RoomCalendar from './pages/room/Calendar'
 import RoomPrice from './pages/room/Price'
 import RoomList from './pages/room/List'
 import RoomMaintain from './pages/room/Setting'
@@ -42,6 +43,7 @@ Vue.component('guest-edit', GuestEdit)
 Vue.component('guest-detail', GuestDetail)
 Vue.component('room-detail', RoomDetail)
 Vue.component('room-category', RoomCategory)
+Vue.component('room-calendar', RoomCalendar)
 Vue.component('room-list', RoomList)
 Vue.component('room-price', RoomPrice)
 Vue.component("room-setting", RoomMaintain)

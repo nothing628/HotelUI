@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -450,31 +451,38 @@ namespace UIHotel.App.Controller
         }
         public IResourceHandler setPrice()
         {
-            var idCategory = jToken.Value<long>("IdCategory");
-            var idEffect = jToken.Value<int>("IdEffect");
-            var price = jToken.Value<decimal>("Price");
+            var items = jToken.Values<JToken>();
 
             using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
             {
                 try
                 {
-                    var data = (from a in model.RoomPrice
-                                where a.IdCategory == idCategory
-                                where a.IdEffect == idEffect
-                                select a).FirstOrDefault();
-
-                    if (data != null)
+                    foreach (var item in items)
                     {
-                        data.Price = price;
+                        var idCategory = item.Value<long>("IdCategory");
+                        var idEffect = item.Value<int>("IdEffect");
+                        var price = item.Value<decimal>("Price");
+                        var data = (from a in model.RoomPrice
+                                    where a.IdCategory == idCategory
+                                    where a.IdEffect == idEffect
+                                    select a).FirstOrDefault();
 
-                        model.Entry(data).State = EntityState.Modified;
-                        model.SaveChanges();
+                        if (data != null)
+                        {
+                            data.Price = price;
+
+                            model.Entry(data).State = EntityState.Modified;
+                            model.SaveChanges();
+                        }
                     }
 
+                    trans.Commit();
                     return Json(new { success = true, message = "Success update data" });
                 }
                 catch (Exception ex)
                 {
+                    trans.Rollback();
                     return Json(new { success = false, message = ex.Message });
                 }
             }

@@ -58,7 +58,7 @@
     "select2": "^4.0.6-rc.1",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.0.0-beta.1"
+    "vuetify": "^1.0.1"
   },
   "scripts": {
     "dev": "node Vue/build/dev-server.js",
