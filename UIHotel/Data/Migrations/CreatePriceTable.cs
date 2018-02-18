@@ -20,6 +20,10 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("effect_color").AsString(25).NotNullable()
                 .WithColumn("can_delete").AsBoolean().WithDefaultValue(true);
 
+            Create.UniqueConstraint("EffectName")
+                .OnTable("dayeffect")
+                .Columns("effect");
+
             Create.Table("daycycle")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("id_effect").AsInt32().NotNullable()

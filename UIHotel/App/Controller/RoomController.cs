@@ -418,6 +418,33 @@ namespace UIHotel.App.Controller
                 }
             }
         }
+        public IResourceHandler setColor()
+        {
+            var type = jToken.Value<string>("type");
+            var color = jToken.Value<string>("color");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var data = (from a in model.DayEffect
+                                where a.Effect == type
+                                select a).SingleOrDefault();
+
+                    if (data != null)
+                    {
+                        data.EffectColor = color;
+
+                        model.SaveChanges();
+                    }
+
+                    return Json(new { success = true, message = "Success update data" });
+                } catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+        }
         public IResourceHandler getPrice()
         {
             using (var model = new DataContext())

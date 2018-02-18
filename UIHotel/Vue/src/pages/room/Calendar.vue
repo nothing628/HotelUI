@@ -9,6 +9,7 @@
                     <v-card-title>
                         <v-date-picker v-model="date2"
                                        landscape
+                                       :color="functionEventsColor(date2)"
                                        :event-color="functionEventsColor"
                                        :events="functionEvents"></v-date-picker>
                     </v-card-title>
@@ -36,11 +37,12 @@
                         <tbody>
                             <tr v-for="col,i in colors" :active="functionType(date2) == i" class="hand-cursor">
                                 <td @click="changeType(date2, i)">{{ i }}</td>
-                                <td @click="changeColor(i)" :class="col"></td>
+                                <td @click="chooseColor(i)" :class="col"></td>
                             </tr>
                         </tbody>
                     </table>
                 </v-card>
+                <color-dialog @colorChanged="changeColor"></color-dialog>
                 <v-snackbar :timeout="1000"
                             :top="true"
                             :color="snackbar.color"
@@ -62,12 +64,16 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
-    import colors from 'vuetify/es5/util/colors'
+    import colorDialog from '../../components/dialog/ColorDialog'
 
     export default {
+        components: {
+            'color-dialog': colorDialog,
+        },
         data() {
             return {
                 date2: null,
+                tmpType: '',
                 colors: {},
                 items: {},
                 snackbar: {
@@ -81,8 +87,17 @@
             addType() {
                 console.log('add type')
             },
-            changeColor(type) {
-                console.log('change color')
+            chooseColor(type) {
+                this.tmpType = type
+                this.$bus.$emit('choose-dialog')
+            },
+            changeColor(newcolor) {
+                let data = {
+                    type: this.tmpType,
+                    color: newcolor,
+                }
+                
+                axios.post('http://localhost.com/room/post/setColor', data).then(this.changeSuccess)
             },
             changeType(date, typ) {
                 let dateForm = {

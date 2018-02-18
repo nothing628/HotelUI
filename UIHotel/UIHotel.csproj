@@ -417,6 +417,7 @@
     <None Include="Vue\src\App.vue" />
     <None Include="Vue\src\components\date\DatePicker.vue" />
     <None Include="Vue\src\components\dialog\BookDialog.vue" />
+    <None Include="Vue\src\components\dialog\ColorDialog.vue" />
     <None Include="Vue\src\components\dialog\ConfirmDialog.vue" />
     <None Include="Vue\src\components\dialog\GuestDialog.vue" />
     <None Include="Vue\src\components\dialog\RoomDialog.vue" />
