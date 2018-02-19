@@ -9,6 +9,7 @@ using UIHotel.App.Attributes;
 namespace UIHotel.App.Controller
 {
     [Authorize(Auth.AuthLevel.Manager)]
+    [Authorize(Auth.AuthLevel.Administrator)]
     public class ReportController : BaseController
     {
         public ReportController(IRequest request) : base(request)

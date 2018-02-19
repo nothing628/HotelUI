@@ -25,6 +25,8 @@ import RoomList from './pages/room/List'
 import RoomMaintain from './pages/room/Setting'
 import SettingBasic from './pages/settings/Basic'
 import SettingUser from './pages/settings/User'
+import ReportCheckin from './pages/report/Checkin'
+import ReportMoney from './pages/report/Money'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -46,7 +48,9 @@ Vue.component('room-category', RoomCategory)
 Vue.component('room-calendar', RoomCalendar)
 Vue.component('room-list', RoomList)
 Vue.component('room-price', RoomPrice)
-Vue.component("room-setting", RoomMaintain)
+Vue.component('room-setting', RoomMaintain)
+Vue.component('report-checkin', ReportCheckin)
+Vue.component('report-money', ReportMoney)
 Vue.component('setting-basic', SettingBasic)
 Vue.component('setting-user', SettingUser)
 
