@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UIHotel.App.Auth;
 
 namespace UIHotel.App.Attributes
 {
@@ -11,7 +8,7 @@ namespace UIHotel.App.Attributes
     {
         public bool IsValidUser()
         {
-            return true;
+            return !AuthState.IsLogin;
         }
     }
 }
