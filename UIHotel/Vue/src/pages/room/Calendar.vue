@@ -64,7 +64,7 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
-    import colorDialog from '../../components/dialog/ColorDialog'
+    import colorDialog from '../../components/dialog/ColorDialog.vue'
 
     export default {
         components: {

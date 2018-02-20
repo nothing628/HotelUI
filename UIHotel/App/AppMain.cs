@@ -105,7 +105,7 @@ namespace UIHotel.App
 
         private void ConfigureRoute()
         {
-            RequestHandler.RegisterPath(Path.Combine(BaseDir, @"Vue\dist\static"), "");
+            RequestHandler.RegisterPath(Path.Combine(BaseDir, @"vue\dist"), "");
             RequestHandler.RegisterPath(AssetsPath, "");
             RequestHandler.RegisterPath(ViewPath, "");
             RequestHandler.RegisterPath(UploadPath, "Upload/");

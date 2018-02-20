@@ -26,7 +26,7 @@
 </template>
 <script>
     import axios from 'axios'
-    import alert from '../components/Notification'
+    import alert from '../components/Notification.vue'
 
     export default {
         components: {

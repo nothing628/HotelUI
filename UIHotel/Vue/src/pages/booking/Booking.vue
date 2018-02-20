@@ -376,10 +376,10 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
-    import notify from '../../components/Notification'
+    import notify from '../../components/Notification.vue'
     import country from '../../components/CountryList'
-    import DialogRoom from '../../components/dialog/RoomDialog'
-    import DialogGuest from '../../components/dialog/GuestDialog'
+    import DialogRoom from '../../components/dialog/RoomDialog.vue'
+    import DialogGuest from '../../components/dialog/GuestDialog.vue'
     export default {
         components: {
             'room-dialog': DialogRoom,

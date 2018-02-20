@@ -61,8 +61,8 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
-    import confirm from '../../components/dialog/ConfirmDialog'
-    import alert from '../../components/Notification'
+    import confirm from '../../components/dialog/ConfirmDialog.vue'
+    import alert from '../../components/Notification.vue'
     export default {
         components: {
             'confirm': confirm,

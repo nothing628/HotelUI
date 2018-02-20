@@ -312,10 +312,10 @@
     import axios from 'axios'
     import moment from 'moment'
     import country from '../../components/CountryList'
-    import DialogBook from '../../components/dialog/BookDialog'
-    import DialogRoom from '../../components/dialog/RoomDialog'
-    import DialogGuest from '../../components/dialog/GuestDialog'
-    import Alert from '../../components/Notification'
+    import DialogBook from '../../components/dialog/BookDialog.vue'
+    import DialogRoom from '../../components/dialog/RoomDialog.vue'
+    import DialogGuest from '../../components/dialog/GuestDialog.vue'
+    import Alert from '../../components/Notification.vue'
 
     export default {
         components: {
@@ -543,7 +543,7 @@
                 const room = this.room
                 const guest = this.guest
                 const data = { registration, room, guest }
-                
+
                 if (registration.valid && room.valid && guest.valid) {
                     axios.post('http://localhost.com/checkin/post/postCheckin', data)
                         .then(this.checkinData)
@@ -583,7 +583,7 @@
                 setTimeout(() => {
                     this.$bus.$emit('refresh-book', { id: this.bookId })
                 }, 1000)
-            } 
+            }
         }
     }
 </script>

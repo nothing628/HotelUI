@@ -405,15 +405,6 @@
     <None Include="View\Setting\User.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Vue\dist\static\js\app.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Vue\dist\static\js\manifest.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Vue\dist\static\js\vendor.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Vue\src\App.vue" />
     <None Include="Vue\src\components\date\DatePicker.vue" />
     <None Include="Vue\src\components\dialog\BookDialog.vue" />
@@ -596,30 +587,14 @@
     <None Include="View\Setting\Calendar.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Vue\build\build.js" />
-    <None Include="Vue\build\check-versions.js" />
-    <None Include="Vue\build\dev-client.js" />
-    <None Include="Vue\build\dev-server.js" />
-    <None Include="Vue\build\utils.js" />
-    <None Include="Vue\build\vue-loader.conf.js" />
-    <None Include="Vue\build\webpack.base.conf.js" />
-    <None Include="Vue\build\webpack.dev.conf.js" />
-    <None Include="Vue\build\webpack.prod.conf.js" />
-    <None Include="Vue\config\dev.env.js" />
-    <None Include="Vue\config\index.js" />
-    <None Include="Vue\config\prod.env.js" />
-    <Content Include="Vue\build\webpack.config.js" />
-    <Content Include="Vue\dist\static\css\app.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Vue\dist\build.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Vue\dist\static\js\app.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Vue\dist\build.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Vue\dist\static\js\manifest.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Vue\dist\static\js\vendor.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Vue\dist\bundle.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Vue\src\assets\logo.png" />
     <Content Include="Vue\src\components\CountryList.js" />

@@ -1,32 +1,29 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import '../../node_modules/vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import router from './router'
-import Login from './pages/Login'
-import Booking from './pages/booking/Booking'
-import BookingList from './pages/booking/List'
-import Checkin from './pages/checkin/Checkin'
-import CheckinList from './pages/checkin/List'
-import CheckinDetail from './pages/checkin/Detail'
-import Checkout from './pages/checkin/Checkout'
-import InvoiceDetail from './pages/guest/Invoice'
-import InvoicePay from './pages/guest/Pay'
-import GuestCreate from './pages/guest/Create'
-import GuestList from './pages/guest/List'
-import GuestEdit from './pages/guest/Edit'
-import GuestDetail from './pages/guest/Detail'
-import RoomDetail from './pages/room/Detail'
-import RoomCategory from './pages/room/Category'
-import RoomCalendar from './pages/room/Calendar'
-import RoomPrice from './pages/room/Price'
-import RoomList from './pages/room/List'
-import RoomMaintain from './pages/room/Setting'
-import SettingBasic from './pages/settings/Basic'
-import SettingUser from './pages/settings/User'
-import ReportCheckin from './pages/report/Checkin'
-import ReportMoney from './pages/report/Money'
+import Login from './pages/Login.vue'
+import Booking from './pages/booking/Booking.vue'
+import BookingList from './pages/booking/List.vue'
+import Checkin from './pages/checkin/Checkin.vue'
+import CheckinList from './pages/checkin/List.vue'
+import CheckinDetail from './pages/checkin/Detail.vue'
+import Checkout from './pages/checkin/Checkout.vue'
+import InvoiceDetail from './pages/guest/Invoice.vue'
+import InvoicePay from './pages/guest/Pay.vue'
+import GuestCreate from './pages/guest/Create.vue'
+import GuestList from './pages/guest/List.vue'
+import GuestEdit from './pages/guest/Edit.vue'
+import GuestDetail from './pages/guest/Detail.vue'
+import RoomDetail from './pages/room/Detail.vue'
+import RoomCategory from './pages/room/Category.vue'
+import RoomCalendar from './pages/room/Calendar.vue'
+import RoomPrice from './pages/room/Price.vue'
+import RoomList from './pages/room/List.vue'
+import RoomMaintain from './pages/room/Setting.vue'
+import SettingBasic from './pages/settings/Basic.vue'
+import SettingUser from './pages/settings/User.vue'
+import ReportCheckin from './pages/report/Checkin.vue'
+import ReportMoney from './pages/report/Money.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -57,8 +54,8 @@ Vue.component('setting-user', SettingUser)
 /* eslint-disable no-new */
 Vue.prototype.$bus = new Vue()
 new Vue({
-  el: '#app',
-  //router,
-  //template: '<App/>',
-  //components: { App }
+    el: '#app',
+    //router,
+    //template: '<App/>',
+    //components: { App }
 })

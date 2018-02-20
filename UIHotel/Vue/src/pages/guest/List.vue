@@ -72,7 +72,7 @@
 </template>
 <script>
     import axios from 'axios'
-    import notify from '../../components/Notification'
+    import notify from '../../components/Notification.vue'
 
     export default {
         components: {
