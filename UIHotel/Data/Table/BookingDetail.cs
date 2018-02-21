@@ -26,7 +26,7 @@ namespace UIHotel.Data.Table
         public string IdCheckin { get; set; }
 
         [Column("is_checkin", Order = 4)]
-        public bool IsCheckedIn { get; set; }
+        public bool IsClosed { get; set; }
 
         Room _Room;
 

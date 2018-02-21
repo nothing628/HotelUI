@@ -39,11 +39,14 @@ namespace UIHotel.Data.Table
         [Column("departure_at", Order = 6, TypeName = "Date")]
         public DateTime DepartureAt { get; set; }
 
+        [Column("is_closed", Order = 7)]
+        public bool IsClosed { get; set; }
+
         [Required]
-        [Column("create_at", Order = 7)]
+        [Column("create_at", Order = 8)]
         public DateTime CreateAt { get; set; }
 
-        [Column("update_at", Order = 8)]
+        [Column("update_at", Order = 9)]
         public DateTime? UpdateAt { get; set; }
 
         List<BookingDetail> _details;
