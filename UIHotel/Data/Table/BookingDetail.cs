@@ -21,7 +21,11 @@ namespace UIHotel.Data.Table
         [Column("id_room", Order = 2)]
         public long IdRoom { get; set; }
         
-        [Column("is_checkin", Order = 3)]
+        [Column("id_checkin", Order = 3)]
+        [StringLength(25)]
+        public string IdCheckin { get; set; }
+
+        [Column("is_checkin", Order = 4)]
         public bool IsCheckedIn { get; set; }
 
         Room _Room;

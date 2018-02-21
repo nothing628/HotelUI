@@ -62,6 +62,7 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("id_booking").AsString(25).NotNullable()
                 .WithColumn("id_room").AsInt64().NotNullable()
+                .WithColumn("id_checkin").AsString(25).Nullable()
                 .WithColumn("is_checkin").AsBoolean().WithDefaultValue(false);
 
             Create.Table("checkin")

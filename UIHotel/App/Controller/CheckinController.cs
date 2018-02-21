@@ -407,16 +407,29 @@ namespace UIHotel.App.Controller
                 CheckinAt = DateTime.Now,
                 Note = note,
             };
-
-            //TODO : should update booking detail too..
-            if (booking != null)
-                dataCheckin.IdBooking = booking;
-
+            
             using (var model = new DataContext())
-            using (var trans = model.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (var trans = model.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 try
                 {
+                    if (booking != null)
+                    {
+                        var detailBook = (from a in model.BookingDetails
+                                          where a.IdBooking == booking
+                                          where a.IdRoom == room_id
+                                          select a).FirstOrDefault();
+
+                        if (detailBook != null)
+                        {
+                            dataCheckin.IdBooking = booking;
+                            detailBook.IdCheckin = dataCheckin.Id;
+                            detailBook.IsCheckedIn = true;
+
+                            model.Entry(detailBook).State = EntityState.Modified;
+                        }
+                    }
+
                     var room = (from a in model.Rooms
                                 where a.Id == room_id
                                 select a).FirstOrDefault();
