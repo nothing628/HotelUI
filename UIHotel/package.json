@@ -38,7 +38,7 @@
     "select2": "^4.0.6-rc.1",
     "vue": "^2.5.13",
     "vue-morris": "0.0.13",
-    "vuetify": "^1.0.1"
+    "vuetify": "^1.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

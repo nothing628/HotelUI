@@ -5940,7 +5940,7 @@ vueify@^9.0.0:
     vue-template-compiler "^2.0.0-alpha.8"
     vue-template-es2015-compiler "^1.2.2"
 
-vuetify@^1.0.1:
+vuetify@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.0.2.tgz#6966feeffde6dbe43425795064aec762dfbab4f3"
 
