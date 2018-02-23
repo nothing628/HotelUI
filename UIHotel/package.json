@@ -7,7 +7,7 @@
     "start": "npm run dev",
     "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o vue/dist/build.css ] -e vue/src/main.js | uglifyjs -c warnings=false -m > vue/dist/build.js",
     "webpack": "webpack",
-    "wathcify": "watchify -vd -p browserify-hmr -e vue/src/main.js -t browserify-css --minify=true --output=vue/dist/bundle.css -o vue/dist/build.js"
+    "watchify": "watchify -vd -p browserify-hmr -e vue/src/main.js -t browserify-css --minify=true --output=vue/dist/bundle.css -o vue/dist/build.js"
   },
   "browserify": {
     "transform": [
