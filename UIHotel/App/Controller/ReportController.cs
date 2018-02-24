@@ -66,7 +66,6 @@ namespace UIHotel.App.Controller
         public IResourceHandler getReportCheckin()
         {
             var token = jToken;
-            var range_type = token.Value<string>("range_type");
             var bdate = token.Value<DateTime>("bdate");
             var edate = token.Value<DateTime?>("edate");
 
@@ -74,24 +73,6 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
-                    switch (range_type)
-                    {
-                        case "d":
-                            // Days
-                            edate = bdate.AddDays(1);
-                            break;
-                        case "m":
-                            // Monthly
-                            bdate = new DateTime(bdate.Year, bdate.Month, 1);
-                            edate = bdate.AddMonths(1);
-                            break;
-                        case "y":
-                            // Yearly
-                            bdate = new DateTime(bdate.Year, 1, 1);
-                            edate = bdate.AddYears(1);
-                            break;
-                    }
-
                     var iBooking = (from a in model.Bookings
                                     where a.CreateAt >= bdate
                                     where a.CreateAt < edate
