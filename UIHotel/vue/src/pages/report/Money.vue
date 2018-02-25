@@ -1,17 +1,52 @@
 <template>
     <v-card class="mb-4">
         <v-card-title primary-title>
-            <h2 class="card-title mb-0">REPORT CHECKIN & BOOKING</h2>
+            <h2 class="card-title mb-0">REPORT TRANSACTION</h2>
         </v-card-title>
 
         <v-container fluid grid-list-md>
             <v-layout row>
                 <v-flex md12>
-                    <v-menu ref="menu1"
-                            lazy
+                    <label>Range :</label>
+                    <v-btn-toggle v-model="range_type">
+                        <v-btn flat value="c">
+                            Custom
+                        </v-btn>
+                        <v-btn flat value="d">
+                            Daily
+                        </v-btn>
+                        <v-btn flat value="m">
+                            Monthly
+                        </v-btn>
+                        <v-btn flat value="y">
+                            Yearly
+                        </v-btn>
+                    </v-btn-toggle>
+                    <v-menu v-show="range_type == 'm'"
+                            ref="menu1"
                             :close-on-content-click="false"
                             v-model="modal1"
                             transition="scale-transition"
+                            offset-y
+                            :nudge-right="40"
+                            min-width="310px"
+                            :return-value.sync="mdate">
+                        <v-text-field slot="activator"
+                                      v-model="mdate"
+                                      prepend-icon="event"
+                                      readonly></v-text-field>
+                        <v-date-picker v-model="mdate"
+                                       type="month"
+                                       @change="$refs.menu1.save(mdate)"
+                                       :max="allowArr" no-title scrollable>
+                        </v-date-picker>
+                    </v-menu>
+                    <v-menu v-show="range_type == 'c' || range_type == 'd'"
+                            ref="menu2"
+                            :close-on-content-click="false"
+                            v-model="modal2"
+                            transition="scale-transition"
+                            offset-y
                             :nudge-right="40"
                             min-width="310px"
                             :return-value.sync="bdate">
@@ -19,15 +54,17 @@
                                       v-model="bdate"
                                       prepend-icon="event"
                                       readonly></v-text-field>
-                        <v-date-picker v-model="bdate" :max="allowArr" no-title scrollable>
-                            <v-btn flat color="primary" @click="$refs.menu1.save(bdate)">OK</v-btn>
+                        <v-date-picker v-model="bdate"
+                                       :max="allowArr"
+                                       @change="$refs.menu2.save(bdate)"
+                                       no-title scrollable>
                         </v-date-picker>
                     </v-menu>
-                    s/d
-                    <v-menu ref="menu2"
-                            lazy
+                    <label v-show="range_type == 'c'">s/d</label>
+                    <v-menu v-show="range_type == 'c'"
+                            ref="menu3"
                             :close-on-content-click="false"
-                            v-model="modal2"
+                            v-model="modal3"
                             transition="scale-transition"
                             offset-y
                             :nudge-right="40"
@@ -37,29 +74,34 @@
                                       v-model="edate"
                                       prepend-icon="event"
                                       readonly></v-text-field>
-                        <v-date-picker v-model="edate" :max="allowArr" :min="bdate" no-title scrollable>
-                            <v-btn flat color="primary" @click="$refs.menu2.save(edate)">OK</v-btn>
+                        <v-date-picker v-model="edate"
+                                       :max="allowArr"
+                                       :min="bdate"
+                                       @change="$refs.menu3.save(edate)"
+                                       no-title scrollable>
                         </v-date-picker>
                     </v-menu>
-                    Range :
-                    <v-btn-toggle v-model="range_type">
-                        <v-btn flat value="d">
-                            Days
-                        </v-btn>
-                        <v-btn flat value="m">
-                            Monthly
-                        </v-btn>
-                        <v-btn flat value="y">
-                            Yearly
-                        </v-btn>
-                    </v-btn-toggle>
+                    <v-select v-bind:items="year_list"
+                              v-show="range_type == 'y'"
+                              class="ml-3"
+                              style="max-width: 100px; display: inline-flex;"
+                              v-model="year"></v-select>
                     <v-btn color="primary" @click="getData">Search</v-btn>
                 </v-flex>
             </v-layout>
             <v-divider></v-divider>
             <v-layout row>
                 <v-flex md12>
-                    Money
+                    <v-data-table v-bind:headers="headers"
+                                  v-bind:items="items"
+                                  class="elevation-1">
+                        <template slot="items" slot-scope="props">
+                            <td>{{ props.item.Date | dateString }}</td>
+                            <td>{{ props.item.BookingCount }}</td>
+                            <td>{{ props.item.CheckinCount }}</td>
+                            <td>{{ props.item.CheckoutCount }}</td>
+                        </template>
+                    </v-data-table>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -74,25 +116,76 @@
             return {
                 modal1: false,
                 modal2: false,
+                modal3: false,
+                year: null,
                 bdate: null,
                 edate: null,
-                range_type: 'd',
+                mdate: null,
+                range_type: 'c',
+                items: [],
+                headers: [
+                    { text: 'Date', sortable: false, align: 'left', },
+                ]
             }
         },
         computed: {
             allowArr() {
                 return moment().format('YYYY-MM-DD')
+            },
+            year_list() {
+                return ['2018']
+            },
+            maxYear() {
+                return parseInt(moment().format('YYYY'))
+            },
+            calcBdate() {
+                let momen = moment()
+
+                switch (this.range_type) {
+                    case 'y':
+                        momen.year(this.year)
+                        momen.dayOfYear(1)
+                        return momen.format('YYYY-MM-DD')
+                        break
+                    case 'c':
+                    case 'd':
+                        return this.bdate
+                        break
+                    case 'm':
+                        let mbdate = moment(this.mdate, "YYYY-MM");
+                        return mbdate.format('YYYY-MM-DD')
+                        break
+                }
+            },
+            calcEdate() {
+                let momen = moment(this.bdate)
+
+                switch (this.range_type) {
+                    case 'c':
+                        return this.edate
+                        break
+                    case 'd':
+                        return this.bdate
+                        break
+                    case 'm':
+                        let mbdate = moment(this.calcBdate);
+                        let eod = mbdate.endOf('M')
+                        return eod.format('YYYY-MM-DD')
+                        break
+                    case 'y':
+                        return moment(this.calcBdate).endOf('Y').format('YYYY-MM-DD')
+                        break
+                }
             }
         },
         methods: {
             getData() {
                 let data = {
-                    bdate: this.bdate,
-                    edate: this.edate,
-                    range_type: this.range_type
+                    bdate: this.calcBdate,
+                    edate: this.calcEdate,
                 }
 
-                axios.post('http://localhost.com/report/post/getReportCheckin', data).then(this.getReportCheckin)
+                axios.post('http://localhost.com/report/post/getReportMoney', data).then(this.getDataData)
             },
             getDataData(response) {
                 let data = response.data
@@ -102,6 +195,9 @@
                     console.log(data)
                 }
             }
+        },
+        mounted() {
+            this.year = moment().format('YYYY')
         }
     }
 </script>

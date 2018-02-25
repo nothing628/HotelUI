@@ -30,7 +30,7 @@
                             offset-y
                             :nudge-right="40"
                             min-width="310px"
-                            :return-value.sync="bdate">
+                            :return-value.sync="mdate">
                         <v-text-field slot="activator"
                                       v-model="mdate"
                                       prepend-icon="event"

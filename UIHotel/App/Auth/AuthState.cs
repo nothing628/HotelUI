@@ -16,11 +16,20 @@ namespace UIHotel.App.Auth
             {
                 using (var data = new DataContext())
                 {
-                    var user = (from a in data.Users
-                                where a.Id == CurrentUserId.Value
-                                select a).SingleOrDefault();
+                    try
+                    {
+                        var user = (from a in data.Users
+                                    where a.Id == CurrentUserId.Value
+                                    select a).SingleOrDefault();
 
-                    return user;
+                        return user;
+                    } catch
+                    {
+                        return new User()
+                        {
+                            Permission = -1
+                        };
+                    }
                 }
             }
 
