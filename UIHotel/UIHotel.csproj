@@ -364,13 +364,10 @@
     <None Include="View\Login.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="View\Money\In.cshtml">
+    <None Include="View\Money\Transaction.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="View\Money\List.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="View\Money\Out.cshtml">
+    <None Include="View\Money\Graph.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Report\Booking.cshtml">

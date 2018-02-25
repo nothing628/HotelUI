@@ -17,19 +17,14 @@ namespace UIHotel.App.Controller
             //
         }
 
-        public IResourceHandler index()
+        public IResourceHandler transaksi()
         {
-            return View("Money.List");
+            return View("Money.Transaction");
         }
 
-        public IResourceHandler pengeluaran()
+        public IResourceHandler graph()
         {
-            return View("Money.Out");
-        }
-
-        public IResourceHandler pemasukkan()
-        {
-            return View("Money.In");
+            return View("Money.Graph");
         }
     }
 }
