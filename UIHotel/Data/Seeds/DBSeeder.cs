@@ -25,6 +25,7 @@ namespace UIHotel.Data.Seeds
                     new RoomPriceSeeder().Run(context);
                     new GuestSeeder().Run(context);
                     new SettingSeeder().Run(context);
+                    new LedgerSeeder().Run(context);
 
                     context.SaveChanges();
                 } catch

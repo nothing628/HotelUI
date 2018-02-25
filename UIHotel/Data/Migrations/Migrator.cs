@@ -59,14 +59,14 @@ namespace UIHotel.Data.Migrations
 
         public void Run()
         {
+            var runner = GetRunner();
+
             try
             {
-                var runner = GetRunner();
-
                 runner.MigrateUp(true);
             } catch
             {
-                //
+
             }
         }
     }

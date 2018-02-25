@@ -30,6 +30,8 @@ namespace UIHotel.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<LedgerCategory> LedgerCategories { get; set; }
+        public DbSet<LedgerLog> LedgerLogs { get; set; }
 
         public DataContext()
           : base(new MySqlConnection(Properties.Settings.Default.MyDB), false)
