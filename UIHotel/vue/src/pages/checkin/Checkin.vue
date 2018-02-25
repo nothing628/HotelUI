@@ -48,8 +48,11 @@
                                               v-model="registration.arr_date"
                                               prepend-icon="event"
                                               readonly></v-text-field>
-                                <v-date-picker v-model="registration.arr_date" :min="allowArr" no-title scrollable>
-                                    <v-btn flat color="primary" @click="$refs.menu1.save(registration.arr_date)">OK</v-btn>
+                                <v-date-picker v-model="registration.arr_date"
+                                               :min="allowArr"
+                                               @change="$refs.menu1.save(registration.arr_date)"
+                                               no-title
+                                               scrollable>
                                 </v-date-picker>
                             </v-menu>
                         </v-flex>
@@ -201,8 +204,11 @@
                                               v-model="guest.birth_day"
                                               prepend-icon="event"
                                               readonly></v-text-field>
-                                <v-date-picker v-model="guest.birth_day" :max="allowBir" no-title scrollable>
-                                    <v-btn flat color="primary" @click="$refs.menu3.save(guest.birth_day)">OK</v-btn>
+                                <v-date-picker v-model="guest.birth_day"
+                                               :max="allowBir"
+                                               @change="$refs.menu3.save(guest.birth_day)"
+                                               no-title
+                                               scrollable>
                                 </v-date-picker>
                             </v-menu>
                         </v-flex>

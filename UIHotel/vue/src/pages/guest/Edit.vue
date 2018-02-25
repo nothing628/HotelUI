@@ -64,8 +64,11 @@
                                                   v-model="model.BirthDay"
                                                   prepend-icon="event"
                                                   readonly></v-text-field>
-                                    <v-date-picker v-model="model.BirthDay" :max="allowBir" no-title scrollable>
-                                        <v-btn flat color="primary" @click="$refs.menu3.save(model.BirthDay)">OK</v-btn>
+                                    <v-date-picker v-model="model.BirthDay"
+                                                   :max="allowBir"
+                                                   @change="$refs.menu3.save(model.BirthDay)"
+                                                   no-title
+                                                   scrollable>
                                     </v-date-picker>
                                 </v-menu>
                             </v-flex>

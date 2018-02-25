@@ -2,7 +2,14 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>Pemasukkan</h1>
-</header>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Transaksi</h1>
+            </header>
 
+            <money-transaction></money-transaction>
+        </v-flex>
+    </v-layout>
+</v-container>

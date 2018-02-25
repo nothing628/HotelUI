@@ -21,6 +21,8 @@ namespace UIHotel.Data.Seeds
             context.LedgerCategories.Add(new LedgerCategory() { Description = "Utilities", IsExpense = true, });
             context.LedgerCategories.Add(new LedgerCategory() { Description = "Insurance", IsExpense = true, });
             context.LedgerCategories.Add(new LedgerCategory() { Description = "Loan", IsExpense = true, });
+            context.LedgerCategories.Add(new LedgerCategory() { Description = "Uncategorized", IsExpense = false, });
+            context.LedgerCategories.Add(new LedgerCategory() { Description = "Uncategorized", IsExpense = true, });
             context.SaveChanges();
 
             context.LedgerLogs.Add(new LedgerLog() {
