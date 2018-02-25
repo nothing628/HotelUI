@@ -50,10 +50,14 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/guest/get/list");
         }
 
+        /// <summary>
+        /// Just For Printing Invoice
+        /// </summary>
+        /// <returns>IResourceHandler</returns>
         public IResourceHandler invoice()
         {
             var invoiceId = Query["id"];
-
+            
             using (var model = new DataContext())
             {
                 try
