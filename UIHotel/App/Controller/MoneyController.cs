@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel.App.Attributes;
+using UIHotel.Data;
 
 namespace UIHotel.App.Controller
 {
@@ -25,6 +26,24 @@ namespace UIHotel.App.Controller
         public IResourceHandler graph()
         {
             return View("Money.Graph");
+        }
+
+        public IResourceHandler getCategories()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var categories = (from a in model.LedgerCategories
+                                      orderby a.IsExpense ascending
+                                      select a).ToList();
+
+                    return Json(new { success = true, data = categories });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
         }
     }
 }

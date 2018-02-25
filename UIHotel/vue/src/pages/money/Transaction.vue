@@ -36,7 +36,7 @@
             </v-layout>
         </v-container>
 
-        <tdialog></tdialog>
+        <tdialog @save="saveData"></tdialog>
     </v-card>
 </template>
 <script>
@@ -60,6 +60,11 @@
         methods: {
             newData() {
                 //New Transaction
+                this.$bus.$emit('new-transaction')
+            },
+            saveData(data) {
+                //Save Transaction
+                console.log(data)
             }
         },
         mounted() {
