@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UIHotel.App.Attributes;
 using UIHotel.Data;
+using UIHotel.Data.Table;
 
 namespace UIHotel.App.Controller
 {
@@ -41,6 +42,45 @@ namespace UIHotel.App.Controller
                     return Json(new { success = true, data = categories });
                 } catch
                 {
+                    return Json(new { success = false });
+                }
+            }
+        }
+        public IResourceHandler saveTransaction()
+        {
+            var date = jToken.Value<DateTime>("date");
+            var time = jToken.Value<string>("time");
+            var ttime = TimeSpan.Parse(time);
+            var amount = jToken.Value<decimal>("amount");
+            var desc = jToken.Value<string>("description");
+            var isOutcome = jToken.Value<bool>("isOutcome");
+            var idCategory = jToken.Value<long>("idCategory");
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var log = new LedgerLog()
+                    {
+                        Id = LedgerLog.GenerateID(),
+                        IdCategory = idCategory,
+                        Date = date.Add(ttime),
+                        Description = desc,
+                        Debit = (isOutcome) ? 0 : amount,
+                        Kredit = (isOutcome) ? amount : 0,
+                        CreateAt = DateTime.Now,
+                        UpdateAt = DateTime.Now,
+                    };
+
+                    model.LedgerLogs.Add(log);
+                    model.SaveChanges();
+                    trans.Commit();
+                    return Json(new { success = true, data = log });
+                }
+                catch
+                {
+                    trans.Rollback();
                     return Json(new { success = false });
                 }
             }

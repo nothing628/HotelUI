@@ -41,6 +41,7 @@
 </template>
 <script>
     import moment from 'moment'
+    import axios from 'axios'
     import tdialog from '../../components/dialog/TransactionDialog.vue'
     export default {
         components: {
@@ -64,7 +65,14 @@
             },
             saveData(data) {
                 //Save Transaction
-                console.log(data)
+                axios.post('http://localhost.com/money/post/saveTransaction', data).then(this.saveResponse)
+            },
+            saveResponse(response) {
+                let data = response.data
+
+                if (data.success) {
+                    console.log(data)
+                }
             }
         },
         mounted() {

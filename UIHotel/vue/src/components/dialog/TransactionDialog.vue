@@ -84,6 +84,7 @@
                             <v-text-field label="Amount"
                                           type="number"
                                           ref="amount"
+                                          prefix="Rp"
                                           :rules="rules.amount"
                                           v-model="amount"></v-text-field>
                         </v-flex>
@@ -183,8 +184,8 @@
                 let data = {
                     date: this.tdate,
                     time: this.ttime,
-                    IdCategory: this.category,
-                    IsOutcome: this.isOutcome,
+                    idCategory: this.category,
+                    isOutcome: this.isOutcome,
                     amount: this.amount,
                     description: this.description,
                 }
