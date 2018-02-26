@@ -35,13 +35,20 @@ namespace UIHotel.Data.Migrations
             };
             var options = new ProcessorOptions() { Timeout = 15 };
 
-            var factory = new MySqlDbFactory();
-            var connection = new MySqlConnection(Properties.Settings.Default.MyDB);
-            var generator = new MySqlGenerator();
-            var processor = new MySqlProcessor(connection, generator, announcer, options, factory);
-            var runner = new MigrationRunner(asm, context, processor);
+            try
+            {
+                var factory = new MySqlDbFactory();
+                var connection = new MySqlConnection(Properties.Settings.Default.MyDB);
+                var generator = new MySqlGenerator();
+                var processor = new MySqlProcessor(connection, generator, announcer, options, factory);
+                var runner = new MigrationRunner(asm, context, processor);
 
-            return runner;
+                return runner;
+            } catch
+            {
+                return null;
+            }
+            
         }
 
         public void RunDown()
@@ -59,10 +66,10 @@ namespace UIHotel.Data.Migrations
 
         public void Run()
         {
-            var runner = GetRunner();
-
             try
             {
+                var runner = GetRunner();
+
                 runner.MigrateUp(true);
             } catch
             {
