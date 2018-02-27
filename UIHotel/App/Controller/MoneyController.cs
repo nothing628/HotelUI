@@ -46,6 +46,27 @@ namespace UIHotel.App.Controller
                 }
             }
         }
+        public IResourceHandler getTransaction()
+        {
+            var token = jToken;
+            var bdate = jToken.Value<DateTime>("item_date");
+            var edate = bdate.AddDays(1);
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var data = (from a in model.LedgerLogs
+                                where a.Date >= bdate && a.Date < edate
+                                select a).ToList();
+
+                    return Json(new { success = true, data });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
         public IResourceHandler saveTransaction()
         {
             var date = jToken.Value<DateTime>("date");

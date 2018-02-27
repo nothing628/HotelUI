@@ -36,6 +36,38 @@ namespace UIHotel.Data.Table
         [Column("update_at", Order = 7)]
         public DateTime? UpdateAt { get; set; }
 
+        [NotMapped]
+        public bool IsExpense
+        {
+            get => Kredit > Debit;
+        }
+
+        private LedgerCategory _Category;
+
+        [NotMapped]
+        public LedgerCategory Category
+        {
+            get
+            {
+                if (_Category == null)
+                {
+                    using (var model = new DataContext())
+                    {
+                        var category = (from a in model.LedgerCategories
+                                        where a.Id == IdCategory
+                                        select a).FirstOrDefault();
+
+                        if (category != null)
+                            _Category = category;
+                        else
+                            _Category = new LedgerCategory();
+                    }
+                }
+
+                return _Category;
+            }
+        }
+
         public static string GenerateID()
         {
             using (var context = new DataContext())

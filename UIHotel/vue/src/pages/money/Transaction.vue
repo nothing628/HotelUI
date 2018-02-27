@@ -31,7 +31,19 @@
             <v-divider></v-divider>
             <v-layout row>
                 <v-flex md12>
-
+                    <v-data-table v-bind:headers="headers"
+                                  v-bind:items="items"
+                                  class="elevation-1">
+                        <template slot="items" slot-scope="props">
+                            <tr :class="{'green--text': !props.item.IsExpense, 'red--text': props.item.IsExpense }">
+                                <td>{{ props.item.Date | dateString }}</td>
+                                <td><strong>{{ props.item.Description }}</strong></td>
+                                <td>{{ props.item.Category.Description }}</td>
+                                <td>{{ props.item.Debit | Currency }}</td>
+                                <td>{{ props.item.Kredit | Currency }}</td>
+                            </tr>
+                        </template>
+                    </v-data-table>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -43,6 +55,7 @@
     import moment from 'moment'
     import axios from 'axios'
     import tdialog from '../../components/dialog/TransactionDialog.vue'
+
     export default {
         components: {
             tdialog
@@ -51,12 +64,30 @@
             return {
                 mdate: null,
                 modal1: false,
+                items: [],
+                headers: [
+                    { text: 'Date', sortable: false, align: 'left', },
+                    { text: 'Description', sortable: false, align: 'left' },
+                    { text: 'Category', sortable: false, align: 'left' },
+                    { text: 'Debit', sortable: false, align: 'left' },
+                    { text: 'Kredit', sortable: false, align: 'left' },
+                ]
             }
         },
         computed: {
             allowArr() {
                 return moment().format('YYYY-MM-DD')
             },
+        },
+        filters: {
+            dateString(val) {
+                let momen = moment(val)
+
+                return momen.format('YYYY-MM-DD')
+            },
+            Currency(val) {
+                return 'Rp' + parseFloat(val).toLocaleString()
+            }
         },
         methods: {
             newData() {
@@ -71,12 +102,39 @@
                 let data = response.data
 
                 if (data.success) {
-                    console.log(data)
+                    this.getData()
+                }
+            },
+            getData() {
+                let data = {
+                    item_date: this.mdate
+                }
+
+                axios.post('http://localhost.com/money/post/getTransaction', data).then(this.getDataData)
+            },
+            getDataData(response) {
+                let data = response.data
+
+                if (data.success) {
+                    let items = data.data
+
+                    this.items = []
+
+                    items.forEach(x => this.items.push(x))
+                    console.log(items)
                 }
             }
         },
         mounted() {
             this.mdate = moment().format('YYYY-MM-DD')
+            this.getData()
+        },
+        watch: {
+            mdate: {
+                handler() {
+                    this.getData()
+                }
+            }
         }
     }
 </script>
