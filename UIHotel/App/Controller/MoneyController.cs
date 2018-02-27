@@ -58,6 +58,7 @@ namespace UIHotel.App.Controller
                 {
                     var data = (from a in model.LedgerLogs
                                 where a.Date >= bdate && a.Date < edate
+                                orderby a.Date ascending
                                 select a).ToList();
 
                     return Json(new { success = true, data });

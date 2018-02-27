@@ -33,15 +33,22 @@
                 <v-flex md12>
                     <v-data-table v-bind:headers="headers"
                                   v-bind:items="items"
+                                  hide-actions
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
                             <tr :class="{'green--text': !props.item.IsExpense, 'red--text': props.item.IsExpense }">
                                 <td>{{ props.item.Date | dateString }}</td>
-                                <td><strong>{{ props.item.Description }}</strong></td>
+                                <td>{{ props.item.Description }}</td>
                                 <td>{{ props.item.Category.Description }}</td>
-                                <td>{{ props.item.Debit | Currency }}</td>
-                                <td>{{ props.item.Kredit | Currency }}</td>
+                                <td v-if="!props.item.IsExpense"><strong>{{ props.item.Debit | Currency }}</strong></td>
+                                <td v-if="props.item.IsExpense"><strong>{{ -props.item.Kredit | Currency }}</strong></td>
                             </tr>
+                        </template>
+                        <template slot="footer">
+                            <td colspan="3">
+                                <strong>Total</strong>
+                            </td>
+                            <td><strong>{{ balance | Currency }}</strong></td>
                         </template>
                     </v-data-table>
                 </v-flex>
@@ -69,8 +76,7 @@
                     { text: 'Date', sortable: false, align: 'left', },
                     { text: 'Description', sortable: false, align: 'left' },
                     { text: 'Category', sortable: false, align: 'left' },
-                    { text: 'Debit', sortable: false, align: 'left' },
-                    { text: 'Kredit', sortable: false, align: 'left' },
+                    { text: 'Amount', sortable: false, align: 'left' },
                 ]
             }
         },
@@ -78,12 +84,29 @@
             allowArr() {
                 return moment().format('YYYY-MM-DD')
             },
+            balance() {
+                return this.totalDebit - this.totalKredit
+            },
+            totalDebit() {
+                let amount = 0
+
+                this.items.forEach(x => amount += x.Debit)
+
+                return amount
+            },
+            totalKredit() {
+                let amount = 0
+
+                this.items.forEach(x => amount += x.Kredit)
+
+                return amount
+            }
         },
         filters: {
             dateString(val) {
                 let momen = moment(val)
 
-                return momen.format('YYYY-MM-DD')
+                return momen.format('YYYY-MM-DD HH:mm')
             },
             Currency(val) {
                 return 'Rp' + parseFloat(val).toLocaleString()
