@@ -72,7 +72,7 @@
                                       autocomplete>
                                 <template slot="item" slot-scope="data">
                                     <v-list-tile-avatar>
-                                        <v-icon large color="teal darken-2">email</v-icon>
+                                        <v-icon large :color="data.item.Color">{{ data.item.Icon }}</v-icon>
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title v-html="data.item.Description"></v-list-tile-title>

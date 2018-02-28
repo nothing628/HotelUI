@@ -38,12 +38,13 @@ namespace UIHotel.App.Controller
                     var description = jToken.Value<string>("Description");
                     var color = jToken.Value<string>("Color");
                     var icon = jToken.Value<string>("Icon");
+                    var isExpense = jToken.Value<bool>("IsExpense");
                     var category = new LedgerCategory()
                     {
                         Color = color,
                         Description = description,
                         Icon = icon,
-                        IsExpense = true, //TODO: update by data
+                        IsExpense = isExpense,
                     };
 
                     model.LedgerCategories.Add(category);
@@ -66,6 +67,7 @@ namespace UIHotel.App.Controller
                     var description = jToken.Value<string>("Description");
                     var color = jToken.Value<string>("Color");
                     var icon = jToken.Value<string>("Icon");
+                    var isExpense = jToken.Value<bool>("IsExpense");
                     var category = (from a in model.LedgerCategories
                                     where a.Id == idCategory
                                     select a).First();
@@ -73,6 +75,7 @@ namespace UIHotel.App.Controller
                     category.Color = color;
                     category.Icon = icon;
                     category.Description = description;
+                    category.IsExpense = isExpense;
 
                     model.SaveChanges();
 
@@ -85,7 +88,25 @@ namespace UIHotel.App.Controller
         }
         public IResourceHandler deleteCategory()
         {
-            return Json(new { });
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    //TODO: Update the transaction category to uncategorized
+                    var idCategory = jToken.Value<long>("Id");
+                    var category = (from a in model.LedgerCategories
+                                    where a.Id == idCategory
+                                    select a).First();
+
+                    model.LedgerCategories.Remove(category);
+                    model.SaveChanges();
+
+                    return Json(new { success = true });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
         }
         public IResourceHandler getCategory()
         {

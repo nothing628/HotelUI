@@ -22,6 +22,10 @@
                                               ref="category"
                                               v-model="category"></v-text-field>
                             </v-flex>
+                            <v-flex xs12>
+                                <v-switch label="Outcome Category"
+                                          v-model="isOutcome"></v-switch>
+                            </v-flex>
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -51,6 +55,7 @@
                 modalColor: false,
                 id: '',
                 category: '',
+                isOutcome: false,
                 icon: 'clear',
                 color: 'red lighten-1',
                 validref: ['category'],
@@ -85,6 +90,7 @@
                 this.color = param.Color || ''
                 this.icon = param.Icon || ''
                 this.category = param.Description || ''
+                this.isOutcome = param.IsExpense || false
                 this.id = param.Id || ''
             },
             resetValidation() {
@@ -102,6 +108,7 @@
                     Id: this.id,
                     Icon: this.icon,
                     Color: this.color,
+                    IsExpense: this.isOutcome,
                     Description: this.category,
                 }
 

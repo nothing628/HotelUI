@@ -63,6 +63,7 @@
             editCategory(data) {
                 let newData = {
                     name: 'editCategory',
+                    IsExpense: data.IsExpense,
                     Color: data.Color,
                     Icon: data.Icon,
                     Description: data.Description,
@@ -72,7 +73,7 @@
                 this.$bus.$emit('new-category', newData)
             },
             confCategory(data) {
-                //
+                this.deleteCategory(data)    ///TODO: add confirmation before delete
             },
             saveCategory(data) {
                 axios.post('http://localhost.com/money/post/saveCategory', data).then(this.refreshResponse)
@@ -81,7 +82,7 @@
                 axios.post('http://localhost.com/money/post/updateCategory', data).then(this.refreshResponse)
             },
             deleteCategory(data) {
-                //
+                axios.post('http://localhost.com/money/post/deleteCategory', data).then(this.refreshResponse)
             },
             refreshResponse(response) {
                 let data = response.data
