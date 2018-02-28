@@ -29,6 +29,22 @@ namespace UIHotel.App.Controller
             return View("Money.Category");
         }
 
+        public IResourceHandler getCategory()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var category = (from a in model.LedgerCategories
+                                    select a).ToList();
+
+                    return Json(new { success = true, data = category });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
         public IResourceHandler getCategories()
         {
             using (var model = new DataContext())
