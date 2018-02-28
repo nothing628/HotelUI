@@ -1,7 +1,8 @@
 <template>
-    <v-dialog v-model="modal" max-width="600px">
+    <v-dialog v-model="modal" scrollable max-width="600px">
         <v-card>
             <v-card-title><strong>Choose Color</strong></v-card-title>
+            <v-divider></v-divider>
             <v-card-text>
                 <table class="table table-color">
                     <tbody>
@@ -11,6 +12,10 @@
                     </tbody>
                 </table>
             </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-btn color="red darken-1" dark @click.native="cancelDialog">Cancel</v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
@@ -43,10 +48,16 @@
                 handler() {
                     this.dataValue = this.value
                 }
+            },
+            showModal: {
+                handler() {
+                    this.modal = this.showModal
+                }
             }
         },
         props: {
-            value: { type: String, default: null }
+            value: { type: String, default: null },
+            showModal: { type: Boolean, default: false },
         },
         methods: {
             updateValue() {
@@ -54,6 +65,10 @@
             },
             showDialog() {
                 this.modal = true
+            },
+            cancelDialog() {
+                this.modal = false
+                this.$emit('cancel')
             },
             createStyle(hexcolor) {
                 return { 'background-color': hexcolor }
@@ -81,7 +96,7 @@
                 else
                     this.dataValue = colP + " " + colS
 
-                this.$emit('colorChanged', this.dataValue)
+                this.$emit('save', this.dataValue)
                 this.modal = false
             }
         },

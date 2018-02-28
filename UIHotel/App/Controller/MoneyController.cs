@@ -29,6 +29,64 @@ namespace UIHotel.App.Controller
             return View("Money.Category");
         }
 
+        public IResourceHandler saveCategory()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var description = jToken.Value<string>("Description");
+                    var color = jToken.Value<string>("Color");
+                    var icon = jToken.Value<string>("Icon");
+                    var category = new LedgerCategory()
+                    {
+                        Color = color,
+                        Description = description,
+                        Icon = icon,
+                        IsExpense = true, //TODO: update by data
+                    };
+
+                    model.LedgerCategories.Add(category);
+                    model.SaveChanges();
+
+                    return Json(new { success = true });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+        public IResourceHandler updateCategory()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var idCategory = jToken.Value<long>("Id");
+                    var description = jToken.Value<string>("Description");
+                    var color = jToken.Value<string>("Color");
+                    var icon = jToken.Value<string>("Icon");
+                    var category = (from a in model.LedgerCategories
+                                    where a.Id == idCategory
+                                    select a).First();
+
+                    category.Color = color;
+                    category.Icon = icon;
+                    category.Description = description;
+
+                    model.SaveChanges();
+
+                    return Json(new { success = true });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+        public IResourceHandler deleteCategory()
+        {
+            return Json(new { });
+        }
         public IResourceHandler getCategory()
         {
             using (var model = new DataContext())

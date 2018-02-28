@@ -3,6 +3,7 @@
         <v-dialog v-model="modal" max-width="600px">
             <v-card>
                 <v-card-title><strong>{{ title }}</strong></v-card-title>
+                <v-divider></v-divider>
                 <v-card-text>
                     <v-container fluid class="px-3">
                         <v-layout row wrap>
@@ -10,7 +11,7 @@
                                 <v-btn fab>
                                     <v-icon :color="color">{{ icon }}</v-icon>
                                 </v-btn>
-                                <v-btn>Change Icon</v-btn>
+                                <v-btn @click="showDialogIcon">Change Icon</v-btn>
                                 <v-btn @click="showDialogColor">Change Color</v-btn>
                             </v-flex>
                             <v-flex xs12>
@@ -31,19 +32,24 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <tcolor @colorChanged="changeColor"></tcolor>
+        <tcolor @save="changeColor" @cancel="modalColor = false" :show-modal.sync="modalColor"></tcolor>
+        <ticon @save="changeIcon" @cancel="modalIcon = false" :show-modal.sync="modalIcon"></ticon>
     </v-layout>
 </template>
 <script>
     import tcolor from '../../components/dialog/ColorDialog.vue'
+    import ticon from '../../components/dialog/IconDialog.vue'
     export default {
         components: {
-            tcolor
+            tcolor,
+            ticon,
         },
         data() {
             return {
                 modal: false,
-                title: 'New Category',
+                modalIcon: false,
+                modalColor: false,
+                id: '',
                 category: '',
                 icon: 'clear',
                 color: 'red lighten-1',
@@ -56,22 +62,30 @@
                 }
             }
         },
+        props: {
+            dialogName: { type: String, default: null },
+            title: { type: String, default: 'New Category' }
+        },
         methods: {
             showDialogColor() {
-                this.$bus.$emit('choose-color')
+                this.modalColor = true
             },
             showDialogIcon() {
-                //
+                this.modalIcon = true
             },
-            showDialog() {
-                this.title = 'New Category'
+            showDialog(param) {
+                if (param.name != this.dialogName)
+                    return
+
                 this.modal = true
                 this.resetValidation()
-            },
-            editDialog(item) {
-                this.title = 'Edit Category'
-                this.modal = true
-                this.resetValidation()
+                this.resetData()
+
+                //Set Data if the param is exists
+                this.color = param.Color || ''
+                this.icon = param.Icon || ''
+                this.category = param.Description || ''
+                this.id = param.Id || ''
             },
             resetValidation() {
                 let keys = this.validref
@@ -81,27 +95,38 @@
                 })
             },
             resetData() {
-                //
+                this.category = ''
             },
             save() {
-                //
+                let data = {
+                    Id: this.id,
+                    Icon: this.icon,
+                    Color: this.color,
+                    Description: this.category,
+                }
+
+                this.$emit('save', data)
+                this.modal = false
             },
             cancel() {
                 this.modal = false
             },
             changeColor(data) {
+                this.modalColor = false
                 this.color = data
+            },
+            changeIcon(data) {
+                this.modalIcon = false
+                this.icon = data
             }
         },
         mounted() {
             this.$bus.$on('new-category', this.showDialog)
-            this.$bus.$on('edit-category', this.editDialog)
             this.resetValidation()
             this.resetData()
         },
         beforeDestroy() {
             this.$bus.$off('new-category', this.showDialog)
-            this.$bus.$off('edit-category', this.editDialog)
         }
     }
 </script>

@@ -42,7 +42,7 @@
                         </tbody>
                     </table>
                 </v-card>
-                <color-dialog @colorChanged="changeColor"></color-dialog>
+                <color-dialog @save="changeColor"></color-dialog>
                 <v-snackbar :timeout="1000"
                             :top="true"
                             :color="snackbar.color"
