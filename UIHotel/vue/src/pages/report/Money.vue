@@ -94,12 +94,17 @@
                 <v-flex md12>
                     <v-data-table v-bind:headers="headers"
                                   v-bind:items="items"
+                                  hide-actions
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.Date | dateString }}</td>
-                            <td>{{ props.item.BookingCount }}</td>
-                            <td>{{ props.item.CheckinCount }}</td>
-                            <td>{{ props.item.CheckoutCount }}</td>
+                            <td><strong>{{ props.item.Debit | Currency }}</strong></td>
+                            <td><strong>{{ props.item.Kredit | Currency }}</strong></td>
+                        </template>
+                        <template slot="footer">
+                            <td><strong>Total</strong></td>
+                            <td><strong>{{ totalDebit | Currency }}</strong></td>
+                            <td><strong>{{ totalKredit | Currency }}</strong></td>
                         </template>
                     </v-data-table>
                 </v-flex>
@@ -124,7 +129,9 @@
                 range_type: 'c',
                 items: [],
                 headers: [
-                    { text: 'Date', sortable: false, align: 'left', },
+                    { text: 'Date', sortable: false, align: 'left' },
+                    { text: 'Debit', sortable: false, align: 'left' },
+                    { text: 'Kredit', sortable: false, align: 'left' },
                 ]
             }
         },
@@ -176,6 +183,30 @@
                         return moment(this.calcBdate).endOf('Y').format('YYYY-MM-DD')
                         break
                 }
+            },
+            totalDebit() {
+                let total = 0
+
+                this.items.forEach(x => total += x.Debit)
+
+                return total
+            },
+            totalKredit() {
+                let total = 0
+
+                this.items.forEach(x => total += x.Kredit)
+
+                return total
+            }
+        },
+        filters: {
+            dateString(val) {
+                let momen = moment(val)
+
+                return momen.format('YYYY-MM-DD')
+            },
+            Currency(val) {
+                return 'Rp' + parseFloat(val).toLocaleString()
             }
         },
         methods: {
@@ -191,8 +222,12 @@
                 let data = response.data
 
                 if (data.success) {
+                    let items = data.data
 
-                    console.log(data)
+                    this.items = []
+
+                    items.forEach(x => this.items.push(x))
+                    console.log(items)
                 }
             }
         },

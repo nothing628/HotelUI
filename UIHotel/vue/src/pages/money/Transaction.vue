@@ -144,7 +144,6 @@
                     this.items = []
 
                     items.forEach(x => this.items.push(x))
-                    console.log(items)
                 }
             }
         },

@@ -33,28 +33,28 @@ namespace UIHotel.App.Controller
         public IResourceHandler getReportMoney()
         {
             var token = jToken;
-            var range_type = token.Value<string>("range_type");
-            var bdate = token.Value<DateTime?>("bdate");
-            var edate = token.Value<DateTime?>("edate");
+            var bdate = token.Value<DateTime>("bdate");
+            var edate = token.Value<DateTime>("edate");
+            var enddate = edate.AddDays(1);
 
             using (var model = new DataContext())
             {
                 try
                 {
-                    switch (range_type)
-                    {
-                        case "d":
-                            // Days
-                            break;
-                        case "m":
-                            // Monthly
-                            break;
-                        case "y":
-                            // Yearly
-                            break;
-                    }
+                    var ledgers = (from a in model.LedgerLogs
+                                   where a.Date >= bdate
+                                   where a.Date < enddate
+                                   select a).ToList();
+                    var grp = (from a in ledgers
+                               group a by a.Date.Date into b
+                               select new
+                               {
+                                   Date = b.Key,
+                                   Debit = b.Sum(x => x.Debit),
+                                   Kredit = b.Sum(x => x.Kredit),
+                               }).ToList();
 
-                    return Json(new { success = true });
+                    return Json(new { success = true, data = grp });
                 }
                 catch
                 {
