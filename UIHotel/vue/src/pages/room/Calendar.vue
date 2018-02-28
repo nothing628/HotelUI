@@ -89,7 +89,7 @@
             },
             chooseColor(type) {
                 this.tmpType = type
-                this.$bus.$emit('choose-dialog')
+                this.$bus.$emit('choose-color')
             },
             changeColor(newcolor) {
                 let data = {

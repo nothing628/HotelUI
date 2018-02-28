@@ -406,7 +406,7 @@
     <None Include="vue\src\components\dialog\ConfirmDialog.vue" />
     <None Include="vue\src\components\dialog\GuestDialog.vue" />
     <None Include="vue\src\components\dialog\RoomDialog.vue" />
-    <None Include="vue\src\components\dialog\TransactionDialog.vue" />
+    <None Include="vue\src\pages\money\TransactionDialog.vue" />
     <None Include="vue\src\components\HelloWorld.vue" />
     <None Include="vue\src\components\Notification.vue" />
     <None Include="vue\src\pages\booking\Booking.vue" />

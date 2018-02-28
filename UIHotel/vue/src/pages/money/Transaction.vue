@@ -61,7 +61,7 @@
 <script>
     import moment from 'moment'
     import axios from 'axios'
-    import tdialog from '../../components/dialog/TransactionDialog.vue'
+    import tdialog from './TransactionDialog.vue'
 
     export default {
         components: {

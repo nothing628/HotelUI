@@ -115,6 +115,7 @@
                 amount: 0,
                 isOutcome: true,
                 categories: [],
+                validref: ['amount', 'description', 'category'],
                 rules: {
                     desc: [
                         (v) => (!!v && v.length > 0) || 'This field is required',
@@ -146,7 +147,7 @@
         methods: {
             validate() {
                 let formNoErrors = true
-                let keys = ['amount', 'description', 'category']
+                let keys = this.validref
 
                 keys.forEach(x => {
                     let ref = this.$refs[x]
@@ -158,7 +159,7 @@
                 return formNoErrors
             },
             resetValidation() {
-                let keys = ['amount', 'description', 'category']
+                let keys = this.validref
 
                 keys.forEach(x => {
                     this.$refs[x].reset()

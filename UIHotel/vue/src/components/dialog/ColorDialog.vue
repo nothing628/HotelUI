@@ -86,11 +86,11 @@
             }
         },
         mounted() {
-            this.$bus.$on('choose-dialog', this.showDialog)
+            this.$bus.$on('choose-color', this.showDialog)
             this.colors = VColors
         },
         beforeDestroy() {
-            this.$bus.$off('choose-dialog', this.showDialog)
+            this.$bus.$off('choose-color', this.showDialog)
         }
     }
 </script>
