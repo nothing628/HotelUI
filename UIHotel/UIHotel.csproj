@@ -405,6 +405,7 @@
     <None Include="vue\src\components\dialog\ColorDialog.vue" />
     <None Include="vue\src\components\dialog\ConfirmDialog.vue" />
     <None Include="vue\src\components\dialog\GuestDialog.vue" />
+    <None Include="vue\src\components\dialog\IconDialog.vue" />
     <None Include="vue\src\components\dialog\RoomDialog.vue" />
     <None Include="vue\src\pages\money\TransactionDialog.vue" />
     <None Include="vue\src\components\HelloWorld.vue" />
@@ -615,6 +616,7 @@
     </Content>
     <Content Include="vue\src\assets\logo.png" />
     <Content Include="vue\src\components\CountryList.js" />
+    <Content Include="vue\src\components\IconList.js" />
     <Content Include="vue\src\main.js" />
     <Content Include="vue\src\router\index.js" />
     <Content Include="webpack.config.js" />
