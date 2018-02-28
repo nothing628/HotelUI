@@ -24,9 +24,9 @@ namespace UIHotel.App.Controller
             return View("Money.Transaction");
         }
 
-        public IResourceHandler graph()
+        public IResourceHandler category()
         {
-            return View("Money.Graph");
+            return View("Money.Category");
         }
 
         public IResourceHandler getCategories()

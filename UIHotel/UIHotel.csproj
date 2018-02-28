@@ -367,7 +367,7 @@
     <None Include="View\Money\Transaction.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="View\Money\Graph.cshtml">
+    <None Include="View\Money\Category.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="View\Report\Checkin.cshtml">
@@ -423,6 +423,7 @@
     <None Include="vue\src\pages\guest\List.vue" />
     <None Include="vue\src\pages\guest\Pay.vue" />
     <None Include="vue\src\pages\Login.vue" />
+    <None Include="vue\src\pages\money\Category.vue" />
     <None Include="vue\src\pages\money\Transaction.vue" />
     <None Include="vue\src\pages\report\Checkin.vue" />
     <None Include="vue\src\pages\report\Money.vue" />
