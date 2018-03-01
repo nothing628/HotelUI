@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UIHotel.App.Attributes;
 using UIHotel.App.Auth;
+using UIHotel.App.Provider;
 using UIHotel.Data;
 
 namespace UIHotel.App.Controller
@@ -45,7 +46,7 @@ namespace UIHotel.App.Controller
         {
             var username = jToken.Value<string>("username");
             var password = jToken.Value<string>("password");
-            var hashPassword = AuthHelper.HashText(password, "appkey"); //TODO: provide public appkey
+            var hashPassword = AuthHelper.HashText(password, SettingProvider.AppKey);
 
             using (var data = new DataContext())
             {

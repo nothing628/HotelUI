@@ -16,6 +16,17 @@ namespace UIHotel.App.Provider
             Accessor = new SettingAccessor();
         }
 
+        public static string AppKey
+        {
+            get
+            {
+                return Accessor["app.key"];
+            }
+            set
+            {
+                Accessor["app.key"] = value;
+            }
+        }
         public static string HotelName
         {
             get

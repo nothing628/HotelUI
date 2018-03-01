@@ -19,12 +19,12 @@ namespace UIHotel.Data.Seeds
             {
                 try
                 {
+                    new SettingSeeder().Run(context);
                     new RoomSeeder().Run(context);
                     new RoomStatusSeeder().Run(context);
                     new InvoiceSeeder().Run(context);
                     new RoomPriceSeeder().Run(context);
                     new GuestSeeder().Run(context);
-                    new SettingSeeder().Run(context);
                     new LedgerSeeder().Run(context);
 
                     context.SaveChanges();
