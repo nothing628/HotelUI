@@ -39,9 +39,14 @@
                             <tr :class="{'green--text': !props.item.IsExpense, 'red--text': props.item.IsExpense }">
                                 <td>{{ props.item.Date | dateString }}</td>
                                 <td>{{ props.item.Description }}</td>
-                                <td>{{ props.item.Category.Description }}</td>
+                                <td><v-icon small>{{ props.item.Category.Icon }}</v-icon> {{ props.item.Category.Description }}</td>
                                 <td v-if="!props.item.IsExpense"><strong>{{ props.item.Debit | Currency }}</strong></td>
                                 <td v-if="props.item.IsExpense"><strong>{{ -props.item.Kredit | Currency }}</strong></td>
+                                <td class="text-center" style="width: 7%;">
+                                    <v-btn fab flat small @click="deleteData(props.item)">
+                                        <v-icon color="error">clear</v-icon>
+                                    </v-btn>
+                                </td>
                             </tr>
                         </template>
                         <template slot="footer">
@@ -49,6 +54,7 @@
                                 <strong>Total</strong>
                             </td>
                             <td><strong>{{ balance | Currency }}</strong></td>
+                            <td></td>
                         </template>
                     </v-data-table>
                 </v-flex>
@@ -77,6 +83,7 @@
                     { text: 'Description', sortable: false, align: 'left' },
                     { text: 'Category', sortable: false, align: 'left' },
                     { text: 'Amount', sortable: false, align: 'left' },
+                    { text: 'Action', sortable: false, align: 'center' },
                 ]
             }
         },
@@ -116,6 +123,9 @@
             newData() {
                 //New Transaction
                 this.$bus.$emit('new-transaction')
+            },
+            deleteData(data) {
+                axios.post('http://localhost.com/money/post/deleteTransaction', data).then(this.saveResponse)
             },
             saveData(data) {
                 //Save Transaction

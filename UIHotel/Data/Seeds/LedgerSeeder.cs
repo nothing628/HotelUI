@@ -31,6 +31,7 @@ namespace UIHotel.Data.Seeds
                 Date = DateTime.Now,
                 Debit = 0,
                 Kredit = 0,
+                IsClose = true,
                 Description = "Initial Cash",
                 UpdateAt = DateTime.Now,
                 CreateAt = DateTime.Now

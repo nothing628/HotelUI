@@ -30,10 +30,13 @@ namespace UIHotel.Data.Table
         [Column("kredit", Order = 5)]
         public decimal Kredit { get; set; }
 
-        [Column("create_at", Order = 6)]
+        [Column("is_close", Order = 6)]
+        public bool IsClose { get; set; }
+
+        [Column("create_at", Order = 7)]
         public DateTime CreateAt { get; set; }
 
-        [Column("update_at", Order = 7)]
+        [Column("update_at", Order = 8)]
         public DateTime? UpdateAt { get; set; }
 
         [NotMapped]

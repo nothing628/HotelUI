@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -174,7 +175,7 @@ namespace UIHotel.App.Controller
             var idCategory = jToken.Value<long>("idCategory");
 
             using (var model = new DataContext())
-            using (var trans = model.Database.BeginTransaction())
+            using (var trans = model.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 try
                 {
@@ -201,6 +202,41 @@ namespace UIHotel.App.Controller
                     return Json(new { success = false });
                 }
             }
+        }
+        public IResourceHandler deleteTransaction()
+        {
+            IResourceHandler retInfo;
+
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                try
+                {
+                    var Id = jToken.Value<string>("Id");
+                    var data = (from a in model.LedgerLogs
+                                where a.Id == Id
+                                select a).First();
+
+                    if (data.IsClose)
+                    {
+                        retInfo = Json(new { success = false, message = "Transaction already closed" });
+                    } else
+                    {
+                        model.LedgerLogs.Remove(data);
+                        model.SaveChanges();
+                        trans.Commit();
+
+                        retInfo = Json(new { success = true });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    retInfo = Json(new { success = false, message = ex.Message });
+                }
+            }
+
+            return retInfo;
         }
     }
 }

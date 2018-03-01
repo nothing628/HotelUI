@@ -32,6 +32,7 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("description").AsString(512).NotNullable()
                 .WithColumn("debit").AsDecimal().WithDefaultValue(0)
                 .WithColumn("kredit").AsDecimal().WithDefaultValue(0)
+                .WithColumn("is_close").AsBoolean().WithDefaultValue(false)
                 .WithColumn("create_at").AsDateTime().NotNullable()
                 .WithColumn("update_at").AsDateTime().Nullable();
         }
