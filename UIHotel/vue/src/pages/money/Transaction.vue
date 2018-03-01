@@ -62,16 +62,19 @@
         </v-container>
 
         <tdialog @save="saveData"></tdialog>
+        <alert></alert>
     </v-card>
 </template>
 <script>
     import moment from 'moment'
     import axios from 'axios'
     import tdialog from './TransactionDialog.vue'
+    import alert from '../../components/Notification.vue'
 
     export default {
         components: {
-            tdialog
+            tdialog,
+            alert,
         },
         data() {
             return {
@@ -136,6 +139,8 @@
 
                 if (data.success) {
                     this.getData()
+                } else {
+                    this.$bus.$emit('alert-show', { text: data.message, color: 'error', timeout: 6000 })
                 }
             },
             getData() {
