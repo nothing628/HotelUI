@@ -6,7 +6,7 @@
 
         <v-container fluid grid-list-md>
             <v-layout row>
-                <v-flex lg12 md12 sm12 xs12>
+                <v-flex md12>
                     <v-form v-model="valid" ref="form" lazy-validation>
                         <v-layout row>
                             <v-flex md3>

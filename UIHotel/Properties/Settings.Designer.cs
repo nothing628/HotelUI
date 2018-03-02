@@ -26,7 +26,7 @@ namespace UIHotel.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("server={0};user id={1};password={2};persistsecurityinfo=True;port={2};database={4" +
+        [global::System.Configuration.DefaultSettingValueAttribute("server={0};user id={1};password={2};persistsecurityinfo=True;port={3};database={4" +
             "}")]
         public string MyDB {
             get {
