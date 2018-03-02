@@ -1,10 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UIHotel.Data;
+using UIHotel.App.Provider;
 
 namespace UIHotel.Data.Seeds
 {
@@ -14,7 +9,7 @@ namespace UIHotel.Data.Seeds
 
         public static void Seed()
         {
-            using (var connection = new MySqlConnection(Properties.Settings.Default.MyDB))
+            using (var connection = new MySqlConnection(SettingProvider.SQL_Connection_Str))
             using (var context = new DataContext(connection, false))
             {
                 try

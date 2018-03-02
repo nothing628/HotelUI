@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UIHotel.Data;
 using UIHotel.Data.Table;
 
@@ -108,19 +106,70 @@ namespace UIHotel.App.Provider
                 Accessor["checkout.time"] = value.ToString();
             }
         }
-        public static void SaveSetting() => Accessor.SaveSetting();
+        public static string SQL_Connection_Str
+        {
+            get
+            {
+                var connStr = string.Format(Properties.Settings.Default.MyDB,
+                    SQL_Server,
+                    SQL_User,
+                    SQL_Password,
+                    SQL_Port,
+                    SQL_Database);
+
+                return connStr;
+            }
+        }
+        public static string SQL_Server
+        {
+            get => Properties.Settings.Default.SQL_Server;
+            set
+            {
+                Properties.Settings.Default.SQL_Server = value;
+            }
+        }
+        public static int SQL_Port
+        {
+            get => Properties.Settings.Default.SQL_Port;
+            set
+            {
+                Properties.Settings.Default.SQL_Port = value;
+            }
+        }
+        public static string SQL_Database
+        {
+            get => Properties.Settings.Default.SQL_Database;
+            set
+            {
+                Properties.Settings.Default.SQL_Database = value;
+            }
+        }
+        public static string SQL_User
+        {
+            get => Properties.Settings.Default.SQL_User;
+            set
+            {
+                Properties.Settings.Default.SQL_User = value;
+            }
+        }
+        public static string SQL_Password
+        {
+            get => Properties.Settings.Default.SQL_Password;
+            set
+            {
+                Properties.Settings.Default.SQL_Password = value;
+            }
+        }
+        public static void SaveSetting()
+        {
+            Accessor.SaveSetting();
+            Properties.Settings.Default.Save();
+        }
     }
 
     public class SettingAccessor
     {
         private Dictionary<string, string> SettingData = new Dictionary<string, string>();
-        private string[] Keys
-        {
-            get
-            {
-                return SettingData.Keys.ToArray();
-            }
-        }
 
         public string this[string index]
         {

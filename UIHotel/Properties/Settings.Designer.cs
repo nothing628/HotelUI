@@ -12,7 +12,7 @@ namespace UIHotel.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,11 +26,71 @@ namespace UIHotel.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("server=localhost;user id=mes;password=qweqwe;persistsecurityinfo=True;port=3600;d" +
-            "atabase=hotel")]
+        [global::System.Configuration.DefaultSettingValueAttribute("server={0};user id={1};password={2};persistsecurityinfo=True;port={2};database={4" +
+            "}")]
         public string MyDB {
             get {
                 return ((string)(this["MyDB"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
+        public string SQL_Server {
+            get {
+                return ((string)(this["SQL_Server"]));
+            }
+            set {
+                this["SQL_Server"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mes")]
+        public string SQL_User {
+            get {
+                return ((string)(this["SQL_User"]));
+            }
+            set {
+                this["SQL_User"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("qweqwe")]
+        public string SQL_Password {
+            get {
+                return ((string)(this["SQL_Password"]));
+            }
+            set {
+                this["SQL_Password"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3600")]
+        public int SQL_Port {
+            get {
+                return ((int)(this["SQL_Port"]));
+            }
+            set {
+                this["SQL_Port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("hotel")]
+        public string SQL_Database {
+            get {
+                return ((string)(this["SQL_Database"]));
+            }
+            set {
+                this["SQL_Database"] = value;
             }
         }
     }

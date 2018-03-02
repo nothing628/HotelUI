@@ -5,10 +5,25 @@
     <Setting Name="MyDB" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;server=localhost;user id=mes;password=qweqwe;persistsecurityinfo=True;port=3600;database=hotel&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;server={0};user id={1};password={2};persistsecurityinfo=True;port={2};database={4}&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;MySql.Data.MySqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">server=localhost;user id=mes;password=qweqwe;persistsecurityinfo=True;port=3600;database=hotel</Value>
+      <Value Profile="(Default)">server={0};user id={1};password={2};persistsecurityinfo=True;port={2};database={4}</Value>
+    </Setting>
+    <Setting Name="SQL_Server" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="SQL_User" Type="System.String" Scope="User">
+      <Value Profile="(Default)">mes</Value>
+    </Setting>
+    <Setting Name="SQL_Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)">qweqwe</Value>
+    </Setting>
+    <Setting Name="SQL_Port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3600</Value>
+    </Setting>
+    <Setting Name="SQL_Database" Type="System.String" Scope="User">
+      <Value Profile="(Default)">hotel</Value>
     </Setting>
   </Settings>
 </SettingsFile>

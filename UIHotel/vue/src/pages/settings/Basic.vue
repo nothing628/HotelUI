@@ -108,12 +108,18 @@
                 </v-flex>
             </v-layout>
         </v-container>
+
+        <alert></alert>
     </v-card>
 </template>
 <script>
     import axios from 'axios'
+    import alert from '../../components/Notification.vue'
 
     export default {
+        components: {
+            alert
+        },
         data() {
             return {
                 valid: true,
@@ -169,7 +175,9 @@
                 let data = response.data
 
                 if (data.success) {
-                    console.log(data)
+                    this.$bus.$emit('alert-show', { text: data.message, color: 'success', timeout: 6000 })
+                } else {
+                    this.$bus.$emit('alert-show', { text: 'Error saving setting', color: 'error', timeout: 6000 })
                 }
             },
             uploadPhotoCallback(e) {

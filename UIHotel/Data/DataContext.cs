@@ -1,13 +1,8 @@
 ﻿using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UIHotel.App.Provider;
 using UIHotel.Data.Table;
 
 namespace UIHotel.Data
@@ -34,7 +29,7 @@ namespace UIHotel.Data
         public DbSet<LedgerLog> LedgerLogs { get; set; }
 
         public DataContext()
-          : base(new MySqlConnection(Properties.Settings.Default.MyDB), false)
+          : base(new MySqlConnection(SettingProvider.SQL_Connection_Str), false)
         {
         }
 

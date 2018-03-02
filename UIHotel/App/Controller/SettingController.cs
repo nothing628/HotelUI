@@ -18,14 +18,10 @@ namespace UIHotel.App.Controller
 
         }
 
+        #region Page
         public IResourceHandler index()
         {
             return View("Setting.Index");
-        }
-
-        public IResourceHandler calendar()
-        {
-            return View("Setting.Calendar");
         }
 
         public IResourceHandler rate()
@@ -43,9 +39,36 @@ namespace UIHotel.App.Controller
             return View("Setting.Room");
         }
 
-        public IResourceHandler GetSettings()
+        public IResourceHandler app()
+        {
+            return View("Setting.App");
+        }
+        #endregion
+
+        #region API
+        public IResourceHandler GetSettingApp()
         {
             return Json(new {
+                success = true,
+                SettingProvider.SQL_Server,
+                SettingProvider.SQL_Port,
+                SettingProvider.SQL_Database,
+                SettingProvider.SQL_User,
+                SettingProvider.SQL_Password,
+            });
+        }
+
+        public IResourceHandler SaveSettingApp()
+        {
+            return Json(new {
+                success = true
+            });
+        }
+
+        public IResourceHandler GetSettings()
+        {
+            return Json(new
+            {
                 success = true,
                 SettingProvider.HotelName,
                 SettingProvider.HotelAddress,
@@ -80,10 +103,12 @@ namespace UIHotel.App.Controller
                 SettingProvider.SaveSetting();
 
                 return Json(new { success = true, message = "Setting Saved" });
-            } catch
+            }
+            catch
             {
                 return Json(new { success = false, message = "Something Error" });
             }
         }
+        #endregion
     }
 }

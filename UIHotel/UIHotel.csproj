@@ -388,6 +388,7 @@
     <None Include="View\Room\Price.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Setting\App.cshtml" />
     <None Include="View\Setting\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -435,6 +436,7 @@
     <None Include="vue\src\pages\room\List.vue" />
     <None Include="vue\src\pages\room\Price.vue" />
     <None Include="vue\src\pages\room\Setting.vue" />
+    <None Include="vue\src\pages\settings\App.vue" />
     <None Include="vue\src\pages\settings\Basic.vue" />
     <None Include="vue\src\pages\settings\User.vue" />
   </ItemGroup>
@@ -600,9 +602,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="View\Room\Change.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="View\Setting\Calendar.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="vue\dist\build.css">

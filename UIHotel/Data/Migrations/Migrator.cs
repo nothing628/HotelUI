@@ -6,14 +6,10 @@ using FluentMigrator.Runner.Processors;
 using FluentMigrator.Runner.Processors.MySql;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using UIHotel.App.Provider;
 
 namespace UIHotel.Data.Migrations
 {
@@ -29,7 +25,7 @@ namespace UIHotel.Data.Migrations
             {
                 Database = "mysql",
                 Timeout = 15,
-                Connection = Properties.Settings.Default.MyDB,
+                Connection = SettingProvider.SQL_Connection_Str,
                 Namespace = "UIHotel.Data.Migrations",
 
             };
@@ -38,7 +34,7 @@ namespace UIHotel.Data.Migrations
             try
             {
                 var factory = new MySqlDbFactory();
-                var connection = new MySqlConnection(Properties.Settings.Default.MyDB);
+                var connection = new MySqlConnection(SettingProvider.SQL_Connection_Str);
                 var generator = new MySqlGenerator();
                 var processor = new MySqlProcessor(connection, generator, announcer, options, factory);
                 var runner = new MigrationRunner(asm, context, processor);
