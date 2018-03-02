@@ -9,7 +9,8 @@ I use CefSharp for doing that stuff.
 
 ## Installation
 
-1. `git clone` 
-2. run `yarn`
-3. run `npm run webpack` for build asset
-4. run `npm run build` for build Vue Component
+1. `git clone https://github.com/nothing628/HotelUI.git`
+2. `cd HotelUI/UIHotel`
+3. run `yarn`
+4. run `npm run webpack` for build asset
+5. run `npm run build` for build Vue Component
