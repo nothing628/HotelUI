@@ -61,9 +61,20 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler SaveSettingApp()
         {
-            return Json(new {
-                success = true
-            });
+            try
+            {
+                SettingProvider.SQL_Database = jToken.Value<string>("SQL_Database");
+                SettingProvider.SQL_Server = jToken.Value<string>("SQL_Server");
+                SettingProvider.SQL_Port = jToken.Value<int>("SQL_Port");
+                SettingProvider.SQL_User = jToken.Value<string>("SQL_User");
+                SettingProvider.SQL_Password = jToken.Value<string>("SQL_Password");
+                SettingProvider.SaveLocalSetting();
+
+                return Json(new { success = true });
+            } catch
+            {
+                return Json(new { success = false });
+            }
         }
 
         public IResourceHandler GetSettings()
@@ -101,7 +112,7 @@ namespace UIHotel.App.Controller
                 SettingProvider.HotelAddress = hotel_address;
                 SettingProvider.Deposit = deposit;
                 SettingProvider.Pinalty = pinalty;
-                SettingProvider.SaveSetting();
+                SettingProvider.SaveDBSetting();
 
                 return Json(new { success = true, message = "Setting Saved" });
             }

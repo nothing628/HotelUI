@@ -39,10 +39,10 @@
                             </v-flex>
                         </v-layout>
 
-                        <v-btn @click.stop="testConnect">
+                        <v-btn @click.stop="test">
                             <span>Test Connection</span>
                         </v-btn>
-                        <v-btn color="success" @click.stop="setData">
+                        <v-btn color="success" @click.stop="testAndSave">
                             <span>Save Setting</span>
                             <v-icon right>done_all</v-icon>
                         </v-btn>
@@ -86,6 +86,23 @@
                     this.SQL_Password = data.SQL_Password
                 }
             },
+            testAndSave() {
+                window.CS.getObjectParam("SettingModel", "CheckDatabase",
+                    this.SQL_Server,
+                    this.SQL_Port,
+                    this.SQL_User,
+                    this.SQL_Password,
+                    this.SQL_Database
+                ).then(e => {
+                    var retObj = JSON.parse(e)
+
+                    if (retObj)
+                        this.setData()
+                    else
+                        this.$bus.$emit('alert-show', { text: "Connection Failed! Couldn't save setting", color: 'error', timeout: 6000 })
+                }).catch(e => {
+                });
+            },
             setData() {
                 let data = {
                     SQL_Database: this.SQL_Database,
@@ -101,13 +118,27 @@
                 let data = response.data
 
                 if (data.success) {
-                    //
+                    this.$bus.$emit('alert-show', { text: "Save Success!", color: 'success', timeout: 6000 })
                 } else {
-                    //
+                    this.$bus.$emit('alert-show', { text: "Save Failed!", color: 'error', timeout: 6000 })
                 }
             },
-            testConnect() {
-                //
+            test() {
+                window.CS.getObjectParam("SettingModel", "CheckDatabase",
+                    this.SQL_Server,
+                    this.SQL_Port,
+                    this.SQL_User,
+                    this.SQL_Password,
+                    this.SQL_Database
+                ).then(this.testResult).catch(e => { });
+            },
+            testResult(e) {
+                var retObj = JSON.parse(e)
+
+                if (retObj)
+                    this.$bus.$emit('alert-show', { text: "Connection Success!", color: 'success', timeout: 6000 })
+                else
+                    this.$bus.$emit('alert-show', { text: "Connection Failed!", color: 'error', timeout: 6000 })
             }
         },
         mounted() {

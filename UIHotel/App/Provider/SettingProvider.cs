@@ -160,9 +160,13 @@ namespace UIHotel.App.Provider
                 Properties.Settings.Default.SQL_Password = value;
             }
         }
-        public static void SaveSetting()
+        public static void SaveDBSetting()
         {
             Accessor.SaveSetting();
+        }
+
+        public static void SaveLocalSetting()
+        {
             Properties.Settings.Default.Save();
         }
     }
