@@ -8,7 +8,44 @@
             <v-layout row>
                 <v-flex md12>
                     <v-form v-model="valid" ref="form" lazy-validation>
-                        s
+                        <v-layout row>
+                            <v-flex md3>
+                                <v-subheader>Database Host</v-subheader>
+                            </v-flex>
+                            <v-flex md6>
+                                <v-text-field hint="Database Host" persistent-hint v-model="SQL_Server"></v-text-field>
+                            </v-flex>
+                            <v-flex md3>
+                                <v-text-field hint="Database Port" type="number" persistent-hint v-model="SQL_Port"></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex md3>
+                                <v-subheader>Database Credential</v-subheader>
+                            </v-flex>
+                            <v-flex md4>
+                                <v-text-field hint="Database Username" persistent-hint v-model="SQL_User"></v-text-field>
+                            </v-flex>
+                            <v-flex md4>
+                                <v-text-field hint="Database Password" type="password" persistent-hint v-model="SQL_Password"></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex md3>
+                                <v-subheader>Database Name</v-subheader>
+                            </v-flex>
+                            <v-flex md4>
+                                <v-text-field hint="Database Name" persistent-hint v-model="SQL_Database"></v-text-field>
+                            </v-flex>
+                        </v-layout>
+
+                        <v-btn @click.stop="testConnect">
+                            <span>Test Connection</span>
+                        </v-btn>
+                        <v-btn color="success" @click.stop="setData">
+                            <span>Save Setting</span>
+                            <v-icon right>done_all</v-icon>
+                        </v-btn>
                     </v-form>
                 </v-flex>
             </v-layout>
@@ -68,6 +105,9 @@
                 } else {
                     //
                 }
+            },
+            testConnect() {
+                //
             }
         },
         mounted() {

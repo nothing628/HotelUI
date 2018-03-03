@@ -39,6 +39,7 @@ namespace UIHotel.App.Controller
             return View("Setting.Room");
         }
 
+        [AllowAuthorize]
         public IResourceHandler app()
         {
             return View("Setting.App");
