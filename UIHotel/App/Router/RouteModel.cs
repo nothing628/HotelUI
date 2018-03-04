@@ -97,8 +97,8 @@ namespace UIHotel.App.Router
                     worker.DoWork += Worker_DoWork;
                     worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
                     worker.RunWorkerAsync(new object[] { type, Action, request });
-
-                    resetEvent.WaitOne();
+                    
+                    resetEvent.WaitOne(-1);
 
                     worker.DoWork -= Worker_DoWork;
                     worker.RunWorkerCompleted -= Worker_RunWorkerCompleted;
@@ -116,7 +116,7 @@ namespace UIHotel.App.Router
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            result = e.Result as ResourceHandler;
+            result = e.Result as IResourceHandler;
             resetEvent.Set();
         }
 

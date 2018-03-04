@@ -10,7 +10,7 @@ using UIHotel.Data.Table;
 
 namespace UIHotel.App.Routine
 {
-    public class CalcPrice
+    public class CalcPinalty
     {
         public void DoWork()
         {
@@ -23,15 +23,15 @@ namespace UIHotel.App.Routine
                                    select a).ToList();
 
                     foreach (var invoice in invoices)
-                        this.CalculateInvoice(invoice);
-                } catch (Exception ex)
+                        this.CalculatePinalty(invoice);
+                } catch
                 {
                     //
                 }
             }
         }
 
-        private void CalculateInvoice(Invoice invoice)
+        private void CalculatePinalty(Invoice invoice)
         {
             using (var model = new DataContext())
             using (var trans = model.Database.BeginTransaction())

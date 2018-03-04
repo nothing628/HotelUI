@@ -37,9 +37,7 @@ namespace UIHotel.App
             foreach (ServiceProvider provider in listServiceProvider)
                 provider.Boot();
         }
-
-        public bool IsShowDevTool { get; set; }
-
+        
         public string BaseDir { get => AppDomain.CurrentDomain.BaseDirectory; }
         public string ViewPath { get => Path.Combine(BaseDir, "View"); }
         public string AssetsPath { get => Path.Combine(BaseDir, "Assets"); }
@@ -65,7 +63,6 @@ namespace UIHotel.App
 
         public void Init()
         {
-            IsShowDevTool = false;
             RequestHandler = new AppRequestHandler(Domain);
 
             ConfigureSetting();
@@ -94,12 +91,14 @@ namespace UIHotel.App
             var settings = new CefSettings()
             {
                 // Settings cef
-                RemoteDebuggingPort = 54477,
                 IgnoreCertificateErrors = true,
             };
-
+#if DEBUG
+            settings.RemoteDebuggingPort = 54477;
+#endif
             settings.RegisterScheme(RequestHandler.Scheme);
 
+            CefSharpSettings.LegacyJavascriptBindingEnabled = true;
             Cef.Initialize(settings);
         }
 
@@ -113,10 +112,10 @@ namespace UIHotel.App
 
         private void Browser_IsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs e)
         {
-            if (e.IsBrowserInitialized && IsShowDevTool)
-            {
+#if DEBUG
+            if (e.IsBrowserInitialized)
                 browser.ShowDevTools();
-            }
+#endif
         }
 
         private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)

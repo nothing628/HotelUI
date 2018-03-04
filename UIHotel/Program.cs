@@ -20,7 +20,7 @@ namespace UIHotel
         /// The main entry point for the application.
         /// </summary>
         [MTAThread]
-        static void Main()
+        static void Main(string[] args)
         {
 #if SEED
             var migrator = new Migrator();
@@ -29,16 +29,21 @@ namespace UIHotel
             DBSeeder.Seed();
 #else
 #if DEBUG
-            App.Auth.AuthState.CurrentUserId = 1;
+            //App.Auth.AuthState.CurrentUserId = 1;
 #endif
-            var routine = new CalcPrice();
+            var routine = new CalcPinalty();
             routine.DoWork();
 
             using (AppMain.Main = new AppMain())
             {
                 AppMain.Main.Init();
-                AppMain.Main.IsShowDevTool = true;
-                AppMain.Main.Run("http://localhost.com/home/get/login");     //Open after finish configure
+
+                if (args.Length == 0)
+                    AppMain.Main.Run("http://localhost.com/home/get/login");     //Open after finish configure
+                else if (args[0] == "--setup")
+                    AppMain.Main.Run("http://localhost.com/setup/get/index");   // Open Setup Dialog
+                else
+                    Cef.Shutdown();
             }
 #endif
         }
