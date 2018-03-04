@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel.App.Attributes;
+using UIHotel.App.Auth;
 using UIHotel.App.Provider;
+using UIHotel.Data;
+using UIHotel.Data.Table;
 
 namespace UIHotel.App.Controller
 {
@@ -47,6 +50,131 @@ namespace UIHotel.App.Controller
         #endregion
 
         #region API
+        public IResourceHandler GetUsers()
+        {
+            var username = jToken.Value<string>("item_username");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var users = new List<User>();
+
+                    if (username == "")
+                    {
+                        users = (from a in model.Users
+                                orderby a.Username ascending
+                                select a).ToList();
+                    } else
+                    {
+                        users = (from a in model.Users
+                                 where a.Username.Contains(username) || a.Fullname.Contains(username)
+                                 orderby a.Username ascending
+                                 select a).ToList();
+                    }
+
+                    var roles = GetRoles();
+
+                    return Json(new { success = true, data = users, roles });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+
+        public IResourceHandler SaveUser()
+        {
+            var username = jToken.Value<string>("item_username");
+            var password = jToken.Value<string>("item_password");
+            var role = jToken.Value<int>("item_role");
+            var fullname = jToken.Value<string>("item_fullname");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var user = new User()
+                    {
+                        Username = username,
+                        Password = AuthHelper.HashText(password, SettingProvider.AppKey),
+                        Fullname = fullname,
+                        Permission = role,
+                        CreateAt = DateTime.Now,
+                        UpdateAt = DateTime.Now,
+                    };
+
+                    model.Users.Add(user);
+                    model.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+
+        public IResourceHandler UpdateUser()
+        {
+            var id = jToken.Value<long>("item_id");
+            var username = jToken.Value<string>("item_username");
+            var password = jToken.Value<string>("item_password");
+            var role = jToken.Value<int>("item_role");
+            var fullname = jToken.Value<string>("item_fullname");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var user = (from a in model.Users
+                                where a.Id == id
+                                select a).First();
+
+                    user.Username = username;
+                    user.Fullname = fullname;
+                    user.Permission = role;
+                    user.UpdateAt = DateTime.Now;
+
+                    if (password.Length > 0)
+                        user.Password = AuthHelper.HashText(password, SettingProvider.AppKey);
+
+                    model.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+
+        public IResourceHandler DeleteUser()
+        {
+            var id = jToken.Value<long>("item_id");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var user = (from a in model.Users
+                                where a.Id == id
+                                select a).First();
+
+                    model.Users.Remove(user);
+                    model.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+
         public IResourceHandler GetSettingApp()
         {
             return Json(new {
@@ -120,6 +248,23 @@ namespace UIHotel.App.Controller
             {
                 return Json(new { success = false, message = "Something Error" });
             }
+        }
+        #endregion
+
+        #region Helper 
+        public object GetRoles()
+        {
+            var values = Enum.GetValues(typeof(AuthLevel));
+            var names = Enum.GetNames(typeof(AuthLevel));
+
+            var x = (from a in names
+                     select new
+                     {
+                         Role = a,
+                         Value = values.GetValue(Array.IndexOf(names, a))
+                     });
+
+            return x.ToList();
         }
         #endregion
     }

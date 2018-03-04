@@ -443,6 +443,7 @@
     <None Include="vue\src\pages\settings\App.vue" />
     <None Include="vue\src\pages\settings\Basic.vue" />
     <None Include="vue\src\pages\settings\User.vue" />
+    <None Include="vue\src\pages\settings\UserDialog.vue" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
