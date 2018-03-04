@@ -28,13 +28,10 @@
                             <td>{{ props.item.Fullname }}</td>
                             <td><strong>{{ getRoleStr(props.item.Permission) }}</strong></td>
                             <td class="text-right">
-                                <v-btn class="mx-0" icon fab color="teal" small flat>
+                                <v-btn class="mx-0" icon fab color="teal" @click="editUser(props.item)" small flat>
                                     <v-icon>create</v-icon>
                                 </v-btn>
-                                <v-btn class="mx-0" icon fab color="yellow darken-2" small flat>
-                                    <v-icon>refresh</v-icon>
-                                </v-btn>
-                                <v-btn class="mx-0" icon fab color="red" small flat>
+                                <v-btn class="mx-0" icon fab color="red" @click="deleteUser(props.item)" small flat>
                                     <v-icon>clear</v-icon>
                                 </v-btn>
                             </td>
@@ -45,8 +42,8 @@
         </v-container>
 
         <alert></alert>
-        <user name="newUser" :list-roles.sync="list_role"></user>
-        <user name="editUser" :list-roles.sync="list_role"></user>
+        <user name="newUser" title="New User" @save="saveUser" :list-roles.sync="list_role"></user>
+        <user name="editUser" title="Edit User" @save="updateUser" :list-roles.sync="list_role"></user>
     </v-card>
 </template>
 <script>
@@ -103,7 +100,43 @@
                 }
             },
             newUser() {
-                //
+                this.$bus.$emit('user-dialog', {name: 'newUser'})
+            },
+            editUser(data) {
+                let newData = {
+                    name: 'editUser',
+                    item_id: data.Id,
+                    item_username: data.Username,
+                    item_fullname: data.Fullname,
+                    item_password: '',
+                    item_role: data.Permission,
+                    emptypass: true,
+                }
+
+                this.$bus.$emit('user-dialog', newData)
+            },
+            saveUser(data) {
+                axios.post('http://localhost.com/setting/post/SaveUser', data).then(this.dataResponse)
+            },
+            updateUser(data) {
+                axios.post('http://localhost.com/setting/post/UpdateUser', data).then(this.dataResponse)
+            },
+            deleteUser(data) {
+                let newData = {
+                    item_id: data.Id
+                }
+
+                axios.post('http://localhost.com/setting/post/DeleteUser', newData).then(this.dataResponse)
+            },
+            dataResponse(response) {
+                let data = response.data
+
+                if (data.success) {
+                    this.getData()
+                    this.$bus.$emit('alert-show', { text: "Data Update Success", color: 'success', timeout: 6000 })
+                } else {
+                    this.$bus.$emit('alert-show', { text: "Data Update Failed!", color: 'error', timeout: 6000 })
+                }
             }
         },
         mounted() {
