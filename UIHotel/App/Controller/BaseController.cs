@@ -109,10 +109,8 @@ namespace UIHotel.App.Controller
                 config.Formatting = Formatting.None;
 
                 var dataJson = JsonConvert.SerializeObject(data, config);
-                var retValue = ResourceHandler.FromString(dataJson);
+                var retValue = ResourceHandler.FromString(dataJson, mimeType: "application/json");
                 
-                //retValue.MimeType = "application/json";
-
                 return retValue;
             }
             catch (Exception ex)
