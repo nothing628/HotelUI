@@ -41,7 +41,7 @@ namespace UIHotel
                 if (args.Length == 0)
                     AppMain.Main.Run("http://localhost.com/home/get/login");     //Open after finish configure
                 else if (args[0] == "--setup")
-                    AppMain.Main.Run("http://localhost.com/setup/get/index");   // Open Setup Dialog
+                    AppMain.Main.Run("http://localhost.com/setup/index");   // Open Setup Dialog
                 else
                     Cef.Shutdown();
             }

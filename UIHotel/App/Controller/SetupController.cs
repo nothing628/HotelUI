@@ -24,7 +24,10 @@ namespace UIHotel.App.Controller
         #endregion
 
         #region API
-
+        public IResourceHandler SetDatabase()
+        {
+            return Json(new { success = false });
+        }
         #endregion
     }
 }

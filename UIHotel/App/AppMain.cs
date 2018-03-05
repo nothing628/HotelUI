@@ -79,11 +79,22 @@ namespace UIHotel.App
             browser.Dock = DockStyle.Fill;
             browser.FrameLoadStart += Browser_FrameLoadStart;
             browser.FrameLoadEnd += Browser_FrameLoadEnd;
+            browser.TitleChanged += Browser_TitleChanged;
             browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
 
             mainForm = new Form();
             mainForm.WindowState = FormWindowState.Maximized;
             mainForm.Controls.Add(browser);
+        }
+
+        private void Browser_TitleChanged(object sender, TitleChangedEventArgs e)
+        {
+            Action changeTitle = () =>
+            {
+                mainForm.Text = "Hotel Management : " + e.Title;
+            };
+
+            mainForm.Invoke(changeTitle);
         }
 
         private void ConfigureSetting()
