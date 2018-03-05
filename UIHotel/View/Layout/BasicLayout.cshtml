@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@RenderSection("title", required: false)</title>
+
+    @Include("Layout.Parts.BaseCSS")
+</head>
+<body>
+    <main class="main" id="app">
+        <v-app id="inspire">
+            <section class="content--full">
+                @RenderBody()
+            </section>
+        </v-app>
+    </main>
+
+    @Include("Layout.Parts.BaseJS")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

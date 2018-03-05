@@ -336,6 +336,9 @@
     <None Include="View\Guest\Pay.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="View\Layout\BasicLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="View\Layout\Parts\BaseCSS.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -450,6 +453,8 @@
     <None Include="vue\src\pages\settings\Basic.vue" />
     <None Include="vue\src\pages\settings\User.vue" />
     <None Include="vue\src\pages\settings\UserDialog.vue" />
+    <None Include="vue\src\pages\setup\AppSetup.vue" />
+    <None Include="vue\src\pages\setup\DBSetup.vue" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
