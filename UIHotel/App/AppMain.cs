@@ -91,7 +91,7 @@ namespace UIHotel.App
         {
             Action changeTitle = () =>
             {
-                mainForm.Text = "Hotel Management : " + e.Title;
+                mainForm.Text = "Hotel Management - " + e.Title;
             };
 
             mainForm.Invoke(changeTitle);

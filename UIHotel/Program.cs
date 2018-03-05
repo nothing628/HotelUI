@@ -22,12 +22,6 @@ namespace UIHotel
         [MTAThread]
         static void Main(string[] args)
         {
-#if SEED
-            var migrator = new Migrator();
-            migrator.RunDown();
-            migrator.Run();
-            DBSeeder.Seed();
-#else
 #if DEBUG
             //App.Auth.AuthState.CurrentUserId = 1;
 #endif

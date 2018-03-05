@@ -175,6 +175,7 @@ namespace UIHotel.App.Controller
             }
         }
 
+        [AllowAuthorize]
         public IResourceHandler GetSettingApp()
         {
             return Json(new {
@@ -205,6 +206,7 @@ namespace UIHotel.App.Controller
             }
         }
 
+        [AllowAuthorize]
         public IResourceHandler GetSettings()
         {
             return Json(new
