@@ -24,6 +24,8 @@ namespace UIHotel.App.Router
             listRoute.Add(new RouteModel("money/post/{action}", "MoneyController", Method: "POST"));
             listRoute.Add(new RouteModel("guest/get/{action}", "GuestController"));
             listRoute.Add(new RouteModel("guest/post/{action}", "GuestController", Method: "POST"));
+            listRoute.Add(new RouteModel("setup/{action}", "SetupController"));
+            listRoute.Add(new RouteModel("setup/api/{action}", "SetupController", Method: "POST"));
         }
     }
 }

@@ -163,6 +163,7 @@
     <Compile Include="App\Controller\ReportController.cs" />
     <Compile Include="App\Controller\RoomController.cs" />
     <Compile Include="App\Controller\SettingController.cs" />
+    <Compile Include="App\Controller\SetupController.cs" />
     <Compile Include="App\Provider\RouterProvider.cs" />
     <Compile Include="App\Provider\ServiceProvider.cs" />
     <Compile Include="App\Provider\ViewProvider.cs" />
@@ -406,6 +407,9 @@
     </None>
     <None Include="View\Setting\User.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="View\Setup\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="vue\src\components\date\DatePicker.vue" />
     <None Include="vue\src\components\dialog\BookDialog.vue" />
