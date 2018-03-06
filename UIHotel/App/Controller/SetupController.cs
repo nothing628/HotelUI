@@ -46,7 +46,31 @@ namespace UIHotel.App.Controller
         #region API
         public IResourceHandler SaveSettingApp()
         {
-            return Json(new { success = true });
+            var deposit = jToken.Value<int>("Deposit");
+            var pinalty = jToken.Value<int>("Pinalty");
+            var hotel_name = jToken.Value<string>("HotelName");
+            var hotel_logo = jToken.Value<string>("HotelLogo");
+            var hotel_address = jToken.Value<string>("HotelAddress");
+            var checkin_time = jToken.Value<string>("CheckinTime");
+            var checkout_time = jToken.Value<string>("CheckoutTime");
+
+            try
+            {
+                SettingProvider.CheckinTime = TimeSpan.Parse(checkin_time);
+                SettingProvider.CheckoutTime = TimeSpan.Parse(checkout_time);
+                SettingProvider.HotelName = hotel_name;
+                SettingProvider.HotelLogo = hotel_logo;
+                SettingProvider.HotelAddress = hotel_address;
+                SettingProvider.Deposit = deposit;
+                SettingProvider.Pinalty = pinalty;
+                SettingProvider.SaveDBSetting();
+
+                return Json(new { success = true, message = "Setting Saved" });
+            }
+            catch
+            {
+                return Json(new { success = false, message = "Something Error" });
+            }
         }
 
         public IResourceHandler SaveSettingDB()
