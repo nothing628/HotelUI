@@ -56,7 +56,7 @@
                                         :return-value.sync="CheckinTime">
                                     <v-text-field slot="activator"
                                                   v-model="CheckinTime"
-                                                  prepend-icon="access_time"
+                                                  append-icon="access_time"
                                                   readonly></v-text-field>
                                     <v-time-picker v-model="CheckinTime" @change="$refs.menu.save(CheckinTime)"></v-time-picker>
                                 </v-menu>
@@ -77,7 +77,7 @@
                                         :return-value.sync="CheckoutTime">
                                     <v-text-field slot="activator"
                                                   v-model="CheckoutTime"
-                                                  prepend-icon="access_time"
+                                                  append-icon="access_time"
                                                   readonly></v-text-field>
                                     <v-time-picker v-model="CheckoutTime" @change="$refs.menu4.save(CheckoutTime)"></v-time-picker>
                                 </v-menu>
