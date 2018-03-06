@@ -77,7 +77,8 @@ namespace UIHotel.App.Controller
 
                 return Json(new
                 {
-                    success = true
+                    success = true,
+                    message = "Installing success"
                 });
             } catch (Exception ex)
             {
@@ -87,6 +88,13 @@ namespace UIHotel.App.Controller
                     message = ex.ToString()
                 });
             }
+        }
+        #endregion
+
+        #region Misc
+        public bool DropTables()
+        {
+            return true;
         }
         #endregion
     }

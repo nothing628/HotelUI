@@ -463,7 +463,9 @@
     <None Include="vue\src\pages\settings\User.vue" />
     <None Include="vue\src\pages\settings\UserDialog.vue" />
     <None Include="vue\src\pages\setup\AppSetup.vue" />
+    <None Include="vue\src\pages\setup\DBMigrate.vue" />
     <None Include="vue\src\pages\setup\DBSetup.vue" />
+    <None Include="vue\src\pages\setup\Finish.vue" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

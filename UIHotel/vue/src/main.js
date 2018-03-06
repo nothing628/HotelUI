@@ -29,6 +29,8 @@ import ReportCheckin from './pages/report/Checkin.vue'
 import ReportMoney from './pages/report/Money.vue'
 import SetupApp from './pages/setup/AppSetup.vue'
 import SetupDb from './pages/setup/DBSetup.vue'
+import SetupMigrate from './pages/setup/DBMigrate.vue'
+import SetupFinish from './pages/setup/Finish.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -60,6 +62,8 @@ Vue.component('setting-basic', SettingBasic)
 Vue.component('setting-user', SettingUser)
 Vue.component('setup-app', SetupApp)
 Vue.component('setup-db', SetupDb)
+Vue.component('setup-migrate', SetupMigrate)
+Vue.component('setup-finish', SetupFinish)
 
 /* eslint-disable no-new */
 Vue.prototype.$bus = new Vue()
