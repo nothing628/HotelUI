@@ -118,7 +118,7 @@
                 window.location = this.nextStep
             },
             next() {
-                window.CS.getObjectParam("SettingModel", "CheckDatabase",
+                window.CS.getObjectParam("SettingModel", "CheckConnection",
                     this.SQL_Server,
                     this.SQL_Port,
                     this.SQL_User,
@@ -139,7 +139,7 @@
                 window.CS.close()
             },
             test() {
-                window.CS.getObjectParam("SettingModel", "CheckDatabase",
+                window.CS.getObjectParam("SettingModel", "CheckConnection",
                     this.SQL_Server,
                     this.SQL_Port,
                     this.SQL_User,

@@ -14,13 +14,19 @@
             </div>
             <h5 class="title text-sm-center text--disabled">Installing Database {{ load_txt }}</h5>
         </v-card-text>
-        <v-card-text v-if="!loading" style="min-height:300px;">
-            Finish
+        <v-card-text v-if="!loading && success" style="min-height:300px;">
+            <div class="d-flex my-4">
+                <v-icon color="green" size="150px">done_all</v-icon>
+            </div>
+            <h5 class="text--disabled text-sm-center">Success Migrate Database</h5>
+        </v-card-text>
+        <v-card-text v-if="!loading && !success">
+            <div v-html="message" style="max-height:272px;overflow-y:auto"></div>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
             <v-btn color="red darken-1" dark @click.native="prev" :disabled="loading">Previous</v-btn>
-            <v-btn color="green" dark @click.native="next" :disabled="loading">Next</v-btn>
+            <v-btn color="green" dark @click.native="next" :disabled="loading && !success">Next</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -56,10 +62,10 @@
                 this.success = data.success
             },
             prev() {
-                //
+                window.location = this.prevStep
             },
             next() {
-                //
+                window.location = this.nextStep
             },
             tick() {
                 this.num++
@@ -70,7 +76,7 @@
         },
         mounted() {
             setInterval(this.tick, 1000)
-            //this.doMigration()
+            setTimeout(this.doMigration, 1000)
         }
     }
 </script>

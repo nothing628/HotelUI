@@ -42,5 +42,25 @@ namespace UIHotel.ViewModel
 
             return connOK;
         }
+
+        public object CheckConnection(string host, int port, string username, string password, string dbname)
+        {
+            var setup = Properties.Settings.Default.MyDB;
+            var connStr = string.Format(setup, host, username, password, port, dbname);
+            var connOK = true;
+
+            try
+            {
+                using (var conn = new MySqlConnection(connStr))
+                {
+                    conn.Open();
+                }
+            } catch
+            {
+                connOK = false;
+            }
+
+            return connOK;
+        }
     }
 }

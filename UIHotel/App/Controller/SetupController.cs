@@ -1,6 +1,8 @@
 ﻿using CefSharp;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,11 +72,9 @@ namespace UIHotel.App.Controller
         {
             try
             {
-                var migrator = new Migrator();
-                migrator.RunDown();
-                migrator.Run();
-                DBSeeder.Seed();
-
+                DropTables();
+                MigrateTables();
+                
                 return Json(new
                 {
                     success = true,
@@ -92,9 +92,64 @@ namespace UIHotel.App.Controller
         #endregion
 
         #region Misc
-        public bool DropTables()
+        private void MigrateTables()
         {
-            return true;
+            var migrator = new Migrator();
+            migrator.Run();
+            DBSeeder.Seed();
+        }
+
+        private void DropTables()
+        {
+            var tables = GetTables();
+            var qryStrs = (from a in tables
+                           select "DROP TABLE IF EXISTS " + a).ToList();
+            
+            using (var conn = new MySqlConnection(SettingProvider.SQL_Connection_Str))
+            {
+                conn.Open();
+
+                new MySqlCommand("SET FOREIGN_KEY_CHECKS = 0", conn).ExecuteNonQuery();
+
+                foreach (var command in qryStrs)
+                {
+                    var adapter = new MySqlCommand(command, conn);
+
+                    adapter.ExecuteNonQuery();
+                }
+
+                new MySqlCommand("SET FOREIGN_KEY_CHECKS = 1", conn).ExecuteNonQuery();
+            }
+        }
+
+        private List<string> GetTables()
+        {
+            var rest = new List<string>();
+            var dset = new DataTable();
+            var sqlCmd = @"
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = '" + SettingProvider.SQL_Database + "'";
+
+            try
+            {
+                using (var conn = new MySqlConnection(SettingProvider.SQL_Connection_Str))
+                using (var comm = new MySqlCommand(sqlCmd, conn))
+                using (var adapter = new MySqlDataAdapter(comm))
+                {
+                    adapter.Fill(dset);
+
+                    foreach (DataRow row in dset.Rows)
+                    {
+                        rest.Add((string)row[0]);
+                    }
+                }
+            } catch
+            {
+                //
+            }
+            
+            return rest;
         }
         #endregion
     }
