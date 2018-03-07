@@ -24,7 +24,6 @@ namespace UIHotel.App.Controller
         {
             return View("Money.Transaction");
         }
-
         public IResourceHandler category()
         {
             return View("Money.Category");
@@ -156,8 +155,9 @@ namespace UIHotel.App.Controller
                                 where a.Date >= bdate && a.Date < edate
                                 orderby a.Date ascending
                                 select a).ToList();
+                    var balance = GetBalance();
 
-                    return Json(new { success = true, data });
+                    return Json(new { success = true, data, balance });
                 } catch
                 {
                     return Json(new { success = false });
@@ -237,6 +237,23 @@ namespace UIHotel.App.Controller
             }
 
             return retInfo;
+        }
+
+        private decimal GetBalance()
+        {
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var balance = (from a in model.LedgerLogs
+                                   select a.Debit - a.Kredit).Sum(x => x);
+
+                    return balance;
+                } catch
+                {
+                    return 0;
+                }
+            }
         }
     }
 }

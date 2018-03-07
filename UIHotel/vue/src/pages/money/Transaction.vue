@@ -6,8 +6,7 @@
 
         <v-container fluid grid-list-md>
             <v-layout row>
-                <v-flex md12>
-                    <label>Date :</label>
+                <v-flex md6>
                     <v-menu ref="menu1"
                             :close-on-content-click="false"
                             v-model="modal1"
@@ -18,6 +17,7 @@
                             :return-value.sync="mdate">
                         <v-text-field slot="activator"
                                       v-model="mdate"
+                                      label="Transaction Date"
                                       prepend-icon="event"
                                       readonly></v-text-field>
                         <v-date-picker v-model="mdate"
@@ -25,7 +25,10 @@
                                        :max="allowArr" no-title scrollable>
                         </v-date-picker>
                     </v-menu>
-                    <v-btn color="primary" @click="newData">New Transaction</v-btn>
+                    <v-btn color="primary" style="vertical-align: top;" @click="newData">New Transaction</v-btn>
+                </v-flex>
+                <v-flex md6>
+                    <h2 class="text-xl-right grey--text display-1">Balance : {{ balance | Currency }}</h2>
                 </v-flex>
             </v-layout>
             <v-divider></v-divider>
@@ -80,6 +83,7 @@
             return {
                 mdate: null,
                 modal1: false,
+                balance: 0,
                 items: [],
                 headers: [
                     { text: 'Date', sortable: false, align: 'left', },
@@ -157,6 +161,7 @@
                     let items = data.data
 
                     this.items = []
+                    this.balance = data.balance
 
                     items.forEach(x => this.items.push(x))
                 }

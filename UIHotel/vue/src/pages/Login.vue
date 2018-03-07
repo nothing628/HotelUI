@@ -13,7 +13,7 @@
             </div>
 
             <div class="form-group form-group--float form-group--centered">
-                <input class="form-control" type="password" v-model="password">
+                <input class="form-control" type="password" v-model="password" @keyup="keyup">
                 <label>Password</label>
                 <i class="form-group__bar"></i>
             </div>
@@ -60,6 +60,10 @@
                     //show warning
                     this.$bus.$emit('alert-show', { text: 'Your username or password wrong!', color: 'red', timeout: 6000 })
                 }
+            },
+            keyup(e) {
+                if (e.keyCode == 13)
+                    this.postLogin()
             }
         }
     }

@@ -4,8 +4,8 @@
             <v-card-title><strong>New Transaction</strong></v-card-title>
             <v-card-text>
                 <v-container fluid class="px-3">
-                    <v-layout row wrap>
-                        <v-flex xs6>
+                    <v-layout row>
+                        <v-flex xs5>
                             <v-menu ref="menu1"
                                     lazy
                                     :close-on-content-click="false"
@@ -18,7 +18,7 @@
                                 <v-text-field slot="activator"
                                               label="Transaction Date"
                                               v-model="tdate"
-                                              prepend-icon="event"
+                                              append-icon="event"
                                               readonly></v-text-field>
                                 <v-date-picker ref="picker"
                                                v-model="tdate"
@@ -27,7 +27,8 @@
                                                :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
                             </v-menu>
                         </v-flex>
-                        <v-flex xs6>
+                        <v-flex xs1></v-flex>
+                        <v-flex xs5>
                             <v-menu ref="menu2"
                                     lazy
                                     :close-on-content-click="false"
@@ -42,20 +43,13 @@
                                 <v-text-field slot="activator"
                                               label="Transaction Time"
                                               v-model="ttime"
-                                              prepend-icon="access_time"
+                                              append-icon="access_time"
                                               readonly></v-text-field>
                                 <v-time-picker v-model="ttime" @change="$refs.menu2.save(ttime)"></v-time-picker>
                             </v-menu>
                         </v-flex>
-                        <v-flex xs12>
-                            <v-text-field label="Description"
-                                          :rules="rules.desc"
-                                          :counter="512"
-                                          multi-line
-                                          rows="2"
-                                          ref="description"
-                                          v-model="description"></v-text-field>
-                        </v-flex>
+                    </v-layout>
+                    <v-layout row>
                         <v-flex xs12>
                             <v-switch label="Outcome Transaction"
                                       v-model="isOutcome"></v-switch>
@@ -80,6 +74,19 @@
                                 </template>
                             </v-select>
                         </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                        <v-flex xs12>
+                            <v-text-field label="Description"
+                                          :rules="rules.desc"
+                                          :counter="512"
+                                          multi-line
+                                          rows="2"
+                                          ref="description"
+                                          v-model="description"></v-text-field>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout row>
                         <v-flex xs12>
                             <v-text-field label="Amount"
                                           type="number"

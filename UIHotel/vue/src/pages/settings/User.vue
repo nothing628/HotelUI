@@ -4,14 +4,17 @@
             <h2 class="card-title">User List</h2>
         </v-card-title>
 
-        <v-container fluid grid-list-md>
-            <v-layout row>
-                <v-flex md12>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" @click.stop="getData">
-                        <v-icon>search</v-icon>
-                        <span>Search</span>
-                    </v-btn>
+        <v-container fluid grid-list-sm>
+            <v-layout row wrap>
+                <v-flex md3>
+                    <v-text-field append-icon="search"
+                                  label="Search user"
+                                  single-line
+                                  hide-details
+                                  @keyup="getData"
+                                  v-model="item_username"></v-text-field>
+                </v-flex>
+                <v-flex md6>
                     <v-btn color="success" @click.stop="newUser">
                         <v-icon>create</v-icon>
                         <span>New User</span>

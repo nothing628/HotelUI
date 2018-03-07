@@ -11,10 +11,6 @@
     text-align: start;
 }
 
-.input-group  {
-    padding: 0 0 18px;
-}
-
 .login {
     background-image: url('../images/bg-login.jpg');
     background-repeat: no-repeat;
