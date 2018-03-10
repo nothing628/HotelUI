@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -8,13 +7,19 @@
 
     @Include("Layout.Parts.BaseCSS")
 </head>
-<body data-ma-theme="blue-grey">
-    <div class="login" id="app">
-        <div class="login-overlay"></div>
 
-        <!-- Login -->
-        <login></login>
-    </div>
+<body data-ma-theme="blue-grey">
+    <main class="main" id="app">
+        <v-app id="inspire">
+            <section class="content--full p-0">
+                <div class="login">
+                    <!-- Login -->
+                    <div class="login-overlay"></div>
+                    <login></login>
+                </div>
+            </section>
+        </v-app>
+    </main>
 
     @Include("Layout.Parts.BaseJS")
 </body>
