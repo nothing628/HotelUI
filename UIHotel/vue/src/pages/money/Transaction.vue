@@ -98,9 +98,6 @@
             allowArr() {
                 return moment().format('YYYY-MM-DD')
             },
-            balance() {
-                return this.totalDebit - this.totalKredit
-            },
             totalDebit() {
                 let amount = 0
 
@@ -162,7 +159,7 @@
 
                     this.items = []
                     this.balance = data.balance
-
+                    
                     items.forEach(x => this.items.push(x))
                 }
             }

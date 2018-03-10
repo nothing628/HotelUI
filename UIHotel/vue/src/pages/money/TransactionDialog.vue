@@ -1,5 +1,5 @@
 ﻿<template>
-    <v-dialog v-model="modal" max-width="600px">
+    <v-dialog v-model="modal3" max-width="600px">
         <v-card>
             <v-card-title><strong>New Transaction</strong></v-card-title>
             <v-card-text>
@@ -36,7 +36,8 @@
                                     transition="scale-transition"
                                     offset-y
                                     full-width
-                                    :nudge-right="40"
+                                    top
+                                    :nudge-right="0"
                                     max-width="290px"
                                     min-width="290px"
                                     :return-value.sync="ttime">
@@ -45,7 +46,7 @@
                                               v-model="ttime"
                                               append-icon="access_time"
                                               readonly></v-text-field>
-                                <v-time-picker v-model="ttime" @change="$refs.menu2.save(ttime)"></v-time-picker>
+                                <v-time-picker v-model="ttime" @change="changeTime"></v-time-picker>
                             </v-menu>
                         </v-flex>
                     </v-layout>
@@ -114,10 +115,10 @@
             return {
                 modal1: false,
                 modal2: false,
+                modal3: false,
                 description: '',
                 tdate: null,
                 ttime: null,
-                modal: false,
                 category: '',
                 amount: 0,
                 isOutcome: true,
@@ -152,6 +153,10 @@
             }
         },
         methods: {
+            changeTime(e) {
+                this.$refs.menu2.save(this.ttime)
+                this.modal3 = true
+            },
             validate() {
                 let formNoErrors = true
                 let keys = this.validref
@@ -183,10 +188,10 @@
             showDialog() {
                 this.resetValidation()
                 this.resetData()
-                this.modal = true
+                this.modal3 = true
             },
             cancelTransaction() {
-                this.modal = false
+                this.modal3 = false
             },
             saveTransaction() {
                 let data = {
