@@ -3,7 +3,7 @@
 namespace UIHotel.Data.Migrations
 {
     [Migration(4)]
-    public class CreatePriceTable : Migration
+    public class V4CreatePriceTable : Migration
     {
         public override void Down()
         {

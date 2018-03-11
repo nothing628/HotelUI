@@ -3,7 +3,7 @@
 namespace UIHotel.Data.Migrations
 {
     [Migration(2)]
-    public class CreateGuestTable : Migration
+    public class V2CreateGuestTable : Migration
     {
         public override void Down()
         {

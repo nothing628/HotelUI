@@ -177,9 +177,10 @@
     <Compile Include="App\View\ViewManager.cs" />
     <Compile Include="App\View\ViewNotFoundException.cs" />
     <Compile Include="App\View\ViewTemplateManager.cs" />
-    <Compile Include="Data\Migrations\CreateMoneyTable.cs" />
-    <Compile Include="Data\Migrations\CreatePriceTable.cs" />
-    <Compile Include="Data\Migrations\CreateSettingTable.cs" />
+    <Compile Include="Data\Migrations\V6CreateMoneyTable.cs" />
+    <Compile Include="Data\Migrations\V4CreatePriceTable.cs" />
+    <Compile Include="Data\Migrations\V5CreateSettingTable.cs" />
+    <Compile Include="Data\Migrations\V7ModifyBookingTable.cs" />
     <Compile Include="Data\Seeds\GuestSeeder.cs" />
     <Compile Include="Data\Seeds\LedgerSeeder.cs" />
     <Compile Include="Data\Seeds\RoomPriceSeeder.cs" />
@@ -194,9 +195,9 @@
     <Compile Include="Data\Table\Guest.cs" />
     <Compile Include="Data\Table\Invoice.cs" />
     <Compile Include="Data\Table\InvoiceDetail.cs" />
-    <Compile Include="Data\Migrations\CreateGuestTable.cs" />
-    <Compile Include="Data\Migrations\CreateInvoiceTable.cs" />
-    <Compile Include="Data\Migrations\CreateUserTable.cs" />
+    <Compile Include="Data\Migrations\V2CreateGuestTable.cs" />
+    <Compile Include="Data\Migrations\V3CreateInvoiceTable.cs" />
+    <Compile Include="Data\Migrations\V1CreateUserTable.cs" />
     <Compile Include="Data\Migrations\Migrator.cs" />
     <Compile Include="Data\Table\LedgerCategory.cs" />
     <Compile Include="Data\Table\LedgerLog.cs" />

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace UIHotel.Data.Migrations
 {
     [Migration(6)]
-    public class CreateMoneyTable : Migration
+    public class V6CreateMoneyTable : Migration
     {
         public override void Down()
         {

@@ -3,7 +3,7 @@
 namespace UIHotel.Data.Migrations
 {
     [Migration(3)]
-    public class CreateInvoiceTable : Migration
+    public class V3CreateInvoiceTable : Migration
     {
         public override void Down()
         {

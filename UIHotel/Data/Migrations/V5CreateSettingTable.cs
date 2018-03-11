@@ -3,7 +3,7 @@
 namespace UIHotel.Data.Migrations
 {
     [Migration(5)]
-    public class CreateSettingTable : Migration
+    public class V5CreateSettingTable : Migration
     {
         public override void Down()
         {
