@@ -55,6 +55,14 @@ namespace UIHotel.App
             }
         }
 
+        public ChromiumWebBrowser Browser
+        {
+            get
+            {
+                return browser;
+            }
+        }
+
         public AppMain()
         {
             Application.EnableVisualStyles();

@@ -27,10 +27,24 @@
                         </v-list-tile>
                     </v-list>
                 </v-flex>
-                <v-flex lg4 md4 sm12 xs12>
-                    <v-btn dark color="primary" class="mb-4 mt-0 ml-0 float-right">
+            </v-layout>
+            <v-layout row>
+                <v-flex md12>
+                    <v-btn dark color="primary" v-if="AllowClose" @click="closeInvoice" class="mb-4 ml-0 float-right no-print">
+                        <span>Close</span>
+                        <v-icon right dark>done_all</v-icon>
+                    </v-btn>
+                    <v-btn dark color="success" v-if="AllowPay" @click="pay" class="mb-4 ml-0 float-right no-print">
+                        <span>Pay</span>
+                        <v-icon right dark>move_to_inbox</v-icon>
+                    </v-btn>
+                    <v-btn dark color="primary" class="mb-4 ml-0 float-right no-print" @click.stop="print">
                         <span>Print</span>
                         <v-icon right dark>print</v-icon>
+                    </v-btn>
+                    <v-btn dark color="warning" :href="CheckinLink" @click="detail" class="mb-4 ml-0 float-right no-print">
+                        <span>Back</span>
+                        <v-icon right dark>reply</v-icon>
                     </v-btn>
                 </v-flex>
             </v-layout>
@@ -82,23 +96,6 @@
                                 </td>
                                 <td>{{ CashBack | currency }}</td>
                             </tr>
-                            <tr>
-                                <td colspan="3"></td>
-                                <td colspan="2">
-                                    <v-btn dark color="warning" :href="CheckinLink" @click="detail" class="mb-4 ml-0">
-                                        <span>Back</span>
-                                        <v-icon right dark>reply</v-icon>
-                                    </v-btn>
-                                    <v-btn dark color="primary" v-if="AllowClose" @click="closeInvoice" class="mb-4 ml-0">
-                                        <span>Close</span>
-                                        <v-icon right dark>done_all</v-icon>
-                                    </v-btn>
-                                    <v-btn dark color="success" v-if="AllowPay" @click="pay" class="mb-4 ml-0">
-                                        <span>Pay</span>
-                                        <v-icon right dark>move_to_inbox</v-icon>
-                                    </v-btn>
-                                </td>
-                            </tr>
                         </template>
                     </v-data-table>
                 </v-flex>
@@ -106,6 +103,24 @@
         </v-container>
     </v-card>
 </template>
+<style>
+    @media screen {
+        .no-print {
+        }
+    }
+
+    @media print {
+        table.table tbody td,
+        table.table tfoot td,
+        table.table thead th {
+            border: 1px solid black;
+        }
+
+        .no-print {
+            display: none;
+        }
+    }
+</style>
 <script>
     import axios from 'axios'
     import moment from 'moment'
@@ -143,6 +158,10 @@
         },
         computed: {
             Tax() {
+                let data = this.tableData.items.filter(x => x.Description == "Tax")
+
+                if (data.length > 0)
+                    return 0
                 return this.TotalKredit * .05
             },
             TotalKredit() {
@@ -247,9 +266,13 @@
                 }
             },
             closeInvoice() {
-                const invoiceId = this.invoice.invoice_no
+                let data = {
+                    id: this.invoice.invoice_no,
+                    tax: this.Tax,
+                    cashback: this.CashBack,
+                }
 
-                axios.post('http://localhost.com/checkin/post/closeInvoice', { id: invoiceId })
+                axios.post('http://localhost.com/checkin/post/closeInvoice', data)
                     .then(this.closeInvoiceData)
                     .catch(() => { })
             },
@@ -262,6 +285,10 @@
             },
             detail() {
                 //
+            },
+            print() {
+                // Print dialog
+                window.CS.print().then((e) => { })
             }
         },
         mounted() {

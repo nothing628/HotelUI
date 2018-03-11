@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CefSharp;
+using Newtonsoft.Json;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -53,6 +54,15 @@ namespace UIHotel.ViewModel
             Application.Exit();
 
             return true;
+        }
+
+        public object Print()
+        {
+            var browser = App.AppMain.Main.Browser;
+
+            browser.Print();
+
+            return 0;
         }
     }
 }

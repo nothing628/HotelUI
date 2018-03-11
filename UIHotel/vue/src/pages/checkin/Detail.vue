@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-tabs color="blue-grey darken-1" slot="extension" v-model="tab" centered dark>
+        <v-tabs color="blue-grey darken-1" class="no-print" slot="extension" v-model="tab" centered dark>
             <v-tabs-slider color="yellow"></v-tabs-slider>
             <v-tab>Detail</v-tab>
             <v-tab>Invoice</v-tab>
@@ -105,13 +105,9 @@
                     <v-container fluid grid-list-md>
                         <v-layout row>
                             <v-flex lg12 md12 sm12 xs12>
-                                <v-btn dark color="success" class="mb-4 ml-0" :href="checkin.PayLink">
+                                <v-btn dark color="success" class="mb-4 ml-0 no-print" :href="checkin.PayLink">
                                     <span>Pay Invoice</span>
                                     <v-icon right dark>move_to_inbox</v-icon>
-                                </v-btn>
-                                <v-btn dark color="primary" class="mb-4 ml-0" :href="checkin.InvoiceLink">
-                                    <span>Print</span>
-                                    <v-icon right dark>print</v-icon>
                                 </v-btn>
                                 <v-data-table v-bind:headers="tableData.headers"
                                               v-bind:items="tableData.items"
@@ -119,7 +115,7 @@
                                               v-bind:total-items="tableData.totalItems"
                                               v-bind:loading="tableData.loading"
                                               hide-actions
-                                              class="elevation-1">
+                                              class="elevation-1 printarea">
                                     <template slot="items" slot-scope="props">
                                         <tr>
                                             <td>{{ (props.index + 1) }}</td>
@@ -290,7 +286,7 @@
                 axios.post('http://localhost.com/checkin/post/getInvoiceDetail', { id })
                     .then(this.getInvoice)
                     .catch(e => { })
-            }
+            },
         },
         mounted() {
             this.getDataApi()

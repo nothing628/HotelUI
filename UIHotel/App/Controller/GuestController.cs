@@ -50,34 +50,6 @@ namespace UIHotel.App.Controller
             return Redirect("http://localhost.com/guest/get/list");
         }
 
-        /// <summary>
-        /// Just For Printing Invoice
-        /// </summary>
-        /// <returns>IResourceHandler</returns>
-        public IResourceHandler invoice()
-        {
-            var invoiceId = Query["id"];
-            
-            using (var model = new DataContext())
-            {
-                try
-                {
-                    var invoice = (from a in model.Invoices
-                                   where a.Id == invoiceId
-                                   select a).FirstOrDefault();
-
-                    if (invoice != null)
-                        return View("Guest.Invoice", invoice);
-                }
-                catch
-                {
-
-                }
-            }
-
-            return Redirect("http://localhost.com/checkin/get/list");
-        }
-
         public IResourceHandler edit()
         {
             var id_number = Query["id_number"];

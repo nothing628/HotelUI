@@ -450,7 +450,7 @@ namespace UIHotel.App.Controller
             var invDet = new InvoiceDetail()
             {
                 IdInvoice = inv.Id,
-                AmmountOut = deposit,
+                AmmountIn = deposit,
                 TransactionDate = DateTime.Now,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
@@ -763,6 +763,8 @@ namespace UIHotel.App.Controller
         public IResourceHandler closeInvoice()
         {
             var id = jToken.Value<string>("id");
+            var tax = jToken.Value<decimal>("tax");
+            var cashback = jToken.Value<decimal>("cashback");
 
             using (var model = new DataContext())
             using (var trans = model.Database.BeginTransaction())
@@ -773,8 +775,41 @@ namespace UIHotel.App.Controller
                                    where a.Id == id
                                    select a).FirstOrDefault();
 
-                    if (invoice != null)
+                    if (invoice != null && cashback >= 0)
                     {
+                        // Add Tax
+                        var taxdetail = new InvoiceDetail()
+                        {
+                            AmmountOut = tax,
+                            AmmountIn = 0,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                            TransactionDate = DateTime.Now,
+                            Description = "Tax",
+                            IsSystem = true,
+                            IdInvoice = invoice.Id,
+                        };
+
+                        model.InvoiceDetails.Add(taxdetail);
+
+                        if (cashback > 0)
+                        {
+                            var detail = new InvoiceDetail()
+                            {
+                                AmmountOut = cashback,
+                                AmmountIn = 0,
+                                CreateAt = DateTime.Now,
+                                UpdateAt = DateTime.Now,
+                                TransactionDate = DateTime.Now,
+                                Description = "Cashback",
+                                IsSystem = true,
+                                IdInvoice = invoice.Id,
+                            };
+
+                            model.InvoiceDetails.Add(detail);
+                        }
+
+                        // Allow to close invoice
                         invoice.IsClosed = true;
 
                         model.Entry(invoice).State = EntityState.Modified;
