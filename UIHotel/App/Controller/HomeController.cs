@@ -78,7 +78,27 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
-                    return Json(new { success = true });
+                    var bdate = DateTime.Today;
+                    var edate = bdate.AddDays(1);
+                    var rooms = (from a in data.Rooms
+                                 select new { a.Id, a.IdStatus}).ToList();
+
+                    var free_room = (from a in rooms
+                                     where a.IdStatus == 1 || a.IdStatus == 2
+                                     select a).Count();
+                    var used_room = rooms.Count - free_room;
+                    var transaction = (from a in data.LedgerLogs
+                                       where a.Date >= bdate
+                                       where a.Date <= edate
+                                       select a.Debit - a.Kredit).ToList();
+                    var balance = transaction.Sum(x => x);
+
+                    return Json(new { success = true, data = new {
+                        guest = 0,
+                        used_room,
+                        free_room,
+                        balance,
+                    }});
                 } catch
                 {
                     return Json(new { success = false });

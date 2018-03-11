@@ -11,6 +11,10 @@
     line-height: 1;
 }
 
+.quick-stats__info > small {
+    line-height: 2;
+}
+
 #app {
     text-align: start;
 }

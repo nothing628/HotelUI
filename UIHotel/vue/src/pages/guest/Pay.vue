@@ -9,6 +9,8 @@
                                 <v-list-tile-title>Issued To :</v-list-tile-title>
                                 <v-list-tile-sub-title class="text--primary"><a href="#">{{ guest.fullname }}</a></v-list-tile-sub-title>
                                 <v-list-tile-sub-title>{{ guest.address }}</v-list-tile-sub-title>
+                                <v-list-tile-title>Status :</v-list-tile-title>
+                                <v-list-tile-sub-title></v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
