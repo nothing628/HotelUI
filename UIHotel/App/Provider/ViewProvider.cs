@@ -16,9 +16,9 @@ namespace UIHotel.App.Provider
             try
             {
                 ViewManager.RegisterView("Layout.Layout", "Layout");
-            } catch (ViewNotFoundException ex)
+            } catch
             {
-                //
+                //View Not Found
             }
         }
 

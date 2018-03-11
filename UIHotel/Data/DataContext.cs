@@ -11,7 +11,6 @@ namespace UIHotel.Data
     public class DataContext : DbContext
     {
         public DbSet<BookingType> BookingType { get; set; }
-        public DbSet<BookingDetail> BookingDetails { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Checkin> CheckIn { get; set; }
         public DbSet<DayCycle> DayCycles { get; set; }

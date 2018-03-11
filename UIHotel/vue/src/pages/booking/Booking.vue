@@ -137,40 +137,10 @@
                                 <v-subheader class="text--lighten-1">Select Room</v-subheader>
                             </v-flex>
                             <v-flex md6>
-                                <v-select label="Select"
-                                          :items="rooms"
-                                          :rules="rules.room_num"
-                                          v-model="room.rooms"
-                                          item-text="name"
-                                          item-value="id"
-                                          multiple
-                                          chips
-                                          max-height="auto"
-                                          autocomplete>
-                                    <template slot="selection" slot-scope="data">
-                                        <v-chip close
-                                                @input="data.parent.selectItem(data.item)"
-                                                :selected="data.selected"
-                                                class="chip--select-multi"
-                                                :key="JSON.stringify(data.item)">
-                                            {{ data.item.name }}
-                                        </v-chip>
-                                    </template>
-                                    <template slot="item" slot-scope="data">
-                                        <template v-if="typeof data.item !== 'object'">
-                                            <v-list-tile-content v-text="data.item"></v-list-tile-content>
-                                        </template>
-                                        <template v-else>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                                                <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
-                                            </v-list-tile-content>
-                                        </template>
-                                    </template>
-                                </v-select>
+                                <v-text-field type="text" readonly disabled :rules="rules.room_num" v-model="room.room_number"></v-text-field>
                             </v-flex>
                             <v-flex md2>
-                                <v-btn fab dark small color="primary">
+                                <v-btn fab dark icon small color="primary" @click.stop="selectRoom">
                                     <v-icon dark>search</v-icon>
                                 </v-btn>
                             </v-flex>
@@ -404,7 +374,8 @@
                 },
                 room: {
                     valid: false,
-                    rooms: [],
+                    room_id: null,
+                    room_number: null,
                     note: null
                 },
                 guest: {
@@ -445,7 +416,7 @@
                         (v) => !!v || 'Document is required'
                     ],
                     room_num: [
-                        (v) => v.length > 0 || 'Room Number is required'
+                        (v) => !!v || 'Room Number is required'
                     ],
                 }
             }
@@ -469,6 +440,29 @@
             }
         },
         watch: {
+            dialog_room: {
+                handler() {
+                    if ("room" in this.dialog_room) {
+                        var room = this.dialog_room.room
+                        var roomNumber = ""
+
+                        this.room.room_id = room.Id || this.room.room_id
+
+                        if ("RoomCategory" in room)
+                            roomNumber += room.RoomCategory + ": "
+
+                        if ("RoomNumber" in room)
+                            roomNumber += room.RoomNumber + ", Floor "
+
+                        if ("RoomFloor" in room)
+                            roomNumber += room.RoomFloor
+
+                        if (roomNumber != "")
+                            this.room.room_number = roomNumber
+                    }
+                },
+                deep: true
+            },
             dialog_guest: {
                 handler() {
                     if ('guest' in this.dialog_guest) {
@@ -495,9 +489,12 @@
                     }
                 },
                 deep: true
-            }
+            },
         },
         methods: {
+            selectRoom() {
+                this.dialog_room.show = !this.dialog_room.show
+            },
             selectGuest() {
                 this.dialog_guest.show = !this.dialog_guest.show
             },

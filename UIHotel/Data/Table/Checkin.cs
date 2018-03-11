@@ -98,7 +98,7 @@ namespace UIHotel.Data.Table
                     var transform = (from a in chk
                                      select a.Replace(PrefixID, "")).Select(x => Convert.ToInt32(x)).Max();
                     newId = transform + 1;
-                } catch (Exception ex)
+                } catch
                 {
 
                 }

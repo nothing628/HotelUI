@@ -170,26 +170,13 @@ namespace UIHotel.App.Controller
 
                     if (booking != null)
                     {
-                        var books = booking.Details;
+                        var room = (from a in model.Rooms
+                                    where a.Id == booking.IdRoom
+                                    select a).Single();
 
-                        foreach (var book in books)
-                        {
-                            var room = (from a in model.Rooms
-                                        where a.Id == book.Room.Id
-                                        select a).FirstOrDefault();
+                        room.IdStatus = 1;
 
-                            if (room != null)
-                            {
-                                room.IdStatus = 1;
-
-                                model.Entry(room).State = EntityState.Modified;
-                                model.SaveChanges();
-                            }
-
-                            model.Entry(book).State = EntityState.Deleted;
-                            model.SaveChanges();
-                        }
-
+                        model.Entry(room).State = EntityState.Modified;
                         model.Entry(booking).State = EntityState.Deleted;
                         model.SaveChanges();
 
@@ -198,7 +185,7 @@ namespace UIHotel.App.Controller
                         return Json(new { success = true });
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
                 }
@@ -230,7 +217,7 @@ namespace UIHotel.App.Controller
                 var dataGuest = ProcessGuest(guest);
                 var dataCheckin = ProcessCheckin(room, registration, dataGuest);
                 var dataInvoice = ProcessInvoice(dataCheckin, registration, dataGuest);
-                var retUrl = string.Format("http://localhost.com/guest/get/pay?id={0}", dataInvoice.Id);
+                var retUrl = string.Format("http://localhost.com/checkin/get/detail?id={0}", dataInvoice.Id);
 
                 return Json(new { success = true, redirect_url = retUrl });
             }
@@ -315,7 +302,7 @@ namespace UIHotel.App.Controller
                         return dataGuest;
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     throw;
                 }
@@ -331,7 +318,7 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
-                    var rooms = tokenRoom["rooms"].Values<int>();
+                    var id_room = tokenRoom["room_id"].Value<long>();
                     var bookno = tokenReg.Value<string>("book_no");
                     var type = tokenReg.Value<int>("book_type");
                     var oltype = tokenReg.Value<int>("book_oltype");
@@ -349,29 +336,22 @@ namespace UIHotel.App.Controller
                         CreateAt = DateTime.Now,
                         UpdateAt = DateTime.Now,
                         IdGuest = guest.Id,
+                        IdRoom = id_room,
+                        IsCheckin = false,
                         Id = Booking.GenerateID(),
                     };
+
+                    var room = (from a in model.Rooms
+                                where a.Id == id_room
+                                select a).Single();
+
+                    room.IdStatus = 2;
 
                     result.IdType = (type != -1) ? type : oltype;
                     result.Id = (type != -1) ? Booking.GenerateID() : bookno;
 
                     model.Bookings.Add(result);
                     model.SaveChanges();
-
-                    foreach(var room_id in rooms)
-                    {
-                        var room = (from a in model.Rooms where a.Id == room_id select a).FirstOrDefault();
-                        var detail = new BookingDetail()
-                        {
-                            IdBooking = result.Id,
-                            IdRoom = room_id,
-                        };
-
-                        room.IdStatus = 2;
-
-                        model.BookingDetails.Add(detail);
-                        model.SaveChanges();
-                    }
 
                     trans.Commit();
                 } catch
@@ -382,57 +362,7 @@ namespace UIHotel.App.Controller
 
             return result;
         }
-
-        private void ProcessDetailBooking(string bookingId, string checkinId, long roomId)
-        {
-            using (var model = new DataContext())
-            {
-                try
-                {
-                    var booking = (from a in model.Bookings
-                                   where a.Id == bookingId
-                                   where !a.IsClosed
-                                   select a).FirstOrDefault();
-
-                    if (booking == null) throw new ArgumentNullException();
-
-                    var details = (from a in model.BookingDetails
-                                   where a.IdBooking == bookingId
-                                   where !a.IsClosed
-                                   select a).ToList();
-
-                    if (details.Count == 0) throw new ArgumentException();
-
-                    var data = (from a in details
-                                where a.IdRoom == roomId
-                                select a).FirstOrDefault();
-
-                    if (data == null) throw new ArgumentNullException();
-
-                    data.IsClosed = true;
-                    data.IdCheckin = checkinId;
-                    
-                    model.Entry(data).State = EntityState.Modified;
-                    model.SaveChanges();
-
-                    var numOpen = (from a in model.BookingDetails
-                                   where a.IdBooking == bookingId
-                                   where !a.IsClosed
-                                   select a).Count();
-
-                    if (numOpen == 0)
-                    {
-                        booking.IsClosed = true;
-
-                        model.Entry(booking).State = EntityState.Modified;
-                        model.SaveChanges();
-                    }
-                } catch
-                {
-                }
-            }
-        }
-
+        
         public Checkin ProcessCheckin(JToken tokenRoom, JToken tokenReg, Guest guest)
         {
             var note = tokenRoom.Value<string>("note");
@@ -464,7 +394,15 @@ namespace UIHotel.App.Controller
                 {
                     if (booking != null)
                     {
-                        ProcessDetailBooking(booking, dataCheckin.Id, room_id);
+                        //TODO: Update booking here
+                        var book = (from a in model.Bookings
+                                    where a.Id == booking
+                                    select a).Single();
+
+                        book.IsCheckin = true;
+                        book.IdCheckin = dataCheckin.Id;
+
+                        model.SaveChanges();
                     }
 
                     var room = (from a in model.Rooms
@@ -486,7 +424,7 @@ namespace UIHotel.App.Controller
 
                     return dataCheckin;
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
                     throw;
@@ -552,7 +490,7 @@ namespace UIHotel.App.Controller
                     model.SaveChanges();
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
                     throw;
@@ -609,9 +547,9 @@ namespace UIHotel.App.Controller
 
                     if (book_id != "")
                     {
-                        var bookDetail = (from a in model.BookingDetails
-                                          where a.IdBooking == book_id
-                                          where !a.IsClosed
+                        var bookDetail = (from a in model.Bookings
+                                          where a.Id == book_id
+                                          where !a.IsCheckin
                                           select a).ToList();
 
                         result = (from a in rawResult
@@ -761,7 +699,7 @@ namespace UIHotel.App.Controller
                 try
                 {
                     var iQuery = (from a in model.Bookings
-                                  where !a.IsClosed
+                                  where !a.IsCheckin
                                   orderby a.ArriveAt ascending
                                   select a);
 

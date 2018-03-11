@@ -41,7 +41,7 @@ namespace UIHotel.App.Controller
 
                     if (guest != null)
                         return View("Guest.Detail", guest);
-                } catch (Exception ex)
+                } catch
                 {
                     //
                 }

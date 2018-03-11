@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,34 +25,41 @@ namespace UIHotel.Data.Table
         [Column("id_type", Order = 2)]
         public long IdType { get; set; }
 
-        [Column("count_child", Order = 3)]
+        [Column("id_room", Order = 3)]
+        public long IdRoom { get; set; }
+
+        [Column("id_checkin", Order = 4)]
+        [StringLength(25)]
+        public string IdCheckin { get; set; }
+
+        [Column("is_checkin", Order = 5)]
+        public bool IsCheckin { get; set; }
+
+        [Column("count_child", Order = 6)]
         public short CountChild { get; set; }
 
-        [Column("count_adult", Order = 4)]
+        [Column("count_adult", Order = 7)]
         public short CountAdult { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        [Column("arrive_at", Order = 5, TypeName = "Date")]
+        [Column("arrive_at", Order = 8, TypeName = "Date")]
         public DateTime ArriveAt { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        [Column("departure_at", Order = 6, TypeName = "Date")]
+        [Column("departure_at", Order = 9, TypeName = "Date")]
         public DateTime DepartureAt { get; set; }
-
-        [Column("is_closed", Order = 7)]
-        public bool IsClosed { get; set; }
-
+        
         [Required]
-        [Column("create_at", Order = 8)]
+        [Column("create_at", Order = 10)]
         public DateTime CreateAt { get; set; }
 
-        [Column("update_at", Order = 9)]
+        [Column("update_at", Order = 11)]
         public DateTime? UpdateAt { get; set; }
-
-        List<BookingDetail> _details;
+        
         Guest _guest;
+        Room _room;
 
         [NotMapped]
         public Guest Guest
@@ -78,39 +87,27 @@ namespace UIHotel.Data.Table
         }
 
         [NotMapped]
-        public ICollection<BookingDetail> Details
+        public Room Room
         {
             get
             {
-                if (_details == null)
+                if (_room == null)
                 {
                     using (var model = new DataContext())
                     {
                         try
                         {
-                            _details = (from a in model.BookingDetails
-                                        where a.IdBooking == Id
-                                        select a).ToList();
-                        } catch (Exception ex)
+                            _room = (from a in model.Rooms.Include(x => x.Category).Include(x => x.Status)
+                                     where a.Id == IdRoom
+                                     select a).Single();
+                        } catch
                         {
-                            _details = new List<BookingDetail>();
+                            _room = new Room();
                         }
                     }
                 }
 
-                return _details;
-            }
-        }
-
-        [NotMapped]
-        public ICollection<Room> Rooms
-        {
-            get
-            {
-                var details = Details;
-                var rooms = Details.Select(x => x.Room).ToList();
-
-                return rooms;
+                return _room;
             }
         }
 

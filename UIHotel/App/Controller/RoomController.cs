@@ -51,7 +51,7 @@ namespace UIHotel.App.Controller
 
                     return Redirect("http://localhost.com/room/get/index");
                 }
-                catch (Exception ex)
+                catch
                 {
                     return Redirect("http://localhost.com/room/get/index");
                 }

@@ -48,7 +48,6 @@ namespace UIHotel.Data.Migrations
                 .WithColumn("count_adult").AsInt16().WithDefaultValue(0)
                 .WithColumn("arrive_at").AsDate().NotNullable()
                 .WithColumn("departure_at").AsDate().NotNullable()
-                .WithColumn("is_closed").AsBoolean().WithDefaultValue(false)
                 .WithColumn("create_at").AsDateTime().NotNullable()
                 .WithColumn("update_at").AsDateTime().Nullable();
         }

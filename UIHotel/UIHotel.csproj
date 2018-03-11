@@ -185,7 +185,6 @@
     <Compile Include="Data\Seeds\LedgerSeeder.cs" />
     <Compile Include="Data\Seeds\RoomPriceSeeder.cs" />
     <Compile Include="Data\Seeds\SettingSeeder.cs" />
-    <Compile Include="Data\Table\BookingDetail.cs" />
     <Compile Include="Data\Table\BookingType.cs" />
     <Compile Include="Data\Table\Booking.cs" />
     <Compile Include="Data\Table\Checkin.cs" />
