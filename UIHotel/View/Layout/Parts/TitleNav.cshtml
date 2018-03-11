@@ -1,4 +1,10 @@
-﻿<div class="navigation-trigger hidden-xl-up" data-ma-action="aside-open" data-ma-target=".sidebar">
+﻿@using UIHotel.App.Provider
+
+@{ 
+    string logoUrl = "http://localhost.com/Upload/" + SettingProvider.HotelLogo;
+}
+
+<div class="navigation-trigger hidden-xl-up" data-ma-action="aside-open" data-ma-target=".sidebar">
     <div class="navigation-trigger__inner">
         <i class="navigation-trigger__line"></i>
         <i class="navigation-trigger__line"></i>
@@ -7,5 +13,5 @@
 </div>
 
 <div class="header__logo hidden-sm-down">
-    <h1><a href="">Management 1.0</a></h1>
+    <h1><a href="">@SettingProvider.HotelName</a></h1>
 </div>

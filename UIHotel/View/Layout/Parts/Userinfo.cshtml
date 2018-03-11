@@ -1,9 +1,19 @@
-﻿<div class="user">
+﻿@using UIHotel.App.Provider
+@using UIHotel.App.Auth
+@using UIHotel.Data.Table
+
+@{ 
+    User user = AuthState.User();
+    AuthLevel level =(AuthLevel)user.Permission;
+    string logoUrl = "http://localhost.com/Upload/" + SettingProvider.HotelLogo;
+}
+
+<div class="user">
     <div class="user__info" data-toggle="dropdown">
-        <img class="user__img" src="http://localhost.com/images/profile-pic.jpg" alt="">
+        <img class="user__img" src="@logoUrl" alt="">
         <div>
-            <div class="user__name">Malinda Hollaway</div>
-            <div class="user__email">Administrator</div>
+            <div class="user__name">@user.Fullname</div>
+            <div class="user__email">@level.ToString()</div>
         </div>
     </div>
 

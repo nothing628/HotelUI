@@ -1,6 +1,7 @@
 import '../../node_modules/vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import Booking from './pages/booking/Booking.vue'
 import BookingList from './pages/booking/List.vue'
@@ -34,6 +35,7 @@ import SetupFinish from './pages/setup/Finish.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
+Vue.component('dashboard', Home)
 Vue.component('login', Login)
 Vue.component('booking', Booking)
 Vue.component('booking-list', BookingList)

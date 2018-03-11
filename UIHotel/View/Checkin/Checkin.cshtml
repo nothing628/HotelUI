@@ -4,11 +4,13 @@
     Layout = "Layout";
 }
 
+@section title { CheckIn Room }
+
 <v-container fluid grid-list-md>
     <v-layout row>
         <v-flex lg12 md12 sm12 xs12>
             <header class="content__title">
-                <h1>Check In Registration</h1>
+                <h1>CheckIn Room</h1>
             </header>
 
             @if (Model != null)
@@ -25,7 +27,7 @@
             }
             else
             {
-            <checkin></checkin>
+                <checkin></checkin>
             }
         </v-flex>
     </v-layout>

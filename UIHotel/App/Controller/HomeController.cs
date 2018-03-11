@@ -71,5 +71,19 @@ namespace UIHotel.App.Controller
                 }
             }
         }
+
+        public IResourceHandler getDashboardData()
+        {
+            using (var data = new DataContext())
+            {
+                try
+                {
+                    return Json(new { success = true });
+                } catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
     }
 }

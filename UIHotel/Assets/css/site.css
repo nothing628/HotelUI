@@ -7,6 +7,10 @@
     padding: 0rem 2rem;
 }
 
+.list--three-line .list__tile__sub-title {
+    line-height: 1;
+}
+
 #app {
     text-align: start;
 }

@@ -105,7 +105,7 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler booking()
         {
-            return View("Checkin.Booking");
+            return View("Booking.Index");
         }
 
         public IResourceHandler detail()

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title></title>
+    <title>@RenderSection("title", required: false)</title>
 
     @Include("Layout.Parts.BaseCSS")
 </head>
@@ -15,7 +15,6 @@
 
             <header class="header">
                 @Include("Layout.Parts.TitleNav")
-                @Include("Layout.Parts.SearchNav")
                 @Include("Layout.Parts.TopNav")
             </header>
 

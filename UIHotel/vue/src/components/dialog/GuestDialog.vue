@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dataValue.show" scrollable max-width="600px">
+    <v-dialog v-model="dataValue.show" scrollable max-width="800px">
         <v-card>
             <v-card-title>Select Guest</v-card-title>
             <v-divider></v-divider>

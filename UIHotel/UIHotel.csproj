@@ -296,15 +296,14 @@
       <SubType>Component</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="View\Booking\Edit.cshtml" />
+    <None Include="View\Booking\Edit.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="View\Booking\List.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="View\Checkin\Booking.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="View\Booking\Cancel.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="View\Booking\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="View\Checkin\Checkin.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -644,6 +643,7 @@
     <Content Include="vue\src\components\CountryList.js" />
     <Content Include="vue\src\components\IconList.js" />
     <Content Include="vue\src\main.js" />
+    <None Include="vue\src\pages\Home.vue" />
     <Content Include="vue\src\router\index.js" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
