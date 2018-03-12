@@ -87,6 +87,7 @@
                               style="max-width: 100px; display: inline-flex;"
                               v-model="year"></v-select>
                     <v-btn color="primary" @click="getData">Search</v-btn>
+                    <v-btn color="primary" @click="download">Export</v-btn>
                 </v-flex>
             </v-layout>
             <v-divider></v-divider>
@@ -189,6 +190,9 @@
             }
         },
         methods: {
+            download() {
+                //
+            },
             getData() {
                 let data = {
                     bdate: this.calcBdate,

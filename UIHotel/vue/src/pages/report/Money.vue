@@ -91,7 +91,7 @@
                 </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout row>
+            <v-layout row v-if="items.length > 0">
                 <v-flex md12>
                     <bar-chart :width="900" :height="200" :chart-data.sync="datacollection" ></bar-chart>
                 </v-flex>
@@ -145,19 +145,19 @@
                     { text: 'Kredit', sortable: false, align: 'left' },
                 ],
                 datacollection: {
-                    labels: ['01/03', '02/03', '03/03', '04/03', '05/03'],
+                    labels: [],
                     datasets: [
                         {
                             label: 'Debit',
                             borderColor: '#59C859',
                             fill: false,
-                            data: [40, 20, 100, 50]
+                            data: []
                         },
                         {
                             label: 'Kredit',
                             borderColor: '#f83900',
                             fill: false,
-                            data: [50, 10, 90, 90]
+                            data: []
                         }
                     ]
                 },
