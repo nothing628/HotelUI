@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using unvell.ReoGrid;
 
@@ -11,6 +12,8 @@ namespace UIHotel.ViewModel
 {
     public class BaseModel
     {
+        public string fileName;
+
         public object GetObjectParam(string InstanceName, string Method, params object[] s)
         {
             string typeName = "UIHotel.ViewModel." + InstanceName;
@@ -73,12 +76,12 @@ namespace UIHotel.ViewModel
                 try
                 {
                     var row_pos = 14;
-                    var items = dict["items"] as object[];
+                    var items = dict["items"] as List<object>;
                     var worksheet = grid.Worksheets[0];
 
                     foreach (var row in items)
                     {
-                        var cols = row as object[];
+                        var cols = row as List<object>;
                         var col_pos = 0;
 
                         foreach (var col in cols)
@@ -91,14 +94,25 @@ namespace UIHotel.ViewModel
                         row_pos++;
                     }
 
-                    using (var dlg = new SaveFileDialog() {Filter = "Excel | *.xlsx" })
-                    {
-                        if (dlg.ShowDialog() == DialogResult.OK)
-                        {
-                            grid.Save(dlg.FileName);
-                        }
-                    }
 
+                    var oThread = new Thread(() => {
+                        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                        var dialog = new SaveFileDialog();
+                        dialog.Filter = "Excel | *.xlsx";
+
+                        if (dialog.ShowDialog() == DialogResult.OK)
+                        {
+                            //save
+                            grid.Save(dialog.FileName);
+                        }
+                    });
+
+                    oThread.SetApartmentState(ApartmentState.STA);
+                    oThread.Start();
+                    var isSafe = oThread.Join(new TimeSpan(2, 0, 0));
+                    if (isSafe)
+                        oThread.Abort();
+                    
                     return true;
                 }
                 catch (KeyNotFoundException ex)
