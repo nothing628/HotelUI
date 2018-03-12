@@ -75,25 +75,26 @@ namespace UIHotel.ViewModel
             {
                 try
                 {
-                    var row_pos = 14;
                     var items = dict["items"] as List<object>;
                     var worksheet = grid.Worksheets[0];
 
-                    foreach (var row in items)
-                    {
-                        var cols = row as List<object>;
-                        var col_pos = 0;
+                    if (items is null) return false;
 
-                        foreach (var col in cols)
-                        {
-                            // Grid cols
-                            AutoAppend(worksheet, row_pos, col_pos);
-                            worksheet[row_pos, col_pos] = col;
-                            col_pos++;
-                        }
-                        row_pos++;
+                    foreach (var item in items)
+                    {
+                        ApplyRow(worksheet, item);
                     }
 
+                    if (dict.ContainsKey("options"))
+                    {
+                        var options = dict["options"] as List<object>;
+
+                        if (options != null)
+                        {
+                            foreach (var option in options)
+                                ApplyOptions(worksheet, option);
+                        }
+                    }
 
                     var oThread = new Thread(() => {
                         var basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -119,6 +120,56 @@ namespace UIHotel.ViewModel
                 {
                     return false;
                 }
+            }
+        }
+
+        private void ApplyOptions(Worksheet sheet, object option)
+        {
+            var itemObj = ((IDictionary<string, Object>)option);
+
+            if (itemObj.ContainsKey("col") && itemObj.ContainsKey("width"))
+            {
+                var col = (int)itemObj["col"];
+                var width = Convert.ToUInt16((int)itemObj["width"]);
+
+                sheet.SetColumnsWidth(col, 1, width);
+            }
+
+            if (itemObj.ContainsKey("row") && itemObj.ContainsKey("height"))
+            {
+                var row = (int)itemObj["row"];
+                var height = Convert.ToUInt16((int)itemObj["height"]);
+
+                sheet.SetRowsHeight(row, 1, height);
+            }
+        }
+
+        private void ApplyRow(Worksheet sheet, object item)
+        {
+            var itemObj = ((IDictionary<string, Object>)item);
+
+            if (!itemObj.ContainsKey("row") || !itemObj.ContainsKey("col") || !itemObj.ContainsKey("value"))
+                return;
+
+            var row = (int)itemObj["row"];
+            var col = (int)itemObj["col"];
+
+            AutoAppend(sheet, row, col);
+            sheet[row, col] = itemObj["value"];
+            sheet.Cells[row, col].Data = itemObj["value"];
+
+            if (itemObj.ContainsKey("border"))
+            {
+                var borderStyle = new RangeBorderStyle(unvell.ReoGrid.Graphics.SolidColor.Black, BorderLineStyle.Solid);
+                
+                sheet.SetRangeBorders(row, col, 1, 1, BorderPositions.All, borderStyle);
+            }
+            
+            if (itemObj.ContainsKey("fontsize"))
+            {
+                var fontSize = (int)itemObj["fontsize"];
+
+                sheet.Cells[row, col].Style.FontSize = Convert.ToSingle(fontSize);
             }
         }
 

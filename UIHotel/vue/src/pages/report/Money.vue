@@ -9,18 +9,10 @@
                 <v-flex md12>
                     <label>Range :</label>
                     <v-btn-toggle v-model="range_type">
-                        <v-btn flat value="c">
-                            Custom
-                        </v-btn>
-                        <v-btn flat value="d">
-                            Daily
-                        </v-btn>
-                        <v-btn flat value="m">
-                            Monthly
-                        </v-btn>
-                        <v-btn flat value="y">
-                            Yearly
-                        </v-btn>
+                        <v-btn flat value="c">Custom</v-btn>
+                        <v-btn flat value="d">Daily</v-btn>
+                        <v-btn flat value="m">Monthly</v-btn>
+                        <v-btn flat value="y">Yearly</v-btn>
                     </v-btn-toggle>
                     <v-menu v-show="range_type == 'm'"
                             ref="menu1"
@@ -240,6 +232,32 @@
         methods: {
             download() {
                 // TODO: Export report
+                if (this.items.length == 0)
+                    return
+
+                let row = 5
+                let data = []
+
+                data.push({ row: 4, col: 1, value: 'Date', border: 1 })
+                data.push({ row: 4, col: 2, value: 'Debit', border: 1 })
+                data.push({ row: 4, col: 3, value: 'Kredit', border: 1 })
+
+                this.items.forEach(x => {
+                    let date = moment(x.Date)
+
+                    data.push({ row: row, col: 1, value: date.format('YYYY-MM-DD'), border: 1 })
+                    data.push({ row: row, col: 2, value: x.Debit, border: 1 })
+                    data.push({ row: row, col: 3, value: x.Kredit, border: 1 })
+                    
+                    row++
+                })
+
+                window.CS.export({
+                    items: data,
+                    options: [
+                        { col: 0, width: 10 }
+                    ]
+                });
             },
             getData() {
                 let data = {
