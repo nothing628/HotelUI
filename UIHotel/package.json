@@ -29,7 +29,7 @@
     "axios": "^0.17.1",
     "bootstrap": "4.0.0-beta.2",
     "change-case": "^3.0.1",
-    "chart.js": "^2.7.1",
+    "chart.js": "^2.7.2",
     "fullcalendar": "^3.8.0",
     "jquery": "^3.2.1",
     "jquery.flot": "^0.8.3",
@@ -37,7 +37,7 @@
     "popper.js": "1.12.3",
     "select2": "^4.0.6-rc.1",
     "vue": "^2.5.13",
-    "vue-morris": "0.0.13",
+    "vue-chartjs": "^3.2.1",
     "vuetify": "^1.0.2"
   },
   "devDependencies": {

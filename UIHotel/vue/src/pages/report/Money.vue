@@ -87,9 +87,15 @@
                               style="max-width: 100px; display: inline-flex;"
                               v-model="year"></v-select>
                     <v-btn color="primary" @click="getData">Search</v-btn>
+                    <v-btn color="primary" @click="download">Export</v-btn>
                 </v-flex>
             </v-layout>
             <v-divider></v-divider>
+            <v-layout row>
+                <v-flex md12>
+                    <bar-chart :width="900" :height="200" :chart-data.sync="datacollection" ></bar-chart>
+                </v-flex>
+            </v-layout>
             <v-layout row>
                 <v-flex md12>
                     <v-data-table v-bind:headers="headers"
@@ -113,10 +119,15 @@
     </v-card>
 </template>
 <script>
+
     import axios from 'axios'
     import moment from 'moment'
+    import BarChart from '../../components/BarChart'
 
     export default {
+        components: {
+            BarChart
+        },
         data() {
             return {
                 modal1: false,
@@ -132,7 +143,24 @@
                     { text: 'Date', sortable: false, align: 'left' },
                     { text: 'Debit', sortable: false, align: 'left' },
                     { text: 'Kredit', sortable: false, align: 'left' },
-                ]
+                ],
+                datacollection: {
+                    labels: ['01/03', '02/03', '03/03', '04/03', '05/03'],
+                    datasets: [
+                        {
+                            label: 'Debit',
+                            borderColor: '#59C859',
+                            fill: false,
+                            data: [40, 20, 100, 50]
+                        },
+                        {
+                            label: 'Kredit',
+                            borderColor: '#f83900',
+                            fill: false,
+                            data: [50, 10, 90, 90]
+                        }
+                    ]
+                },
             }
         },
         computed: {
@@ -210,6 +238,9 @@
             }
         },
         methods: {
+            download() {
+                // TODO: Export report
+            },
             getData() {
                 let data = {
                     bdate: this.calcBdate,
@@ -223,11 +254,37 @@
 
                 if (data.success) {
                     let items = data.data
+                    let collect = {
+                        labels: [],
+                            datasets: [
+                                {
+                                label: 'Debit',
+                                    borderColor: '#59C859',
+                                    fill: false,
+                                    data: []
+                            },
+                            {
+                                label: 'Kredit',
+                                borderColor: '#f83900',
+                                fill: false,
+                                data: []
+                            }
+                        ]
+                    }
 
                     this.items = []
 
-                    items.forEach(x => this.items.push(x))
-                    console.log(items)
+                    items.forEach(x => {
+                        let momen = moment(x.Date)
+
+                        collect.labels.push(momen.format('DD/MM'))
+                        collect.datasets[0].data.push(x.Debit)
+                        collect.datasets[1].data.push(x.Kredit)
+                        
+                        this.items.push(x)
+                    })
+
+                    this.datacollection = collect
                 }
             }
         },

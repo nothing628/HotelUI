@@ -1,5 +1,5 @@
 ﻿<template>
-    <v-dialog v-model="modal3" max-width="600px">
+    <v-dialog v-model="modal3" max-width="600px" persistent>
         <v-card>
             <v-card-title><strong>New Transaction</strong></v-card-title>
             <v-card-text>
@@ -36,7 +36,6 @@
                                     transition="scale-transition"
                                     offset-y
                                     full-width
-                                    top
                                     :nudge-right="0"
                                     max-width="290px"
                                     min-width="290px"

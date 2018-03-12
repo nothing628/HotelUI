@@ -1340,12 +1340,12 @@ change-case@^3.0.1:
     upper-case "^1.1.1"
     upper-case-first "^1.1.0"
 
-chart.js@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.7.1.tgz#ae90b4aa4ff1f02decd6b1a2a8dabfd73c9f9886"
+chart.js@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.7.2.tgz#3c9fde4dc5b95608211bdefeda7e5d33dffa5714"
   dependencies:
-    chartjs-color "~2.2.0"
-    moment "~2.18.0"
+    chartjs-color "^2.1.0"
+    moment "^2.10.2"
 
 chartjs-color-string@^0.5.0:
   version "0.5.0"
@@ -1353,7 +1353,7 @@ chartjs-color-string@^0.5.0:
   dependencies:
     color-name "^1.0.0"
 
-chartjs-color@~2.2.0:
+chartjs-color@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/chartjs-color/-/chartjs-color-2.2.0.tgz#84a2fb755787ed85c39dd6dd8c7b1d88429baeae"
   dependencies:
@@ -2248,10 +2248,6 @@ esutils@^2.0.2:
 etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
-
-eve-raphael@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/eve-raphael/-/eve-raphael-0.5.0.tgz#17c754b792beef3fa6684d79cf5a47c63c4cda30"
 
 event-emitter@~0.3.5:
   version "0.3.5"
@@ -3285,10 +3281,6 @@ jquery.flot@^0.8.3:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
-jquery@2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
-
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.3.tgz#2e545ec2b0f2957f41356510205214e98fad6582"
@@ -3826,17 +3818,13 @@ module-not-found-error@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/module-not-found-error/-/module-not-found-error-1.0.1.tgz#cf8b4ff4f29640674d6cdd02b0e3bc523c2bbdc0"
 
+moment@^2.10.2:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
+
 moment@^2.20.0, moment@^2.9.0:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
-
-moment@~2.18.0:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
-
-morris.js@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/morris.js/-/morris.js-0.5.0.tgz#725767135cfae059aae75999bb2ce6a1c5d1b44b"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -4762,12 +4750,6 @@ randomfill@^1.0.3:
 range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
-
-raphael@^2.2.7:
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/raphael/-/raphael-2.2.7.tgz#231b19141f8d086986d8faceb66f8b562ee2c810"
-  dependencies:
-    eve-raphael "0.5.0"
 
 raw-body@2.3.2:
   version "2.3.2"
@@ -5892,19 +5874,13 @@ vm-browserify@0.0.4, vm-browserify@~0.0.1:
   dependencies:
     indexof "0.0.1"
 
+vue-chartjs@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/vue-chartjs/-/vue-chartjs-3.2.1.tgz#8fd207e7f09a6bf13d86026071f598c4c2ff1f68"
+
 vue-hot-reload-api@^2.0.1:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.2.4.tgz#683bd1d026c0d3b3c937d5875679e9a87ec6cd8f"
-
-vue-morris@0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/vue-morris/-/vue-morris-0.0.13.tgz#1b9a70f77491e98e9ae78de2804a4980ad08ee7c"
-  dependencies:
-    babel-runtime "^6.0.0"
-    jquery "2.2.4"
-    morris.js "^0.5.0"
-    raphael "^2.2.7"
-    vue "^2.1.0"
 
 vue-template-compiler@^2.0.0-alpha.8:
   version "2.5.13"
@@ -5917,7 +5893,7 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue@^2.1.0, vue@^2.5.13:
+vue@^2.5.13:
   version "2.5.13"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.13.tgz#95bd31e20efcf7a7f39239c9aa6787ce8cf578e1"
 

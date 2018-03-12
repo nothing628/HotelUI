@@ -52,7 +52,7 @@ namespace UIHotel.App.Controller
                                    Date = b.Key,
                                    Debit = b.Sum(x => x.Debit),
                                    Kredit = b.Sum(x => x.Kredit),
-                               }).ToList();
+                               }).OrderBy(x => x.Date).ToList();
 
                     return Json(new { success = true, data = grp });
                 }

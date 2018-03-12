@@ -419,6 +419,7 @@
     <None Include="View\Setup\Migration.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="vue\src\components\BarChart.js" />
     <None Include="vue\src\components\date\DatePicker.vue" />
     <None Include="vue\src\components\dialog\BookDialog.vue" />
     <None Include="vue\src\components\dialog\ColorDialog.vue" />
