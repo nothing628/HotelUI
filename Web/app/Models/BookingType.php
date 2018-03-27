@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookingType extends Model
 {
-    //
+    protected $table = 'booking_type';
 }

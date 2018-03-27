@@ -38,7 +38,7 @@ class CreateGuestTable extends Migration
             $table->bigIncrements('id');
             $table->string('type', 50);
             $table->boolean('is_online')->default(false);
-            $table->string('online_provider', 50)->nullalbe();
+            $table->string('online_provider', 50)->nullable();
             $table->timestamps();
         });
 

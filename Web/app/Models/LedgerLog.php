@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RoomCategory extends Model
+class LedgerLog extends Model
 {
-    protected $table = 'room_category';
+    //
 }
