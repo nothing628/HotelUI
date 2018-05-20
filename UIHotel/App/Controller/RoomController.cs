@@ -28,7 +28,56 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler change()
         {
+            var id = Query["roomId"];
+            var roomId = Convert.ToInt64(id);
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var room = (from a in model.Rooms
+                                where a.Id == roomId
+                                select a).FirstOrDefault();
+
+                    if (room != null)
+                    {
+                        //Push to view
+                    }
+                } catch
+                {
+
+                }
+            }
+
             return View("Room.Change");
+        }
+
+        public IResourceHandler finishClean()
+        {
+            var id = Query["roomId"];
+            var roomId = Convert.ToInt64(id);
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var room = (from a in model.Rooms
+                                where a.Id == roomId
+                                select a).FirstOrDefault();
+
+                    if (room != null)
+                    {
+                        room.IdStatus = 1;
+
+                        model.Entry(room).State = EntityState.Modified;
+                        model.SaveChanges();
+                    }
+                } catch
+                {
+                }
+            }
+
+            return Redirect("http://localhost.com/room/get/index");
         }
 
         public IResourceHandler detail()
@@ -48,14 +97,13 @@ namespace UIHotel.App.Controller
                     {
                         return View("Room.Detail", room);
                     }
-
-                    return Redirect("http://localhost.com/room/get/index");
                 }
                 catch
                 {
-                    return Redirect("http://localhost.com/room/get/index");
                 }
             }
+
+            return Redirect("http://localhost.com/room/get/index");
         }
 
         public IResourceHandler price()

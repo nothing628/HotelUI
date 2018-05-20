@@ -80,7 +80,7 @@ namespace UIHotel.ViewModel
                 {
                     ls.Add(new RoomLink() {
                         Icon = "zmdi zmdi-flag",
-                        Href = string.Format("http://localhost.com/room/get/change?roomId={0}", Id),
+                        Href = string.Format("http://localhost.com/room/get/finishClean?roomId={0}", Id),
                         Name = "Finish Cleaning",
                         Color = "AB47BC",
                     });

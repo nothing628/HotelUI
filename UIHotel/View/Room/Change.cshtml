@@ -1,2 +1,17 @@
-﻿
-<h1>Change Room !</h1>
+﻿@{
+    Layout = "Layout";
+}
+
+@section title { Change Room }
+
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Change Room</h1>
+            </header>
+
+            <room-change></room-change>
+        </v-flex>
+    </v-layout>
+</v-container>
