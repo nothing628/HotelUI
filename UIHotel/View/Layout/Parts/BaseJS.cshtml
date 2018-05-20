@@ -21,6 +21,39 @@
 <script src="http://localhost.com/lib/js/fullcalendar.min.js"></script>
 
 <!-- App functions and actions -->
+<script>
+    window.menu_list = [
+        { html: '<i class="zmdi zmdi-home"></i> Home', url: 'http://localhost.com/home/get/index'},
+        { html: '<i class="zmdi zmdi-widgets"></i> Room', submenu: [
+            { html: 'Room List', url: 'http://localhost.com/room/get/index' },
+            { html: 'Room Category', url: 'http://localhost.com/room/get/category' },
+            { html: 'Room Maintain', url: 'http://localhost.com/setting/get/room' },
+            { html: 'Price Maintain', url: 'http://localhost.com/setting/get/rate' },
+            { html: 'Price Calendar', url: 'http://localhost.com/room/get/price' },
+        ]},
+        { html: '<i class="zmdi zmdi-bookmark"></i> Booking', submenu: [
+            { html: 'Create Booking', url: 'http://localhost.com/checkin/get/booking' },
+            { html: 'List Booking', url: 'http://localhost.com/checkin/get/listBooking' },
+            { html: 'List Checkin', url: 'http://localhost.com/checkin/get/list' },
+        ]},
+        { html: '<i class="zmdi zmdi-account"></i> Guest', submenu: [
+            { html: 'List Guest', url: 'http://localhost.com/guest/get/list' },
+        ]},
+        { html: '<i class="zmdi zmdi-money"></i> Keuangan', submenu: [
+            { html: 'Transaksi', url: 'http://localhost.com/money/get/transaksi' },
+            { html: 'Category', url: 'http://localhost.com/money/get/category' },
+        ]},
+        { html: '<i class="zmdi zmdi-trending-up"></i> Report', submenu: [
+            { html: 'Check In/Out', url: 'http://localhost.com/report/get/checkin' },
+            { html: 'Keuangan', url: 'http://localhost.com/report/get/finance' },
+        ]},
+        { html: '<i class="zmdi zmdi-settings"></i> Settings', submenu: [
+            { html: 'Application Setting', url: 'http://localhost.com/setting/get/index' },
+            { html: 'Database Setting', url: 'http://localhost.com/setting/get/app' },
+            { html: 'Users', url: 'http://localhost.com/setting/get/user' },
+        ]},
+    ]
+</script>
 <script src="http://localhost.com/build.js"></script>
 <script src="http://localhost.com/js/demo.js"></script>
 <script src="http://localhost.com/js/apps.js"></script>

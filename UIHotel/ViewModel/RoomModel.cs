@@ -70,9 +70,19 @@ namespace UIHotel.ViewModel
                     ls.Add(new RoomLink()
                     {
                         Icon = "zmdi zmdi-refresh-sync",
-                        Href = string.Format("http://localhost.com/home/get/change?roomId={0}", Id),
+                        Href = string.Format("http://localhost.com/room/get/change?roomId={0}", Id),
                         Name = "Change Room",
                         Color = "F9A825",
+                    });
+                }
+
+                if (Status == "Cleaning")
+                {
+                    ls.Add(new RoomLink() {
+                        Icon = "zmdi zmdi-flag",
+                        Href = string.Format("http://localhost.com/room/get/change?roomId={0}", Id),
+                        Name = "Finish Cleaning",
+                        Color = "AB47BC",
                     });
                 }
 

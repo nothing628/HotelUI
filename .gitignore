@@ -262,3 +262,5 @@ __pycache__/
 *.map
 /UIHotel/bower_components/*
 /UIHotel/Assets/lib
+/Web/public/css/build.css
+/Web/public/js/build.js

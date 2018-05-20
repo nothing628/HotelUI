@@ -31,11 +31,13 @@ import SetupApp from './pages/setup/AppSetup.vue'
 import SetupDb from './pages/setup/DBSetup.vue'
 import SetupMigrate from './pages/setup/DBMigrate.vue'
 import SetupFinish from './pages/setup/Finish.vue'
+import Menubar from './components/utils/Menubar.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 Vue.component('dashboard', Home)
 Vue.component('login', Login)
+Vue.component('menubar', Menubar)
 Vue.component('booking', Booking)
 Vue.component('booking-list', BookingList)
 Vue.component('checkin', Checkin)
