@@ -1,4 +1,6 @@
-﻿@{
+﻿@using RazorEngine
+@inherits UIHotel.App.View.Template.HtmlTemplateBase<dynamic>
+@{
     Layout = "Layout";
 }
 
@@ -11,7 +13,7 @@
                 <h1>Change Room</h1>
             </header>
 
-            <room-change></room-change>
+            <room-change checkid="@Model.Id"></room-change>
         </v-flex>
     </v-layout>
 </v-container>

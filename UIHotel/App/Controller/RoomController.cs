@@ -35,13 +35,15 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
-                    var room = (from a in model.Rooms
-                                where a.Id == roomId
-                                select a).FirstOrDefault();
+                    var checkin = (from a in model.CheckIn
+                                  where a.IdRoom == roomId
+                                  where a.CheckoutAt == null
+                                  select a).SingleOrDefault();
 
-                    if (room != null)
+                    if (checkin != null)
                     {
                         //Push to view
+                        return View("Room.Change", checkin);
                     }
                 } catch
                 {
@@ -49,7 +51,7 @@ namespace UIHotel.App.Controller
                 }
             }
 
-            return View("Room.Change");
+            return Redirect("http://localhost.com/room/get/index");
         }
 
         public IResourceHandler finishClean()
@@ -241,6 +243,11 @@ namespace UIHotel.App.Controller
                     return Json(new { success = false, message = ex.Message });
                 }
             }
+        }
+
+        public IResourceHandler changeRoom()
+        {
+            return Json(new { success = true });
         }
         #endregion
         #region Category Maintain

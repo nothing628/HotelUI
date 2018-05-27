@@ -419,6 +419,13 @@
                 var min = moment()
 
                 return min.format('YYYY-MM-DD')
+            },
+            isValid() {
+                const registration = this.registration
+                const room = this.room
+                const guest = this.guest
+
+                return registration.valid && room.valid && guest.valid
             }
         },
         watch: {
@@ -544,7 +551,7 @@
                 const guest = this.guest
                 const data = { registration, room, guest }
 
-                if (registration.valid && room.valid && guest.valid) {
+                if (this.isValid) {
                     axios.post('http://localhost.com/checkin/post/postCheckin', data)
                         .then(this.checkinData)
                         .catch(e => { })

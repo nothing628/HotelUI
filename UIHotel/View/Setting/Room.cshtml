@@ -2,12 +2,17 @@
     Layout = "Layout";
 }
 
-<header class="content__title">
-    <h1>Room Maintain</h1>
-</header>
+@section title { Room Maintain }
 
-<div class="row todo">
-    <div class="col-md-12">
-        <room-setting></room-setting>
-    </div>
-</div>
+<v-container fluid grid-list-md>
+    <v-layout row>
+        <v-flex lg12 md12 sm12 xs12>
+            <header class="content__title">
+                <h1>Room Maintain</h1>
+            </header>
+
+            <room-setting></room-setting>
+        </v-flex>
+    </v-layout>
+</v-container>
+

@@ -17,6 +17,7 @@ import GuestDetail from './pages/guest/Detail.vue'
 import MoneyTransaction from './pages/money/Transaction.vue'
 import MoneyCategory from './pages/money/Category.vue'
 import RoomDetail from './pages/room/Detail.vue'
+import RoomChange from './pages/room/Change.vue'
 import RoomCategory from './pages/room/Category.vue'
 import RoomCalendar from './pages/room/Calendar.vue'
 import RoomPrice from './pages/room/Price.vue'
@@ -52,6 +53,7 @@ Vue.component('guest-detail', GuestDetail)
 Vue.component('money-transaction', MoneyTransaction)
 Vue.component('money-category', MoneyCategory)
 Vue.component('room-detail', RoomDetail)
+Vue.component('room-change', RoomChange)
 Vue.component('room-category', RoomCategory)
 Vue.component('room-calendar', RoomCalendar)
 Vue.component('room-list', RoomList)
