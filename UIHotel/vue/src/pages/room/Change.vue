@@ -78,8 +78,18 @@
                 data.data.forEach(x => this.tableData.items.push(x))
             },
             move(item) {
-                console.log('move', item)
-                console.log('checkid', this.checkid)
+                let checkid = this.checkid
+                let roomid = item.Id
+
+                axios.post('http://localhost.com/room/post/changeRoom', { checkid, roomid })
+                    .then(this.moveResponse)
+            },
+            moveResponse(response) {
+                let data = response.data
+
+                if (data.success) {
+                    window.location = data.redirect_uri
+                }
             }
         },
         mounted() {

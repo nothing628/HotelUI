@@ -247,7 +247,36 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler changeRoom()
         {
-            return Json(new { success = true });
+            var roomid = jToken.Value<int>("roomid");
+            var checkid = jToken.Value<string>("checkid");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var checkin = (from a in model.CheckIn
+                                  where a.Id == checkid
+                                  select a).Single();
+                    var roomFirst = (from a in model.Rooms
+                                     where a.Id == checkin.IdRoom
+                                     select a).Single();
+                    var roomLast = (from a in model.Rooms
+                                    where a.Id == roomid
+                                    select a).Single();
+
+                    checkin.IdRoom = roomid;
+                    roomFirst.IdStatus = 1;
+                    roomLast.IdStatus = 3;
+
+                    model.SaveChanges();
+                    return Json(new { success = true, redirect_uri = "http://localhost.com/room/get/index" });
+                } catch
+                {
+                    //
+                }
+            }
+
+            return Json(new { success = false });
         }
         #endregion
         #region Category Maintain
