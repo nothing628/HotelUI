@@ -24,12 +24,7 @@ namespace UIHotel2
             var prop = obj.AddDynamicProperty("new");
 
             var fun = obj.AddFunction("test2");
-            fun.Execute += Fun_Execute;
-        }
-
-        private void Fun_Execute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
-        {
-            e.SetReturnValue("S");
+            fun.Execute += (_, args) => args.SetReturnValue("S");
         }
     }
 }

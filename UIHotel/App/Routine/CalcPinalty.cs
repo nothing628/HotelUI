@@ -46,7 +46,7 @@ namespace UIHotel.App.Routine
                     var pinalty = (from a in model.InvoiceDetails
                                    where a.IdInvoice == invoice.Id
                                    where a.IsSystem
-                                   where a.Description == "Pinalty"
+                                   where a.IdKind == 3
                                    select a).FirstOrDefault();
 
                     if (pinaltyHour < 0) return;
@@ -60,6 +60,7 @@ namespace UIHotel.App.Routine
                             CreateAt = DateTime.Now,
                             UpdateAt = DateTime.Now,
                             IdInvoice = invoice.Id,
+                            IdKind = 3,
                             IsSystem = true,
                             TransactionDate = endDate
                         };

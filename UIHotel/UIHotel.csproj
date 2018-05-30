@@ -188,6 +188,7 @@
     <Compile Include="Data\Migrations\V4CreatePriceTable.cs" />
     <Compile Include="Data\Migrations\V5CreateSettingTable.cs" />
     <Compile Include="Data\Migrations\V7ModifyBookingTable.cs" />
+    <Compile Include="Data\Migrations\V8ModifyInvoiceTable.cs" />
     <Compile Include="Data\Seeds\GuestSeeder.cs" />
     <Compile Include="Data\Seeds\LedgerSeeder.cs" />
     <Compile Include="Data\Seeds\RoomPriceSeeder.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Data\Migrations\V3CreateInvoiceTable.cs" />
     <Compile Include="Data\Migrations\V1CreateUserTable.cs" />
     <Compile Include="Data\Migrations\Migrator.cs" />
+    <Compile Include="Data\Table\InvoiceKind.cs" />
     <Compile Include="Data\Table\LedgerCategory.cs" />
     <Compile Include="Data\Table\LedgerLog.cs" />
     <Compile Include="Data\Table\Room.cs" />

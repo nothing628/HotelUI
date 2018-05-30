@@ -450,6 +450,7 @@ namespace UIHotel.App.Controller
             var invDet = new InvoiceDetail()
             {
                 IdInvoice = inv.Id,
+                IdKind = 97,
                 AmmountIn = deposit,
                 TransactionDate = DateTime.Now,
                 CreateAt = DateTime.Now,
@@ -476,6 +477,8 @@ namespace UIHotel.App.Controller
                             CreateAt = DateTime.Now,
                             UpdateAt = DateTime.Now,
                             IdInvoice = inv.Id,
+                            IdKind = 1,
+                            IdRoom = checkin.IdRoom,
                             Description = description,
                             AmmountOut = roomPrice,
                             AmmountIn = 0,
@@ -741,6 +744,7 @@ namespace UIHotel.App.Controller
                             Description = description,
                             IsSystem = false,
                             IdInvoice = invoice.Id,
+                            IdKind = 100,
                             TransactionDate = DateTime.Now,
                             CreateAt = DateTime.Now,
                             UpdateAt = DateTime.Now,
@@ -787,6 +791,7 @@ namespace UIHotel.App.Controller
                             TransactionDate = DateTime.Now,
                             Description = "Tax",
                             IsSystem = true,
+                            IdKind = 99,
                             IdInvoice = invoice.Id,
                         };
 
@@ -803,6 +808,7 @@ namespace UIHotel.App.Controller
                                 TransactionDate = DateTime.Now,
                                 Description = "Cashback",
                                 IsSystem = true,
+                                IdKind = 98,
                                 IdInvoice = invoice.Id,
                             };
 

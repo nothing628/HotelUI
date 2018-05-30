@@ -16,29 +16,36 @@ namespace UIHotel.Data.Table
         [Column("id_invoice", Order = 1)]
         public string IdInvoice { get; set; }
 
-        [Column("description", Order = 2)]
+        [Column("id_room", Order = 2)]
+        public long IdRoom { get; set; }
+
+        [Required]
+        [Column("id_kind", Order = 3)]
+        public long IdKind { get; set; }
+
+        [Column("description", Order = 4)]
         [StringLength(500)]
         public string Description { get; set; }
 
-        [Column("is_system", Order = 3)]
+        [Column("is_system", Order = 5)]
         public bool IsSystem { get; set; }
 
         [Required]
-        [Column("date_transaction", Order = 4)]
+        [Column("date_transaction", Order = 6)]
         [DataType(DataType.Date)]
         public DateTime TransactionDate { get; set; }
 
-        [Column("ammount_in", Order = 5)]
+        [Column("ammount_in", Order = 7)]
         public decimal AmmountIn { get; set; }
 
-        [Column("ammount_out", Order = 6)]
+        [Column("ammount_out", Order = 8)]
         public decimal AmmountOut { get; set; }
 
         [Required]
-        [Column("create_at", Order = 7)]
+        [Column("create_at", Order = 9)]
         public DateTime CreateAt { get; set; }
 
-        [Column("update_at", Order = 8)]
+        [Column("update_at", Order = 10)]
         public DateTime? UpdateAt { get; set; }
         
         [ForeignKey("IdInvoice")]

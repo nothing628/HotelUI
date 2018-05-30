@@ -18,6 +18,7 @@ namespace UIHotel.Data
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+        public DbSet<InvoiceKind> InvoiceKinds { get; set; }
         public DbSet<RoomCategory> RoomCategory { get; set; }
         public DbSet<RoomPrice> RoomPrice { get; set; }
         public DbSet<RoomStatus> RoomStatus { get; set; }
