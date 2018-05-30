@@ -209,6 +209,9 @@ namespace UIHotel.App.Controller
         [AllowAuthorize]
         public IResourceHandler GetSettings()
         {
+            //Refresh Settings
+            SettingProvider.LoadDBSetting();
+
             return Json(new
             {
                 success = true,

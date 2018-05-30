@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel.Data.Migrations
 {
-    [Migration(7)]
+    [Migration(8)]
     public class V8ModifyInvoiceTable : Migration
     {
         public override void Down()

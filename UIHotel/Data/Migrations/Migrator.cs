@@ -4,56 +4,55 @@ using FluentMigrator.Runner.Generators.MySql;
 using FluentMigrator.Runner.Initialization;
 using FluentMigrator.Runner.Processors;
 using FluentMigrator.Runner.Processors.MySql;
+using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using UIHotel.App.Provider;
+using System.Linq;
 
 namespace UIHotel.Data.Migrations
 {
     class Migrator
     {
-        private MigrationRunner GetRunner()
+        /// <summary>
+        /// Configure the dependency injection services
+        /// </sumamry>
+        private IServiceProvider CreateServices()
         {
             var filename = Process.GetCurrentProcess().MainModule.FileName;
             var fname = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
             var asm = Assembly.LoadFile(fname);
-            var announcer = new NullAnnouncer();
-            var context = new RunnerContext(announcer)
-            {
-                Database = "mysql",
-                Timeout = 15,
-                Connection = SettingProvider.SQL_Connection_Str,
-                Namespace = "UIHotel.Data.Migrations",
+            var conn_str = SettingProvider.SQL_Connection_Str;
 
-            };
-            var options = new ProcessorOptions() { Timeout = 15 };
-
-            try
-            {
-                var factory = new MySqlDbFactory();
-                var connection = new MySqlConnection(SettingProvider.SQL_Connection_Str);
-                var generator = new MySqlGenerator();
-                var processor = new MySqlProcessor(connection, generator, announcer, options, factory);
-                var runner = new MigrationRunner(asm, context, processor);
-
-                return runner;
-            } catch
-            {
-                return null;
-            }
-            
+            return new ServiceCollection()
+                // Add common FluentMigrator services
+                .AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    // Add SQLite support to FluentMigrator
+                    .AddMySql5()
+                    // Set the connection string
+                    .WithGlobalConnectionString(conn_str)
+                    // Define the assembly containing the migrations
+                    .WithMigrationsIn(asm))
+                // Enable logging to console in the FluentMigrator way
+                .AddLogging(lb => lb.AddFluentMigratorConsole())
+                // Build the service provider
+                .BuildServiceProvider(false);
         }
 
         public void RunDown()
         {
             try
             {
-                var runner = GetRunner();
+                // Instantiate the runner
+                var serviceProvider = CreateServices();
+                var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 
-                runner.MigrateDown(0);
+                // Execute the migrations
+                runner.MigrateUp();
             } catch
             {
                 //
@@ -64,10 +63,13 @@ namespace UIHotel.Data.Migrations
         {
             try
             {
-                var runner = GetRunner();
+                // Instantiate the runner
+                var serviceProvider = CreateServices();
+                var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 
-                runner.MigrateUp(true);
-            } catch
+                // Execute the migrations
+                runner.MigrateUp();
+            } catch (Exception ex)
             {
 
             }
