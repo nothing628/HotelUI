@@ -257,16 +257,37 @@ namespace UIHotel.App.Controller
                     var checkin = (from a in model.CheckIn
                                   where a.Id == checkid
                                   select a).Single();
-                    var roomFirst = (from a in model.Rooms
+                    var roomFirst = (from a in model.Rooms.Include(x => x.Category)
                                      where a.Id == checkin.IdRoom
                                      select a).Single();
-                    var roomLast = (from a in model.Rooms
+                    var roomLast = (from a in model.Rooms.Include(x => x.Category)
                                     where a.Id == roomid
                                     select a).Single();
 
                     checkin.IdRoom = roomid;
                     roomFirst.IdStatus = 1;
                     roomLast.IdStatus = 3;
+
+                    if (roomLast.GetPrice() > roomFirst.GetPrice())
+                    {
+                        //Create invoice here
+                        var diff = roomLast.GetPrice() - roomFirst.GetPrice();
+                        var inv = new InvoiceDetail()
+                        {
+                            IdInvoice = checkin.Invoice.Id,
+                            IdKind = 2,
+                            IdRoom = roomLast.Id,
+                            AmmountOut = diff,
+                            AmmountIn = 0,
+                            Description = "Move room Charge from " + roomFirst.RoomNumber + "' to '" + roomLast.RoomNumber + "'",
+                            IsSystem = true,
+                            TransactionDate = DateTime.Today,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                        };
+
+                        model.InvoiceDetails.Add(inv);
+                    }
 
                     model.SaveChanges();
                     return Json(new { success = true, redirect_uri = "http://localhost.com/room/get/index" });

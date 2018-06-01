@@ -32,6 +32,11 @@ namespace UIHotel.Data.Table
 
         [ForeignKey("IdStatus")]
         public RoomStatus Status { get; set; }
+
+        public decimal GetPrice()
+        {
+            return Category.GetPrice();
+        }
         
         [NotMapped]
         public string RoomStatus { get => Status.Status; }

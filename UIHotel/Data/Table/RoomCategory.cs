@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,5 +20,24 @@ namespace UIHotel.Data.Table
         [StringLength(200)]
         [Column("description")]
         public string Description { get; set; }
+
+        public decimal GetPrice()
+        {
+            decimal price = 0;
+            var date = DateTime.Today;
+
+            using (var model = new DataContext())
+            {
+
+                price = (from b in model.RoomPrice
+                         join e in model.DayCycles on b.IdEffect equals e.IdEffect into f
+                         from g in f
+                         where g.DateAt == date
+                         where b.IdCategory == Id
+                         select b.Price).SingleOrDefault();
+            }
+
+            return price;
+        }
     }
 }
