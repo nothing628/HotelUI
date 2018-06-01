@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel.Data;
 using UIHotel.Data.Table;
 
 namespace UIHotel.ViewModel
@@ -14,7 +15,35 @@ namespace UIHotel.ViewModel
         public Room DataRoom { get; set; }
         [JsonIgnore]
         public RoomStatus DataStatus { get; set; }
+        [JsonIgnore]
+        public Checkin Checkin {
+            get
+            {
+                if (!is_checkin)
+                {
+                    using (var model = new DataContext())
+                    {
+                        try
+                        {
+                            _checkin = (from a in model.CheckIn
+                                        where a.CheckoutAt == null
+                                        where a.IdRoom == Id
+                                        select a).SingleOrDefault();
+                        }
+                        catch
+                        {
+                            _checkin = null;
+                        }
+                    }
 
+                    is_checkin = true;
+                }
+
+                return _checkin;
+            }
+        }
+        private Checkin _checkin;
+        private bool is_checkin;
 
         public long Id { get => DataRoom.Id; }
         public string RoomNumber { get => DataRoom.RoomNumber; }
@@ -64,8 +93,8 @@ namespace UIHotel.ViewModel
                         Color = "039BE5",
                     });
                 }
-                
-                if (Status == "Occupied")
+
+                if (Status == "Occupied" && Checkin != null && Checkin.CheckinAt.AddMinutes(30) > DateTime.Now)
                 {
                     ls.Add(new RoomLink()
                     {

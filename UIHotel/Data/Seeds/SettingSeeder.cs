@@ -29,6 +29,8 @@ namespace UIHotel.Data.Seeds
             context.Settings.Add(new Setting() { Key = "hotel.logo", Value = "" });
             context.SaveChanges();
 
+            SettingProvider.LoadDBSetting();
+
             context.Users.Add(new User() {
                 Fullname = "Administrator",
                 Permission = (int)AuthLevel.Administrator,

@@ -392,7 +392,7 @@ namespace UIHotel.App.Controller
             {
                 try
                 {
-                    if (booking != null)
+                    if (!string.IsNullOrEmpty(booking))
                     {
                         //TODO: Update booking here
                         var book = (from a in model.Bookings
