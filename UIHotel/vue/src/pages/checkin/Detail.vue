@@ -114,8 +114,7 @@
                                     <v-icon right dark>print</v-icon>
                                 </v-btn>
                                 <v-data-table v-bind:headers="tableData.headers"
-                                              v-bind:items="tableData.items"
-                                              v-bind:pagination.sync="tableData.pagination"
+                                              v-bind:items="AllowedItems"
                                               v-bind:total-items="tableData.totalItems"
                                               v-bind:loading="tableData.loading"
                                               hide-actions
@@ -138,15 +137,15 @@
                                         </tr>
                                         <tr>
                                             <td colspan="4">
-                                                <strong>Deposit</strong>
-                                            </td>
-                                            <td>{{ deposit | currency }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
                                                 <strong>Total Pay</strong>
                                             </td>
                                             <td>{{ TotalPay | currency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <strong>Cashback</strong>
+                                            </td>
+                                            <td>{{ CashBack | currency }}</td>
                                         </tr>
                                     </template>
                                 </v-data-table>
@@ -160,6 +159,7 @@
 </template>
 <script>
     import axios from 'axios'
+import { invalid } from 'moment';
     export default {
         data() {
             return {
@@ -217,19 +217,57 @@
             }
         },
         computed: {
+            AllowedItems() {
+                var items = this.tableData.items.filter(item => {
+                    let kind = item.IdKind
+
+                    return (kind != 98 && kind != 100)
+                })
+
+                return items
+            },
             TotalBalance() {
                 var inVal = 0
                 var outVal = 0
 
                 this.tableData.items.forEach((item) => {
-                    inVal += item.AmmountIn
-                    outVal += item.AmmountOut
+                    let kind = item.IdKind
+
+                    if (kind != 98 && kind != 100) {
+                        inVal += item.AmmountIn
+                        outVal += item.AmmountOut
+                    }
                 })
 
                 return (inVal - outVal)
             },
             TotalPay() {
-                return 0 - (this.TotalBalance) - this.deposit
+                var inVal = 0
+
+                this.tableData.items.forEach((item) => {
+                    let kind = item.IdKind
+
+                    if (kind == 100) {
+                        inVal += item.AmmountIn
+                    }
+                })
+
+                return inVal
+            },
+            CashBack() {
+                var inVal = 0
+                var cashback = this.tableData.items.filter(item => {
+                    return (item.IdKind == 98)
+                })
+
+                if (cashback.length == 0) {
+                    //calculate cashback
+                    inVal = this.TotalBalance - this.TotalPay
+                } else {
+                    inVal = cashback[0].AmmountOut
+                }
+
+                return inVal
             },
             PhotoUrl() {
                 if (this.checkin.PhotoGuest)

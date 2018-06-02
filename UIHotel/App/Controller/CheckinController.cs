@@ -696,7 +696,7 @@ namespace UIHotel.App.Controller
                                  where a.Id == invoices.IdGuest
                                  select a).FirstOrDefault();
 
-                    invoices.Details = invoices.Details.OrderBy(x => x.TransactionDate).ToList();
+                    invoices.Details = invoices.Details.OrderBy(x => x.CreateAt).ToList();
 
                     if (invoices != null && guest != null)
                         return Json(new { success = true, data = invoices, guest });

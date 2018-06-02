@@ -22,23 +22,35 @@ namespace UIHotel
         [MTAThread]
         static void Main(string[] args)
         {
-#if DEBUG
-            //App.Auth.AuthState.CurrentUserId = 1;
-#endif
             var routine = new CalcPinalty();
             routine.DoWork();
 
             using (AppMain.Main = new AppMain())
             {
                 AppMain.Main.Init();
-
+#if DEBUG
+                DebugMain(args);
+#else
                 if (args.Length == 0)
                     AppMain.Main.Run("http://localhost.com/home/get/login");     //Open after finish configure
                 else if (args[0] == "--setup")
                     AppMain.Main.Run("http://localhost.com/setup/index");   // Open Setup Dialog
                 else
                     Cef.Shutdown();
+#endif
             }
+        }
+
+        static void DebugMain(string[] args)
+        {
+            App.Auth.AuthState.CurrentUserId = 1;
+
+            if (args.Length == 0)
+                AppMain.Main.Run("http://localhost.com/home/get/index");     //Open after finish configure
+            else if (args[0] == "--setup")
+                AppMain.Main.Run("http://localhost.com/setup/index");   // Open Setup Dialog
+            else
+                Cef.Shutdown();
         }
     }
 }
