@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using UIHotel.App.Attributes;
+using UIHotel.App.Routine;
 using UIHotel.Data;
 using UIHotel.Data.Table;
 using UIHotel.ViewModel;
@@ -801,7 +802,6 @@ namespace UIHotel.App.Controller
         public IResourceHandler closeInvoice()
         {
             var id = jToken.Value<string>("id");
-            var tax = jToken.Value<decimal>("tax");
             var cashback = jToken.Value<decimal>("cashback");
 
             using (var model = new DataContext())
@@ -811,46 +811,31 @@ namespace UIHotel.App.Controller
                 {
                     var invoice = (from a in model.Invoices
                                    where a.Id == id
-                                   select a).FirstOrDefault();
-
-                    if (invoice != null && cashback >= 0)
+                                   select a).SingleOrDefault();
+                    
+                    if (invoice != null)
                     {
-                        // Add Tax
-                        var taxdetail = new InvoiceDetail()
+                        // Recalculate Tax
+                        new CalcPinalty().CalculateTax(invoice);
+
+                        var detail = new InvoiceDetail()
                         {
-                            AmmountOut = tax,
+                            AmmountOut = cashback,
                             AmmountIn = 0,
                             CreateAt = DateTime.Now,
                             UpdateAt = DateTime.Now,
                             TransactionDate = DateTime.Now,
-                            Description = "Tax",
+                            Description = "Cashback",
                             IsSystem = true,
-                            IdKind = 99,
+                            IdKind = 98,
                             IdInvoice = invoice.Id,
                         };
 
-                        model.InvoiceDetails.Add(taxdetail);
-
-                        if (cashback > 0)
-                        {
-                            var detail = new InvoiceDetail()
-                            {
-                                AmmountOut = cashback,
-                                AmmountIn = 0,
-                                CreateAt = DateTime.Now,
-                                UpdateAt = DateTime.Now,
-                                TransactionDate = DateTime.Now,
-                                Description = "Cashback",
-                                IsSystem = true,
-                                IdKind = 98,
-                                IdInvoice = invoice.Id,
-                            };
-
-                            model.InvoiceDetails.Add(detail);
-                        }
+                        model.InvoiceDetails.Add(detail);
 
                         // Allow to close invoice
                         invoice.IsClosed = true;
+                        invoice.UpdateAt = DateTime.Now;
 
                         model.Entry(invoice).State = EntityState.Modified;
                         model.SaveChanges();

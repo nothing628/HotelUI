@@ -98,6 +98,12 @@
                             <v-flex md3>
                                 <v-text-field prefix="Rp" type="number" v-model="Deposit"></v-text-field>
                             </v-flex>
+                            <v-flex md3>
+                                <v-subheader>Tax Charge</v-subheader>
+                            </v-flex>
+                            <v-flex md3>
+                                <v-text-field suffix="%" type="number" v-model="Tax"></v-text-field>
+                            </v-flex>
                         </v-layout>
 
                         <v-btn color="success" @click.stop="saveDataApi">
@@ -129,6 +135,7 @@
                 menu1: false,
                 Pinalty: 0,
                 Deposit: 0,
+                Tax: 0,
                 HotelName: null,
                 HotelAddress: null,
                 HotelLogo: '',
@@ -149,6 +156,7 @@
                 var data = response.data
 
                 if (data.success) {
+                    this.Tax = data.TaxPercent
                     this.Deposit = data.Deposit
                     this.Pinalty = data.Pinalty
                     this.CheckinTime = data.CheckinTime
@@ -160,6 +168,7 @@
             },
             saveDataApi() {
                 let data = {
+                    Tax: this.Tax,
                     Pinalty: this.Pinalty,
                     Deposit: this.Deposit,
                     CheckinTime: this.CheckinTime,

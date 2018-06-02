@@ -255,6 +255,7 @@
     <Compile Include="App\Controller\SetupController.cs" />
     <Compile Include="App\Provider\RouterProvider.cs" />
     <Compile Include="App\Provider\ServiceProvider.cs" />
+    <Compile Include="App\Provider\SettingAccessor.cs" />
     <Compile Include="App\Provider\ViewProvider.cs" />
     <Compile Include="App\Router\RouteModel.cs" />
     <Compile Include="App\Router\RouterControl.cs" />

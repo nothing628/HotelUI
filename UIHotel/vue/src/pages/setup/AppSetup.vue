@@ -93,6 +93,12 @@
                     <v-flex md3>
                         <v-text-field prefix="Rp" type="number" v-model="Deposit"></v-text-field>
                     </v-flex>
+                    <v-flex md3>
+                        <v-subheader>Tax Charge</v-subheader>
+                    </v-flex>
+                    <v-flex md2>
+                        <v-text-field suffix="%" type="number" v-model="Tax"></v-text-field>
+                    </v-flex>
                 </v-layout>
             </v-form>
         </v-card-text>
@@ -122,6 +128,7 @@
                 menu1: false,
                 Pinalty: 0,
                 Deposit: 0,
+                Tax: 0,
             }
         },
         computed: {
@@ -140,6 +147,7 @@
                 let data = {
                     Pinalty: this.Pinalty,
                     Deposit: this.Deposit,
+                    Tax: this.Tax,
                     CheckinTime: this.CheckinTime,
                     CheckoutTime: this.CheckoutTime,
                     HotelLogo: this.HotelLogo,
@@ -165,6 +173,7 @@
                 var data = response.data
 
                 if (data.success) {
+                    this.Tax = data.TaxPercent
                     this.Deposit = data.Deposit
                     this.Pinalty = data.Pinalty
                     this.CheckinTime = data.CheckinTime

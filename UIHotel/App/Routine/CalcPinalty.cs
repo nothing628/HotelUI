@@ -23,7 +23,11 @@ namespace UIHotel.App.Routine
                                    select a).ToList();
 
                     foreach (var invoice in invoices)
-                        this.CalculatePinalty(invoice);
+                    {
+                        CalculateRoomCharge(invoice);
+                        CalculatePinalty(invoice);
+                        CalculateTax(invoice);
+                    }
                 } catch
                 {
                     //
@@ -31,7 +35,22 @@ namespace UIHotel.App.Routine
             }
         }
 
-        private void CalculatePinalty(Invoice invoice)
+        public void CalculateRoomCharge(Invoice invoice)
+        {
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    //
+                    trans.Commit();
+                } catch
+                {
+                    trans.Rollback();
+                }
+            }
+        }
+        public void CalculatePinalty(Invoice invoice)
         {
             using (var model = new DataContext())
             using (var trans = model.Database.BeginTransaction())
@@ -78,6 +97,63 @@ namespace UIHotel.App.Routine
                     
                     trans.Commit();
                 } catch
+                {
+                    trans.Rollback();
+                }
+            }
+        }
+        public void CalculateTax(Invoice invoice)
+        {
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoiceDetails = (from a in model.InvoiceDetails
+                                      where a.IdInvoice == invoice.Id
+                                      select a).ToList();
+                    var invoiceTax = (from a in invoiceDetails
+                                      where a.IdKind == 99
+                                      select a).SingleOrDefault();
+                    var invoiceCalc = (from a in invoiceDetails
+                                       where a.IdKind != 98
+                                       where a.IdKind != 99
+                                       where a.IdKind != 100
+                                       select a).ToList();
+
+                    var taxPer = SettingProvider.TaxPercent;
+                    var ammountOut = invoiceCalc.Sum(x => x.AmmountOut);
+                    var ammountTax = ammountOut * SettingProvider.TaxFloat;
+
+                    if (invoiceTax == null)
+                    {
+                        invoiceTax = new InvoiceDetail()
+                        {
+                            IdKind = 99,
+                            IdInvoice = invoice.Id,
+                            AmmountIn = 0,
+                            AmmountOut = ammountTax,
+                            TransactionDate = DateTime.Today,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                            IsSystem = true,
+                            Description = "Tax " + taxPer + "%",
+                        };
+
+                        model.InvoiceDetails.Add(invoiceTax);
+                    } else
+                    {
+                        invoiceTax.AmmountOut = ammountTax;
+                        invoiceTax.TransactionDate = DateTime.Today;
+                        invoiceTax.UpdateAt = DateTime.Now;
+
+                        model.Entry(invoiceTax).State = EntityState.Modified;
+                    }
+
+                    model.SaveChanges();
+                    trans.Commit();
+                }
+                catch
                 {
                     trans.Rollback();
                 }

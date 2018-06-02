@@ -268,7 +268,6 @@
             closeInvoice() {
                 let data = {
                     id: this.invoice.invoice_no,
-                    tax: this.Tax,
                     cashback: this.CashBack,
                 }
 

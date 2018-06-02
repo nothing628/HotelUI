@@ -46,6 +46,7 @@ namespace UIHotel.App.Controller
         #region API
         public IResourceHandler SaveSettingApp()
         {
+            var tax = jToken.Value<int>("Tax");
             var deposit = jToken.Value<int>("Deposit");
             var pinalty = jToken.Value<int>("Pinalty");
             var hotel_name = jToken.Value<string>("HotelName");
@@ -63,6 +64,7 @@ namespace UIHotel.App.Controller
                 SettingProvider.HotelAddress = hotel_address;
                 SettingProvider.Deposit = deposit;
                 SettingProvider.Pinalty = pinalty;
+                SettingProvider.TaxPercent = tax;
                 SettingProvider.SaveDBSetting();
 
                 return Json(new { success = true, message = "Setting Saved" });

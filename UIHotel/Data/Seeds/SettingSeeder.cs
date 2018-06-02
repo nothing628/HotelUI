@@ -24,6 +24,7 @@ namespace UIHotel.Data.Seeds
             context.Settings.Add(new Setting() { Key = "checkout.time", Value = "13:00:00" });
             context.Settings.Add(new Setting() { Key = "deposit", Value = "50000" });
             context.Settings.Add(new Setting() { Key = "penalty", Value = "20000" });
+            context.Settings.Add(new Setting() { Key = "tax", Value = "5" });
             context.Settings.Add(new Setting() { Key = "hotel.name", Value = "Hotel Test" });
             context.Settings.Add(new Setting() { Key = "hotel.address", Value = "Tangerang 15122" });
             context.Settings.Add(new Setting() { Key = "hotel.logo", Value = "" });

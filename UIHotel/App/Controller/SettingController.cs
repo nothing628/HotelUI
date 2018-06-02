@@ -12,8 +12,8 @@ using UIHotel.Data.Table;
 
 namespace UIHotel.App.Controller
 {
-    [Authorize(Auth.AuthLevel.Administrator)]
-    [Authorize(Auth.AuthLevel.Manager)]
+    [Authorize(AuthLevel.Administrator)]
+    [Authorize(AuthLevel.Manager)]
     public class SettingController : BaseController
     {
         public SettingController(IRequest request) : base(request)
@@ -215,6 +215,7 @@ namespace UIHotel.App.Controller
             return Json(new
             {
                 success = true,
+                SettingProvider.TaxPercent,
                 SettingProvider.HotelName,
                 SettingProvider.HotelAddress,
                 SettingProvider.HotelLogo,
@@ -227,14 +228,14 @@ namespace UIHotel.App.Controller
 
         public IResourceHandler SetSettings()
         {
-            var token = jToken;
-            var deposit = token.Value<int>("Deposit");
-            var pinalty = token.Value<int>("Pinalty");
-            var hotel_name = token.Value<string>("HotelName");
-            var hotel_logo = token.Value<string>("HotelLogo");
-            var hotel_address = token.Value<string>("HotelAddress");
-            var checkin_time = token.Value<string>("CheckinTime");
-            var checkout_time = token.Value<string>("CheckoutTime");
+            var tax = jToken.Value<int>("Tax");
+            var deposit = jToken.Value<int>("Deposit");
+            var pinalty = jToken.Value<int>("Pinalty");
+            var hotel_name = jToken.Value<string>("HotelName");
+            var hotel_logo = jToken.Value<string>("HotelLogo");
+            var hotel_address = jToken.Value<string>("HotelAddress");
+            var checkin_time = jToken.Value<string>("CheckinTime");
+            var checkout_time = jToken.Value<string>("CheckoutTime");
 
             try
             {
@@ -245,6 +246,7 @@ namespace UIHotel.App.Controller
                 SettingProvider.HotelAddress = hotel_address;
                 SettingProvider.Deposit = deposit;
                 SettingProvider.Pinalty = pinalty;
+                SettingProvider.TaxPercent = tax;
                 SettingProvider.SaveDBSetting();
 
                 return Json(new { success = true, message = "Setting Saved" });
