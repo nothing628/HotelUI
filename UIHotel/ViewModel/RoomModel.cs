@@ -15,35 +15,6 @@ namespace UIHotel.ViewModel
         public Room DataRoom { get; set; }
         [JsonIgnore]
         public RoomStatus DataStatus { get; set; }
-        [JsonIgnore]
-        public Checkin Checkin {
-            get
-            {
-                if (!is_checkin)
-                {
-                    using (var model = new DataContext())
-                    {
-                        try
-                        {
-                            _checkin = (from a in model.CheckIn
-                                        where a.CheckoutAt == null
-                                        where a.IdRoom == Id
-                                        select a).SingleOrDefault();
-                        }
-                        catch
-                        {
-                            _checkin = null;
-                        }
-                    }
-
-                    is_checkin = true;
-                }
-
-                return _checkin;
-            }
-        }
-        private Checkin _checkin;
-        private bool is_checkin;
 
         public long Id { get => DataRoom.Id; }
         public string RoomNumber { get => DataRoom.RoomNumber; }
@@ -91,17 +62,6 @@ namespace UIHotel.ViewModel
                         Href = string.Format("http://localhost.com/checkin/get/booking?roomId={0}", Id),
                         Name = "Booking",
                         Color = "039BE5",
-                    });
-                }
-
-                if (Status == "Occupied" && Checkin != null && Checkin.CheckinAt.AddMinutes(30) > DateTime.Now)
-                {
-                    ls.Add(new RoomLink()
-                    {
-                        Icon = "zmdi zmdi-refresh-sync",
-                        Href = string.Format("http://localhost.com/room/get/change?roomId={0}", Id),
-                        Name = "Change Room",
-                        Color = "F9A825",
                     });
                 }
 

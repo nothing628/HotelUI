@@ -119,7 +119,7 @@ namespace UIHotel.App.Controller
         private void MigrateTables()
         {
             var migrator = new Migrator();
-            migrator.Run();
+            migrator.RunUp();
             DBSeeder.Seed();
         }
 

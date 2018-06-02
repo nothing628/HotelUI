@@ -203,6 +203,40 @@ namespace UIHotel.App.Controller
         {
             return View("Checkin.List");
         }
+
+        public IResourceHandler change()
+        {
+            var checkid = Query["id"];
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var checkin = (from a in model.CheckIn
+                                   where a.Id == checkid
+                                   where a.CheckoutAt == null
+                                   select a).SingleOrDefault();
+
+                    if (checkin != null)
+                    {
+                        if (DateTime.Now > checkin.CheckinAt.AddMinutes(30))
+                        {
+                            return Redirect("http://localhost.com/checkin/get/detail?id=" + checkid);
+                        } else
+                        {
+                            //Push to view
+                            return View("Room.Change", checkin);
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+
+            return Redirect("http://localhost.com/checkin/get/index");
+        }
         #endregion
 
         #region Process Checkin & Booking
@@ -831,6 +865,62 @@ namespace UIHotel.App.Controller
                     return Json(new { success = false, message = "Failed to update invoice table" });
                 }
             }
+        }
+
+        public IResourceHandler changeRoom()
+        {
+            var roomid = jToken.Value<int>("roomid");
+            var checkid = jToken.Value<string>("checkid");
+
+            using (var model = new DataContext())
+            {
+                try
+                {
+                    var checkin = (from a in model.CheckIn
+                                   where a.Id == checkid
+                                   select a).Single();
+                    var roomFirst = (from a in model.Rooms.Include(x => x.Category)
+                                     where a.Id == checkin.IdRoom
+                                     select a).Single();
+                    var roomLast = (from a in model.Rooms.Include(x => x.Category)
+                                    where a.Id == roomid
+                                    select a).Single();
+
+                    checkin.IdRoom = roomid;
+                    roomFirst.IdStatus = 1;
+                    roomLast.IdStatus = 3;
+
+                    if (roomLast.GetPrice() > roomFirst.GetPrice())
+                    {
+                        //Create invoice here
+                        var diff = roomLast.GetPrice() - roomFirst.GetPrice();
+                        var inv = new InvoiceDetail()
+                        {
+                            IdInvoice = checkin.Invoice.Id,
+                            IdKind = 2,
+                            IdRoom = roomLast.Id,
+                            AmmountOut = diff,
+                            AmmountIn = 0,
+                            Description = "Move room Charge from " + roomFirst.RoomNumber + "' to '" + roomLast.RoomNumber + "'",
+                            IsSystem = true,
+                            TransactionDate = DateTime.Today,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                        };
+
+                        model.InvoiceDetails.Add(inv);
+                    }
+
+                    model.SaveChanges();
+                    return Json(new { success = true, redirect_uri = "http://localhost.com/checkin/get/detail?id=" + checkin.Id });
+                }
+                catch
+                {
+                    //
+                }
+            }
+
+            return Json(new { success = false });
         }
         #endregion
     }

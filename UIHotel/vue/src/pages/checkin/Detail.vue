@@ -109,6 +109,10 @@
                                     <span>Pay Invoice</span>
                                     <v-icon right dark>move_to_inbox</v-icon>
                                 </v-btn>
+                                <v-btn dark color="primary" class="mb-4 ml-0 no-print" @click.stop="print">
+                                    <span>Print</span>
+                                    <v-icon right dark>print</v-icon>
+                                </v-btn>
                                 <v-data-table v-bind:headers="tableData.headers"
                                               v-bind:items="tableData.items"
                                               v-bind:pagination.sync="tableData.pagination"
@@ -235,6 +239,10 @@
             }
         },
         methods: {
+            print() {
+                // Print dialog
+                window.CS.print().then((e) => { })
+            },
             imageError() {
                 this.PhotoHash = ''
             },

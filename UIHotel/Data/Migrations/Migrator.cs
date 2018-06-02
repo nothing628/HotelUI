@@ -12,6 +12,8 @@ using System.IO;
 using System.Reflection;
 using UIHotel.App.Provider;
 using System.Linq;
+using Serilog.Core;
+using Serilog;
 
 namespace UIHotel.Data.Migrations
 {
@@ -43,6 +45,9 @@ namespace UIHotel.Data.Migrations
                 .BuildServiceProvider(false);
         }
 
+        /// <summary>
+        /// Rollback all database
+        /// </summary>
         public void RunDown()
         {
             try
@@ -52,14 +57,17 @@ namespace UIHotel.Data.Migrations
                 var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 
                 // Execute the migrations
-                runner.MigrateUp();
-            } catch
+                runner.MigrateDown(0);
+            } catch (Exception ex)
             {
-                //
+                Log.Error(ex, "Error Migrating Down");
             }
         }
 
-        public void Run()
+        /// <summary>
+        /// Migrating Database
+        /// </summary>
+        public void RunUp()
         {
             try
             {
@@ -71,7 +79,7 @@ namespace UIHotel.Data.Migrations
                 runner.MigrateUp();
             } catch (Exception ex)
             {
-
+                Log.Error(ex, "Error Migrating Up");
             }
         }
     }
