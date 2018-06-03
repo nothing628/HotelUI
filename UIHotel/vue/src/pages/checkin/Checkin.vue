@@ -201,6 +201,7 @@
                                                   prepend-icon="event"
                                                   readonly></v-text-field>
                                     <v-date-picker v-model="guest.birth_day"
+                                                    min="1900-01-01"
                                                    :max="allowBir"
                                                    @change="$refs.menu3.save(guest.birth_day)"
                                                    no-title
@@ -411,7 +412,7 @@
                 return country.country_list
             },
             allowBir() {
-                var max = moment().subtract(18, "y")
+                var max = moment().subtract(10, "y")
 
                 return max.format('YYYY-MM-DD')
             },

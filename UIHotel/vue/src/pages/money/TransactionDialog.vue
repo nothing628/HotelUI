@@ -23,7 +23,7 @@
                                 <v-date-picker ref="picker"
                                                v-model="tdate"
                                                @change="$refs.menu1.save(tdate)"
-                                               min="1950-01-01"
+                                               min="1900-01-01"
                                                :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
                             </v-menu>
                         </v-flex>

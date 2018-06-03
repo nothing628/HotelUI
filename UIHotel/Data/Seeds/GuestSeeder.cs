@@ -12,6 +12,7 @@ namespace UIHotel.Data.Seeds
                 IdNumber = "2017999000999",
                 Fullname = "Alex Guest",
                 BirthPlace = "Tangerang",
+                BirthDay = new DateTime(1990, 1, 1),
                 IsVIP = true,
                 Phone1 = "082715543425",
                 Phone2 = "02155524487",

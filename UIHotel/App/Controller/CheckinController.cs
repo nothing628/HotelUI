@@ -469,9 +469,7 @@ namespace UIHotel.App.Controller
 
         public Invoice ProcessInvoice(Checkin checkin, JToken tokenReg, Guest guest)
         {
-            var startDate = checkin.ArriveAt.Date;
-            var endDate = checkin.DepartureAt.Date;
-            var pointDate = startDate;
+            var pointDate = checkin.ArriveAt.Date;
             var deposit = tokenReg.Value<decimal>("deposit");
             var inv = new Invoice()
             {
@@ -499,32 +497,6 @@ namespace UIHotel.App.Controller
                 try
                 {
                     model.Invoices.Add(inv);
-                    model.InvoiceDetails.Add(invDet);
-
-                    do
-                    {
-                        var roomPrice = GetRoomPrice(checkin.IdRoom, pointDate);
-                        var description = "INVOICE ROOM<br><i>" + pointDate.ToString("dd-MM-yyyy") + "</i>";
-                        var newDetail = new InvoiceDetail()
-                        {
-                            IsSystem = true,
-                            TransactionDate = pointDate,
-                            CreateAt = DateTime.Now,
-                            UpdateAt = DateTime.Now,
-                            IdInvoice = inv.Id,
-                            IdKind = 1,
-                            IdRoom = checkin.IdRoom,
-                            Description = description,
-                            AmmountOut = roomPrice,
-                            AmmountIn = 0,
-                        };
-
-                        model.InvoiceDetails.Add(newDetail);
-                        model.SaveChanges();
-
-                        pointDate = pointDate.AddDays(1.0d);
-                    } while (pointDate <= endDate);
-
                     model.SaveChanges();
                     trans.Commit();
                 }
@@ -535,36 +507,11 @@ namespace UIHotel.App.Controller
                 }
             }
 
+            new CalcPinalty().CalculateRoomCharge(inv);
+
             return inv;
         }
-
-        private decimal GetRoomPrice(long roomId, DateTime date)
-        {
-            using (var model = new DataContext())
-            {
-                try
-                {
-                    var room = (from a in model.Rooms
-                                where a.Id == roomId
-                                select a).FirstOrDefault();
-
-                    if (room == null) return 0;
-
-                    var price = (from b in model.RoomPrice
-                                 join e in model.DayCycles on b.IdEffect equals e.IdEffect into f
-                                 from g in f
-                                 where g.DateAt == date
-                                 where b.IdCategory == room.IdCategory
-                                 select b.Price).FirstOrDefault();
-
-                    return price;
-                }
-                catch
-                {
-                    return 0;
-                }
-            }
-        }
+        
         /// <summary>
         /// Get available room
         /// </summary>
