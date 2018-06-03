@@ -106,12 +106,31 @@ namespace UIHotel.Data.Table
                 return PrefixID + string.Format("{0:D5}", newId);
             }
         }
+        
+        [NotMapped]
+        public string ChangeLink
+        {
+            get
+            {
+                return "http://localhost.com/checkin/get/change?id=" + Id;
+            }
+        }
 
+        [NotMapped]
         public string CheckoutLink
         {
             get
             {
                 return "http://localhost.com/checkin/get/checkout?id=" + this.Id;
+            }
+        }
+
+        [NotMapped]
+        public bool CanChange
+        {
+            get
+            {
+                return DateTime.Now < CheckinAt.AddMinutes(30);
             }
         }
     }

@@ -13,6 +13,9 @@
         <v-container fluid grid-list-md>
             <v-layout row>
                 <v-flex md12>
+                    <v-btn dark color="primary" :href="detailLink">
+                        <span>Back</span>
+                    </v-btn>
                     <v-data-table
                         :items="tableData.items"
                         :headers="tableData.headers">
@@ -22,7 +25,7 @@
                                 <td>{{ props.item.RoomFloor }}</td>
                                 <td>{{ props.item.RoomCategory }}</td>
                                 <td class="text-xs-right">
-                                    <v-btn color="success" @click.stop="move(props.item)">Move Here</v-btn>
+                                    <v-btn color="success" @click.stop="move(props.item)">Move</v-btn>
                                 </td>
                             </tr>
                         </template>
@@ -56,6 +59,11 @@
                         { text: 'Actions', sortable: false, align: 'right' },
                     ],
                 }
+            }
+        },
+        computed: {
+            detailLink() {
+                return 'http://localhost.com/checkin/get/detail?id=' + this.checkid
             }
         },
         props: {

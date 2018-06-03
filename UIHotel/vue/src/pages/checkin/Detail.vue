@@ -90,6 +90,10 @@
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
+                                        <v-btn :disabled="!checkin.CanChange" dark color="primary" class="mb-4 ml-0" :href="checkin.ChangeLink">
+                                            <span>Change Room</span>
+                                            <v-icon right dark>refresh</v-icon>
+                                        </v-btn>
                                     </v-flex>
                                 </v-layout>
                             </v-flex>
@@ -178,7 +182,9 @@ import { invalid } from 'moment';
                     InvoiceLink: null,
                     PayLink: null,
                     CheckoutLink: null,
+                    ChangeLink: null,
                     IsInvoiceClose: false,
+                    CanChange: false,
                     Note: null,
                 },
                 tableData: {
@@ -295,6 +301,7 @@ import { invalid } from 'moment';
                     this.checkin.DepartureAt = check.DepartureAt
                     this.checkin.Note = check.Note
                     this.checkin.InvoiceId = check.Invoice.Id
+                    this.checkin.CanChange = check.CanChange
                     this.checkin.IsInvoiceClose = check.Invoice.IsClosed
                     this.checkin.Fullname = check.Guest.Fullname
                     this.checkin.PhotoGuest = check.Guest.PhotoGuest
@@ -303,6 +310,7 @@ import { invalid } from 'moment';
                     this.checkin.InvoiceLink = check.Invoice.InvoiceLink
                     this.checkin.PayLink = check.Invoice.PayLink
                     this.checkin.CheckoutLink = check.CheckoutLink
+                    this.checkin.ChangeLink = check.ChangeLink
                     this.checkin.RoomName = check.Room.RoomName
 
                     this.getInvoiceApi()
