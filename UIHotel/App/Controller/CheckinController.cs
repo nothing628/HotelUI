@@ -706,7 +706,7 @@ namespace UIHotel.App.Controller
         {
             var id = jToken.Value<string>("id");
             var pay = jToken.Value<decimal>("pay");
-
+            
             using (var model = new DataContext())
             using (var trans = model.Database.BeginTransaction())
             {
@@ -718,6 +718,9 @@ namespace UIHotel.App.Controller
 
                     if (invoice != null && pay > 0)
                     {
+                        //Recalculate Tax
+                        new CalcPinalty().CalculateTax(invoice);
+
                         var description = "Payment<br><i>" + DateTime.Now.ToString("dd-MM-yyyy") + "</i>";
                         var detail = new InvoiceDetail()
                         {
@@ -735,8 +738,12 @@ namespace UIHotel.App.Controller
                         model.InvoiceDetails.Add(detail);
                         model.SaveChanges();
                     }
-
+                    
                     trans.Commit();
+
+                    // Recalculate Cashback
+                    new CalcPinalty().CalculateBalance(invoice);
+
                     return Json(new { success = true, message = "Success update data" });
                 } catch
                 {
@@ -762,24 +769,6 @@ namespace UIHotel.App.Controller
                     
                     if (invoice != null)
                     {
-                        // Recalculate Tax
-                        new CalcPinalty().CalculateTax(invoice);
-
-                        var detail = new InvoiceDetail()
-                        {
-                            AmmountOut = cashback,
-                            AmmountIn = 0,
-                            CreateAt = DateTime.Now,
-                            UpdateAt = DateTime.Now,
-                            TransactionDate = DateTime.Now,
-                            Description = "Cashback",
-                            IsSystem = true,
-                            IdKind = 98,
-                            IdInvoice = invoice.Id,
-                        };
-
-                        model.InvoiceDetails.Add(detail);
-
                         // Allow to close invoice
                         invoice.IsClosed = true;
                         invoice.UpdateAt = DateTime.Now;

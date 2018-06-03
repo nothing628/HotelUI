@@ -189,6 +189,58 @@ namespace UIHotel.App.Routine
                 }
             }
         }
+        public void CalculateBalance(Invoice invoice)
+        {
+            using (var model = new DataContext())
+            using (var trans = model.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoiceDetails = (from a in model.InvoiceDetails
+                                          where a.IdInvoice == invoice.Id
+                                          select a).ToList();
+                    var invoiceCashback = (from a in invoiceDetails
+                                           where a.IdKind == 98
+                                           select a).SingleOrDefault();
+                    var ammountIn = invoiceDetails.Where(x => x.IdKind != 98).Sum(x => x.AmmountIn);
+                    var ammountOut = invoiceDetails.Where(x => x.IdKind != 98).Sum(x => x.AmmountOut);
+                    var balance = (ammountIn - ammountOut);
+                    var cashback = (balance > 0) ? balance : 0;
+                    
+                    if (invoiceCashback == null)
+                    {
+                        invoiceCashback = new InvoiceDetail()
+                        {
+                            IdKind = 98,
+                            IdInvoice = invoice.Id,
+                            IsSystem = true,
+                            TransactionDate = DateTime.Now,
+                            Description = "Cashback",
+                            AmmountIn = 0,
+                            AmmountOut = cashback,
+                            CreateAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
+                        };
+
+                        model.InvoiceDetails.Add(invoiceCashback);
+                        model.SaveChanges();
+                    } else
+                    {
+                        invoiceCashback.AmmountOut = cashback;
+                        invoiceCashback.UpdateAt = DateTime.Now;
+                        invoiceCashback.TransactionDate = DateTime.Now;
+
+                        model.Entry(invoiceCashback).State = EntityState.Modified;
+                        model.SaveChanges();
+                    }
+
+                    trans.Commit();
+                } catch
+                {
+                    trans.Rollback();
+                }
+            }
+        }
 
         /// <summary>
         /// Get Room Price from room id and date
