@@ -51,7 +51,7 @@
             <v-layout row>
                 <v-flex lg12 md12 sm12 xs12>
                     <v-data-table v-bind:headers="tableData.headers"
-                                  v-bind:items="tableData.items"
+                                  v-bind:items="AllowedItems"
                                   v-bind:total-items="tableData.totalItems"
                                   v-bind:loading="tableData.loading"
                                   hide-actions
@@ -157,12 +157,22 @@
             id: { type: String, required: true }
         },
         computed: {
-            Tax() {
-                let data = this.tableData.items.filter(x => x.Description == "Tax")
+            AllowedItems() {
+                var items = this.tableData.items.filter(item => {
+                    let kind = item.IdKind
 
+                    return (kind != 98 && kind != 99)
+                })
+
+                return items
+            },
+            Tax() {
+                let data = this.tableData.items.filter(x => x.IdKind == 99)
+                
                 if (data.length > 0)
-                    return 0
-                return this.TotalKredit * .05
+                    return -(data[0].AmmountOut)
+                
+                return 0
             },
             TotalKredit() {
                 var outVal = 0
@@ -183,16 +193,31 @@
                 return inVal
             },
             TotalBalance() {
-                var inVal = this.TotalDebit
-                var outVal = this.TotalKredit
+                var inVal = 0
+                var outVal = 0
 
-                return outVal - inVal
+                this.tableData.items.forEach((item) => {
+                    let kind = item.IdKind
+
+                    if (kind != 99) {
+                        inVal += item.AmmountIn
+                        outVal += item.AmmountOut
+                    }
+                })
+
+                return (inVal - outVal)
             },
             TotalPay() {
                 return this.TotalBalance + this.Tax
             },
             CashBack() {
-                return this.Cash - this.TotalPay
+                let data = this.tableData.items.filter(x => x.IdKind == 98)
+                let cashback = this.Cash - this.TotalPay
+
+                if (data.length > 0)
+                    cashback += data[0].AmmountOut
+
+                return cashback
             },
             IssuedDate() {
                 var momen = moment(this.invoice.issued_date)
@@ -288,6 +313,14 @@
             print() {
                 // Print dialog
                 window.CS.print().then((e) => { })
+            }
+        },
+        watch: {
+            Cash: {
+                handler() {
+                    if (this.Cash < 0)
+                        this.Cash = -(this.Cash)
+                }
             }
         },
         mounted() {

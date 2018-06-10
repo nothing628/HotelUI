@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using UIHotel.App.Provider;
 using UIHotel.ViewModel;
+using System.Threading;
+using UIHotel.App.Routine;
 
 namespace UIHotel.App
 {
@@ -19,6 +21,7 @@ namespace UIHotel.App
         private Form mainForm;
         private AppRequestHandler RequestHandler;
         private const string Domain = "localhost.com";
+        private System.Threading.Timer timer;
         
         private List<ServiceProvider> listServiceProvider = new List<ServiceProvider>();
         public static AppMain Main { get; set; }
@@ -65,8 +68,16 @@ namespace UIHotel.App
 
         public AppMain()
         {
+            var callback = new TimerCallback(TimerRoutine);
+            timer = new System.Threading.Timer(callback, null, 0, 10 * 60 * 10000);     //Every 10 Minutes
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+        }
+
+        private void TimerRoutine(object state)
+        {
+            var routine = new CalcPinalty();
+            routine.DoWork();
         }
 
         public void Init()

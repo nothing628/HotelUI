@@ -22,8 +22,6 @@ namespace UIHotel
         [MTAThread]
         static void Main(string[] args)
         {
-            var routine = new CalcPinalty();
-            
             using (AppMain.Main = new AppMain())
             {
                 AppMain.Main.Init();
@@ -39,6 +37,7 @@ namespace UIHotel
                 }
                 else if (args[0] == "--calc")
                 {
+                    var routine = new CalcPinalty();
                     routine.DoWork();
                 }
                 else if (args[0] == "--setup")
