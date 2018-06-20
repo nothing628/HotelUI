@@ -86,7 +86,7 @@
                                             <span>Pay Invoice</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
-                                        <v-btn dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
+                                        <v-btn dark :disabled="checkin.IsCheckout" color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
@@ -109,11 +109,11 @@
                     <v-container fluid grid-list-md>
                         <v-layout row>
                             <v-flex lg12 md12 sm12 xs12>
-                                <v-btn dark color="success" class="mb-4 ml-0 no-print" :href="checkin.PayLink">
-                                    <span>Pay Invoice</span>
+                                <v-btn dark color="success" class="mb-4 ml-0 float-right no-print" :href="checkin.PayLink">
+                                    <span>Pay Or Detail Invoice</span>
                                     <v-icon right dark>move_to_inbox</v-icon>
                                 </v-btn>
-                                <v-btn dark color="primary" class="mb-4 ml-0 no-print" @click.stop="print">
+                                <v-btn dark color="primary" v-show="false" class="mb-4 ml-0 float-right no-print" @click.stop="print">
                                     <span>Print</span>
                                     <v-icon right dark>print</v-icon>
                                 </v-btn>
@@ -163,7 +163,7 @@
 </template>
 <script>
     import axios from 'axios'
-import { invalid } from 'moment';
+    import { invalid } from 'moment';
     export default {
         data() {
             return {
@@ -184,6 +184,7 @@ import { invalid } from 'moment';
                     CheckoutLink: null,
                     ChangeLink: null,
                     IsInvoiceClose: false,
+                    IsCheckout: false,
                     CanChange: false,
                     Note: null,
                 },
@@ -302,6 +303,7 @@ import { invalid } from 'moment';
                     this.checkin.Note = check.Note
                     this.checkin.InvoiceId = check.Invoice.Id
                     this.checkin.CanChange = check.CanChange
+                    this.checkin.IsCheckout = check.IsCheckout
                     this.checkin.IsInvoiceClose = check.Invoice.IsClosed
                     this.checkin.Fullname = check.Guest.Fullname
                     this.checkin.PhotoGuest = check.Guest.PhotoGuest

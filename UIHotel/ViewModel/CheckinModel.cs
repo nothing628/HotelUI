@@ -131,6 +131,14 @@ namespace UIHotel.ViewModel
             }
         }
 
+        public bool IsCheckout
+        {
+            get
+            {
+                return DataCheckin.IsCheckout;
+            }
+        }
+
         public bool IsCheckoutWarn
         {
             get

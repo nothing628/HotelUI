@@ -98,6 +98,8 @@
                 return momen.format("DD-MM-YYYY")
             },
             getClass(item) {
+                if (item.IsCheckout)
+                    return ['grey', 'lighten-1']
                 if (item.IsLate)
                     return ['red', 'lighten-3']
 

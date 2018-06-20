@@ -10,7 +10,7 @@
                                 <v-list-tile-sub-title class="text--primary"><a href="#">{{ guest.fullname }}</a></v-list-tile-sub-title>
                                 <v-list-tile-sub-title>{{ guest.address }}</v-list-tile-sub-title>
                                 <v-list-tile-title>Status :</v-list-tile-title>
-                                <v-list-tile-sub-title></v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{ status_txt }}</v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
@@ -157,6 +157,12 @@
             id: { type: String, required: true }
         },
         computed: {
+            status_txt() {
+                if (this.invoice.invoice_close)
+                    return 'Invoice Closed'
+                
+                return 'Billing'
+            },
             AllowedItems() {
                 var items = this.tableData.items.filter(item => {
                     let kind = item.IdKind

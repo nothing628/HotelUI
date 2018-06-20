@@ -125,7 +125,6 @@ namespace UIHotel.App.Controller
                 {
                     var checkin = (from a in model.CheckIn
                                    where a.Id == checkinID
-                                   where a.CheckoutAt == null
                                    select a).FirstOrDefault();
 
                     if (checkin != null)
