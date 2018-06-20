@@ -133,5 +133,14 @@ namespace UIHotel.Data.Table
                 return DateTime.Now < CheckinAt.AddMinutes(30);
             }
         }
+
+        [NotMapped]
+        public bool IsCheckout
+        {
+            get
+            {
+                return CheckoutAt.HasValue;
+            }
+        }
     }
 }

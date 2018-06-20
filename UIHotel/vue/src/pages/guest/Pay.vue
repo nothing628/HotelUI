@@ -82,7 +82,7 @@
                                 <td colspan="4">
                                     <strong>Total Pay</strong>
                                 </td>
-                                <td>{{ TotalPay | currency }}</td>
+                                <td>{{ -(TotalPay) | currency }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4">
@@ -212,7 +212,7 @@
             },
             CashBack() {
                 let data = this.tableData.items.filter(x => x.IdKind == 98)
-                let cashback = this.Cash - this.TotalPay
+                let cashback = parseInt(this.Cash) + this.TotalPay
 
                 if (data.length > 0)
                     cashback += data[0].AmmountOut

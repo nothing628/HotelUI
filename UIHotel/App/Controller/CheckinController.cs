@@ -78,10 +78,16 @@ namespace UIHotel.App.Controller
                     var checkin = (from a in model.CheckIn
                                    where a.Id == id
                                    select a).FirstOrDefault();
+                    var invoiceId = (from a in model.Invoices
+                                   where a.IdCheckin == id
+                                   select a.Id).FirstOrDefault();
 
-                    if (checkin != null)
+                    if (checkin != null && !string.IsNullOrEmpty(invoiceId))
                     {
                         checkin.CheckoutAt = DateTime.Now;
+
+                        if (!CloseInvoice(invoiceId))
+                            throw new Exception("Failed close invoice");
 
                         var room = (from a in model.Rooms
                                     where a.Id == checkin.IdRoom
@@ -89,7 +95,7 @@ namespace UIHotel.App.Controller
 
                         if (room != null)
                             room.IdStatus = 4;
-
+                        
                         model.SaveChanges();
                     }
 
@@ -584,7 +590,8 @@ namespace UIHotel.App.Controller
                                 .Include(x => x.Guest)
                                 join b in model.Invoices on a.Id equals b.IdCheckin into c
                                 from d in c
-                                where a.CheckoutAt == null
+                                //where a.CheckoutAt == null
+                                orderby a.CheckinAt
                                 select new CheckinContainer()
                                 {
                                     DataCheckin = a,
@@ -753,39 +760,53 @@ namespace UIHotel.App.Controller
             }
         }
 
-        public IResourceHandler closeInvoice()
+        public bool CloseInvoice(string invoiceId)
         {
-            var id = jToken.Value<string>("id");
-            var cashback = jToken.Value<decimal>("cashback");
-
             using (var model = new DataContext())
             using (var trans = model.Database.BeginTransaction())
             {
                 try
                 {
                     var invoice = (from a in model.Invoices
-                                   where a.Id == id
+                                   where a.Id == invoiceId
                                    select a).SingleOrDefault();
-                    
-                    if (invoice != null)
-                    {
-                        // Allow to close invoice
-                        invoice.IsClosed = true;
-                        invoice.UpdateAt = DateTime.Now;
 
-                        model.Entry(invoice).State = EntityState.Modified;
-                        model.SaveChanges();
-                    }
+                    if (invoice == null) return false;
+
+                    // Allow to close invoice
+                    invoice.IsClosed = true;
+                    invoice.UpdateAt = DateTime.Now;
+
+                    model.Entry(invoice).State = EntityState.Modified;
+                    model.SaveChanges();
 
                     trans.Commit();
-                    return Json(new { success = true, message = "Success update data" });
+                    return true;
                 }
                 catch
                 {
                     trans.Rollback();
-                    return Json(new { success = false, message = "Failed to update invoice table" });
+                    throw;
                 }
             }
+        }
+
+        public IResourceHandler closeInvoice()
+        {
+            var id = jToken.Value<string>("id");
+            var cashback = jToken.Value<decimal>("cashback");
+
+            try
+            {
+                if (CloseInvoice(id))
+                {
+                    return Json(new { success = true, message = "Success update data" });
+                }
+            } catch
+            {
+            }
+
+            return Json(new { success = false, message = "Failed to update invoice table" });
         }
 
         public IResourceHandler changeRoom()

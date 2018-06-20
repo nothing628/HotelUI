@@ -86,7 +86,7 @@
                                             <span>Pay Invoice</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>
-                                        <v-btn :disabled="!checkin.IsInvoiceClose" dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
+                                        <v-btn dark color="error" class="mb-4 ml-0" :href="checkin.CheckoutLink">
                                             <span>Checkout</span>
                                             <v-icon right dark>move_to_inbox</v-icon>
                                         </v-btn>

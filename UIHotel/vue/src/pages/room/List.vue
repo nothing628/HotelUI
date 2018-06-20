@@ -14,7 +14,9 @@
                     <div slot="header">
                         {{ category.Category }}
                         <div class="right">
-                            <span v-for="(c,s) in category.StatusCount" :style="getColorStatus(s)" class="badge mr-1">{{ s }} ({{ c }})</span>
+                            <span v-for="(c,s) in category.StatusCount" :style="getColorStatus(s)" class="badge mr-1">
+                                {{ s }} ({{ c }})
+                            </span>
                         </div>
                     </div>
                     <v-card>

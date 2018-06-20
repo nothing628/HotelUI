@@ -44,9 +44,20 @@ namespace UIHotel
                 {
                     AppMain.Main.Run("http://localhost.com/setup/index");   // Open Setup Dialog
                 }
+                else if (args[0] == "--help")
+                {
+                    Help();
+                }
 
                 Cef.Shutdown();
             }
+        }
+
+        static void Help()
+        {
+            Console.WriteLine("--calc     Update invoice data");
+            Console.WriteLine("--setup    Show setup dialog");
+            Console.WriteLine("--help     Show help message");
         }
     }
 }
