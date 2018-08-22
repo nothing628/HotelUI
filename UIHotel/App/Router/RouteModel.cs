@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using UIHotel.App.Attributes;
+using UIHotel.App.Auth;
 using UIHotel.App.Controller;
 
 namespace UIHotel.App.Router
@@ -132,8 +133,6 @@ namespace UIHotel.App.Router
 
         private bool IsAuthorize(Attribute[] attrs)
         {
-            var valid = false;
-
             foreach (var attr in attrs)
             {
                 if (attr is IAuthAttribute)
@@ -141,11 +140,11 @@ namespace UIHotel.App.Router
                     var att = attr as IAuthAttribute;
                     // Check valid user
                     if (att.IsValidUser())
-                        valid = true;
+                        return true;
                 }
             }
             
-            return valid;
+            return false;
         }
 
         private IResourceHandler CreateInstance(Type tipe, string Method, IRequest request)
@@ -162,12 +161,22 @@ namespace UIHotel.App.Router
                 if (methodAttr.Length > 0)
                 {
                     if (!IsAuthorize(methodAttr))
-                        return new BaseController().Redirect("http://localhost.com/home/get/login");
+                    {
+                        if (AuthState.IsLogin)
+                            return new BaseController().Redirect("http://localhost.com/home/get/index");
+                        else
+                            return new BaseController().Redirect("http://localhost.com/home/get/login");
+                    }
+                        
                 } else
                 {
                     if (!IsAuthorize(controlAttr))
-                        return new BaseController().Redirect("http://localhost.com/home/get/login");
-
+                    {
+                        if (AuthState.IsLogin)
+                            return new BaseController().Redirect("http://localhost.com/home/get/index");
+                        else
+                            return new BaseController().Redirect("http://localhost.com/home/get/login");
+                    }
                 }
             }
 

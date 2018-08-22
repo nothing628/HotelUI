@@ -25,7 +25,6 @@ namespace UIHotel.App.Auth
         Administrator = 0,
         Manager,
         Receptionist,
-        Cleaner,
-        User
+        Cleaner
     }
 }

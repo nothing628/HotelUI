@@ -10,7 +10,7 @@ namespace UIHotel.App.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class Authorize : Attribute, IAuthAttribute
     {
-        private AuthLevel Level = AuthLevel.User;
+        private AuthLevel Level = AuthLevel.Receptionist;
         private bool IsSet;
 
         public Authorize()
