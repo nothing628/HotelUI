@@ -29,7 +29,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -528,7 +528,7 @@
     <None Include="View\Setup\Migration.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="vue\src\components\BarChart.js" />
+    <None Include="vue\src\components\BarChart.js" />
     <None Include="vue\src\components\date\DatePicker.vue" />
     <None Include="vue\src\components\dialog\BookDialog.vue" />
     <None Include="vue\src\components\dialog\ColorDialog.vue" />
@@ -537,7 +537,6 @@
     <None Include="vue\src\components\dialog\IconDialog.vue" />
     <None Include="vue\src\components\dialog\RoomDialog.vue" />
     <None Include="vue\src\pages\money\TransactionDialog.vue" />
-    <None Include="vue\src\components\HelloWorld.vue" />
     <None Include="vue\src\components\Notification.vue" />
     <None Include="vue\src\pages\booking\Booking.vue" />
     <None Include="vue\src\pages\booking\Edit.vue" />
@@ -746,11 +745,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="vue\src\assets\logo.png" />
-    <Content Include="vue\src\components\CountryList.js" />
-    <Content Include="vue\src\components\IconList.js" />
-    <Content Include="vue\src\main.js" />
+    <None Include="vue\src\components\CountryList.js" />
+    <None Include="vue\src\components\IconList.js" />
+    <None Include="vue\src\main.js" />
     <None Include="vue\src\pages\Home.vue" />
-    <Content Include="vue\src\router\index.js" />
+    <None Include="vue\src\router\index.js" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>

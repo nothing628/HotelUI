@@ -1,2 +1,4 @@
+@media print{table.table tbody td,table.table tfoot td,table.table thead th{border:1px solid #000}.no-print{display:none}}
 .theme--light .table tbody tr[active]{background:silver}.hand-cursor{cursor:pointer}
+.navigation__sub .navigation__active:before{content:""}
 table.table.table-color tbody td{padding:0;cursor:pointer;height:19px}

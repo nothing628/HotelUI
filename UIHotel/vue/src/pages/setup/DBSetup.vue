@@ -118,15 +118,16 @@
                 window.location = this.nextStep
             },
             next() {
+
                 window.CS.getObjectParam("SettingModel", "CheckConnection",
                     this.SQL_Server,
-                    this.SQL_Port,
+                    parseInt(this.SQL_Port),
                     this.SQL_User,
                     this.SQL_Password,
                     this.SQL_Database
                 ).then(e => {
                     var retObj = JSON.parse(e)
-
+                    
                     if (retObj)
                         this.setData()
                     else
@@ -141,7 +142,7 @@
             test() {
                 window.CS.getObjectParam("SettingModel", "CheckConnection",
                     this.SQL_Server,
-                    this.SQL_Port,
+                    parseInt(this.SQL_Port),
                     this.SQL_User,
                     this.SQL_Password,
                     this.SQL_Database
