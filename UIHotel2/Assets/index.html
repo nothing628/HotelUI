@@ -1,38 +1,80 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
-    <link href="css/app.css" rel="stylesheet" />
-    <script src="js/jquery-3.3.1.min.js"></script>
+	<title>Console Log</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+	<link href="http://assets.app.local/css/jquery-ui.min.css" rel="stylesheet" />
+	<link href="http://assets.app.local/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="http://assets.app.local/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="http://assets.app.local/css/animate.min.css" rel="stylesheet" />
+	<link href="http://assets.app.local/css/style.min.css" rel="stylesheet" />
+	<link href="http://assets.app.local/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="http://assets.app.local/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="http://assets.app.local/css/app.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<!-- =================== PAGE LEVEL CSS ========================= -->
+	<link href="http://assets.app.local/css/jquery.gritter.css" rel="stylesheet"/>
+	<link href="http://assets.app.local/vue/dist/build.css" rel="stylesheet" />
+	<!-- =================== PAGE LEVEL CSS ========================= -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="http://assets.app.local/js/pace.min.js"></script>
+	<!-- ================== END BASE JS ================== -->
 </head>
 <body>
-    <div class="demo-app">
-        <content>
-            <div class="app-sys-command-container">
-                <ul class="sys-commands">
-                    <!--Use <n-ui-command> attribute to control form's system commands. -->
-                    <li n-ui-command="minimize">
-                        <i class="fa fa-window-minimize"></i>
-                    </li>
-                    <!--Use <n-ui-command> attribute to control form's system commands. -->
-                    <li n-ui-command="maximize">
-                        <i class="fa fa-window-maximize"></i>
-                    </li>
-                    <!--Use <n-ui-command> attribute to control form's system commands. -->
-                    <li n-ui-command="close">
-                        <i class="fa fa-close"></i>
-                    </li>
-                </ul>
-            </div>
+    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+    <div id="page-container" class="fade page-sidebar-fixed page-header-fixed"></div>
 
+    <!-- <script src="http://assets.app.local/vue/dist/build.js"></script> -->
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="http://assets.app.local/js/jquery-3.3.1.min.js"></script>
+	<script src="http://assets.app.local/js/jquery-migrate-1.1.0.min.js"></script>
+	<script src="http://assets.app.local/js/jquery-ui.min.js"></script>
+	<script src="http://assets.app.local/js/bootstrap.min.js"></script>
+	<script src="http://assets.app.local/js/jquery.slimscroll.min.js"></script>
+	<script src="http://assets.app.local/js/jquery.cookie.js"></script>
+	<!-- ================== END BASE JS ================== -->
 
-            <div id="app"></div>
-            <script src="http://localhost:8080/app.js"></script>
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="http://assets.app.local/js/apps.min.js"></script>
+	<script src="http://assets.app.local/js/jquery.gritter.js"></script>
+    <script src="http://assets.app.local/vue/dist/js/chunk-vendors.js"></script>
+	<script src="http://assets.app.local/vue/dist/js/app.js"></script>
+    <script src="http://localhost:8080/app.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+    <script>
+		$(function () {
+            $(document).ready(function() {
+                App.init();
+            });
+            
+			$(window).on("hoststatechange", function (e) {
+				$("#label-form-state").text(e.detail.stateName);
+			});
+			$(window).on("hostactivestate", function (e) {
+				$("#label-activated-state").text(e.detail.stateName);
+				if (e.detail) {
+					if (e.detail.state === 1) {
+						$("html").addClass("app-active");
+					}
+					else {
+						$("html").removeClass("app-active");
+					}
+				}
+			});
+			$(window).on("hostsizechange", function (e) {
+				$("#label-size-state").text(`width:${e.detail.width} height:${e.detail.height}`);
+			});
 
-        </content>
-    </div>
+            showDevTools()
+		});
+    </script>
 </body>
 </html>

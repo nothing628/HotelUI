@@ -100,3 +100,126 @@
 .app-state-watcher > div:nth-child(2) {
     margin: 0 10px;
 }
+
+/* AppStart Style */
+.card.widget-pie {
+    background-color: #3eb0b9;
+}
+
+.card-block {
+    padding: 0rem 2rem;
+}
+
+.list--three-line .list__tile__sub-title {
+    line-height: 1;
+}
+
+.quick-stats__info > small {
+    line-height: 2;
+}
+
+#app {
+    text-align: start;
+}
+
+.login {
+    background-image: url('../images/bg-login.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.container {
+    margin: inherit;
+}
+
+.toolbar {
+    margin-bottom: 5px;
+}
+
+.toolbar .toolbar__label {
+    width: calc(100% - 600px);
+}
+
+.toolbar .toolbar__nav.right {
+    margin-right: -0.8rem;
+    margin-left: auto;
+}
+
+.toolbar.room_status {
+    margin-bottom: 0px;
+    box-shadow: none;
+    border-bottom: 1px solid #c1c1c1;
+}
+
+.list__tile__content.top {
+    justify-content: flex-start;
+}
+
+.actions:not(.actions--inverse) .actions__item {
+    color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group.zero {
+    margin-bottom: 0px;
+}
+
+.row.room_status {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 20px;
+}
+
+.row.room_status .quick-stats__item {
+    margin-bottom: 20px;
+}
+
+.login .login-overlay {
+    background-color: black;
+    opacity: 0.3;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #89f596;
+}
+
+.dropzone .dz-message span:before {
+    content: '';
+    font-size: 1.6rem;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    margin-right: .8rem;
+}
+
+.dropzone .dz-message span {
+    display: block;
+    text-align: center;
+}
+
+.dropzone .dz-message img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.application .theme--dark.btn.btn--disabled,
+.application .theme--dark.btn.btn--disabled .icon,
+.theme--dark .btn.btn--disabled,
+.theme--dark .btn.btn--disabled .icon {
+    color: rgba(0,0,0,.26) !important;
+}
+
+.application .theme--dark.btn.btn--disabled:not(.btn--icon):not(.btn--flat),
+.theme--dark .btn.btn--disabled:not(.btn--icon):not(.btn--flat) {
+    background-color: rgba(0,0,0,.12) !important;
+}
