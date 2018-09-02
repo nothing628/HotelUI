@@ -17,26 +17,27 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import VNavbar from './components/Header.vue'
-import VSidebar from './components/Sidebar.vue'
-import VThemePanel from './components/ThemePanel.vue'
-import VContent from './components/Content.vue'
-import VLogin from './components/auth/Login.vue'
+import VNavbar from "./components/Header.vue";
+import VSidebar from "./components/Sidebar.vue";
+import VThemePanel from "./components/ThemePanel.vue";
+import VContent from "./components/Content.vue";
+import VLogin from "./components/Auth/Login.vue";
 
 @Component({
-    components: {
-        VLogin,
-        VNavbar,
-        VThemePanel,
-    }
+  components: {
+    VLogin,
+    VNavbar,
+    VThemePanel,
+    VSidebar,
+    VContent
+  }
 })
 export default class App extends Vue {
-    @Prop() private msg!: string;
-    @Prop() private dataSrc!: string;
+  @Prop() private msg!: string;
+  @Prop() private dataSrc!: string;
 
-    get is_login() {
-        return this.$store.getters['user/is_login']
-    }
+  get is_login() {
+    return this.$store.getters["User/is_login"];
+  }
 }
 </script>
-
