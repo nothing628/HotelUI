@@ -6,6 +6,10 @@ import "./registerServiceWorker";
 
 Vue.config.productionTip = false;
 
+const bus = new Vue();
+
+Vue.prototype.$bus = bus;
+
 new Vue({
   router,
   store,

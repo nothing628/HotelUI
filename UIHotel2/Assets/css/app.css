@@ -29,6 +29,19 @@
     justify-content: flex-end;
 }
 
+#header {
+    -webkit-app-region: drag;
+}
+
+#header > .container-fluid > .navbar-header > a.navbar-brand {
+    background-color: transparent;
+    color: #a8acb1 !important;
+}
+
+#header > .container-fluid > .nav.navbar-nav.navbar-right {
+    -webkit-app-region: no-drag;
+}
+
 .demo-app > content > .app-sys-command-container > .sys-commands {
     list-style: none inside;
     padding: 0;

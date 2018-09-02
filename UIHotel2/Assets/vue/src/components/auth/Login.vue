@@ -4,7 +4,7 @@
     <div class="login-header">
       <div class="brand">
         <span class="logo"></span> {{ app_title }}
-        <small>Welcome to ConsoleMY</small>
+        <small>Welcome to HMS</small>
       </div>
       <div class="icon">
         <i class="fa fa-sign-in"></i>
@@ -43,7 +43,8 @@ export default class Login extends Vue {
     this.$store.commit("User/login", {
       Id: 12,
       Username: "YT",
-      Fullname: "Youtube"
+      Fullname: "Youtube",
+      UserLevel: 0
     });
   }
 }

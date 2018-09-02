@@ -5,7 +5,8 @@ const namespaced: boolean = true;
 const state: UserLoginState = {
   id: "",
   fullname: "",
-  username: ""
+  username: "",
+  userlevel: -1
 };
 
 const mutations: MutationTree<UserLoginState> = {
@@ -18,12 +19,35 @@ const mutations: MutationTree<UserLoginState> = {
     state.id = user.Id;
     state.username = user.Username;
     state.fullname = user.Fullname;
+    state.userlevel = user.UserLevel;
   }
 };
 
 const getters: GetterTree<UserLoginState, RootState> = {
   is_login(state): boolean {
     return state.id != "";
+  },
+  levelname(state): string {
+    var level = "";
+
+    switch (state.userlevel) {
+      case 0:
+        level = "Administrator";
+        break;
+      case 1:
+        level = "Manager";
+        break;
+      case 2:
+        level = "Receiptionist";
+        break;
+      case 3:
+        level = "Cleaning Service";
+        break;
+      default:
+        level = "Undefined";
+    }
+
+    return level;
   }
 };
 

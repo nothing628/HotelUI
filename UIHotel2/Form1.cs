@@ -19,6 +19,8 @@ namespace UIHotel2
         {
             InitializeComponent();
 
+            Text = "Hotel Management System";
+            WindowState = FormWindowState.Maximized;
             GlobalObject.AddFunction("showDevTools").Execute += (func, args) => Chromium.ShowDevTools();
             GlobalObject.AddFunction("windowMinimize").Execute += (func, args) => WindowState = FormWindowState.Minimized;
             GlobalObject.AddFunction("windowMaximize").Execute += (func, args) => WindowState = (WindowState == FormWindowState.Normal) ? FormWindowState.Maximized : FormWindowState.Normal;

@@ -1,5 +1,5 @@
 <template>
-  <div id="sidebar" class="sidebar">
+  <div class="sidebar sidebar-grid">
     <!-- begin sidebar scrollbar -->
     <div data-scrollbar="true" data-height="100%">
       <!-- begin sidebar user -->
@@ -9,8 +9,8 @@
             <a href="javascript:;"><img src="assets/img/user-13.jpg" alt="" /></a>
           </div>
           <div class="info">
-            Sean Ngu
-            <small>Front end developer</small>
+            {{ fullname }}
+            <small>{{ levelname }}</small>
           </div>
         </li>
       </ul>
@@ -53,7 +53,6 @@
           <menu-child text="Database" href="/"></menu-child>
           <menu-child text="Users"></menu-child>
         </menu-parent>
-        <menu-child icon="fa fa-laptop" text="Calendar"></menu-child>
         <!-- begin sidebar minify button -->
         <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
         <!-- end sidebar minify button -->
@@ -65,8 +64,8 @@
 </template>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MenuParent from './Menu/MenuParent.vue'
-import MenuChild from './Menu/MenuChild.vue'
+import MenuParent from "./Menu/MenuParent.vue";
+import MenuChild from "./Menu/MenuChild.vue";
 
 @Component({
   components: {
@@ -75,6 +74,12 @@ import MenuChild from './Menu/MenuChild.vue'
   }
 })
 export default class Sidebar extends Vue {
-  
-};
+  get fullname() {
+    return this.$store.state.User.fullname;
+  }
+
+  get levelname() {
+    return this.$store.getters["User/levelname"];
+  }
+}
 </script>
