@@ -20,6 +20,9 @@ namespace UIHotel2
             InitializeComponent();
 
             GlobalObject.AddFunction("showDevTools").Execute += (func, args) => Chromium.ShowDevTools();
+            GlobalObject.AddFunction("windowMinimize").Execute += (func, args) => WindowState = FormWindowState.Minimized;
+            GlobalObject.AddFunction("windowMaximize").Execute += (func, args) => WindowState = (WindowState == FormWindowState.Normal) ? FormWindowState.Maximized : FormWindowState.Normal;
+            GlobalObject.AddFunction("windowClose").Execute += (func, args) => Close();
             Chromium.BrowserCreated += Chromium_BrowserCreated;
             RegisterObject();
         }
