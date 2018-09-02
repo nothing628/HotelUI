@@ -14,34 +14,6 @@
     height: 100%;
 }
 
-.demo-app > header {
-    width: 36px;
-    height: 100%;
-    background-color: #CC0066;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    -webkit-app-region: drag;
-    overflow: hidden;
-}
-
-.demo-app > header .app-title {
-    -webkit-writing-mode: vertical-rl;
-    writing-mode: vertical-rl;
-    color: #aaa;
-    margin: 0;
-    padding: 0;
-    font-weight: lighter;
-    font-size: 1em;
-    padding: 10px 0;
-    white-space: nowrap;
-}
-
-.app-active .demo-app > header .app-title {
-    color: #fff;
-}
-
 .demo-app > content {
     flex: 1;
     position: relative;
@@ -78,21 +50,21 @@
 }
 
 .demo-app > content > .app-sys-command-container {
-    background-color: #E60073;
+    background-color: #4DBA87;
     color: #fff;
 }
 
 .demo-app > content > .app-sys-command-container:hover > .sys-commands > li {
-    background-color: #E60073;
+    background-color: #4DBA87;
     color: #fff;
 }
 
 .demo-app > content > .app-sys-command-container > .sys-commands > li:hover {
-    background-color: #CC0066;
+    background-color: #52cb92;
 }
 
 .demo-app > content > .app-sys-command-container > .sys-commands > li:active {
-    background-color: #99004C;
+    background-color: #48aa7d;
 }
 
 .demo-app > content > .app-sys-command-container > .sys-commands > li:last-child:hover {

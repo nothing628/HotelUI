@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UIHotel2.AppObject;
 
 namespace UIHotel2
 {
@@ -19,12 +20,29 @@ namespace UIHotel2
             InitializeComponent();
 
             GlobalObject.AddFunction("showDevTools").Execute += (func, args) => Chromium.ShowDevTools();
+            Chromium.BrowserCreated += Chromium_BrowserCreated;
+            RegisterObject();
+        }
 
-            var obj = GlobalObject.AddObject("CS");
-            var prop = obj.AddDynamicProperty("new");
+        private void RegisterObject()
+        {
+            List<IBaseObject> listObject = new List<IBaseObject>();
+            var repository = GlobalObject.AddObject("CS");
 
-            var fun = obj.AddFunction("test2");
-            fun.Execute += (_, args) => args.SetReturnValue("S");
+            listObject.Add(new DBObject());
+            listObject.Add(new SettingObject());
+
+            foreach (var obj in listObject)
+            {
+                obj.Register(repository);
+            }
+        }
+
+        private void Chromium_BrowserCreated(object sender, Chromium.WebBrowser.Event.BrowserCreatedEventArgs e)
+        {
+#if DEBUG
+            Chromium.ShowDevTools();
+#endif
         }
     }
 }
