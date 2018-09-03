@@ -1,18 +1,18 @@
 <template>
-    <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
-        <v-navbar></v-navbar>
-        <v-sidebar v-if="is_login"></v-sidebar>
+  <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+    <v-navbar></v-navbar>
+    <v-sidebar v-if="is_login"></v-sidebar>
 		<div class="sidebar-bg" v-if="is_login"></div>
-        <v-content v-if="is_login"></v-content>
-        <v-login v-if="!is_login"></v-login>
-        <v-theme-panel></v-theme-panel>
+    <v-content v-if="is_login"></v-content>
+    <v-login v-if="!is_login"></v-login>
+    <v-theme-panel></v-theme-panel>
 		
 		<!-- begin scroll to top btn -->
 		<a class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top">
-            <i class="fa fa-angle-up"></i>
-        </a>
+      <i class="fa fa-angle-up"></i>
+    </a>
 		<!-- end scroll to top btn -->
-    </div>
+  </div>
 </template>
 
 <script lang="ts">

@@ -66,6 +66,7 @@ export default {
     text: { type: String, required: true },
     badge: { type: String, required: false, default: "" },
     href: { type: String, required: false, default: "" },
+    route: { type: String, required: false, default: "" },
     icon: { type: String, required: false, default: "" }
   },
   methods: {
@@ -77,6 +78,11 @@ export default {
       if (this.href != "") {
         this.$emit("click", this.href);
         this.$router.push(this.href);
+      }
+
+      if (this.route != "") {
+        this.$emit("click", this.route);
+        this.$router.push({ name: this.route });
       }
 
       this.$nextTick(() => (this.is_expand = !before_));

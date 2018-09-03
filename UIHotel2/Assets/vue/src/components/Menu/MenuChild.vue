@@ -26,6 +26,7 @@ export default {
     isActive: { type: Boolean, required: false, default: false },
     text: { type: String, required: true },
     href: { type: String, required: false, default: "" },
+    route: { type: String, required: false, defaultl: "" },
     icon: { type: String, required: false, default: "" }
   },
   methods: {
@@ -33,6 +34,11 @@ export default {
       if (this.href != "") {
         this.$emit("click", this.href);
         this.$router.push(this.href);
+      }
+
+      if (this.route != "") {
+        this.$emit("click", this.route);
+        this.$router.push({ name: this.route });
       }
     }
   }

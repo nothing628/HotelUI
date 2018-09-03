@@ -18,40 +18,40 @@
       <!-- begin sidebar nav -->
       <ul class="nav">
         <li class="nav-header">Navigation</li>
-        <menu-child text="Dashboard" is-active icon="fa fa-laptop"></menu-child>
+        <menu-child text="Dashboard" route="dashboard" icon="fa fa-laptop"></menu-child>
         <menu-parent
           text="Room"
           icon="fa fa-codepen">
-          <menu-child text="Room List"></menu-child>
-          <menu-child text="Room Category"></menu-child>
-          <menu-child text="Room Price"></menu-child>
-          <menu-child text="Calendar Price"></menu-child>
+          <menu-child text="Room List" route="room.list"></menu-child>
+          <menu-child text="Room Category" route="room.category"></menu-child>
+          <menu-child text="Room Price" route="room.price"></menu-child>
+          <menu-child text="Calendar Price" route="room.calendar"></menu-child>
         </menu-parent>
         <menu-parent
           text="Data Maintain"
           icon="fa fa-book">
-          <menu-child text="Checkin/Checkout" href="/foo"></menu-child>
-          <menu-child text="Booking" href="/"></menu-child>
-          <menu-child text="Guest"></menu-child>
+          <menu-child text="Booking" route="data.booking"></menu-child>
+          <menu-child text="Checkin/Checkout" route="data.checkin"></menu-child>
+          <menu-child text="Guest" route="data.guest"></menu-child>
         </menu-parent>
         <menu-parent
           text="Transaction"
           icon="fa fa-diamond">
-          <menu-child text="New Transaction" href="/foo"></menu-child>
-          <menu-child text="Transaction Category" href="/"></menu-child>
+          <menu-child text="New Transaction" route="transaction.list"></menu-child>
+          <menu-child text="Transaction Category" route="transaction.category"></menu-child>
         </menu-parent>
         <menu-parent
           text="Report"
           icon="fa fa-line-chart">
-          <menu-child text="Finance Report" href="/foo"></menu-child>
-          <menu-child text="Hotel Report" href="/"></menu-child>
+          <menu-child text="Finance Report" route="report.finance"></menu-child>
+          <menu-child text="Hotel Report" route="report.hotel"></menu-child>
         </menu-parent>
         <menu-parent
           text="Settings"
           icon="fa fa-wrench">
-          <menu-child text="Application" href="/foo"></menu-child>
-          <menu-child text="Database" href="/"></menu-child>
-          <menu-child text="Users"></menu-child>
+          <menu-child text="Application" route="setting.app"></menu-child>
+          <menu-child text="Database" route="setting.db"></menu-child>
+          <menu-child text="Users" route="setting.user"></menu-child>
         </menu-parent>
         <!-- begin sidebar minify button -->
         <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
