@@ -3,10 +3,10 @@ import { UserLoginState, RootState } from "../types/types";
 
 const namespaced: boolean = true;
 const state: UserLoginState = {
-  id: "",
-  fullname: "",
-  username: "",
-  userlevel: -1
+  id: "1",
+  fullname: "2",
+  username: "2",
+  userlevel: 0
 };
 
 const mutations: MutationTree<UserLoginState> = {
