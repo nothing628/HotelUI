@@ -5,7 +5,7 @@
         <!-- begin col-3 -->
         <div class="col-md-3 col-sm-6">
           <div class="widget widget-stats bg-green">
-            <div class="stats-icon"><i class="fa fa-desktop"></i></div>
+            <div class="stats-icon"><i class="fa fa-users"></i></div>
             <div class="stats-info">
               <h4>TOTAL VISITORS</h4>
               <p>3,291,922</p>	
@@ -19,10 +19,10 @@
         <!-- begin col-3 -->
         <div class="col-md-3 col-sm-6">
           <div class="widget widget-stats bg-blue">
-            <div class="stats-icon"><i class="fa fa-chain-broken"></i></div>
+            <div class="stats-icon"><i class="fa fa-sign-in"></i></div>
             <div class="stats-info">
-              <h4>BOUNCE RATE</h4>
-              <p>20.44%</p>	
+              <h4>TOTAL USED ROOM</h4>
+              <p>10/20</p>	
             </div>
             <div class="stats-link">
               <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
@@ -49,8 +49,8 @@
           <div class="widget widget-stats bg-red">
             <div class="stats-icon"><i class="fa fa-clock-o"></i></div>
             <div class="stats-info">
-              <h4>AVG TIME ON SITE</h4>
-              <p>00:12:23</p>	
+              <h4>BALANCE TODAY</h4>
+              <p>Rp. 1,000,000</p>	
             </div>
             <div class="stats-link">
               <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
@@ -66,21 +66,46 @@
 							<h4 class="panel-title">Dashboard Menu</h4>
 						</div>
             <div class="panel-body">
-              <a href="javascript:;" class="btn btn-lg btn-success">
-                <i class="fa fa-twitter fa-2x pull-left"></i>
-                Twitter Bootstrap<br>
-                <small>Version 3.0</small>
-              </a>
-              <a href="javascript:;" class="btn btn-lg btn-success">
-                <i class="fa fa-twitter fa-2x pull-left"></i>
-                Twitter Bootstrap<br>
-                <small>Version 3.0</small>
-              </a>
-              <a href="javascript:;" class="btn btn-lg btn-success">
-                <i class="fa fa-twitter fa-2x pull-left"></i>
-                Twitter Bootstrap<br>
-                <small>Version 3.0</small>
-              </a>
+              <div class="row">
+                <div class="col-md-4">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                    <i class="fa fa-sign-in pull-left"></i>
+                    Check In
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                    <i class="fa fa-bookmark pull-left"></i>
+                    Booking
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                    <i class="fa fa-user pull-left"></i>
+                    Guest
+                  </a>
+                </div>
+              </div>
+              <div class="row m-t-10">
+                <div class="col-md-4">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                    <i class="fa fa-retweet pull-left"></i>
+                    Transaction
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                    <i class="fa fa-line-chart pull-left"></i>
+                    Report
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                    <i class="fa fa-gear pull-left"></i>
+                    Setting
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

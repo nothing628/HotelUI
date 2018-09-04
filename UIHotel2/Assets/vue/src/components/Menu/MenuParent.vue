@@ -85,10 +85,12 @@ export default {
         this.$router.push({ name: this.route });
       }
 
-      this.$nextTick(() => (this.is_expand = !before_));
+      setTimeout(() => {
+        if (!before_) this.is_expand = true;
+      }, 600);
     },
     hideMenu() {
-      this.is_expand = false;
+      if (this.is_expand) this.is_expand = false;
     }
   },
   mounted() {
