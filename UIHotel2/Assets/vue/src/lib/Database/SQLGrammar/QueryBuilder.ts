@@ -1,55 +1,18 @@
-import { isArray } from 'util';
+import { isArray } from "util";
+import { OrderType, JoinType } from "./Enum";
+import { WhereClause, OrderClause } from "./Clause";
 
 export interface IQueryable {
   //
-}
-
-export enum JoinType {
-  AND,
-  OR
-}
-
-export class WhereClause {
-  public JoinType: JoinType = JoinType.AND;
-  public IsNested: boolean = false;
-  public WhereColumn: string = "";
-  public WhereOperator: string = "";
-  public WhereCondition: string = "";
-  public WhereNested: Array<WhereClause> = new Array();
-
-  public AddNested(nested: WhereClause): void {
-    this.WhereNested.push(nested);
-  }
-
-  public Compile(is_first: boolean = false): string {
-    let query_str: string = "";
-
-    if (!is_first) {
-      query_str += this.JoinType == JoinType.AND ? "AND " : "OR ";
-    }
-
-    if (this.IsNested) {
-      query_str += "( ";
-
-      this.WhereNested.forEach((val, idx) => {
-        query_str += val.Compile(idx == 0);
-      });
-
-      query_str += ") ";
-    } else {
-      query_str += this.WhereColumn + " ";
-      query_str += this.WhereOperator + " ";
-      query_str += "'" + this.WhereCondition + "' ";
-    }
-
-    return query_str;
-  }
 }
 
 export class QueryBuilder {
   private table_name: string = "";
   private where_arr: Array<WhereClause> = new Array();
   private select_arr: Array<string> = new Array();
+  private order_arr: Array<OrderClause> = new Array();
+  private skip?: number;
+  private take?: number;
 
   public where(
     column_name: string,
@@ -114,6 +77,16 @@ export class QueryBuilder {
     return this;
   }
 
+  public orderBy(column_name: string, order_type?: OrderType): QueryBuilder {
+    let order_cs = new OrderClause();
+    order_cs.OrderColumn = column_name;
+    // eslint-disable-next-line
+    order_cs.OrderType = order_type === undefined ? OrderType.ASC : order_type;
+    this.order_arr.push(order_cs);
+
+    return this;
+  }
+
   public setTable(table_name: string): QueryBuilder {
     this.table_name = table_name;
     return this;
@@ -145,6 +118,10 @@ export class QueryBuilder {
   }
 
   private compileWhere(query_str: string): string {
+    if (this.where_arr.length == 0) {
+      return query_str + "WHERE 1 = 1";
+    }
+
     let where_str = "WHERE ";
 
     this.where_arr.forEach((where, idx) => {
@@ -154,12 +131,29 @@ export class QueryBuilder {
     return query_str + where_str;
   }
 
+  private compileOrder(query_str: string): string {
+    if (this.order_arr.length == 0) {
+      return query_str;
+    }
+
+    let order_str = "ORDER BY ";
+
+    this.order_arr.forEach((order, idx) => {
+      // eslint-disable-next-line
+      order_str += idx > 0 ? ", " : "";
+      order_str += order.Compile();
+    });
+
+    return query_str + order_str + " ";
+  }
+
   public compile(): string {
     let result = "";
 
     result = this.compileSelect(result);
     result = this.compileFrom(result);
     result = this.compileWhere(result);
+    result = this.compileOrder(result);
 
     return result;
   }
