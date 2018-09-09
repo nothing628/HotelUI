@@ -1,10 +1,6 @@
 import { isArray } from "util";
 import { OrderType, JoinType } from "./Enum";
-import { WhereClause, OrderClause } from "./Clause";
-
-export interface IQueryable {
-  //
-}
+import { WhereClause, WhereCompileParam, OrderClause } from "./Clause";
 
 export class QueryBuilder {
   private table_name: string = "";
@@ -14,9 +10,9 @@ export class QueryBuilder {
   private skip?: number;
   private take?: number;
 
-  public where(
+  public Where(
     column_name: string,
-    condition: string,
+    condition: any,
     condional_operator?: string
   ): QueryBuilder {
     let where_cls = new WhereClause();
@@ -31,9 +27,9 @@ export class QueryBuilder {
     return this;
   }
 
-  public orWhere(
+  public OrWhere(
     column_name: string,
-    condition: string,
+    condition: any,
     condional_operator?: string
   ): QueryBuilder {
     let where_cls = new WhereClause();
@@ -48,7 +44,7 @@ export class QueryBuilder {
     return this;
   }
 
-  public nestedWhere(query_fn: (query: QueryBuilder) => void): QueryBuilder {
+  public NestedWhere(query_fn: (query: QueryBuilder) => void): QueryBuilder {
     var newBuilder = new QueryBuilder();
     var where_cls = new WhereClause();
 
@@ -67,7 +63,7 @@ export class QueryBuilder {
     return this;
   }
 
-  public select(column_name: string | Array<string>): QueryBuilder {
+  public Select(column_name: string | Array<string>): QueryBuilder {
     if (isArray(column_name)) {
       column_name.forEach(item => this.select_arr.push(item));
     } else {
@@ -77,7 +73,7 @@ export class QueryBuilder {
     return this;
   }
 
-  public orderBy(column_name: string, order_type?: OrderType): QueryBuilder {
+  public OrderBy(column_name: string, order_type?: OrderType): QueryBuilder {
     let order_cs = new OrderClause();
     order_cs.OrderColumn = column_name;
     // eslint-disable-next-line
@@ -87,12 +83,22 @@ export class QueryBuilder {
     return this;
   }
 
-  public setTable(table_name: string): QueryBuilder {
+  public SetTable(table_name: string): QueryBuilder {
     this.table_name = table_name;
     return this;
   }
 
-  private compileSelect(query_str: string): string {
+  public Offset(count: number): QueryBuilder {
+    this.skip = count;
+    return this;
+  }
+
+  public Limit(count: number): QueryBuilder {
+    this.take = count;
+    return this;
+  }
+
+  private CompileSelect(query_str: string): string {
     let select_str = "SELECT ";
     let select_count = this.select_arr.length;
 
@@ -111,27 +117,31 @@ export class QueryBuilder {
     return select_str;
   }
 
-  private compileFrom(query_str: string): string {
+  private CompileFrom(query_str: string): string {
     let from_str = "FROM " + this.table_name + " ";
 
     return query_str + from_str;
   }
 
-  private compileWhere(query_str: string): string {
+  private CompileWhere(query_str: string): string {
     if (this.where_arr.length == 0) {
       return query_str + "WHERE 1 = 1";
     }
 
+    // eslint-disable-next-line
+    let params = new WhereCompileParam();
     let where_str = "WHERE ";
+    params.param_num = 0;
 
     this.where_arr.forEach((where, idx) => {
-      where_str += where.Compile(idx == 0);
+      params.is_first = idx == 0;
+      where_str += where.Compile(params);
     });
 
     return query_str + where_str;
   }
 
-  private compileOrder(query_str: string): string {
+  private CompileOrder(query_str: string): string {
     if (this.order_arr.length == 0) {
       return query_str;
     }
@@ -147,14 +157,67 @@ export class QueryBuilder {
     return query_str + order_str + " ";
   }
 
-  public compile(): string {
+  private CompileLimit(query_str: string): string {
+    let limit_str: string = "";
+
+    if (this.take !== undefined) {
+      limit_str += "LIMIT " + this.take + " ";
+    }
+
+    if (this.skip !== undefined && this.take !== undefined) {
+      limit_str += "OFFSET " + this.skip + " ";
+    }
+
+    return query_str + limit_str;
+  }
+
+  public CompileSql(): string {
     let result = "";
 
-    result = this.compileSelect(result);
-    result = this.compileFrom(result);
-    result = this.compileWhere(result);
-    result = this.compileOrder(result);
+    result = this.CompileSelect(result);
+    result = this.CompileFrom(result);
+    result = this.CompileWhere(result);
+    result = this.CompileOrder(result);
+    result = this.CompileLimit(result);
 
     return result;
+  }
+
+  public GetParams(): Array<any> {
+    let result = new Array();
+
+    this.where_arr.forEach((where, idx) => {
+      result = result.concat(where.Params());
+    });
+
+    return result;
+  }
+
+  public Get(): Array<any> {
+    var compiledSql: string = this.CompileSql();
+    var params: Array<any> = this.GetParams();
+    var result: Array<any> = window.CS.DB.Query(compiledSql, params);
+
+    return result;
+  }
+
+  public First(): any {
+    try {
+      return this.FirstOrFail();
+    } catch (ex) {
+      return null;
+    }
+  }
+
+  public FirstOrFail(): any {
+    this.skip = undefined;
+    this.take = 1;
+    var result = this.Get();
+
+    if (result.length == 1) {
+      return result[0];
+    }
+
+    throw new Error("The element not found!");
   }
 }

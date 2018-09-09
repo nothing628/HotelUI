@@ -1,32 +1,24 @@
-import {
-  QueryBuilder,
-  IQueryable
-} from "@/lib/Database/SQLGrammar/QueryBuilder";
-import { OrderType } from '@/lib/Database/SQLGrammar/Enum';
+import { QueryBuilder } from "./SQLGrammar/QueryBuilder";
+import { OrderType } from "./SQLGrammar/Enum";
 
-export class Table implements IQueryable {
+export class Table {
   protected table_name: string;
-  protected qry_builder: QueryBuilder;
+  protected qry_builder: QueryBuilder = new QueryBuilder();
 
   constructor() {
     this.table_name = "";
-    this.qry_builder = new QueryBuilder();
   }
 
-  public Test(): void {
-    this.qry_builder
-      .setTable(this.table_name)
-      .select(["A", "B"])
-      .select("C")
-      .nestedWhere(q => {
-        q.where("x", "1").where("y", "2", ">");
-      })
-      .where("z", "12")
-      .orderBy("A")
-      .orderBy("B", OrderType.DESC)
-      .compile();
+  protected InitQueryBuilder(): void {
+    this.qry_builder = new QueryBuilder();
+    this.qry_builder.SetTable(this.table_name);
+  }
 
-    let result = this.qry_builder.compile();
-    console.log(result);
+  public Get(): Array<any> {
+    return this.qry_builder.Get();
+  }
+
+  public GetBuilder(): QueryBuilder {
+    return this.qry_builder;
   }
 }

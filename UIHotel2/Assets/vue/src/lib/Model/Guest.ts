@@ -4,5 +4,6 @@ export class Guest extends Table {
   constructor() {
     super();
     this.table_name = "Guest";
+    this.InitQueryBuilder();
   }
 }
