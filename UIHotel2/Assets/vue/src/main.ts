@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import "./registerServiceWorker";
-import { Guest } from "@/lib/Model/Guest";
+import { User } from "@/lib/Model/User";
 import { ICS } from "@/lib/Interface";
 
 declare global {
@@ -15,10 +15,9 @@ declare global {
 Vue.config.productionTip = false;
 
 const bus = new Vue();
-const guest = new Guest();
 
-var guest_data = guest.GetBuilder().Where("id", 2).First();
-console.log(guest_data);
+var static_data = User.Get();
+console.log(static_data);
 Vue.prototype.$bus = bus;
 
 new Vue({

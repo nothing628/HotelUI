@@ -1,14 +1,23 @@
 import { isArray } from "util";
 import { OrderType, JoinType } from "./Enum";
 import { WhereClause, WhereCompileParam, OrderClause } from "./Clause";
+import { Table } from "./../Table";
 
 export class QueryBuilder {
+  private model_construct?: (exists: boolean) => any;
   private table_name: string = "";
   private where_arr: Array<WhereClause> = new Array();
   private select_arr: Array<string> = new Array();
   private order_arr: Array<OrderClause> = new Array();
   private skip?: number;
   private take?: number;
+
+  constructor() {}
+
+  public SetModel(constructors: (exists: boolean) => any): QueryBuilder {
+    this.model_construct = constructors;
+    return this;
+  }
 
   public Where(
     column_name: string,
@@ -197,8 +206,15 @@ export class QueryBuilder {
     var compiledSql: string = this.CompileSql();
     var params: Array<any> = this.GetParams();
     var result: Array<any> = window.CS.DB.Query(compiledSql, params);
+    var result_model: Array<any> = new Array();
 
-    return result;
+    result.forEach(item => {
+      let newInstance = this.model_construct!(true);
+      let fromBuilder = newInstance.NewFromBuilder(item);
+      result_model.push(fromBuilder);
+    });
+
+    return result_model;
   }
 
   public First(): any {
