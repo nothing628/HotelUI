@@ -117,5 +117,10 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
-export default class Dashboard extends Vue {}
+export default class Dashboard extends Vue {
+  mounted() {
+    this.$store.commit("changeTitle", "Dashboard");
+    this.$store.commit("changeSubtitle", "");
+  }
+}
 </script>
