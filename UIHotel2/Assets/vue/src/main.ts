@@ -3,7 +3,6 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import "./registerServiceWorker";
-import { User } from "@/lib/Model/User";
 import { ICS } from "@/lib/Interface";
 
 declare global {
@@ -16,8 +15,6 @@ Vue.config.productionTip = false;
 
 const bus = new Vue();
 
-var static_data = User.Get();
-console.log(static_data);
 Vue.prototype.$bus = bus;
 
 new Vue({

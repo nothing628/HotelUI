@@ -203,18 +203,22 @@ export class QueryBuilder {
   }
 
   public Get(): Array<any> {
-    var compiledSql: string = this.CompileSql();
-    var params: Array<any> = this.GetParams();
-    var result: Array<any> = window.CS.DB.Query(compiledSql, params);
-    var result_model: Array<any> = new Array();
+    try {
+      var compiledSql: string = this.CompileSql();
+      var params: Array<any> = this.GetParams();
+      var result: Array<any> = window.CS.DB.Query(compiledSql, params);
+      var result_model: Array<any> = new Array();
 
-    result.forEach(item => {
-      let newInstance = this.model_construct!(true);
-      let fromBuilder = newInstance.NewFromBuilder(item);
-      result_model.push(fromBuilder);
-    });
+      result.forEach(item => {
+        let newInstance = this.model_construct!(true);
+        let fromBuilder = newInstance.NewFromBuilder(item);
+        result_model.push(fromBuilder);
+      });
 
-    return result_model;
+      return result_model;
+    } catch (ex) {
+      return new Array();
+    }
   }
 
   public First(): any {

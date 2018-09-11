@@ -1,10 +1,11 @@
+/* eslint-disable */
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
 import RoomList from "./pages/room/List.vue";
 import RoomCategory from "./pages/room/Category.vue";
 import RoomPrice from "./pages/room/Price.vue";
 import RoomCalendar from "./pages/room/Calendar.vue";
+import RoomMaintance from "./pages/room/Maintance.vue"
 import DataBooking from "./pages/data/Booking.vue";
 import DataCheckin from "./pages/data/Checkin.vue";
 import DataGuest from "./pages/data/Guest.vue";
@@ -33,6 +34,7 @@ export default new Router({
     { path: "/room/category", name: "room.category", component: RoomCategory },
     { path: "/room/price", name: "room.price", component: RoomPrice },
     { path: "/room/calendar", name: "room.calendar", component: RoomCalendar },
+    { path: "/room/maintance", name: "room.maintance", component: RoomMaintance },
     { path: "/report/finance", name: "report.finance", component: ReportFinance },
     { path: "/report/hotel", name: "report.hotel", component: ReportHotel },
     { path: "/setting/app", name: "setting.app", component: SettingApp },

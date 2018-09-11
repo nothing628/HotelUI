@@ -23,6 +23,7 @@
           text="Room"
           icon="fa fa-codepen">
           <menu-child text="Room List" route="room.list"></menu-child>
+          <menu-child text="Room Maintance" route="room.maintance"></menu-child>
           <menu-child text="Room Category" route="room.category"></menu-child>
           <menu-child text="Room Price" route="room.price"></menu-child>
           <menu-child text="Calendar Price" route="room.calendar"></menu-child>
