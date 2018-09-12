@@ -2,14 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
+import "./registerGlobalScope";
 import "./registerServiceWorker";
-import { ICS } from "@/lib/Interface";
-
-declare global {
-  interface Window {
-    CS: ICS;
-  }
-}
 
 Vue.config.productionTip = false;
 

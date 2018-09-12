@@ -44,7 +44,7 @@
 </template>
 <style>
 .navbar-brand {
-  width: 280px;
+  width: 300px;
 }
 </style>
 <script lang="ts">

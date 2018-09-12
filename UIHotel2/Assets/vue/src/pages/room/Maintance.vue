@@ -87,5 +87,10 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
-export default class RoomMaintance extends Vue {}
+export default class RoomMaintance extends Vue {
+  mounted() {
+    this.$store.commit("changeTitle", "Room Maintance");
+    this.$store.commit("changeSubtitle", "");
+  }
+}
 </script>

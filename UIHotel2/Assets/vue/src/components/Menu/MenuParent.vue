@@ -87,7 +87,7 @@ export default {
 
       setTimeout(() => {
         if (!before_) this.is_expand = true;
-      }, 600);
+      }, 100);
     },
     hideMenu() {
       if (this.is_expand) this.is_expand = false;
