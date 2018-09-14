@@ -19,6 +19,9 @@ namespace UIHotel2.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Guest>()
+                .Property(x => x.BirthDay)
+                .HasColumnType("Date");
         }
 
         public DbSet<Guest> Guests { get; set; }

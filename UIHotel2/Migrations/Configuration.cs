@@ -10,6 +10,7 @@ namespace UIHotel2.Migrations
         public Configuration()
         {
             SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            CodeGenerator = new MySql.Data.Entity.MySqlMigrationCodeGenerator();
             AutomaticMigrationsEnabled = false;
         }
 

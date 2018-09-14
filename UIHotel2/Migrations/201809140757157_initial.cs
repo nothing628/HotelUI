@@ -8,7 +8,7 @@ namespace UIHotel2.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Guests",
+                "Guests",
                 c => new
                     {
                         id_number = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
@@ -21,7 +21,7 @@ namespace UIHotel2.Migrations
         
         public override void Down()
         {
-            DropTable("dbo.Guests");
+            DropTable("Guests");
         }
     }
 }

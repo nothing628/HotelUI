@@ -98,6 +98,14 @@
     <Compile Include="Migrations\201809140757157_initial.Designer.cs">
       <DependentUpon>201809140757157_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809140853558_ChangeColumnName.cs" />
+    <Compile Include="Migrations\201809140853558_ChangeColumnName.Designer.cs">
+      <DependentUpon>201809140853558_ChangeColumnName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809140918325_FixType.cs" />
+    <Compile Include="Migrations\201809140918325_FixType.Designer.cs">
+      <DependentUpon>201809140918325_FixType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +135,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809140757157_initial.resx">
       <DependentUpon>201809140757157_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809140853558_ChangeColumnName.resx">
+      <DependentUpon>201809140853558_ChangeColumnName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809140918325_FixType.resx">
+      <DependentUpon>201809140918325_FixType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
