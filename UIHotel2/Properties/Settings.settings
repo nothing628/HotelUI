@@ -14,16 +14,16 @@
       <Value Profile="(Default)">localhost</Value>
     </Setting>
     <Setting Name="SQL_PORT" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3306</Value>
+      <Value Profile="(Default)">3600</Value>
     </Setting>
     <Setting Name="SQL_DATABASE" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Hotel</Value>
+      <Value Profile="(Default)">HotelX</Value>
     </Setting>
     <Setting Name="SQL_USER" Type="System.String" Scope="User">
-      <Value Profile="(Default)">root</Value>
+      <Value Profile="(Default)">mes</Value>
     </Setting>
     <Setting Name="SQL_PASSWORD" Type="System.String" Scope="User">
-      <Value Profile="(Default)">abc123</Value>
+      <Value Profile="(Default)">qweqwe</Value>
     </Setting>
   </Settings>
 </SettingsFile>

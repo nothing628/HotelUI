@@ -48,7 +48,7 @@ namespace UIHotel2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3306")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3600")]
         public int SQL_PORT {
             get {
                 return ((int)(this["SQL_PORT"]));
@@ -60,7 +60,7 @@ namespace UIHotel2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Hotel")]
+        [global::System.Configuration.DefaultSettingValueAttribute("HotelX")]
         public string SQL_DATABASE {
             get {
                 return ((string)(this["SQL_DATABASE"]));
@@ -72,7 +72,7 @@ namespace UIHotel2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("root")]
+        [global::System.Configuration.DefaultSettingValueAttribute("mes")]
         public string SQL_USER {
             get {
                 return ((string)(this["SQL_USER"]));
@@ -84,7 +84,7 @@ namespace UIHotel2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("abc123")]
+        [global::System.Configuration.DefaultSettingValueAttribute("qweqwe")]
         public string SQL_PASSWORD {
             get {
                 return ((string)(this["SQL_PASSWORD"]));

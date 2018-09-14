@@ -17,6 +17,14 @@ namespace UIHotel2.AppObject
 {
     class DBObject : BaseObject
     {
+        public static string ConnectionString
+        {
+            get
+            {
+                var dbObject = new DBObject();
+                return dbObject.GetConnectionString();
+            }
+        }
         public override string ObjectName => "DB";
 
         public override void Register(JSObject obj)

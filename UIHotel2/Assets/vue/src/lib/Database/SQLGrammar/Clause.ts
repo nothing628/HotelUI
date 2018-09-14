@@ -19,20 +19,20 @@ export class WhereClause {
 
   public Compile(params: WhereCompileParam): string {
     let query_str: string = "";
-    let param_num = params.param_num;
-    let is_first = params.is_first;
+    let param_num: number = params.param_num;
+    let is_first: boolean = params.is_first;
     let param_name: string = "@param" + param_num;
 
     if (!is_first) {
-      query_str += this.JoinType == JoinType.AND ? "AND " : "OR ";
+      query_str += this.JoinType === JoinType.AND ? "AND " : "OR ";
     }
 
     if (this.IsNested) {
       query_str += "( ";
 
       this.WhereNested.forEach((val, idx) => {
-        var new_param = new WhereCompileParam();
-        new_param.is_first = idx == 0;
+        var new_param: WhereCompileParam = new WhereCompileParam();
+        new_param.is_first = idx === 0;
         new_param.param_num = params.param_num;
 
         query_str += val.Compile(new_param);
@@ -70,9 +70,9 @@ export class OrderClause {
   public OrderType: OrderType = OrderType.ASC;
 
   public Compile(): string {
-    let order = "";
+    let order: string = "";
 
-    if (this.OrderType == OrderType.ASC) {
+    if (this.OrderType === OrderType.ASC) {
       order = "ASC";
     } else {
       order = "DESC";

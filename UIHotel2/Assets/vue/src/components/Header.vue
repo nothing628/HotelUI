@@ -65,7 +65,7 @@ export default class Header extends Vue {
   }
 
   logout() {
-    this.$store.commit("user/logout");
+    this.$store.commit("User/logout");
   }
 }
 </script>

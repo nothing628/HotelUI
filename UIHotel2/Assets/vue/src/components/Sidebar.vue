@@ -44,8 +44,8 @@
         <menu-parent
           text="Report"
           icon="fa fa-line-chart">
-          <menu-child text="Finance Report" route="report.finance"></menu-child>
           <menu-child text="Hotel Report" route="report.hotel"></menu-child>
+          <menu-child text="Transaction Report" route="report.finance"></menu-child>
         </menu-parent>
         <menu-parent
           text="Settings"
