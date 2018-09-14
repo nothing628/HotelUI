@@ -53,12 +53,12 @@ export class Table implements THasAttribute {
   }
 
   public static Get(): Array<any> {
-    let table = this.NewTableInstance();
+    let table: any = this.NewTableInstance();
     return table.Get();
   }
 
   public static First(): any {
-    let table = this.NewTableInstance();
+    let table: any = this.NewTableInstance();
     return table.First();
   }
 
