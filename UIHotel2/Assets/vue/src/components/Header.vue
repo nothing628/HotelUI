@@ -44,7 +44,7 @@
 </template>
 <style>
 .navbar-brand {
-  width: 280px;
+  width: 300px;
 }
 </style>
 <script lang="ts">
@@ -65,7 +65,7 @@ export default class Header extends Vue {
   }
 
   logout() {
-    this.$store.commit("user/logout");
+    this.$store.commit("User/logout");
   }
 }
 </script>

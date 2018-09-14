@@ -26,6 +26,12 @@
     </div>
   </div>
 </template>
+<style>
+.login .login-header {
+  width: 480px;
+  margin-left: -240px;
+}
+</style>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
