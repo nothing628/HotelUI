@@ -20,6 +20,7 @@
                 <tr role="row">
                   <th tabindex="0" rowspan="1" colspan="1">Day Type</th>
                   <th tabindex="0" rowspan="1" colspan="1">Description</th>
+                  <th tabindex="0" rowspan="1" colspan="1">Color</th>
                   <th tabindex="0" rowspan="1" colspan="1"></th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
               <tr class="gradeA odd" role="row" v-for="i in 2" :key="i">
                   <td class="sorting_1" tabindex="0">Holiday</td>
                   <td>National Holiday / Religion Holiday</td>
+                  <td style="background-color:#00acac"></td>
                   <td>
                     <div class="btn-group pull-right">
                       <button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Expand</button>
@@ -38,6 +40,7 @@
               <tr class="gradeA even" role="row">
                   <td class="sorting_1" tabindex="0">Weekday</td>
                   <td>Weekday</td>
+                  <td style="background-color: #f59c1a"></td>
                   <td>
                     <div class="btn-group pull-right">
                       <button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Expand</button>
@@ -47,7 +50,7 @@
                   </td>
               </tr>
               <tr>
-                <td colspan="3">
+                <td colspan="4">
                   <price-expand></price-expand>
                 </td>
               </tr>

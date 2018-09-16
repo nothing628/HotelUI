@@ -28,6 +28,9 @@
     color: #a8acb1 !important;
 }
 
+#page-container > .sidebar.sidebar-grid,
+#page-container > .sidebar-bg,
+#content,
 #header > .container-fluid > .nav.navbar-nav.navbar-right {
     -webkit-app-region: no-drag;
 }
