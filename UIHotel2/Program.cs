@@ -25,5 +25,15 @@ namespace UIHotel2
                 Application.Run(new Form1());
             }
         }
+
+        static void TestDatabase()
+        {
+            Properties.Settings.Default.Reset();
+            using (var context = new Data.HotelContext())
+            {
+                var room = context.Rooms.Include("State").First();
+
+            }
+        }
     }
 }

@@ -2,14 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="UIHotel2.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ConnStr" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;server={0};user id={3};password={4};port={1};persistsecurityinfo=False;database={2}&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;MySql.Data.MySqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">server={0};user id={3};password={4};port={1};persistsecurityinfo=False;database={2}</Value>
-    </Setting>
     <Setting Name="SQL_HOST" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>
     </Setting>
@@ -24,6 +16,14 @@
     </Setting>
     <Setting Name="SQL_PASSWORD" Type="System.String" Scope="User">
       <Value Profile="(Default)">qweqwe</Value>
+    </Setting>
+    <Setting Name="ConnStr" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;server={0};user id={3};password={4};port={1};persistsecurityinfo=False;allowuservariables=True;database={2}&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;MySql.Data.MySqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">server={0};user id={3};password={4};port={1};persistsecurityinfo=False;allowuservariables=True;database={2}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

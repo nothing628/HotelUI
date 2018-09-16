@@ -25,5 +25,8 @@ namespace UIHotel2.Data
         }
 
         public DbSet<Guest> Guests { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomState> RoomStates { get; set; }
+        public DbSet<RoomCategory> RoomCategories { get; set; }
     }
 }

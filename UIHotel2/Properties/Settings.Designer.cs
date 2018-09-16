@@ -23,17 +23,6 @@ namespace UIHotel2.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("server={0};user id={3};password={4};port={1};persistsecurityinfo=False;database={" +
-            "2}")]
-        public string ConnStr {
-            get {
-                return ((string)(this["ConnStr"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
@@ -91,6 +80,17 @@ namespace UIHotel2.Properties {
             }
             set {
                 this["SQL_PASSWORD"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("server={0};user id={3};password={4};port={1};persistsecurityinfo=False;allowuserv" +
+            "ariables=True;database={2}")]
+        public string ConnStr {
+            get {
+                return ((string)(this["ConnStr"]));
             }
         }
     }

@@ -88,6 +88,14 @@
     <Compile Include="AppObject\SettingObject.cs" />
     <Compile Include="Data\HotelContext.cs" />
     <Compile Include="Data\Tables\Guest.cs" />
+    <Compile Include="Data\Tables\Room.cs" />
+    <Compile Include="Data\Tables\RoomCalendar.cs" />
+    <Compile Include="Data\Tables\RoomCategory.cs" />
+    <Compile Include="Data\Tables\RoomPrice.cs" />
+    <Compile Include="Data\Tables\RoomPriceKind.cs" />
+    <Compile Include="Data\Tables\RoomState.cs" />
+    <Compile Include="Data\Tables\Transaction.cs" />
+    <Compile Include="Data\Tables\TransactionCategory.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +113,30 @@
     <Compile Include="Migrations\201809140918325_FixType.cs" />
     <Compile Include="Migrations\201809140918325_FixType.Designer.cs">
       <DependentUpon>201809140918325_FixType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160744484_CreateRoomTable.cs" />
+    <Compile Include="Migrations\201809160744484_CreateRoomTable.Designer.cs">
+      <DependentUpon>201809160744484_CreateRoomTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160748152_FixUnique.cs" />
+    <Compile Include="Migrations\201809160748152_FixUnique.Designer.cs">
+      <DependentUpon>201809160748152_FixUnique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160807570_CreateRoomRelation.cs" />
+    <Compile Include="Migrations\201809160807570_CreateRoomRelation.Designer.cs">
+      <DependentUpon>201809160807570_CreateRoomRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160812248_AddColumnRoomState.cs" />
+    <Compile Include="Migrations\201809160812248_AddColumnRoomState.Designer.cs">
+      <DependentUpon>201809160812248_AddColumnRoomState.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160832241_CreateCategoryTable.cs" />
+    <Compile Include="Migrations\201809160832241_CreateCategoryTable.Designer.cs">
+      <DependentUpon>201809160832241_CreateCategoryTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160843322_FixPendingMigration.cs" />
+    <Compile Include="Migrations\201809160843322_FixPendingMigration.Designer.cs">
+      <DependentUpon>201809160843322_FixPendingMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -144,6 +176,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809140918325_FixType.resx">
       <DependentUpon>201809140918325_FixType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160744484_CreateRoomTable.resx">
+      <DependentUpon>201809160744484_CreateRoomTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160748152_FixUnique.resx">
+      <DependentUpon>201809160748152_FixUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160807570_CreateRoomRelation.resx">
+      <DependentUpon>201809160807570_CreateRoomRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160812248_AddColumnRoomState.resx">
+      <DependentUpon>201809160812248_AddColumnRoomState.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160832241_CreateCategoryTable.resx">
+      <DependentUpon>201809160832241_CreateCategoryTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160843322_FixPendingMigration.resx">
+      <DependentUpon>201809160843322_FixPendingMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

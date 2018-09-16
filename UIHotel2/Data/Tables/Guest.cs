@@ -10,10 +10,12 @@ namespace UIHotel2.Data.Tables
 {
     class Guest
     {
+        [Key]
         [Column(Order = 0)]
         [StringLength(30)]
         public string Id { get; set; }
 
+        [Key]
         [Column(Order = 1)]
         [StringLength(10)]
         public string IdKind { get; set; }
