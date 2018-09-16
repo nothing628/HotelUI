@@ -37,5 +37,8 @@ namespace UIHotel2.Data
         public DbSet<RoomPrice> RoomPrices { get; set; }
         public DbSet<RoomCalendar> RoomCalendars { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionCategory> TransactionCategories { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
