@@ -202,6 +202,14 @@
     <Compile Include="Migrations\201809161348212_UpdateForeignKey1.Designer.cs">
       <DependentUpon>201809161348212_UpdateForeignKey1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809161417233_CreateTableInvoice.cs" />
+    <Compile Include="Migrations\201809161417233_CreateTableInvoice.Designer.cs">
+      <DependentUpon>201809161417233_CreateTableInvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161420590_UpdateInvoiceTable.cs" />
+    <Compile Include="Migrations\201809161420590_UpdateInvoiceTable.Designer.cs">
+      <DependentUpon>201809161420590_UpdateInvoiceTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -300,6 +308,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809161348212_UpdateForeignKey1.resx">
       <DependentUpon>201809161348212_UpdateForeignKey1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161417233_CreateTableInvoice.resx">
+      <DependentUpon>201809161417233_CreateTableInvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161420590_UpdateInvoiceTable.resx">
+      <DependentUpon>201809161420590_UpdateInvoiceTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

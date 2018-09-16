@@ -11,6 +11,7 @@ namespace UIHotel2.Data.Tables
     class Booking
     {
         [Key]
+        [StringLength(16)]
         public string Id { get; set; }
         public DateTime BookingAt { get; set; }
         public DateTime? CheckinAt { get; set; }
