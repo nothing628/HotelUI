@@ -88,15 +88,22 @@
     <Compile Include="AppObject\SettingObject.cs" />
     <Compile Include="Data\Convention\DateTypeConvention.cs" />
     <Compile Include="Data\HotelContext.cs" />
+    <Compile Include="Data\Tables\Booking.cs" />
+    <Compile Include="Data\Tables\BookingType.cs" />
     <Compile Include="Data\Tables\Guest.cs" />
+    <Compile Include="Data\Tables\Invoice.cs" />
+    <Compile Include="Data\Tables\InvoiceDetail.cs" />
+    <Compile Include="Data\Tables\InvoiceDetailKind.cs" />
     <Compile Include="Data\Tables\Room.cs" />
     <Compile Include="Data\Tables\RoomCalendar.cs" />
     <Compile Include="Data\Tables\RoomCategory.cs" />
     <Compile Include="Data\Tables\RoomPrice.cs" />
     <Compile Include="Data\Tables\RoomPriceKind.cs" />
     <Compile Include="Data\Tables\RoomState.cs" />
+    <Compile Include="Data\Tables\Setting.cs" />
     <Compile Include="Data\Tables\Transaction.cs" />
     <Compile Include="Data\Tables\TransactionCategory.cs" />
+    <Compile Include="Data\Tables\User.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
