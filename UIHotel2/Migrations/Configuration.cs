@@ -44,6 +44,35 @@ namespace UIHotel2.Migrations
                 new Setting { Key = "time.fullcharge", Value = "00:00:00" },
                 new Setting { Key = "penalty", Value = "20000" },
                 new Setting { Key = "deposit", Value = "50000" });
+            context.TransactionCategories.AddOrUpdate(x => x.CategoryName,
+                new TransactionCategory { CategoryName = "Cash", CategoryColor = "558B2F", CategoryIcon = "fa fa-money", IsIncome = true },
+                new TransactionCategory { CategoryName = "Income", CategoryColor = "1565C0", CategoryIcon = "fa fa-credit-card", IsIncome = true },
+                new TransactionCategory { CategoryName = "Salary", CategoryColor = "F57F17", CategoryIcon = "fa fa-usd", IsIncome = true },
+                new TransactionCategory { CategoryName = "Food & Drinks", CategoryColor = "00838F", CategoryIcon = "fa fa-cutlery", IsIncome = false },
+                new TransactionCategory { CategoryName = "Transportation", CategoryColor = "BF360C", CategoryIcon = "fa fa-rocket", IsIncome = false },
+                new TransactionCategory { CategoryName = "Comunication", CategoryColor = "311B92", CategoryIcon = "fa fa-phone", IsIncome = false },
+                new TransactionCategory { CategoryName = "Tax", CategoryColor = "1B5E20", CategoryIcon = "fa fa-gavel", IsIncome = false },
+                new TransactionCategory { CategoryName = "Utilities", CategoryColor = "FF8F00", CategoryIcon = "fa fa-cogs", IsIncome = false },
+                new TransactionCategory { CategoryName = "Insurance", CategoryColor = "3E2723", CategoryIcon = "fa fa-heart", IsIncome = false },
+                new TransactionCategory { CategoryName = "Loan", CategoryColor = "0097A7", CategoryIcon = "fa fa-university", IsIncome = false },
+                new TransactionCategory { CategoryName = "Uncategorized Income", CategoryColor = "000000", CategoryIcon = "fa fa-asterisk", IsIncome = true },
+                new TransactionCategory { CategoryName = "Uncategorized Outcome", CategoryColor = "000000", CategoryIcon = "fa fa-asterisk", IsIncome = false });
+            context.BookingTypes.AddOrUpdate(x => x.TypeName,
+                new BookingType { TypeName = "Walk-In", IsLocal = true },
+                new BookingType { TypeName = "Telephone", IsLocal = true },
+                new BookingType { TypeName = "Traveloka", IsLocal = false },
+                new BookingType { TypeName = "Agoda", IsLocal = false });
+            context.InvoiceKinds.AddOrUpdate(x => x.Id,
+                new InvoiceDetailKind { Id = 1, KindName = "Room Invoice" },
+                new InvoiceDetailKind { Id = 2, KindName = "Room Move Charge" },
+                new InvoiceDetailKind { Id = 3, KindName = "Room Late Checkout" },
+                new InvoiceDetailKind { Id = 97, KindName = "Deposit" },
+                new InvoiceDetailKind { Id = 98, KindName = "Cashback" },
+                new InvoiceDetailKind { Id = 99, KindName = "Pinalty" },
+                new InvoiceDetailKind { Id = 100, KindName = "Pay Cash" },
+                new InvoiceDetailKind { Id = 101, KindName = "Pay Card" },
+                new InvoiceDetailKind { Id = 200, KindName = "Uncategorized In" },
+                new InvoiceDetailKind { Id = 201, KindName = "Uncategorized Out" });
             context.SaveChanges();
 
             var big = context.RoomCategories.Where(x => x.CategoryName == "Big").Single();
