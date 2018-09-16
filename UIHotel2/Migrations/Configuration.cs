@@ -29,10 +29,18 @@ namespace UIHotel2.Migrations
                 new RoomCategory { CategoryName = "Big" },
                 new RoomCategory { CategoryName = "Medium" },
                 new RoomCategory { CategoryName = "Small" });
+            context.RoomPriceKinds.AddOrUpdate(x => x.KindName,
+                new RoomPriceKind { KindName = "WeekDay", KindColor = "43A047" },
+                new RoomPriceKind { KindName = "WeekEnd", KindColor = "D32F2F" },
+                new RoomPriceKind { KindName = "Holiday", KindColor = "00695C" });
             context.SaveChanges();
 
             var big = context.RoomCategories.Where(x => x.CategoryName == "Big").Single();
             var vacant = context.RoomStates.Where(x => x.StateName == "Vacant").Single();
+            var weekday = context.RoomPriceKinds.Where(x => x.KindName == "WeekDay").Single();
+
+            context.RoomCalendars.AddOrUpdate(x => x.DateAt,
+                new RoomCalendar { DateAt = DateTime.Now, Kind = weekday });
 
             context.Rooms.RemoveRange(context.Rooms.ToList());
             context.SaveChanges();

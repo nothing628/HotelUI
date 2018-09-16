@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel2.AppObject;
+using UIHotel2.Data.Convention;
 using UIHotel2.Data.Tables;
 
 namespace UIHotel2.Data
@@ -19,8 +20,12 @@ namespace UIHotel2.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Guest>()
                 .Property(x => x.BirthDay)
+                .HasColumnType("Date");
+            modelBuilder.Entity<RoomCalendar>()
+                .Property(x => x.DateAt)
                 .HasColumnType("Date");
         }
 
@@ -28,5 +33,8 @@ namespace UIHotel2.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomState> RoomStates { get; set; }
         public DbSet<RoomCategory> RoomCategories { get; set; }
+        public DbSet<RoomPriceKind> RoomPriceKinds { get; set; }
+        public DbSet<RoomPrice> RoomPrices { get; set; }
+        public DbSet<RoomCalendar> RoomCalendars { get; set; }
     }
 }

@@ -86,6 +86,7 @@
     <Compile Include="AppObject\BaseObject.cs" />
     <Compile Include="AppObject\DBObject.cs" />
     <Compile Include="AppObject\SettingObject.cs" />
+    <Compile Include="Data\Convention\DateTypeConvention.cs" />
     <Compile Include="Data\HotelContext.cs" />
     <Compile Include="Data\Tables\Guest.cs" />
     <Compile Include="Data\Tables\Room.cs" />
@@ -137,6 +138,30 @@
     <Compile Include="Migrations\201809160843322_FixPendingMigration.cs" />
     <Compile Include="Migrations\201809160843322_FixPendingMigration.Designer.cs">
       <DependentUpon>201809160843322_FixPendingMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160913512_CreateTablePriceKind.cs" />
+    <Compile Include="Migrations\201809160913512_CreateTablePriceKind.Designer.cs">
+      <DependentUpon>201809160913512_CreateTablePriceKind.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160919097_CreateTableCalendar.cs" />
+    <Compile Include="Migrations\201809160919097_CreateTableCalendar.Designer.cs">
+      <DependentUpon>201809160919097_CreateTableCalendar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160920311_FixUnique1.cs" />
+    <Compile Include="Migrations\201809160920311_FixUnique1.Designer.cs">
+      <DependentUpon>201809160920311_FixUnique1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161021171_CreateTablePrice.cs" />
+    <Compile Include="Migrations\201809161021171_CreateTablePrice.Designer.cs">
+      <DependentUpon>201809161021171_CreateTablePrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161022386_FixUnique2.cs" />
+    <Compile Include="Migrations\201809161022386_FixUnique2.Designer.cs">
+      <DependentUpon>201809161022386_FixUnique2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161023206_AddColumnPrice.cs" />
+    <Compile Include="Migrations\201809161023206_AddColumnPrice.Designer.cs">
+      <DependentUpon>201809161023206_AddColumnPrice.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -194,6 +219,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809160843322_FixPendingMigration.resx">
       <DependentUpon>201809160843322_FixPendingMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160913512_CreateTablePriceKind.resx">
+      <DependentUpon>201809160913512_CreateTablePriceKind.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160919097_CreateTableCalendar.resx">
+      <DependentUpon>201809160919097_CreateTableCalendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160920311_FixUnique1.resx">
+      <DependentUpon>201809160920311_FixUnique1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161021171_CreateTablePrice.resx">
+      <DependentUpon>201809161021171_CreateTablePrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161022386_FixUnique2.resx">
+      <DependentUpon>201809161022386_FixUnique2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161023206_AddColumnPrice.resx">
+      <DependentUpon>201809161023206_AddColumnPrice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
