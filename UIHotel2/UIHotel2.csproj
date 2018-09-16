@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201809161023206_AddColumnPrice.Designer.cs">
       <DependentUpon>201809161023206_AddColumnPrice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809161103088_CreateTableSetting.cs" />
+    <Compile Include="Migrations\201809161103088_CreateTableSetting.Designer.cs">
+      <DependentUpon>201809161103088_CreateTableSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -244,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809161023206_AddColumnPrice.resx">
       <DependentUpon>201809161023206_AddColumnPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161103088_CreateTableSetting.resx">
+      <DependentUpon>201809161103088_CreateTableSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

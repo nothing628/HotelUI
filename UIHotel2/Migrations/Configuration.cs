@@ -33,6 +33,17 @@ namespace UIHotel2.Migrations
                 new RoomPriceKind { KindName = "WeekDay", KindColor = "43A047" },
                 new RoomPriceKind { KindName = "WeekEnd", KindColor = "D32F2F" },
                 new RoomPriceKind { KindName = "Holiday", KindColor = "00695C" });
+            context.Settings.AddOrUpdate(x => x.Key,
+                new Setting { Key = "app.name", Value = "Hotel Management System" },
+                new Setting { Key = "app.key", Value = "" },
+                new Setting { Key = "hotel.name", Value = "Hotel Test" },
+                new Setting { Key = "hotel.address", Value = "" },
+                new Setting { Key = "hotel.logo", Value = "" },
+                new Setting { Key = "time.checkin", Value = "00:00:00" },
+                new Setting { Key = "time.checkout", Value = "00:00:00" },
+                new Setting { Key = "time.fullcharge", Value = "00:00:00" },
+                new Setting { Key = "penalty", Value = "20000" },
+                new Setting { Key = "deposit", Value = "50000" });
             context.SaveChanges();
 
             var big = context.RoomCategories.Where(x => x.CategoryName == "Big").Single();
