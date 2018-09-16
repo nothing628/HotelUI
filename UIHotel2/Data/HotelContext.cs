@@ -29,6 +29,8 @@ namespace UIHotel2.Data
                 .HasColumnType("Date");
         }
 
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingType> BookingTypes { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomState> RoomStates { get; set; }

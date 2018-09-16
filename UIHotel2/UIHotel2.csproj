@@ -186,6 +186,22 @@
     <Compile Include="Migrations\201809161129428_AddColumnIsActive.Designer.cs">
       <DependentUpon>201809161129428_AddColumnIsActive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809161328047_CreateTableBooking.cs" />
+    <Compile Include="Migrations\201809161328047_CreateTableBooking.Designer.cs">
+      <DependentUpon>201809161328047_CreateTableBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161333589_UpdateForeignKey.cs" />
+    <Compile Include="Migrations\201809161333589_UpdateForeignKey.Designer.cs">
+      <DependentUpon>201809161333589_UpdateForeignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161347347_FixUnique4.cs" />
+    <Compile Include="Migrations\201809161347347_FixUnique4.Designer.cs">
+      <DependentUpon>201809161347347_FixUnique4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809161348212_UpdateForeignKey1.cs" />
+    <Compile Include="Migrations\201809161348212_UpdateForeignKey1.Designer.cs">
+      <DependentUpon>201809161348212_UpdateForeignKey1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -272,6 +288,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809161129428_AddColumnIsActive.resx">
       <DependentUpon>201809161129428_AddColumnIsActive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161328047_CreateTableBooking.resx">
+      <DependentUpon>201809161328047_CreateTableBooking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161333589_UpdateForeignKey.resx">
+      <DependentUpon>201809161333589_UpdateForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161347347_FixUnique4.resx">
+      <DependentUpon>201809161347347_FixUnique4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809161348212_UpdateForeignKey1.resx">
+      <DependentUpon>201809161348212_UpdateForeignKey1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

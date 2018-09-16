@@ -11,12 +11,13 @@ namespace UIHotel2.Data.Tables
     class Guest
     {
         [Key]
-        [Column(Order = 0)]
+        public long Id { get; set; }
+        
+        [Index("IFX_IdNumber", IsUnique = true, Order = 0)]
         [StringLength(30)]
-        public string Id { get; set; }
+        public string IdNumber { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
+        [Index("IFX_IdNumber", IsUnique = true, Order = 1)]
         [StringLength(10)]
         public string IdKind { get; set; }
 
