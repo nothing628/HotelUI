@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chromium.Remote.Event;
 using Chromium.WebBrowser;
+using UIHotel2.Data;
+using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
 {
@@ -14,42 +17,62 @@ namespace UIHotel2.AppObject
         public override void Register(JSObject obj)
         {
             base.Register(obj);
-            obj.AddFunction("Validate").Execute += ValidateExecute;
-            obj.AddFunction("Create").Execute += CreateExecute;
-            obj.AddFunction("Update").Execute += UpdateExecute;
-            obj.AddFunction("Delete").Execute += DeleteExecute;
-            obj.AddFunction("Get").Execute += GetExecute;
-            obj.AddFunction("ChangePassword").Execute += ChangePasswordExecute;
+            Self.AddFunction("Validate").Execute += ValidateExecute;
+            Self.AddFunction("Create").Execute += CreateExecute;
+            Self.AddFunction("Update").Execute += UpdateExecute;
+            Self.AddFunction("Delete").Execute += DeleteExecute;
+            Self.AddFunction("Get").Execute += GetExecute;
+            Self.AddFunction("ChangePassword").Execute += ChangePasswordExecute;
         }
 
-        private void GetExecute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
+        private void GetExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void DeleteExecute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
+        private void DeleteExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void UpdateExecute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
+        private void UpdateExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void ChangePasswordExecute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
+        private void ChangePasswordExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void CreateExecute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
+        private void CreateExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void ValidateExecute(object sender, Chromium.Remote.Event.CfrV8HandlerExecuteEventArgs e)
+        private void ValidateExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var username = e.Arguments[0].StringValue;
+                var password = e.Arguments[1].StringValue;
+                var appkey = SettingHelper.AppKey;
+                var hashPassword = AuthHelper.HashText(password, appkey);
+                
+                using (var context = new HotelContext())
+                {
+                    var user = context.Users
+                        .Where(x => x.Username == username)
+                        .Where(x => x.Password == hashPassword)
+                        .SingleOrDefault();
+                    var convertuser = ConvertValue(user);
+
+                    e.SetReturnValue(convertuser);
+                }
+            } catch (Exception ex)
+            {
+                e.Exception = ex.Message;
+            }
         }
     }
 }

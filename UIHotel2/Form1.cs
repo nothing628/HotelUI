@@ -38,10 +38,22 @@ namespace UIHotel2
             listObject.Add(new DBObject());
             listObject.Add(new SettingObject());
 
+            repository.AddDynamicProperty("IsDebug").PropertyGet += IsDebug_PropertyGet;
+
             foreach (var obj in listObject)
             {
                 obj.Register(repository);
             }
+        }
+
+        private void IsDebug_PropertyGet(object sender, Chromium.Remote.Event.CfrV8AccessorGetEventArgs e)
+        {
+#if DEBUG
+            e.Retval = true;
+#else
+            e.Retval = false;
+#endif
+            e.SetReturnValue(true);
         }
 
         private void Chromium_BrowserCreated(object sender, Chromium.WebBrowser.Event.BrowserCreatedEventArgs e)

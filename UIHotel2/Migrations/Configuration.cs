@@ -90,7 +90,13 @@ namespace UIHotel2.Migrations
             SettingHelper.Load();
 
             context.Users.AddOrUpdate(x => x.Username,
-                new User { Username = "admin", Password = AuthHelper.HashText("a", SettingHelper.AppKey), Level = 0, IsActive = true });
+                new User {
+                    Username = "admin",
+                    Fullname = "Administrator",
+                    Password = AuthHelper.HashText("a", SettingHelper.AppKey),
+                    Level = 0,
+                    IsActive = true
+                });
             context.RoomCalendars.AddOrUpdate(x => x.DateAt,
                 new RoomCalendar { DateAt = DateTime.Now, Kind = weekday });
 

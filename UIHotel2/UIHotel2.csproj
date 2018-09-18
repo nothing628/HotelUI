@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201809161420590_UpdateInvoiceTable.Designer.cs">
       <DependentUpon>201809161420590_UpdateInvoiceTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809181317010_AddFieldFullname.cs" />
+    <Compile Include="Migrations\201809181317010_AddFieldFullname.Designer.cs">
+      <DependentUpon>201809181317010_AddFieldFullname.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Misc\AppHelper.cs" />
     <Compile Include="Misc\AuthHelper.cs" />
@@ -239,6 +243,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\js\pace.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\vue\dist\css\app.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\vue\dist\js\app.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\vue\dist\js\chunk-vendors.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Form1.resx">
@@ -319,6 +332,9 @@
     <EmbeddedResource Include="Migrations\201809161420590_UpdateInvoiceTable.resx">
       <DependentUpon>201809161420590_UpdateInvoiceTable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809181317010_AddFieldFullname.resx">
+      <DependentUpon>201809181317010_AddFieldFullname.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -377,6 +393,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\fonts\glyphicons-halflings-regulard41d.eot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\vue\dist\js\app.js.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\vue\dist\js\chunk-vendors.js.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">

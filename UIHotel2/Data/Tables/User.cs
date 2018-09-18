@@ -17,6 +17,9 @@ namespace UIHotel2.Data.Tables
         [StringLength(40)]
         public string Username { get; set; }
 
+        [StringLength(40)]
+        public string Fullname { get; set; }
+
         [StringLength(1024)]
         public string Password { get; set; }
 

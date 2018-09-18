@@ -62,6 +62,9 @@ namespace UIHotel2.AppObject
 
             switch (typObject.Name)
             {
+                case "Boolean":
+                    retValue = Convert.ToBoolean(data);
+                    break;
                 case "ExpandoObject":
                     IDictionary<string, object> keyValues = data as IDictionary<string, object>;
                     var resultx = CfrV8Value.CreateObject(new CfrV8Accessor(), new CfrV8Interceptor());
