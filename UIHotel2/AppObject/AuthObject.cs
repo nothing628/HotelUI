@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
 using UIHotel2.Data;
+using UIHotel2.Data.Tables;
 using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
@@ -42,7 +44,38 @@ namespace UIHotel2.AppObject
 
         private void ChangePasswordExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userId = e.Arguments[0].IntValue;
+                var oldPassword = e.Arguments[1].StringValue;
+                var newPassword = e.Arguments[2].StringValue;
+                var appkey = SettingHelper.AppKey;
+                var hashOldPassword = AuthHelper.HashText(oldPassword, appkey);
+
+                using (var context = new HotelContext())
+                {
+                    var user = context.Users
+                        .Where(x => x.Id == userId)
+                        .Where(x => x.Password == hashOldPassword)
+                        .SingleOrDefault();
+
+                    if (user != null)
+                    {
+                        user.UpdatePassword(newPassword);
+
+                        context.Entry(user).State = EntityState.Modified;
+                        context.SaveChanges();
+                        e.SetReturnValue(true);
+                    } else
+                    {
+                        e.SetReturnValue(false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                e.Exception = ex.Message;
+            }
         }
 
         private void CreateExecute(object sender, CfrV8HandlerExecuteEventArgs e)
@@ -69,7 +102,8 @@ namespace UIHotel2.AppObject
 
                     e.SetReturnValue(convertuser);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 e.Exception = ex.Message;
             }

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel2.Misc;
 
 namespace UIHotel2.Data.Tables
 {
@@ -27,5 +28,11 @@ namespace UIHotel2.Data.Tables
         //Level 0 = Administrator, 1 = Manager, 2 = Receipsionist, 3 = Cleaner/OB
 
         public bool IsActive { get; set; } = true;
+
+        public void UpdatePassword(string password)
+        {
+            var appkey = SettingHelper.AppKey;
+            Password = AuthHelper.HashText(password, appkey);
+        }
     }
 }
