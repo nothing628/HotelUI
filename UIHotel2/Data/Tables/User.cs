@@ -16,9 +16,11 @@ namespace UIHotel2.Data.Tables
 
         [Index(IsUnique = true)]
         [StringLength(40)]
+        [Required]
         public string Username { get; set; }
 
         [StringLength(40)]
+        [Required]
         public string Fullname { get; set; }
 
         [StringLength(1024)]
