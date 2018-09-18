@@ -5,6 +5,7 @@ namespace UIHotel2.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using UIHotel2.Data.Tables;
+    using UIHotel2.Misc;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Data.HotelContext>
     {
@@ -35,7 +36,6 @@ namespace UIHotel2.Migrations
                 new RoomPriceKind { KindName = "Holiday", KindColor = "00695C" });
             context.Settings.AddOrUpdate(x => x.Key,
                 new Setting { Key = "app.name", Value = "Hotel Management System" },
-                new Setting { Key = "app.key", Value = "" },
                 new Setting { Key = "hotel.name", Value = "Hotel Test" },
                 new Setting { Key = "hotel.address", Value = "" },
                 new Setting { Key = "hotel.logo", Value = "" },
@@ -75,10 +75,22 @@ namespace UIHotel2.Migrations
                 new InvoiceDetailKind { Id = 201, KindName = "Uncategorized Out" });
             context.SaveChanges();
 
+            var is_exists = context.Settings.Where(x => x.Key == "app.key").Any();
+
+            if (!is_exists)
+            {
+                context.Settings.Add(new Setting { Key = "app.key", Value = AppHelper.GenerateRandomStr(32) });
+                context.SaveChanges();
+            }
+            
             var big = context.RoomCategories.Where(x => x.CategoryName == "Big").Single();
             var vacant = context.RoomStates.Where(x => x.StateName == "Vacant").Single();
             var weekday = context.RoomPriceKinds.Where(x => x.KindName == "WeekDay").Single();
 
+            SettingHelper.Load();
+
+            context.Users.AddOrUpdate(x => x.Username,
+                new User { Username = "admin", Password = AuthHelper.HashText("a", SettingHelper.AppKey), Level = 0, IsActive = true });
             context.RoomCalendars.AddOrUpdate(x => x.DateAt,
                 new RoomCalendar { DateAt = DateTime.Now, Kind = weekday });
 
@@ -87,8 +99,6 @@ namespace UIHotel2.Migrations
             context.Rooms.AddOrUpdate(x => x.RoomNumber,
                 new Room { RoomNumber = "201", State = vacant, Category = big });
             context.SaveChanges();
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
         }
     }
 }

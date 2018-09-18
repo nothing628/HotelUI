@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppObject\AuthObject.cs" />
     <Compile Include="AppObject\BaseObject.cs" />
     <Compile Include="AppObject\DBObject.cs" />
     <Compile Include="AppObject\SettingObject.cs" />
@@ -211,6 +212,9 @@
       <DependentUpon>201809161420590_UpdateInvoiceTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Misc\AppHelper.cs" />
+    <Compile Include="Misc\AuthHelper.cs" />
+    <Compile Include="Misc\SettingHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Assets\css\dataTables.bootstrap.min.css">

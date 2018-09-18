@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
 using UIHotel2.Data;
+using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
 {
@@ -66,15 +67,13 @@ namespace UIHotel2.AppObject
             Time_Checkout.PropertySet += Time_Checkout_PropertySet;
             Time_Fullcharge.PropertyGet += Time_Fullcharge_PropertyGet;
             Time_Fullcharge.PropertySet += Time_Fullcharge_PropertySet;
-
-            LoadDatabaseSetting();
         }
 
         private void Time_Fullcharge_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
             if (e.Value.IsString)
             {
-                SetDatabaseSetting("time.fullcharge", e.Value.StringValue);
+                SettingHelper.TimeFullcharge = e.Value.StringValue;
                 return;
             }
 
@@ -85,7 +84,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsString)
             {
-                SetDatabaseSetting("time.checkout", e.Value.StringValue);
+                SettingHelper.TimeCheckout = e.Value.StringValue;
                 return;
             }
 
@@ -96,7 +95,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsString)
             {
-                SetDatabaseSetting("time.checkin", e.Value.StringValue);
+                SettingHelper.TimeCheckin = e.Value.StringValue;
                 return;
             }
 
@@ -107,7 +106,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsInt)
             {
-                SetDatabaseSetting("penalty", e.Value.IntValue.ToString());
+                SettingHelper.Penalty = e.Value.IntValue;
                 return;
             }
 
@@ -118,7 +117,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsInt)
             {
-                SetDatabaseSetting("deposit", e.Value.IntValue.ToString());
+                SettingHelper.Deposit = e.Value.IntValue;
                 return;
             }
 
@@ -127,33 +126,31 @@ namespace UIHotel2.AppObject
 
         private void Time_Fullcharge_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("time.fullcharge");
+            e.Retval = SettingHelper.TimeFullcharge;
             e.SetReturnValue(true);
         }
 
         private void Time_Checkout_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("time.checkout");
+            e.Retval = SettingHelper.TimeCheckout;
             e.SetReturnValue(true);
         }
 
         private void Time_Checkin_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("time.checkin");
+            e.Retval = SettingHelper.TimeCheckin;
             e.SetReturnValue(true);
         }
 
         private void Penalty_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            var penalty = GetDatabaseSetting("penalty");
-            e.Retval = Convert.ToInt32(penalty);
+            e.Retval = SettingHelper.Penalty;
             e.SetReturnValue(true);
         }
 
         private void Deposit_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            var deposit = GetDatabaseSetting("deposit");
-            e.Retval = Convert.ToInt32(deposit);
+            e.Retval = SettingHelper.Deposit;
             e.SetReturnValue(true);
         }
 
@@ -161,7 +158,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsString)
             {
-                SetDatabaseSetting("hotel.name", e.Value.StringValue);
+                SettingHelper.HotelName = e.Value.StringValue;
                 return;
             }
 
@@ -172,7 +169,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsString)
             {
-                SetDatabaseSetting("hotel.logo", e.Value.StringValue);
+                SettingHelper.HotelLogo = e.Value.StringValue;
                 return;
             }
 
@@ -183,7 +180,7 @@ namespace UIHotel2.AppObject
         {
             if (e.Value.IsString)
             {
-                SetDatabaseSetting("hotel.address", e.Value.StringValue);
+                SettingHelper.HotelAddress = e.Value.StringValue;
                 return;
             }
 
@@ -192,32 +189,32 @@ namespace UIHotel2.AppObject
 
         private void Hotel_Name_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("hotel.name");
+            e.Retval = SettingHelper.HotelName;
             e.SetReturnValue(true);
         }
 
         private void Hotel_Logo_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
             //Need to convert to local url
-            e.Retval = GetDatabaseSetting("hotel.logo");
+            e.Retval = SettingHelper.HotelLogo;
             e.SetReturnValue(true);
         }
 
         private void Hotel_Address_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("hotel.address");
+            e.Retval = SettingHelper.HotelAddress;
             e.SetReturnValue(true);
         }
 
         private void App_Name_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("app.name");
+            e.Retval = SettingHelper.AppName;
             e.SetReturnValue(true);
         }
 
         private void App_Key_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = GetDatabaseSetting("app.key");
+            e.Retval = SettingHelper.AppKey;
             e.SetReturnValue(true);
         }
 
@@ -268,13 +265,13 @@ namespace UIHotel2.AppObject
         private void LoadExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             Properties.Settings.Default.Reload();
-            LoadDatabaseSetting();
+            SettingHelper.Load();
         }
 
         private void SaveExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             Properties.Settings.Default.Save();
-            SaveDatabaseSetting();
+            SettingHelper.Save();
         }
 
         private void SQL_User_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
@@ -286,65 +283,6 @@ namespace UIHotel2.AppObject
         {
             e.Retval = Properties.Settings.Default.SQL_USER;
             e.SetReturnValue(true);
-        }
-
-        private void LoadDatabaseSetting()
-        {
-            if (DatabaseSetting == null)
-            {
-                DatabaseSetting = new Dictionary<string, string>();
-            }
-
-            using (var context = new HotelContext())
-            {
-                try
-                {
-                    var settings = context.Settings.ToList();
-
-                    foreach (var setting in settings)
-                    {
-                        DatabaseSetting.Add(setting.Key, setting.Value);
-                    }
-                }
-                catch { }
-            }
-        }
-
-        private void SaveDatabaseSetting()
-        {
-            if (DatabaseSetting == null)
-                return;
-
-            using (var context = new HotelContext())
-            {
-                try
-                {
-                    var settings = context.Settings.ToList();
-
-                    foreach (var keyValPair in DatabaseSetting)
-                    {
-                        var setting = settings.Where(x => x.Key == keyValPair.Key).Single();
-
-                        setting.Value = keyValPair.Value;
-                        context.Entry(setting).State = EntityState.Modified;
-                    }
-
-                    context.SaveChanges();
-                } catch { }
-            }
-        }
-
-        private string GetDatabaseSetting(string Key, string Default = "")
-        {
-            if (DatabaseSetting.ContainsKey(Key))
-                return DatabaseSetting[Key];
-            return Default;
-        }
-
-        private void SetDatabaseSetting(string Key, string Value)
-        {
-            if (DatabaseSetting.ContainsKey(Key))
-                DatabaseSetting[Key] = Value;
         }
     }
 }

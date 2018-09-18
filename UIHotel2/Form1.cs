@@ -34,6 +34,7 @@ namespace UIHotel2
             List<IBaseObject> listObject = new List<IBaseObject>();
             var repository = GlobalObject.AddObject("CS");
 
+            listObject.Add(new AuthObject());
             listObject.Add(new DBObject());
             listObject.Add(new SettingObject());
 
