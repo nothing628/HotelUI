@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppObject\AppObject.cs" />
     <Compile Include="AppObject\AuthObject.cs" />
     <Compile Include="AppObject\BaseObject.cs" />
     <Compile Include="AppObject\DBObject.cs" />
@@ -420,6 +421,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Upload\.gitkeep">
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
