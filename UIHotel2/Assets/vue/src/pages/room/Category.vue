@@ -4,7 +4,7 @@
       <h4 class="panel-title">Room Category</h4>
     </div>
     <div class="panel-body">
-      <button class="btn btn-success"><i class="fa fa-plus"></i> Add Category</button>
+      <button @click="getData" class="btn btn-success"><i class="fa fa-plus"></i> {{sx}}Add Category</button>
       <table class="table table-hover table-striped m-t-10">
         <thead>
           <tr>
@@ -41,12 +41,21 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { RoomCategory as TRoomCategory } from "@/lib/Model/RoomCategory";
 
 @Component
 export default class RoomCategory extends Vue {
+  private sx: string = "";
+  getData() {
+    var tmpData: TRoomCategory = TRoomCategory.First();
+    tmpData.CategoryName = "12"
+    var anyx: any = tmpData.CategoryName
+    console.log(anyx);
+  }
   mounted() {
     this.$store.commit("changeTitle", "Room Category");
     this.$store.commit("changeSubtitle", "");
+    this.getData();
   }
 }
 </script>

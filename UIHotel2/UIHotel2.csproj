@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201809181412457_UpdateConst.Designer.cs">
       <DependentUpon>201809181412457_UpdateConst.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809191403487_addDescription.cs" />
+    <Compile Include="Migrations\201809191403487_addDescription.Designer.cs">
+      <DependentUpon>201809191403487_addDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Misc\AppHelper.cs" />
     <Compile Include="Misc\AuthHelper.cs" />
@@ -342,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809181412457_UpdateConst.resx">
       <DependentUpon>201809181412457_UpdateConst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809191403487_addDescription.resx">
+      <DependentUpon>201809191403487_addDescription.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

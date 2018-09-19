@@ -16,8 +16,8 @@ export class Table implements THasAttribute {
   protected table_name: string;
   protected primary_key: string;
   protected qry_builder: QueryBuilder;
-  protected attributes: object = {};
-  protected original: object = {};
+  protected attributes?: any;
+  protected original?: any;
   protected is_exists: boolean;
 
   constructor(exists: boolean = false) {

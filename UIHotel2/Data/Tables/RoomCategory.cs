@@ -16,5 +16,8 @@ namespace UIHotel2.Data.Tables
         [Index(IsUnique = true)]
         [StringLength(40)]
         public string CategoryName { get; set; }
+        
+        [StringLength(250)]
+        public string CategoryDescription { get; set; }
     }
 }

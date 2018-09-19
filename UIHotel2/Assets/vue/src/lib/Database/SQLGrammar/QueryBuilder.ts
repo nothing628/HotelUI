@@ -134,7 +134,7 @@ export class QueryBuilder {
 
   private CompileWhere(query_str: string): string {
     if (this.where_arr.length == 0) {
-      return query_str + "WHERE 1 = 1";
+      return query_str + "WHERE 1 = 1 ";
     }
 
     // eslint-disable-next-line
@@ -225,6 +225,7 @@ export class QueryBuilder {
     try {
       return this.FirstOrFail();
     } catch (ex) {
+      console.log(ex, this.CompileSql());
       return null;
     }
   }
