@@ -229,3 +229,9 @@
 .theme--dark .btn.btn--disabled:not(.btn--icon):not(.btn--flat) {
     background-color: rgba(0,0,0,.12) !important;
 }
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        margin-top: 180px;
+    }
+}

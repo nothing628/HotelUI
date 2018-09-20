@@ -1,9 +1,9 @@
 import { Table } from "@/lib/Database/Table";
 
 export interface IRoomCategory {
-  CategoryName?: string,
-  CategoryDescription?: string,
-  Id: number
+  CategoryName?: string;
+  CategoryDescription?: string;
+  Id: number;
 }
 
 export class RoomCategory extends Table {

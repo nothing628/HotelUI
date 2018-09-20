@@ -1,10 +1,12 @@
 import Vue from "vue";
+import * as uiv from "uiv";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import "./registerGlobalScope";
 import "./registerServiceWorker";
 
+Vue.use(uiv, { prefix: "uiv" });
 Vue.config.productionTip = false;
 
 const bus = new Vue();

@@ -14,6 +14,8 @@
     "fullcalendar": "^3.9.0",
     "jqueryui": "^1.11.1",
     "register-service-worker": "^1.0.0",
+    "squel": "^5.12.2",
+    "uiv": "^0.26.2",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",
