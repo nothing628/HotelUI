@@ -17,6 +17,9 @@ namespace UIHotel2.Data.Tables
         [StringLength(40)]
         public string KindName { get; set; }
 
+        [StringLength(100)]
+        public string KindDescription { get; set; }
+
         [StringLength(6)]
         public string KindColor { get; set; }
     }

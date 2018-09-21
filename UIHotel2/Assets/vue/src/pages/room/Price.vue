@@ -51,40 +51,13 @@
               </tr>
               <tr>
                 <td colspan="4">
-                  <price-expand></price-expand>
+                  <price-expand :price-id="3"></price-expand>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
-          <div class="dataTables_paginate paging_simple_numbers">
-            <ul class="pagination">
-              <li class="paginate_button previous disabled">
-                <a href="#" aria-controls="data-table" data-dt-idx="0" tabindex="0">Previous</a>
-              </li>
-              <li class="paginate_button active">
-                <a href="#" aria-controls="data-table" data-dt-idx="1" tabindex="0">1</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="2" tabindex="0">2</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="3" tabindex="0">3</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="4" tabindex="0">4</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="5" tabindex="0">5</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="6" tabindex="0">6</a>
-              </li>
-              <li class="paginate_button next">
-                <a href="#" aria-controls="data-table" data-dt-idx="7" tabindex="0">Next</a>
-              </li>
-            </ul>
-          </div>
+          <counter :from.sync="from" :to.sync="to" :total.sync="max_item"></counter>
+          <pagination :total-page.sync="totalPage" v-model="currentPage"></pagination>
         </div>
       </div>
     </div>
@@ -92,17 +65,58 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { squel, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
 import PriceExpand from "@/components/Room/PriceExpand.vue";
+import Pagination from "@/components/Table/Pagination.vue";
+import Counter from "@/components/Table/Counter.vue";
 
 @Component({
   components: {
-    PriceExpand
+    PriceExpand,
+    Pagination,
+    Counter
   }
 })
 export default class RoomPrice extends Vue {
+  private open_add: boolean = false;
+  private open_edit: boolean = false;
+  private max_item: number = 0;
+  private limit: number = 10;
+  private currentPage: number = 1;
+
+  get totalPage(): number {
+    return Math.ceil(this.max_item / this.limit);
+  }
+
+  get from(): number {
+    return (this.currentPage - 1) * this.limit + 1;
+  }
+
+  get to(): number {
+    let rest = this.from + 9;
+
+    if (rest > this.max_item) return this.max_item;
+    return this.from + 9;
+  }
+
+  get offset(): number {
+    return (this.currentPage - 1) * this.limit;
+  }
+
+  getMaxItem() {
+    let qry = ss()
+      .from("roompricekinds")
+      .field("COUNT(*) as cnt");
+    let result = execute(qry);
+    let first = result[0];
+
+    this.max_item = Number(first.cnt);
+  }
+
   mounted() {
     this.$store.commit("changeTitle", "Room Price");
     this.$store.commit("changeSubtitle", "");
+    this.getMaxItem();
   }
 }
 </script>

@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201809191403487_addDescription.Designer.cs">
       <DependentUpon>201809191403487_addDescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809211654160_AddKindDescription.cs" />
+    <Compile Include="Migrations\201809211654160_AddKindDescription.Designer.cs">
+      <DependentUpon>201809211654160_AddKindDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Misc\AppHelper.cs" />
     <Compile Include="Misc\AuthHelper.cs" />
@@ -349,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809191403487_addDescription.resx">
       <DependentUpon>201809191403487_addDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809211654160_AddKindDescription.resx">
+      <DependentUpon>201809211654160_AddKindDescription.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

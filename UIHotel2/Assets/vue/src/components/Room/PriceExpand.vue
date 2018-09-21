@@ -35,5 +35,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
-export default class PriceExpand extends Vue {}
+export default class PriceExpand extends Vue {
+  @Prop({ required: true }) public PriceId?: number;
+}
 </script>

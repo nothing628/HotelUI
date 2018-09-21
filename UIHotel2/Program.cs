@@ -18,7 +18,7 @@ namespace UIHotel2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (Bootstrap.Load())
+            if (Bootstrap.Load(options => options.RemoteDebuggingPort = 8010))
             {
                 Bootstrap.RegisterFolderResources("Assets");
 

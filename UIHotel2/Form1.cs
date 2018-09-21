@@ -1,4 +1,5 @@
-﻿using Chromium.WebBrowser;
+﻿using Chromium.Remote.Event;
+using Chromium.WebBrowser;
 using NetDimension.NanUI;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,14 @@ namespace UIHotel2
             GlobalObject.AddFunction("showDevTools").Execute += (func, args) => Chromium.ShowDevTools();
             GlobalObject.AddFunction("windowMinimize").Execute += (func, args) => WindowState = FormWindowState.Minimized;
             GlobalObject.AddFunction("windowMaximize").Execute += (func, args) => WindowState = (WindowState == FormWindowState.Normal) ? FormWindowState.Maximized : FormWindowState.Normal;
-            GlobalObject.AddFunction("windowClose").Execute += (func, args) => Close();
+            GlobalObject.AddFunction("windowClose").Execute += CloseExecute;
             Chromium.BrowserCreated += Chromium_BrowserCreated;
             RegisterObject();
+        }
+
+        private void CloseExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            Close();
         }
 
         private void RegisterObject()
@@ -60,7 +66,7 @@ namespace UIHotel2
         private void Chromium_BrowserCreated(object sender, Chromium.WebBrowser.Event.BrowserCreatedEventArgs e)
         {
 #if DEBUG
-            Chromium.ShowDevTools();
+            //Chromium.ShowDevTools();
 #endif
         }
     }
