@@ -102,7 +102,9 @@ export default class RoomCategory extends Vue {
 
   deleteData(item: IModalData) {
     let id = item.Id;
-    let command = sd().from("roomcategories").where("Id = ?", id);
+    let command = sd()
+      .from("roomcategories")
+      .where("Id = ?", id);
     var result = executeScalar(command);
 
     this.getData();

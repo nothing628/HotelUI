@@ -9,7 +9,7 @@
           <div class="dt-buttons btn-group">
             <a class="btn btn-success buttons-copy buttons-html5 btn-sm" tabindex="0">
               <i class="fa fa-plus"></i>
-              <span>Add Room</span>
+              <span> Add Room</span>
             </a>
           </div>
           <div class="dataTables_filter">
@@ -49,48 +49,36 @@
               </tr>
             </tbody>
           </table>
-          <div class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
-          <div class="dataTables_paginate paging_simple_numbers">
-            <ul class="pagination">
-              <li class="paginate_button previous disabled">
-                <a href="#" aria-controls="data-table" data-dt-idx="0" tabindex="0">Previous</a>
-              </li>
-              <li class="paginate_button active">
-                <a href="#" aria-controls="data-table" data-dt-idx="1" tabindex="0">1</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="2" tabindex="0">2</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="3" tabindex="0">3</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="4" tabindex="0">4</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="5" tabindex="0">5</a>
-              </li>
-              <li class="paginate_button ">
-                <a href="#" aria-controls="data-table" data-dt-idx="6" tabindex="0">6</a>
-              </li>
-              <li class="paginate_button next">
-                <a href="#" aria-controls="data-table" data-dt-idx="7" tabindex="0">Next</a>
-              </li>
-            </ul>
-          </div>
+          <counter></counter>
+          <pagination :total-page="totalPage" v-model="currentPage"></pagination>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import Pagination from "@/components/Table/Pagination.vue";
+import Counter from "@/components/Table/Counter.vue";
 
-@Component
+@Component({
+  components: {
+    Pagination,
+    Counter
+  }
+})
 export default class RoomMaintance extends Vue {
+  private totalPage: number = 12;
+  private currentPage: number = 1;
+
   mounted() {
     this.$store.commit("changeTitle", "Room Maintance");
     this.$store.commit("changeSubtitle", "");
+  }
+
+  @Watch("currentPage")
+  currentPageChanged(newval: number, oldval: number) {
+    console.log(newval);
   }
 }
 </script>
