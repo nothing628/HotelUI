@@ -74,12 +74,15 @@ namespace UIHotel2.AppObject
                         paramObject.Add(paramName, argData.BoolValue, DbType.Boolean);
                     else if (argData.IsUint)
                         paramObject.Add(paramName, argData.UintValue, DbType.UInt32);
+                    else if (argData.IsUndefined || argData.IsNull)
+                        paramObject.Add(paramName, null);
                     else if (argData.IsObject)
                     {
                         var type = argData.GetValue("type").StringValue;
                         var values = argData.GetValue("value");
 
-                        switch (type) {
+                        switch (type)
+                        {
                             case "boolean":
                                 var boolean_result = new List<bool>();
                                 for (int j = 0; j < values.ArrayLength; j++)
@@ -90,7 +93,7 @@ namespace UIHotel2.AppObject
                                 break;
                             case "string":
                                 var str_result = new List<string>();
-                                for(int j = 0; j < values.ArrayLength; j++)
+                                for (int j = 0; j < values.ArrayLength; j++)
                                 {
                                     str_result.Add(values.GetValue(j).StringValue);
                                 }
