@@ -8,19 +8,22 @@
         <div class="vertical-box">
             <div class="vertical-box-column p-15 bg-silver width-200">
               <div id="external-events" class="fc-event-list">
-                <h5 class="m-t-0 m-b-10">Draggable Events</h5>
-                <div class="fc-event" data-color="#00acac"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-success"></i></div> Meeting with Client</div>
-                <div class="fc-event" data-color="#348fe2"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-primary"></i></div> IOS App Development</div>
-                <div class="fc-event" data-color="#f59c1a"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-warning"></i></div> Group Discussion</div>
-                <div class="fc-event" data-color="#ff5b57"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-danger"></i></div> New System Briefing</div>
-                <div class="fc-event"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-inverse"></i></div> Brainstorming</div>
-                <h5 class="m-t-20 m-b-10">Other Events</h5>
-                <div class="fc-event" data-color="#b6c2c9"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-muted"></i></div> Other Event 1</div>
-                <div class="fc-event" data-color="#b6c2c9"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-muted"></i></div> Other Event 2</div>
-                <div class="fc-event" data-color="#b6c2c9"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-muted"></i></div> Other Event 3</div>
-                <div class="fc-event" data-color="#b6c2c9"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-muted"></i></div> Other Event 4</div>
-                <div class="fc-event" data-color="#b6c2c9"><div class="fc-event-icon"><i class="fa fa-circle-o fa-fw text-muted"></i></div> Other Event 5</div>
+                <h5 class="m-t-0 m-b-10">Day Type</h5>
+                <div v-for="item in priceKind" 
+                class="fc-event" 
+                :key="item.Id"
+                :data-id="item.Id"
+                :data-title="item.KindName"
+                :data-color="item.KindColor">
+                  <div class="fc-event-icon">
+                    <i class="fa fa-circle-o fa-fw" :style="getStyle(item.KindColor)"></i>
+                  </div> {{ item.KindName }}
+                </div>
               </div>
+              <button class="m-t-15 btn btn-success btn-block" @click="storeData">
+                <i class="fa fa-floppy-o"></i>
+                Save Changes
+              </button>
           </div>
           <div id="calendar" class="vertical-box-column p-15 calendar"></div>
         </div>
@@ -30,18 +33,47 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { squel, se, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
+import moment from "moment";
 import $ from "jquery";
 import "jqueryui";
 import "fullcalendar";
 
 @Component
 export default class RoomCalendar extends Vue {
+  private priceKind: Array<any> = new Array<any>();
+
+  getPriceKind() {
+    let qry = ss().from("roompricekinds");
+    let result = execute(qry);
+
+    this.priceKind = [];
+    result.forEach((item: any) => this.priceKind.push(item));
+
+    this.$nextTick(() => {
+      this.initCalendar();
+      this.initExternalEvent();
+    });
+  }
+
+  getStyle(color: string) {
+    let style = {
+      "color": "#" + color
+    };
+
+    return style;
+  }
+
+  storeData() {
+    //
+  }
+
   initExternalEvent() {
     $("#external-events .fc-event").each(function() {
       $(this).data("event", {
-        title: $.trim($(this).text()),
-        stick: !0,
-        color: $(this).attr("data-color") ? $(this).attr("data-color") : ""
+        title: $(this).attr("data-title") ? $(this).attr("data-title") : "",
+        color: $(this).attr("data-color") ? "#" + $(this).attr("data-color") : "",
+        allDay: true
       });
       $(this).draggable({
         zIndex: 999,
@@ -52,42 +84,42 @@ export default class RoomCalendar extends Vue {
   }
 
   initCalendar() {
-    var t = new Date();
-    var e = t.getFullYear();
-    var a = t.getMonth() + 1;
-    a = 10 > a ? parseInt("0" + a) : a;
     $("#calendar").fullCalendar({
       header: {
-        left: "month,agendaWeek,agendaDay",
+        left: "",
         center: "title",
         right: "prev,today,next "
       },
       droppable: true,
-      drop: function() {
+      drop: function(datex, jsEvent, ui) {
         //$(this).remove();
       },
       selectable: true,
       selectHelper: true,
       select: function(t, e) {
-        var a,
-          r = prompt("Event Title:");
-        r &&
-          ((a = {
-            title: r,
-            start: t,
-            end: e
-          }),
-          $("#calendar").fullCalendar("renderEvent", a, true)),
-          $("#calendar").fullCalendar("unselect");
+        // var a,
+        //   r = prompt("Event Title:");
+        // r &&
+        //   ((a = {
+        //     title: r,
+        //     start: t,
+        //     end: e
+        //   }),
+        //   $("#calendar").fullCalendar("renderEvent", a, true)),
+        //   $("#calendar").fullCalendar("unselect");
       },
       editable: true,
       eventLimit: true,
+      eventOverlap: function(event_no_moving, event_moving) {
+        console.log(event_no_moving, event_moving);
+        return true;
+      },
       events: [
-        {
-          title: "All Day Event",
-          start: e + "-" + a + "-01",
-          color: "#00acac"
-        }
+        // {
+        //   title: "All Day Event",
+        //   start: e + "-" + a + "-01",
+        //   color: "#00acac"
+        // }
       ]
     });
   }
@@ -106,8 +138,7 @@ export default class RoomCalendar extends Vue {
   mounted() {
     this.$store.commit("changeTitle", "Calendar Price");
     this.$store.commit("changeSubtitle", "");
-    this.initCalendar();
-    this.initExternalEvent();
+    this.getPriceKind();
   }
 
   beforeDestroy() {
