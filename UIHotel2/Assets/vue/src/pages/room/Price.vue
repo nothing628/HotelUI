@@ -5,7 +5,7 @@
         <h4 class="panel-title">Room Price</h4>
       </div>
       <div class="panel-body">
-        <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+        <div class="dataTables_wrapper dt-bootstrap no-footer">
           <div class="dt-buttons btn-group">
             <a class="btn btn-success buttons-copy buttons-html5 btn-sm" @click="addData">
               <i class="fa fa-plus"></i>
@@ -40,7 +40,7 @@
                 </tr>
                 <tr v-if="item.is_expand" :key="item.KindName">
                   <td colspan="4">
-                    <price-expand :price-id="3"></price-expand>
+                    <price-expand :price-id="item.Id"></price-expand>
                   </td>
                 </tr>
               </template>
@@ -171,7 +171,7 @@ export default class RoomPrice extends Vue {
     this.open_add = false;
     this.open_edit = false;
   }
-  
+
   addData() {
     this.modal_data.KindColor = "EEEEEE";
     this.modal_data.KindDescription = "";
@@ -184,7 +184,7 @@ export default class RoomPrice extends Vue {
   deleteData(item: IModalData) {
     let qry = sd()
       .from("roompricekinds")
-      .where("Id = ?", item.Id)
+      .where("Id = ?", item.Id);
     let result = executeScalar(qry);
 
     this.getMaxItem();
@@ -217,7 +217,7 @@ export default class RoomPrice extends Vue {
       .into("roompricekinds")
       .set("KindName", this.modal_data.KindName)
       .set("KindDescription", this.modal_data.KindDescription)
-      .set("KindColor", this.modal_data.KindColor)
+      .set("KindColor", this.modal_data.KindColor);
     let result = executeScalar(qry);
 
     this.getMaxItem();
