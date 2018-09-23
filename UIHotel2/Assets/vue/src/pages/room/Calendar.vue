@@ -38,6 +38,7 @@ import moment from "moment";
 import $ from "jquery";
 import "jqueryui";
 import "fullcalendar";
+import { EventObjectInput } from "fullcalendar";
 
 @Component
 export default class RoomCalendar extends Vue {
@@ -58,7 +59,7 @@ export default class RoomCalendar extends Vue {
 
   getStyle(color: string) {
     let style = {
-      "color": "#" + color
+      color: "#" + color
     };
 
     return style;
@@ -68,22 +69,187 @@ export default class RoomCalendar extends Vue {
     //
   }
 
+  overlapSolve(event: any, test: any): Array<any> {
+    let event_start: moment.Moment = moment(event.start);
+    let event_end: moment.Moment = moment(event.end);
+    let test_start: moment.Moment = moment(test.start);
+    let test_end: moment.Moment = moment(test.end);
+    let result: Array<any> = [];
+    let diff_test = test_start.diff(test_end, "d");
+    let diff_event = event_start.diff(event_end, "d");
+
+    if (Math.abs(diff_test) > 0) {
+      test_end.add(-1, "d");
+    }
+
+    if (Math.abs(diff_event) > 0) {
+      event_end.add(-1, "d");
+    }
+
+    if (
+      test_start.isSameOrAfter(event_start) &&
+      test_end.isSameOrBefore(event_end)
+    ) {
+      // overlap will remove
+    } else if (test_end.isBetween(event_start, event_end, undefined, "[]")) {
+      //cutoff the end
+      let new_end: moment.Moment = event_start.clone();
+      result.push({
+        title: test.title,
+        start: test_start,
+        end: new_end,
+        color: test.color,
+        allDay: true
+      });
+    } else if (test_start.isBetween(event_start, event_end, undefined, "[]")) {
+      //cutoff the start
+      let new_start: moment.Moment = event_end.clone().add(1, "d");
+      let new_end: moment.Moment = test_end.clone().add(1, "d");
+      result.push({
+        title: test.title,
+        start: new_start,
+        end: new_end,
+        color: test.color,
+        allDay: true
+      });
+    } else if (
+      event_start.isSameOrAfter(test_start) &&
+      event_end.isSameOrBefore(test_end)
+    ) {
+      //overlap will split
+      let new_end: moment.Moment = event_start.clone();
+      let new_end1: moment.Moment = test_end.clone().add(1, "d");
+      let new_start: moment.Moment = event_end.clone().add(1, "d");
+
+      result.push({
+        title: test.title,
+        start: test_start,
+        end: new_end,
+        color: test.color,
+        allDay: true
+      });
+      result.push({
+        title: test.title,
+        start: new_start,
+        end: new_end1,
+        color: test.color,
+        allDay: true
+      });
+    }
+
+    return result;
+  }
+
+  isOverlap(
+    event_start: string,
+    event_end: string,
+    event_test_start: string,
+    event_test_end: string
+  ): boolean {
+    let mevent_start: moment.Moment = moment(event_start);
+    let mevent_end: moment.Moment = moment(event_end);
+    let mtest_start: moment.Moment = moment(event_test_start);
+    let mtest_end: moment.Moment = moment(event_test_end);
+    let result: boolean = false;
+    let diff_event = mevent_start.diff(mevent_end, "d");
+    let diff_test = mtest_start.diff(mtest_end, "d");
+
+    if (Math.abs(diff_event) > 0) {
+      mevent_end.add(-1, "d");
+    }
+
+    if (Math.abs(diff_test) > 0) {
+      mtest_end.add(-1, "d");
+    }
+
+    if (mtest_start.isBetween(mevent_start, mevent_end, undefined, "[]")) {
+      return true;
+    } else if (mtest_end.isBetween(mevent_start, mevent_end, undefined, "[]")) {
+      return true;
+    } else {
+      result =
+        mevent_start.isBetween(mtest_start, mtest_end, undefined, "[]") &&
+        mevent_end.isBetween(mtest_start, mtest_end, undefined, "[]");
+    }
+
+    return result;
+  }
+
+  arrangeEvent(event?: EventObjectInput) {
+    let jquery_o = $("#calendar");
+    let calendar = jquery_o.fullCalendar("clientEvents", null);
+    let event_id = event!._id;
+    let event_time_start: any = event!.start;
+    let event_time_end: any = event!.end;
+    let event_start = event_time_start.format("YYYY-MM-DD");
+    let event_end = event_start;
+
+    if (event!.end != null) {
+      event_end = event_time_end.format("YYYY-MM-DD");
+    }
+
+    let filtered_remove = calendar.filter((item: any) => {
+      let test_start = item.start.format("YYYY-MM-DD");
+      let test_end = test_start;
+
+      if (item.end != null) {
+        test_end = item.end.format("YYYY-MM-DD");
+      }
+
+      if (item._id == event_id) return false;
+
+      return this.isOverlap(event_start, event_end, test_start, test_end);
+    });
+
+    filtered_remove.forEach((item: any) => {
+      let test_start = item.start.format("YYYY-MM-DD");
+      let test_item: EventObjectInput = {
+        title: item.title,
+        start: test_start,
+        end: test_start,
+        color: item.color,
+        allDay: true
+      };
+      let event_item: EventObjectInput = {
+        title: event!.title,
+        start: event_start,
+        end: event_end,
+        color: event!.color,
+        allDay: true
+      };
+
+      if (item.end != null) {
+        test_item.end = item.end.format("YYYY-MM-DD");
+      }
+
+      let solveEvent = this.overlapSolve(event_item, test_item);
+      jquery_o.fullCalendar("removeEvents", item._id);
+      solveEvent.forEach((item: any) => {
+        jquery_o.fullCalendar("renderEvent", item, true);
+      });
+    });
+  }
+
   initExternalEvent() {
     $("#external-events .fc-event").each(function() {
       $(this).data("event", {
         title: $(this).attr("data-title") ? $(this).attr("data-title") : "",
-        color: $(this).attr("data-color") ? "#" + $(this).attr("data-color") : "",
+        color: $(this).attr("data-color")
+          ? "#" + $(this).attr("data-color")
+          : "",
+        stick: true,
         allDay: true
       });
       $(this).draggable({
         zIndex: 999,
-        revert: !0,
+        revert: true,
         revertDuration: 0
       });
     });
   }
 
   initCalendar() {
+    let self = this;
     $("#calendar").fullCalendar({
       header: {
         left: "",
@@ -91,36 +257,26 @@ export default class RoomCalendar extends Vue {
         right: "prev,today,next "
       },
       droppable: true,
-      drop: function(datex, jsEvent, ui) {
-        //$(this).remove();
-      },
+      drop: function(datex, jsEvent, ui) {},
       selectable: true,
       selectHelper: true,
-      select: function(t, e) {
-        // var a,
-        //   r = prompt("Event Title:");
-        // r &&
-        //   ((a = {
-        //     title: r,
-        //     start: t,
-        //     end: e
-        //   }),
-        //   $("#calendar").fullCalendar("renderEvent", a, true)),
-        //   $("#calendar").fullCalendar("unselect");
-      },
+      select: function(t, e) {},
       editable: true,
       eventLimit: true,
-      eventOverlap: function(event_no_moving, event_moving) {
-        console.log(event_no_moving, event_moving);
-        return true;
+      eventOverlap: true,
+      eventClick: function(calEvent, jsEvent, view) {
+        console.log(jsEvent);
       },
-      events: [
-        // {
-        //   title: "All Day Event",
-        //   start: e + "-" + a + "-01",
-        //   color: "#00acac"
-        // }
-      ]
+      eventDrop: function (event) {
+        self.arrangeEvent(event);
+      },
+      eventResize: function(event) {
+        self.arrangeEvent(event);
+      },
+      eventReceive: function(event?: EventObjectInput) {
+        self.arrangeEvent(event);
+      },
+      events: []
     });
   }
 
