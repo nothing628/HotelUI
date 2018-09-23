@@ -66,7 +66,7 @@ namespace UIHotel2
         private void Chromium_BrowserCreated(object sender, Chromium.WebBrowser.Event.BrowserCreatedEventArgs e)
         {
 #if DEBUG
-            //Chromium.ShowDevTools();
+            Chromium.ShowDevTools();
 #endif
         }
     }

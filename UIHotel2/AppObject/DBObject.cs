@@ -32,6 +32,8 @@ namespace UIHotel2.AppObject
             base.Register(obj);
             Self.AddFunction("Query").Execute += QueryExecute;
             Self.AddFunction("QueryScalar").Execute += QueryScalarExecute;
+            Self.AddFunction("CalendarGet").Execute += GetCalendar;
+            Self.AddFunction("CalendarSet").Execute += SetCalendar;
         }
 
         private CfrV8Value[] parseToArray(CfrV8Value arguments)
@@ -182,6 +184,16 @@ namespace UIHotel2.AppObject
                 e.Exception = ex.Message;
                 e.SetReturnValue(CfrV8Value.CreateUndefined());
             }
+        }
+
+        private void GetCalendar(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            //
+        }
+
+        private void SetCalendar(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            //
         }
 
         private string GetConnectionString()
