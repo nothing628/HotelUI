@@ -65,8 +65,131 @@ export default class RoomCalendar extends Vue {
     return style;
   }
 
+  getKindId(kind: string): number {
+    var result = this.priceKind.filter((item: any) => {
+      return item.KindName == kind;
+    });
+
+    if (result.length == 0) return -1;
+
+    return result[0].Id;
+  }
+
+  getKindName(id: number): string {
+    var result = this.priceKind.filter((item: any) => {
+      return item.Id == id;
+    });
+
+    if (result.length == 0) return "";
+
+    return result[0].KindName;
+  }
+
+  getKindColor(id: number): string {
+    var result = this.priceKind.filter((item: any) => {
+      return item.Id == id;
+    });
+
+    if (result.length == 0) return "";
+
+    return result[0].KindColor;
+  }
+
+  getData() {
+    this.asyncGetData();
+  }
+
+  asyncGetData() {
+    return new Promise((resolve, reject) => {
+      let start = moment().startOf("year");
+      let qry = ss()
+        .from("roomcalendars")
+        .where("DateAt > ?", start.format("YYYY-MM-DD"));
+      let result = [];
+      let jquery_o = $("#calendar");
+
+      try {
+        result = execute(qry);
+      } catch (ex) {
+        reject(ex);
+      }
+
+      result.forEach((item: any) => {
+        let date_at = moment(item.DateAt);
+        let kind_name = this.getKindName(item.RoomPriceKindId);
+        let kind_color = this.getKindColor(item.RoomPriceKindId);
+        let new_item: EventObjectInput = {
+          start: date_at.format("YYYY-MM-DD"),
+          allDay: true,
+          color: "#" + kind_color,
+          title: kind_name
+        };
+
+        jquery_o.fullCalendar("renderEvent", new_item, true);
+      });
+
+      resolve();
+    });
+  }
+
+  asyncStoreData() {
+    return new Promise((resolve, reject) => {
+      let jquery_o = $("#calendar");
+      let calendar = jquery_o.fullCalendar("clientEvents", null);
+      let insert_element: Array<any> = [];
+
+      calendar.forEach((item: any) => {
+        let title = item.title;
+        let kind_id = this.getKindId(title);
+        let start = item.start.format("YYYY-MM-DD");
+        let end = item.start.format("YYYY-MM-DD");
+
+        if (item.end != null) {
+          end = item.end
+            .clone()
+            .add(-1, "d")
+            .format("YYYY-MM-DD");
+        }
+
+        let batch = this.createBatchDate(start, end, kind_id);
+        insert_element = insert_element.concat(batch);
+      });
+
+      insert_element.forEach((item: any) => {
+        try {
+          let qry = sd()
+            .from("roomcalendars")
+            .where("DateAt = ?", item.DateAt);
+          let result = executeScalar(qry);
+          let qry1 = si()
+            .into("roomcalendars")
+            .setFields(item);
+          let result1 = executeScalar(qry1);
+        } catch (ex) {
+          // just ignore the error
+        }
+      });
+    });
+  }
+
   storeData() {
-    //
+    this.asyncStoreData();
+  }
+
+  createBatchDate(start: string, end: string, kind: number): Array<any> {
+    let start_date = moment(start);
+    let end_date = moment(end);
+    let result = [];
+
+    do {
+      result.push({
+        DateAt: start_date.format("YYYY-MM-DD"),
+        RoomPriceKindId: kind
+      });
+      start_date.add(1, "d");
+    } while (end_date.isSameOrAfter(start_date));
+
+    return result;
   }
 
   overlapSolve(event: any, test: any): Array<any> {
@@ -267,7 +390,7 @@ export default class RoomCalendar extends Vue {
       eventClick: function(calEvent, jsEvent, view) {
         console.log(jsEvent);
       },
-      eventDrop: function (event) {
+      eventDrop: function(event) {
         self.arrangeEvent(event);
       },
       eventResize: function(event) {
@@ -295,6 +418,8 @@ export default class RoomCalendar extends Vue {
     this.$store.commit("changeTitle", "Calendar Price");
     this.$store.commit("changeSubtitle", "");
     this.getPriceKind();
+
+    this.$nextTick(this.getData);
   }
 
   beforeDestroy() {

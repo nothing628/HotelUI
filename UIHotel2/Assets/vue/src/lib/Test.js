@@ -24,15 +24,17 @@ export function execute(sque) {
   let v = sque.toParam();
   let sql = v.text;
   let values = v.values;
+  console.log(v);
   let result = CS.DB.Query(sql, values);
-console.log(v);
+
   return result;
 }
 export function executeScalar(sque) {
   let v = sque.toParam();
   let sql = v.text;
   let values = v.values;
+  console.log(v);
   let result = CS.DB.QueryScalar(sql, values);
-console.log(v);
+
   return result;
 }
