@@ -18,14 +18,44 @@
 import Vue from "vue";
 
 export default Vue.extend({
+  data() {
+    return {
+      is_show: true
+    };
+  },
   props: {
-    header: { type: String, required: false, default: "" }
+    header: { type: String, required: false, default: "" },
+    value: { type: Boolean, required: false, default: false }
   },
   methods: {
     toggleBody() {
+      this.is_show = !this.is_show;
+      this.changeState();
+      this.$emit("input", this.is_show);
+
+      if (this.is_show) {
+        this.$emit("show");
+      } else {
+        this.$emit("hide");
+      }
+    },
+    changeState() {
       var elem = this.$refs.panelbody;
       var jq_obj = $(elem);
-      jq_obj.slideToggle();
+
+      if (this.is_show) {
+        jq_obj.slideDown();
+      } else {
+        jq_obj.slideUp();
+      }
+    }
+  },
+  watch: {
+    value: {
+      handler(newvalue, oldvalue) {
+        this.is_show = newvalue;
+        this.changeState();
+      }
     }
   }
 });

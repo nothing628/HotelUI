@@ -20,12 +20,12 @@ namespace UIHotel2.Migrations
         {
             //  This method will be called after migrating to the latest version.
             context.RoomStates.AddOrUpdate(x => x.StateName,
-                new RoomState { StateName = "Vacant", StateColor = "32C787" },
-                new RoomState { StateName = "Booked", StateColor = "FF9800" },
-                new RoomState { StateName = "Occupied", StateColor = "FF5652" },
-                new RoomState { StateName = "Cleaning", StateColor = "AB47BC" },
-                new RoomState { StateName = "Maintance", StateColor = "757575" },
-                new RoomState { StateName = "Late Checkout", StateColor = "2196F3" });
+                new RoomState { StateName = "Vacant", StateColor = "00ACAC" },
+                new RoomState { StateName = "Booked", StateColor = "F59C1A" },
+                new RoomState { StateName = "Occupied", StateColor = "FF5B57" },
+                new RoomState { StateName = "Cleaning", StateColor = "348FE2" },
+                new RoomState { StateName = "Maintance", StateColor = "929BA1" },
+                new RoomState { StateName = "Late Checkout", StateColor = "727CB6" });
             context.RoomCategories.AddOrUpdate(x => x.CategoryName,
                 new RoomCategory { CategoryName = "Big" },
                 new RoomCategory { CategoryName = "Medium" },
