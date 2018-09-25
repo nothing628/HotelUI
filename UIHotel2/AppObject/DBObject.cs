@@ -1,4 +1,5 @@
-﻿using Chromium.Remote;
+﻿using Chromium;
+using Chromium.Remote;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
 using Dapper;
@@ -11,6 +12,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel2.Data;
+using UIHotel2.Misc;
 using UIHotel2.Properties;
 
 namespace UIHotel2.AppObject
@@ -25,6 +28,7 @@ namespace UIHotel2.AppObject
                 return dbObject.GetConnectionString();
             }
         }
+
         public override string ObjectName => "DB";
 
         public override void Register(JSObject obj)
@@ -134,7 +138,7 @@ namespace UIHotel2.AppObject
 
             return paramObject;
         }
-        
+
         private void QueryExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             try
@@ -142,7 +146,7 @@ namespace UIHotel2.AppObject
                 var qryString = e.Arguments[0].StringValue;
                 var paramObject = parseParameter(e.Arguments[1]);
                 var counter = 0;
-                
+
                 using (var connect = GetConnection())
                 {
                     var reader = connect.Query(qryString, paramObject);
@@ -188,7 +192,62 @@ namespace UIHotel2.AppObject
 
         private void GetCalendar(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            //
+            using (var context = new HotelContext())
+            {
+                var year = e.Arguments[0].IntValue;
+                var date_start = new DateTime(year, 1, 1);
+                var date_end = new DateTime(year + 1, 1, 1).AddDays(-1);
+                EventInputObject lastInput = null;
+                var listOut = new List<EventInputObject>();
+                var calendar = context.RoomCalendars
+                    .Include("Kind")
+                    .Where(c => c.DateAt >= date_start)
+                    .Where(c => c.DateAt <= date_end)
+                    .OrderBy(c => c.DateAt)
+                    .ToList();
+
+                foreach (var item in calendar)
+                {
+                    if (lastInput != null)
+                    {
+                        var dateNext = lastInput.end;
+                        var dateDiff = item.DateAt - dateNext;
+                        var title = lastInput.title;
+
+                        if (title == item.Kind.KindName && dateDiff.TotalDays == 1)
+                        {
+                            lastInput.end = item.DateAt;
+                            continue;
+                        }
+                    }
+
+
+                    lastInput = new EventInputObject
+                    {
+                        start = item.DateAt,
+                        end = item.DateAt,
+                        title = item.Kind.KindName,
+                        color = "#" + item.Kind.KindColor,
+                    };
+
+                    listOut.Add(lastInput);
+                }
+
+                foreach (var input in listOut)
+                {
+                    var diff = input.end - input.start;
+
+                    if (diff.TotalDays > 0)
+                    {
+                        input.end = input.end.AddDays(1);
+                    }
+                }
+
+                var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
+                var callback = e.Arguments[1];
+                callbackArgs.SetValue("list", ConvertValue(listOut.ToArray()), CfxV8PropertyAttribute.ReadOnly);
+                callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
+            }
         }
 
         private void SetCalendar(object sender, CfrV8HandlerExecuteEventArgs e)

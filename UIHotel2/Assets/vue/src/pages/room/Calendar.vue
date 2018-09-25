@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { squel, se, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
+import { squel, se, ss, su, sd, si, execute, executeScalar, calendarGet } from "@/lib/Test";
 import moment from "moment";
 import $ from "jquery";
 import "jqueryui";
@@ -96,39 +96,14 @@ export default class RoomCalendar extends Vue {
   }
 
   getData() {
-    this.asyncGetData();
+    calendarGet(2018, this.asyncGetData);
   }
 
-  asyncGetData() {
-    return new Promise((resolve, reject) => {
-      let start = moment().startOf("year");
-      let qry = ss()
-        .from("roomcalendars")
-        .where("DateAt > ?", start.format("YYYY-MM-DD"));
-      let result = [];
-      let jquery_o = $("#calendar");
+  asyncGetData(items: any) {
+    let jquery_o = $("#calendar");
 
-      try {
-        result = execute(qry);
-      } catch (ex) {
-        reject(ex);
-      }
-
-      result.forEach((item: any) => {
-        let date_at = moment(item.DateAt);
-        let kind_name = this.getKindName(item.RoomPriceKindId);
-        let kind_color = this.getKindColor(item.RoomPriceKindId);
-        let new_item: EventObjectInput = {
-          start: date_at.format("YYYY-MM-DD"),
-          allDay: true,
-          color: "#" + kind_color,
-          title: kind_name
-        };
-
-        jquery_o.fullCalendar("renderEvent", new_item, true);
-      });
-
-      resolve();
+    items.list.forEach((item: any) => {
+      jquery_o.fullCalendar("renderEvent", item, true);
     });
   }
 

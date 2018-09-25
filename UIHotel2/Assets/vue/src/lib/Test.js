@@ -20,6 +20,10 @@ export function se() {
   return squel().expr();
 };
 
+export function calendarGet(year, callback) {
+  CS.DB.CalendarGet(year, callback);
+}
+
 export function execute(sque) {
   let v = sque.toParam();
   let sql = v.text;

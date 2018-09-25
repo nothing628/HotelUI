@@ -98,7 +98,7 @@ namespace UIHotel2.Migrations
                     IsActive = true
                 });
             context.RoomCalendars.AddOrUpdate(x => x.DateAt,
-                new RoomCalendar { DateAt = DateTime.Now, Kind = weekday });
+                new RoomCalendar { DateAt = DateTime.Today, Kind = weekday });
 
             context.Rooms.RemoveRange(context.Rooms.ToList());
             context.SaveChanges();

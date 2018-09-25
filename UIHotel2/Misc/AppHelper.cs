@@ -17,4 +17,15 @@ namespace UIHotel2.Misc
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
+
+    public class EventInputObject
+    {
+#pragma warning disable IDE1006 // Naming Styles
+        public string title { get; set; }
+        public string color { get; set; }
+        public DateTime start { get; set; }
+        public DateTime end { get; set; }
+        public bool allDay => true;
+#pragma warning restore IDE1006 // Naming Styles
+    }
 }
