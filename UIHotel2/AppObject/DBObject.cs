@@ -8,11 +8,13 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIHotel2.Data;
+using UIHotel2.Data.Tables;
 using UIHotel2.Misc;
 using UIHotel2.Properties;
 
@@ -252,7 +254,40 @@ namespace UIHotel2.AppObject
 
         private void SetCalendar(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            //
+            using (var context = new HotelContext())
+            {
+                var list_data = e.Arguments[0];
+
+                if (!list_data.IsArray) return;
+
+                for (int i = 0; i < list_data.ArrayLength; i++)
+                {
+                    var elem_insert = list_data.GetValue(i);
+                    var date = elem_insert.GetValue("DateAt").StringValue;
+                    var kind = elem_insert.GetValue("RoomPriceKindId").IntValue;
+                    var dateAt = DateTime.Parse(date);
+
+                    var item = context.RoomCalendars.FirstOrDefault(c => c.DateAt == dateAt);
+
+                    if (item == null)
+                    {
+                        item = new RoomCalendar
+                        {
+                            DateAt = dateAt,
+                            RoomPriceKindId = kind
+                        };
+
+                        context.RoomCalendars.Add(item);
+                        context.SaveChanges();
+                    }
+                    else if (item.RoomPriceKindId != kind)
+                    {
+                        item.RoomPriceKindId = kind;
+                        context.Entry(item).State = EntityState.Modified;
+                        context.SaveChanges();
+                    }
+                }
+            }
         }
 
         private string GetConnectionString()

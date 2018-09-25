@@ -33,7 +33,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { squel, se, ss, su, sd, si, execute, executeScalar, calendarGet } from "@/lib/Test";
+import {
+  squel,
+  ss,
+  execute,
+  executeScalar,
+  calendarGet,
+  calendarSet
+} from "@/lib/Test";
 import moment from "moment";
 import $ from "jquery";
 import "jqueryui";
@@ -130,20 +137,7 @@ export default class RoomCalendar extends Vue {
         insert_element = insert_element.concat(batch);
       });
 
-      insert_element.forEach((item: any) => {
-        try {
-          let qry = sd()
-            .from("roomcalendars")
-            .where("DateAt = ?", item.DateAt);
-          let result = executeScalar(qry);
-          let qry1 = si()
-            .into("roomcalendars")
-            .setFields(item);
-          let result1 = executeScalar(qry1);
-        } catch (ex) {
-          // just ignore the error
-        }
-      });
+      calendarSet(insert_element);
     });
   }
 

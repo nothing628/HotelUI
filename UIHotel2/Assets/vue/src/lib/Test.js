@@ -24,6 +24,10 @@ export function calendarGet(year, callback) {
   CS.DB.CalendarGet(year, callback);
 }
 
+export function calendarSet(arr_data) {
+  CS.DB.CalendarSet(arr_data);
+}
+
 export function execute(sque) {
   let v = sque.toParam();
   let sql = v.text;
