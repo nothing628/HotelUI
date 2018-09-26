@@ -2,11 +2,12 @@
   <div class="row">
     <div class="panel panel-inverse">
       <div class="panel-heading">
-        <h4 class="panel-title">List Booking</h4>
+        <h4 class="panel-title">Create Booking</h4>
       </div>
       <div class="panel-body">
-        <h1>List Booking</h1>
-        <button @click="add">Add New</button>
+        <h1>Create Booking</h1>
+        <h2>{{ $route.query }}</h2>
+        <button @click="back">Go Back</button>
       </div>
     </div>
   </div>
@@ -16,12 +17,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
 export default class DataBooking extends Vue {
-  add() {
-    this.$router.push({ name: "data.booking.create", query: { id_guest: "13"} });
+  back() {
+    this.$router.push({ name: "data.booking" });
   }
 
   mounted() {
-    this.$store.commit("changeTitle", "List Booking");
+    this.$store.commit("changeTitle", "Create Booking");
     this.$store.commit("changeSubtitle", "");
   }
 }

@@ -5,7 +5,8 @@ import RoomList from "./pages/room/List.vue";
 import RoomCategory from "./pages/room/Category.vue";
 import RoomPrice from "./pages/room/Price.vue";
 import RoomCalendar from "./pages/room/Calendar.vue";
-import RoomMaintance from "./pages/room/Maintance.vue"
+import RoomMaintance from "./pages/room/Maintance.vue";
+import CreateBooking from "@/pages/data/booking/Create.vue";
 import DataBooking from "./pages/data/Booking.vue";
 import DataCheckin from "./pages/data/Checkin.vue";
 import DataGuest from "./pages/data/Guest.vue";
@@ -28,6 +29,7 @@ export default new Router({
   routes: [
     { path: "/", name: "dashboard", component: Dashboard },
     { path: "/data/booking", name: "data.booking", component: DataBooking },
+    { path: "/data/booking/create", name: "data.booking.create", component: CreateBooking },
     { path: "/data/checkin", name: "data.checkin", component: DataCheckin },
     { path: "/data/guest", name: "data.guest", component: DataGuest },
     { path: "/room/list", name: "room.list", component: RoomList },
