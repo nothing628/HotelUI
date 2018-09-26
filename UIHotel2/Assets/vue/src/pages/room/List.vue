@@ -23,44 +23,44 @@
         <div class="form-group">
           <label class="col-md-3 control-label">Room Number</label>
           <div class="col-md-6">
-            <input class="form-control" readonly/>
+            <input class="form-control" readonly v-model="selectedRoom.RoomNumber"/>
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Room Floor</label>
           <div class="col-md-6">
-            <input class="form-control" readonly/>
+            <input class="form-control" readonly v-model="selectedRoom.RoomFloor"/>
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Category</label>
           <div class="col-md-6">
-            <input class="form-control" readonly/>
+            <input class="form-control" readonly v-model="selectedRoom.CategoryName"/>
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Status</label>
           <div class="col-md-6">
-            <input class="form-control" readonly/>
+            <input class="form-control" readonly v-model="selectedRoom.StateName"/>
           </div>
         </div>
       </div>
 
       <div class="row m-t-10">
         <div class="col-md-4">
-          <button class="btn btn-success btn-block">
+          <button class="btn btn-success btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 1)">
             <i class="fa fa-book"></i>
             Booking
           </button>
         </div>
         <div class="col-md-4">
-          <button class="btn btn-success btn-block">
+          <button class="btn btn-success btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 2)">
             <i class="fa fa-sign-in"></i>
             Check-In
           </button>
         </div>
         <div class="col-md-4">
-          <button class="btn btn-success btn-block">
+          <button class="btn btn-success btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 3)">
             <i class="fa fa-sign-out"></i>
             Check-Out
           </button>
@@ -69,13 +69,13 @@
 
       <div class="row m-t-10">
         <div class="col-md-4">
-          <button class="btn btn-warning btn-block">
+          <button class="btn btn-warning btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 4)">
             <i class="fa fa-magic"></i>
             Finish Cleaning
           </button>
         </div>
         <div class="col-md-4">
-          <button class="btn btn-warning btn-block">
+          <button class="btn btn-warning btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 5)">
             <i class="fa fa-wrench"></i>
             Maintance
           </button>
@@ -96,6 +96,16 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { ss, execute, executeScalar } from "@/lib/Test";
 import PanelAccordion from "@/components/Panel/PanelAccordion.vue";
 
+interface IRoomModel {
+  Id: number;
+  RoomFloor?: string;
+  RoomNumber: string;
+  StateAllow: string;
+  StateColor: string;
+  StateName: string;
+  CategoryName: string;
+}
+
 @Component({
   components: {
     PanelAccordion
@@ -105,8 +115,29 @@ export default class RoomList extends Vue {
   private open_detail: boolean = false;
   private listCategory: Array<any> = new Array<any>();
   private listRoom: Array<any> = new Array<any>();
+  private selectedRoom: IRoomModel = {
+    CategoryName: "",
+    RoomNumber: "",
+    StateAllow: "",
+    StateColor: "",
+    StateName: "",
+    Id: 0,
+  };
+
+  isAllow(stateallow: string, selector: number) {
+    let selectAllow = stateallow.substr(selector - 1, 1);
+
+    return selectAllow == "Y";
+  }
 
   detailRoom(item: any) {
+    this.selectedRoom.Id = item.Id;
+    this.selectedRoom.RoomFloor = item.RoomFloor;
+    this.selectedRoom.RoomNumber = item.RoomNumber;
+    this.selectedRoom.StateAllow = item.StateAllow;
+    this.selectedRoom.StateColor = item.StateColor;
+    this.selectedRoom.StateName = item.StateName;
+    this.selectedRoom.CategoryName = item.CategoryName;
     this.open_detail = true;
   }
 
@@ -135,9 +166,12 @@ export default class RoomList extends Vue {
     let qry = ss()
       .from("rooms", "a")
       .join("roomstates", "b", "a.RoomStateId = b.Id")
+      .join("roomcategories", "c", "a.RoomCategoryId = c.Id")
       .field("a.*")
       .field("b.StateName")
-      .field("b.StateColor");
+      .field("b.StateColor")
+      .field("b.StateAllow")
+      .field("c.CategoryName");
     let result = execute(qry);
 
     result.forEach((item: any) => {

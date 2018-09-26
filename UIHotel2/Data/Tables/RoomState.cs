@@ -20,5 +20,8 @@ namespace UIHotel2.Data.Tables
 
         [StringLength(6)]
         public string StateColor { get; set; }
+
+        [StringLength(12)]
+        public string StateAllow { get; set; }
     }
 }

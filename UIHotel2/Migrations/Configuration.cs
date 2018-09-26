@@ -20,20 +20,20 @@ namespace UIHotel2.Migrations
         {
             //  This method will be called after migrating to the latest version.
             context.RoomStates.AddOrUpdate(x => x.StateName,
-                new RoomState { StateName = "Vacant", StateColor = "00ACAC" },
-                new RoomState { StateName = "Booked", StateColor = "F59C1A" },
-                new RoomState { StateName = "Occupied", StateColor = "FF5B57" },
-                new RoomState { StateName = "Cleaning", StateColor = "348FE2" },
-                new RoomState { StateName = "Maintance", StateColor = "929BA1" },
-                new RoomState { StateName = "Late Checkout", StateColor = "727CB6" });
+                new RoomState { StateName = "Vacant", StateColor = "00ACAC", StateAllow = "YYNNY" },
+                new RoomState { StateName = "Booked", StateColor = "F59C1A", StateAllow = "NYNNN" },
+                new RoomState { StateName = "Occupied", StateColor = "FF5B57", StateAllow = "NNYNN" },
+                new RoomState { StateName = "Cleaning", StateColor = "348FE2", StateAllow = "NNNYN" },
+                new RoomState { StateName = "Maintance", StateColor = "929BA1", StateAllow = "NNNNY" },
+                new RoomState { StateName = "Late Checkout", StateColor = "727CB6", StateAllow = "NNYNN" });
             context.RoomCategories.AddOrUpdate(x => x.CategoryName,
                 new RoomCategory { CategoryName = "Big" },
                 new RoomCategory { CategoryName = "Medium" },
                 new RoomCategory { CategoryName = "Small" });
             context.RoomPriceKinds.AddOrUpdate(x => x.KindName,
-                new RoomPriceKind { KindName = "WeekDay", KindColor = "43A047" },
-                new RoomPriceKind { KindName = "WeekEnd", KindColor = "D32F2F" },
-                new RoomPriceKind { KindName = "Holiday", KindColor = "00695C" });
+                new RoomPriceKind { KindName = "WeekDay", KindColor = "43A047", KindDescription = "" },
+                new RoomPriceKind { KindName = "WeekEnd", KindColor = "D32F2F", KindDescription = "" },
+                new RoomPriceKind { KindName = "Holiday", KindColor = "00695C", KindDescription = "" });
             context.Settings.AddOrUpdate(x => x.Key,
                 new Setting { Key = "app.name", Value = "Hotel Management System" },
                 new Setting { Key = "hotel.name", Value = "Hotel Test" },
@@ -97,13 +97,11 @@ namespace UIHotel2.Migrations
                     Level = 0,
                     IsActive = true
                 });
-            context.RoomCalendars.AddOrUpdate(x => x.DateAt,
-                new RoomCalendar { DateAt = DateTime.Today, Kind = weekday });
 
-            context.Rooms.RemoveRange(context.Rooms.ToList());
-            context.SaveChanges();
+            context.RoomCalendars.AddOrUpdate(x => x.DateAt,
+                    new RoomCalendar { DateAt = DateTime.Today, RoomPriceKindId = weekday.Id });
             context.Rooms.AddOrUpdate(x => x.RoomNumber,
-                new Room { RoomNumber = "201", State = vacant, Category = big });
+                new Room { RoomNumber = "201", RoomStateId = vacant.Id, RoomCategoryId = big.Id });
             context.SaveChanges();
         }
     }
