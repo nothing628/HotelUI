@@ -10,21 +10,21 @@
           <div class="form-group">
             <label class="col-md-3 control-label">Id Number</label>
             <div class="col-md-3">
-              <input class="form-control" />
+              <input class="form-control" v-model="modalData.IdNumber" maxlength="30"/>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label">Fullname</label>
             <div class="col-md-4">
-              <input class="form-control" />
+              <input class="form-control" v-model="modalData.Fullname" maxlength="60"/>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label">Email</label>
             <div class="col-md-4">
-              <input class="form-control" />
+              <input class="form-control" v-model="modalData.Email" maxlength="100"/>
             </div>
           </div>
 
@@ -116,8 +116,42 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
+interface IModalData {
+  IdNumber: string;
+  Fullname: string;
+  Email: string;
+  IsVIP: boolean;
+  BirthPlace: string;
+  BirthDay: string;
+  Phone1: string;
+  Phone2: string;
+  Address: string;
+  City: string;
+  Province: string;
+  State: string;
+  PhotoDoc: string;
+  PhotoGuest: string;
+}
+
 @Component
 export default class CreateGuest extends Vue {
+  private modalData: IModalData = {
+    IdNumber: "",
+    Fullname: "",
+    Email: "",
+    IsVIP: false,
+    BirthPlace: "",
+    BirthDay: "",
+    Phone1: "",
+    Phone2: "",
+    Address: "",
+    City: "",
+    Province: "",
+    State: "",
+    PhotoDoc: "",
+    PhotoGuest: ""
+  }
+
   cancel() {
     this.$router.push({ name: "data.guest" });
   }
