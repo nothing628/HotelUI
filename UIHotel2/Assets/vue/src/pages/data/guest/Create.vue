@@ -184,6 +184,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { si, executeScalar } from "@/lib/Test";
+import moment from "moment";
 
 interface IModalData {
   IdNumber: string;
@@ -220,7 +222,7 @@ export default class CreateGuest extends Vue {
     State: "",
     PhotoDoc: "",
     PhotoGuest: ""
-  }
+  };
 
   get UrlPhoto(): string {
     if (this.modalData.PhotoGuest != "") {
@@ -253,13 +255,35 @@ export default class CreateGuest extends Vue {
   }
 
   save() {
-    this.$validator.validate().then(result => {
-      if (!result) {
-        // do stuff if not valid.
-      }
+    this.$validator.validateAll().then((result: any) => {
+      if (result) this.saveData();
     });
+  }
 
-    console.log(this.modalData);
+  saveData() {
+    var new_moment = moment();
+    var qry = si()
+      .into("guests")
+      .set("IdKind", "KTP")
+      .set("IdNumber", this.modalData.IdNumber)
+      .set("Fullname", this.modalData.Fullname)
+      .set("Email", this.modalData.Email)
+      .set("IsVIP", this.modalData.IsVIP ? 1 : 0)
+      .set("BirthPlace", this.modalData.BirthPlace)
+      .set("BirthDay", this.modalData.BirthDay)
+      .set("Phone1", this.modalData.Phone1)
+      .set("Phone2", this.modalData.Phone2)
+      .set("Address", this.modalData.Address)
+      .set("City", this.modalData.City)
+      .set("Province", this.modalData.Province)
+      .set("State", this.modalData.State)
+      .set("PhotoDoc", this.modalData.PhotoDoc)
+      .set("PhotoGuest", this.modalData.PhotoGuest)
+      .set("CreateAt", new_moment.format("YYYY-MM-DD"))
+      .set("UpdateAt", new_moment.format("YYYY-MM-DD"));
+    var result = executeScalar(qry);
+    
+    this.$router.push({ name: "data.guest" });
   }
 
   cancel() {
@@ -272,4 +296,3 @@ export default class CreateGuest extends Vue {
   }
 }
 </script>
-
