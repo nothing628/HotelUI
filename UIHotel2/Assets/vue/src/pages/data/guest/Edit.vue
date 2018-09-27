@@ -2,7 +2,7 @@
   <div class="row">
     <div class="panel panel-inverse">
       <div class="panel-heading">
-        <h4 class="panel-title">Create Guest</h4>
+        <h4 class="panel-title">Edit Guest</h4>
       </div>
 
       <div class="panel-body">
@@ -184,10 +184,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { si, executeScalar } from "@/lib/Test";
+import { ss, su, execute, executeScalar } from "@/lib/Test";
 import moment from "moment";
 
 interface IModalData {
+  Id: number;
   IdNumber: string;
   Fullname: string;
   Email: string;
@@ -221,7 +222,8 @@ export default class CreateGuest extends Vue {
     Province: "",
     State: "",
     PhotoDoc: "",
-    PhotoGuest: ""
+    PhotoGuest: "",
+    Id: 0
   };
 
   get UrlPhoto(): string {
@@ -262,9 +264,8 @@ export default class CreateGuest extends Vue {
 
   saveData() {
     var new_moment = moment();
-    var qry = si()
-      .into("guests")
-      .set("IdKind", "KTP")
+    var qry = su()
+      .table("guests")
       .set("IdNumber", this.modalData.IdNumber)
       .set("Fullname", this.modalData.Fullname)
       .set("Email", this.modalData.Email)
@@ -280,7 +281,8 @@ export default class CreateGuest extends Vue {
       .set("PhotoDoc", this.modalData.PhotoDoc)
       .set("PhotoGuest", this.modalData.PhotoGuest)
       .set("CreateAt", new_moment.format("YYYY-MM-DD"))
-      .set("UpdateAt", new_moment.format("YYYY-MM-DD"));
+      .set("UpdateAt", new_moment.format("YYYY-MM-DD"))
+      .where("Id = ?", this.modalData.Id);
     var result = executeScalar(qry);
 
     this.$router.push({ name: "data.guest" });
@@ -290,9 +292,44 @@ export default class CreateGuest extends Vue {
     this.$router.push({ name: "data.guest" });
   }
 
+  getData() {
+    let id = this.$route.params.id;
+    let qry = ss()
+      .from("guests")
+      .where("Id = ?", id)
+      .limit(1);
+    let result = execute(qry);
+
+    if (result.length > 0) {
+      let item = result[0];
+      let birth_day = item.BirthDay;
+
+      this.modalData.Id = item.Id;
+      this.modalData.IdNumber = item.IdNumber;
+      this.modalData.Fullname = item.Fullname;
+      this.modalData.Email = item.Email;
+      this.modalData.BirthPlace = item.BirthPlace;
+      this.modalData.IsVIP = item.IsVIP;
+      this.modalData.Address = item.Address;
+      this.modalData.City = item.City;
+      this.modalData.Province = item.Province;
+      this.modalData.State = item.State;
+      this.modalData.Phone1 = item.Phone1;
+      this.modalData.Phone2 = item.Phone2;
+      this.modalData.PhotoDoc = item.PhotoDoc;
+      this.modalData.PhotoGuest = item.PhotoGuest;
+      this.docName = item.PhotoDoc;
+
+      if (typeof birth_day == "object") {
+        this.modalData.BirthDay = moment(birth_day).format("YYYY-MM-DD");
+      }
+    }
+  }
+
   mounted() {
-    this.$store.commit("changeTitle", "Create Guest");
+    this.$store.commit("changeTitle", "Edit Guest");
     this.$store.commit("changeSubtitle", "");
+    this.getData();
   }
 }
 </script>

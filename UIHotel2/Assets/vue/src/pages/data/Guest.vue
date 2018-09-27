@@ -50,8 +50,8 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { ss, execute } from "@/lib/Test";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ss, sd, execute, executeScalar } from "@/lib/Test";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 
@@ -90,6 +90,31 @@ export default class DataGuest extends Vue {
     this.$router.push({ name: "data.guest.create" });
   }
 
+  editData(item: any) {
+    this.$router.push({ name: "data.guest.edit", params: { id: item.Id }});
+  }
+
+  deleteData(item: any) {
+    let Id = item.Id;
+    let qry = sd()
+      .from("guests")
+      .where("Id = ?", Id);
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getData();
+  }
+
+  getMaxItem() {
+    let qry = ss()
+      .from("guests")
+      .field("COUNT(*) as cnt");
+    let result = execute(qry);
+    let first = result[0];
+
+    this.max_item = Number(first.cnt);
+  }
+
   getData() {
     let qry = ss()
       .from("guests")
@@ -97,7 +122,7 @@ export default class DataGuest extends Vue {
       .offset(this.offset);
     let result = execute(qry);
 
-    this.items = []
+    this.items = [];
     result.forEach((item: any) => {
       this.items.push(item);
     });
@@ -106,6 +131,12 @@ export default class DataGuest extends Vue {
   mounted() {
     this.$store.commit("changeTitle", "List Guest");
     this.$store.commit("changeSubtitle", "");
+    this.getMaxItem();
+    this.getData();
+  }
+
+  @Watch("currentPage")
+  currentPageChanged(newval: number, oldval: number) {
     this.getData();
   }
 }
