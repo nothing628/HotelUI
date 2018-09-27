@@ -25,6 +25,7 @@ namespace UIHotel2.AppObject
             base.Register(obj);
             Self.AddFunction("OpenDialog").Execute += OpenDialogExecute;
             Self.AddFunction("SaveDialog").Execute += SaveDialogExecute;
+            Self.AddFunction("GetUploadUrl").Execute += GetUploadUrl;
         }
 
         private void SaveDialogExecute(object sender, CfrV8HandlerExecuteEventArgs e)
@@ -72,6 +73,15 @@ namespace UIHotel2.AppObject
             }
         }
 
+        private void GetUploadUrl(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            var filename = e.Arguments[0].StringValue;
+            var baseUrl = "http://assets.app.local/upload/";
+            var retUrl = baseUrl + filename;
+
+            e.SetReturnValue(retUrl);
+        }
+
         private void Reset()
         {
             originalName = null;
@@ -95,7 +105,7 @@ namespace UIHotel2.AppObject
                     var file = new FileInfo(dialog.FileName);
                     var ext = file.Extension;
                     var newName = Guid.NewGuid() + ext;
-                    var newPath = Path.Combine(basePath, @"Upload\", newName);
+                    var newPath = Path.Combine(basePath, @"Assets\upload\", newName);
 
                     file.CopyTo(newPath);
 
