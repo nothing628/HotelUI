@@ -28,10 +28,11 @@
             </thead>
             <tbody>
               <tr v-for="item in items" :key="item.Id">
-                  <td>{{ item.RoomNumber }}</td>
-                  <td>{{ item.CategoryName }}</td>
-                  <td>{{ item.RoomFloor }}</td>
-                  <td>{{ item.StateName }}</td>
+                  <td>{{ item.IdNumber }}</td>
+                  <td>{{ item.Fullname }}</td>
+                  <td>{{ item.Email }}</td>
+                  <td>{{ item.Phone1 }} / {{ item.Phone2 }}</td>
+                  <td>{{ item.Address }}</td>
                   <td>
                     <div class="btn-group pull-right">
                       <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
@@ -50,6 +51,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { ss, execute } from "@/lib/Test";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 
@@ -80,13 +82,31 @@ export default class DataGuest extends Vue {
     return Math.ceil(this.max_item / this.limit);
   }
 
+  get offset(): number {
+    return (this.currentPage - 1) * this.limit;
+  }
+
   addData() {
     this.$router.push({ name: "data.guest.create" });
+  }
+
+  getData() {
+    let qry = ss()
+      .from("guests")
+      .limit(this.limit)
+      .offset(this.offset);
+    let result = execute(qry);
+
+    this.items = []
+    result.forEach((item: any) => {
+      this.items.push(item);
+    });
   }
 
   mounted() {
     this.$store.commit("changeTitle", "List Guest");
     this.$store.commit("changeSubtitle", "");
+    this.getData();
   }
 }
 </script>
