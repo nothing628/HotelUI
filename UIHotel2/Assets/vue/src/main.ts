@@ -1,4 +1,5 @@
 import Vue from "vue";
+import Vuelidate from "vee-validate";
 import * as uiv from "uiv";
 import App from "./App.vue";
 import router from "./router";
@@ -7,9 +8,10 @@ import "./registerGlobalScope";
 import "./registerServiceWorker";
 
 Vue.use(uiv, { prefix: "uiv" });
+Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
-const bus = new Vue();
+const bus: any = new Vue();
 
 Vue.prototype.$bus = bus;
 

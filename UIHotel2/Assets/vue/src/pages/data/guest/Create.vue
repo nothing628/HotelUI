@@ -10,32 +10,62 @@
           <div class="form-group">
             <label class="col-md-3 control-label">(*) ID Number</label>
             <div class="col-md-3">
-              <input class="form-control" v-model="modalData.IdNumber" maxlength="30" placeholder="ID Number"/>
+              <input
+              class="form-control"
+              name="id_number"
+              v-validate="'required|max:30'"
+              v-model="modalData.IdNumber"
+              placeholder="ID Number"/>
+              <span class="text-danger">{{ errors.first('id_number') }}</span>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label">(*) Fullname</label>
             <div class="col-md-4">
-              <input class="form-control" v-model="modalData.Fullname" maxlength="60" placeholder="Fullname"/>
+              <input
+              class="form-control"
+              name="fullname"
+              v-validate="'required|max:60'"
+              v-model="modalData.Fullname"
+              placeholder="Fullname"/>
+              <span class="text-danger">{{ errors.first('fullname') }}</span>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label">Email</label>
             <div class="col-md-4">
-              <input class="form-control" v-model="modalData.Email" maxlength="100" placeholder="Email"/>
+              <input
+              class="form-control"
+              name="email"
+              v-validate="'email|max:100'"
+              v-model="modalData.Email"
+              placeholder="Email"/>
+              <span class="text-danger">{{ errors.first('email') }}</span>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label">(*) Birth Day</label>
             <div class="col-md-3">
-              <input class="form-control" type="date" v-model="modalData.BirthDay" />
+              <input
+              class="form-control"
+              name="birth_day"
+              type="date"
+              v-validate="'required'"
+              v-model="modalData.BirthDay" />
+              <span class="text-danger">{{ errors.first('birth_day') }}</span>
             </div>
             <label class="col-md-2 control-label">Birth Place</label>
             <div class="col-md-3">
-              <input class="form-control" v-model="modalData.BirthPlace" maxlength="50" placeholder="Birth Place"/>
+              <input
+              class="form-control"
+              name="birth_place"
+              v-validate="'max:50'"
+              v-model="modalData.BirthPlace"
+              placeholder="Birth Place"/>
+              <span class="text-danger">{{ errors.first('birth_place') }}</span>
             </div>
           </div>
 
@@ -52,30 +82,65 @@
           <div class="form-group">
             <label class="col-md-3 control-label">Address</label>
             <div class="col-md-9">
-              <textarea class="form-control" v-model="modalData.Address" maxlength="255"></textarea>
+              <textarea
+              class="form-control"
+              name="address"
+              v-validate="'max:255'"
+              v-model="modalData.Address"></textarea>
+              <span class="text-danger">{{ errors.first('address') }}</span>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-3">
-              <input class="form-control" v-model="modalData.City" maxlength="50" placeholder="City"/>
+              <input
+              class="form-control"
+              name="city"
+              v-validate="'max:50'"
+              v-model="modalData.City"
+              placeholder="City"/>
+              <span class="text-danger">{{ errors.first('city') }}</span>
             </div>
             <div class="col-md-3">
-              <input class="form-control" v-model="modalData.Province" maxlength="50" placeholder="Province"/>
+              <input
+              class="form-control"
+              name="province"
+              v-validate="'max:50'"
+              v-model="modalData.Province"
+              placeholder="Province"/>
+              <span class="text-danger">{{ errors.first('province') }}</span>
             </div>
             <div class="col-md-3">
-              <input class="form-control" v-model="modalData.State" maxlength="50" placeholder="State"/>
+              <input
+              class="form-control"
+              name="state"
+              v-validate="'max:50'"
+              v-model="modalData.State"
+              placeholder="State"/>
+              <span class="text-danger">{{ errors.first('state') }}</span>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-3 control-label">Phone Number</label>
             <div class="col-md-2">
-              <input class="form-control" v-model="modalData.Phone1" maxlength="15" placeholder="Phone 1 (*)"/>
+              <input 
+              class="form-control" 
+              name="phone_1"
+              v-validate="'required|max:15'"
+              v-model="modalData.Phone1"
+              placeholder="Phone 1 (*)"/>
+              <span class="text-danger">{{ errors.first('phone_1') }}</span>
             </div>
             <div class="col-md-2">
-              <input class="form-control" v-model="modalData.Phone2" maxlength="15" placeholder="Phone 2"/>
+              <input
+              class="form-control"
+              name="phone_2"
+              v-validate="'max:15'"
+              v-model="modalData.Phone2"
+              placeholder="Phone 2"/>
+              <span class="text-danger">{{ errors.first('phone_2') }}</span>
             </div>
           </div>
 
@@ -90,10 +155,12 @@
             </div>
             <div class="col-md-3">
               <label v-if="modalData.PhotoDoc != ''">{{ docName }}</label>
+              <input type="hidden" v-model="modalData.PhotoDoc" name="document" v-validate="'required'"/>
               <button class="btn btn-success btn-block" @click="UploadDoc">
                 <i class="fa fa-upload"></i>
                 Upload Document (*)
               </button>
+              <span class="text-danger">{{ errors.first('document') }}</span>
             </div>
           </div>
         </div>
@@ -186,6 +253,12 @@ export default class CreateGuest extends Vue {
   }
 
   save() {
+    this.$validator.validate().then(result => {
+      if (!result) {
+        // do stuff if not valid.
+      }
+    });
+
     console.log(this.modalData);
   }
 
