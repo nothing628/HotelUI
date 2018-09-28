@@ -10,6 +10,10 @@
   background: #fff;
 }
 
+.bwizard-activated {
+  padding: 20px;
+}
+
 .bwizard-steps a {
   color: #333;
 }
