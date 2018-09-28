@@ -1,3 +1,4 @@
+import "@/App.css";
 import Vue from "vue";
 import Vuelidate from "vee-validate";
 import * as uiv from "uiv";

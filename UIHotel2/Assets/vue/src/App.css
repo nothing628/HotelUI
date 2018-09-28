@@ -1,0 +1,26 @@
+.bwizard-steps .active a {
+  color: #fff;
+  cursor: default;
+}
+
+.bwizard-steps {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  background: #fff;
+}
+
+.bwizard-steps a {
+  color: #333;
+}
+
+.bwizard-steps.clickable li:not(.active) {
+  cursor: pointer;
+}
+
+.bwizard-steps.clickable li:focus:not(.active) a,
+.bwizard-steps.clickable li:hover:not(.active) a,
+.parsley-error,
+.parsley-success {
+  color: #333 !important;
+}

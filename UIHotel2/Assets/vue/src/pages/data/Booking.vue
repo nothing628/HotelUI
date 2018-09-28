@@ -17,7 +17,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class DataBooking extends Vue {
   add() {
-    this.$router.push({ name: "data.booking.create", query: { id_guest: "13"} });
+    this.$router.push({ name: "data.booking.create" });
   }
 
   mounted() {

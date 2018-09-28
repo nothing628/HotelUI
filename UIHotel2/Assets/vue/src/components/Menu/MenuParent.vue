@@ -1,17 +1,15 @@
 <template>
-    <li :class="active_class">
-        <a @click="linkClicked" href="javascript:;">
-            <b v-if="!is_badge" class="caret pull-right"></b>
-            <span v-if="is_badge" class="badge pull-right">{{ badge }}</span>
-            <i v-if="is_icon" :class="icon_class"></i>
-            <span>{{ text }}</span>
-        </a>
-        <transition name="slide-fade">
-            <ul class="sub-menu" v-show="is_expand">
-                <slot></slot>
-            </ul>
-        </transition>
-    </li>
+  <li :class="active_class">
+    <a @click="linkClicked" href="javascript:;">
+      <b v-if="!is_badge" class="caret pull-right"></b>
+      <span v-if="is_badge" class="badge pull-right">{{ badge }}</span>
+      <i v-if="is_icon" :class="icon_class"></i>
+      <span>{{ text }}</span>
+    </a>
+    <ul class="sub-menu" ref="submenu">
+      <slot></slot>
+    </ul>
+  </li>
 </template>
 <style>
 .has-sub.expand .sub-menu,
@@ -71,30 +69,32 @@ export default {
   },
   methods: {
     linkClicked() {
-      const before_ = this.is_expand;
-
-      this.$bus.$emit("hide-menu");
-
       if (this.href != "") {
         this.$emit("click", this.href);
         this.$router.push(this.href);
+        return;
       }
 
       if (this.route != "") {
         this.$emit("click", this.route);
         this.$router.push({ name: this.route });
+        return;
       }
 
-      setTimeout(() => {
-        if (!before_) this.is_expand = true;
-      }, 100);
+      this.toggleMenu();
     },
-    hideMenu() {
-      if (this.is_expand) this.is_expand = false;
+    toggleMenu() {
+      this.is_expand = !this.is_expand;
+
+      let elem = this.$refs.submenu;
+      let jqo = $(elem);
+
+      if (this.is_expand) {
+        jqo.slideDown();
+      } else {
+        jqo.slideUp();
+      }
     }
-  },
-  mounted() {
-    this.$bus.$on("hide-menu", this.hideMenu);
   }
 };
 </script>
