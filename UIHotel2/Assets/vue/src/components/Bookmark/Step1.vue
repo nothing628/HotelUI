@@ -44,8 +44,26 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
+interface IModalData {
+  BookNumber: string;
+  BookType: number;
+  ArrivalDate: string;
+  DepartureDate: string;
+  CountAdult: number;
+  CountChild: number;
+}
+
 @Component
 export default class CreateStep1 extends Vue {
+  private modalData: IModalData = {
+    BookType: 0,
+    BookNumber: "",
+    ArrivalDate: "",
+    DepartureDate: "",
+    CountAdult: 1,
+    CountChild: 0
+  };
+
   mounted() {
     //
   }
