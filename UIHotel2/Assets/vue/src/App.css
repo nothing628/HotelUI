@@ -28,3 +28,8 @@
 .parsley-success {
   color: #333 !important;
 }
+
+.widget.selectable,
+table.table tr.selectable td {
+  cursor: pointer;
+}

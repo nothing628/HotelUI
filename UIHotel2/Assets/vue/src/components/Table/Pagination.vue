@@ -1,6 +1,6 @@
 <template>
   <div class="dataTables_paginate paging_simple_numbers">
-    <ul class="pagination">
+    <ul :class="get_class">
       <li class="paginate_button previous" :class="{ disabled: !is_prev }" @click="pagePrev">
         <a href="javascript:;" tabindex="0">Previous</a>
       </li>
@@ -23,6 +23,15 @@ export default Vue.extend({
     };
   },
   computed: {
+    get_class(): Array<string> {
+      let default_class = ["pagination"];
+      
+      if (this.nomargin) {
+        default_class.push("m-0");
+      }
+
+      return default_class;
+    },
     arr_page(): Array<number> {
       let i = 0;
       let res: Array<number> = [];
@@ -45,6 +54,7 @@ export default Vue.extend({
     maxSize: { type: Number, required: false, default: 5 },
     boundaryLinks: { type: Boolean, required: false, default: false },
     directionLinks: { type: Boolean, required: false, default: true },
+    nomargin: { type: Boolean, required: false, default: false },
     value: { type: Number, required: false, default: 1 }
   },
   methods: {

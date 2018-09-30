@@ -149,5 +149,9 @@ export default class CreateStep1 extends Vue {
     this.bookingProv = 1;
     window.bus.$on("book-validate", this.validate);
   }
+
+  beforeDestroy() {
+    window.bus.$off("book-validate", this.validate);
+  }
 }
 </script>
