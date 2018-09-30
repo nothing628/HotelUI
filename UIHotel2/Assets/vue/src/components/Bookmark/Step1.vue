@@ -32,6 +32,34 @@
       </div>
     </div>
 
+    <div class="form-group" v-if="isReadonly">
+      <label class="col-md-3 control-label">Deposit</label>
+      <div class="col-md-3">
+        <input
+        class="form-control"
+        type="number"
+        name="deposit"
+        key="deposit"
+        v-model="modalData.Deposit"
+        v-validate="'required|min_value:1'"/>
+        <span class="text-danger">{{ errors.first('deposit') }}</span>
+      </div>
+    </div>
+
+    <div class="form-group" v-if="!isReadonly">
+      <label class="col-md-3 control-label">Price</label>
+      <div class="col-md-3">
+        <input
+        class="form-control"
+        type="number"
+        name="price"
+        key="price"
+        v-model="modalData.Price"
+        v-validate="'required|min_value:1'"/>
+        <span class="text-danger">{{ errors.first('price') }}</span>
+      </div>
+    </div>
+
     <div class="form-group">
       <label class="col-md-3 control-label">Arrival Date</label>
       <div class="col-md-3">
@@ -39,6 +67,7 @@
         type="date"
         class="form-control"
         name="arrival_date"
+        :min="minArrivalDate"
         v-validate="'required'"
         v-model="modalData.ArrivalDate"/>
         <span class="text-danger">{{ errors.first('arrival_date') }}</span>
@@ -49,6 +78,7 @@
         type="date"
         class="form-control"
         name="departure_date"
+        :min="minDepartureDate"
         v-validate="'required'"
         v-model="modalData.DepartureDate"/>
         <span class="text-danger">{{ errors.first('departure_date') }}</span>
@@ -82,10 +112,13 @@
 <script lang="ts">
 import { ss, execute } from "@/lib/Test";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import moment from "moment";
 
 interface IModalData {
   BookNumber: string;
   BookType: number;
+  Deposit: number;
+  Price: number;
   ArrivalDate: string;
   DepartureDate: string;
   CountAdult: number;
@@ -99,11 +132,31 @@ export default class CreateStep1 extends Vue {
   private modalData: IModalData = {
     BookType: 0,
     BookNumber: "",
+    Deposit: 0,
+    Price: 0,
     ArrivalDate: "",
     DepartureDate: "",
     CountAdult: 1,
     CountChild: 0
   };
+
+  @Prop({ required: false, default: () => {} })
+  private value?: object;
+
+  get minArrivalDate(): string {
+    return moment().format("YYYY-MM-DD");
+  }
+
+  get minDepartureDate(): string {
+    let today = moment().startOf("d");
+    let arrival = moment(this.modalData.ArrivalDate);
+
+    if (arrival.isSameOrAfter(today)) {
+      return arrival.format("YYYY-MM-DD");
+    }
+
+    return today.format("YYYY-MM-DD");
+  }
 
   get isReadonly() {
     return this.bookingProv == 1;
@@ -129,7 +182,11 @@ export default class CreateStep1 extends Vue {
 
   validate() {
     this.$validator.validateAll().then((is_valid: any) => {
-      console.log(is_valid);
+      if (is_valid) {
+        this.$emit("input", this.modalData);
+      } else {
+        this.$emit("input", {});
+      }
     });
   }
 
@@ -147,6 +204,8 @@ export default class CreateStep1 extends Vue {
   mounted() {
     this.getBookingType();
     this.bookingProv = 1;
+    this.modalData.ArrivalDate = moment().format("YYYY-MM-DD");
+    this.modalData.DepartureDate = moment().format("YYYY-MM-DD");
     window.bus.$on("book-validate", this.validate);
   }
 

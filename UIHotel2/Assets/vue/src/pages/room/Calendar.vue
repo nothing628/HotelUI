@@ -356,9 +356,7 @@ export default class RoomCalendar extends Vue {
       editable: true,
       eventLimit: true,
       eventOverlap: true,
-      eventClick: function(calEvent, jsEvent, view) {
-        console.log(jsEvent);
-      },
+      eventClick: function(calEvent, jsEvent, view) {},
       eventDrop: function(event) {
         self.arrangeEvent(event);
       },

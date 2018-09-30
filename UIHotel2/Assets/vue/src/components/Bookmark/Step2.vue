@@ -405,15 +405,31 @@ export default class CreateStep2 extends Vue {
     this.modalData.PhotoDoc = filehash;
   }
 
-  findOrSave() {
-    this.$validator.validateAll().then((result: any) => {
-      if (result) {
-        if (this.isSelected) {
-          //No need to save
-        } else {
-          //Save here
-          Guest.Store(this.modalData);
+  findOrCreate() {
+    Guest.Store(this.modalData);
+    var qry = ss()
+      .from("guests")
+      .where("IdNumber = ?", this.modalData.IdNumber)
+      .field("Id");
+    var result = execute(qry);
+
+    if (result.length > 0) {
+      this.modalData.Id = result[0].Id;
+    } else {
+      this.modalData.Id = "";
+    }
+  }
+
+  validate() {
+    this.$validator.validateAll().then((is_valid: any) => {
+      if (is_valid) {
+        if (!this.isSelected) {
+          this.findOrCreate();
         }
+
+        this.$emit("input", this.modalData);
+      } else {
+        this.$emit("input", {});
       }
     });
   }
@@ -427,11 +443,11 @@ export default class CreateStep2 extends Vue {
   mounted() {
     this.getMaxItem();
     this.getData();
-    window.bus.$on("book-validate", this.findOrSave);
+    window.bus.$on("book-validate", this.validate);
   }
 
   beforeDestroy() {
-    window.bus.$off("book-validate", this.findOrSave);
+    window.bus.$off("book-validate", this.validate);
   }
 }
 </script>

@@ -19,7 +19,7 @@ export interface IGuest {
 }
 
 export class Guest {
-  public static Store(user: IGuest): void {
+  public static Store(user: IGuest): number {
     var new_moment = moment();
     var qry = si()
       .into("guests")
@@ -41,5 +41,7 @@ export class Guest {
       .set("CreateAt", new_moment.format("YYYY-MM-DD"))
       .set("UpdateAt", new_moment.format("YYYY-MM-DD"));
     var result = executeScalar(qry);
+
+    return Number(result);
   }
 }

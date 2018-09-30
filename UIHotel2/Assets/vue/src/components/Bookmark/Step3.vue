@@ -169,6 +169,12 @@ export default class CreateStep3 extends Vue {
 
   validate() {
     this.is_invalidate = true;
+
+    if (this.IsRoomSelected) {
+      this.$emit("input", this.modalData);
+    } else {
+      this.$emit("input", {});
+    }
   }
 
   mounted() {

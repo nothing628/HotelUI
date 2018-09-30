@@ -225,7 +225,6 @@ export class QueryBuilder {
     try {
       return this.FirstOrFail();
     } catch (ex) {
-      console.log(ex, this.CompileSql());
       return null;
     }
   }
