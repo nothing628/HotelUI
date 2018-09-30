@@ -25,7 +25,7 @@ export default Vue.extend({
   computed: {
     get_class(): Array<string> {
       let default_class = ["pagination"];
-      
+
       if (this.nomargin) {
         default_class.push("m-0");
       }

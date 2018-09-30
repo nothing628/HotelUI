@@ -1,18 +1,45 @@
-import { Table } from "@/lib/Database/Table";
+import { ss, si, execute, executeScalar } from "@/lib/Test";
+import moment from "moment";
 
-export class Guest extends Table {
-  constructor(exists: boolean = false) {
-    super(exists);
-    this.table_name = "Guest";
-    this.InitQueryBuilder();
-  }
+export interface IGuest {
+  IdNumber: string;
+  Fullname: string;
+  Email: string;
+  IsVIP: boolean;
+  BirthPlace: string;
+  BirthDay: string;
+  Phone1: string;
+  Phone2: string;
+  Address: string;
+  City: string;
+  Province: string;
+  State: string;
+  PhotoDoc: string;
+  PhotoGuest: string;
+}
 
-  protected InitQueryBuilder(): void {
-    this.qry_builder.SetModel(Guest.NewTableInstance);
-    this.qry_builder.SetTable(this.table_name);
-  }
-
-  public static NewTableInstance(exists: boolean = false): any {
-    return new Guest(exists);
+export class Guest {
+  public static Store(user: IGuest): void {
+    var new_moment = moment();
+    var qry = si()
+      .into("guests")
+      .set("IdKind", "KTP")
+      .set("IdNumber", user.IdNumber)
+      .set("Fullname", user.Fullname)
+      .set("Email", user.Email)
+      .set("IsVIP", user.IsVIP ? 1 : 0)
+      .set("BirthPlace", user.BirthPlace)
+      .set("BirthDay", user.BirthDay)
+      .set("Phone1", user.Phone1)
+      .set("Phone2", user.Phone2)
+      .set("Address", user.Address)
+      .set("City", user.City)
+      .set("Province", user.Province)
+      .set("State", user.State)
+      .set("PhotoDoc", user.PhotoDoc)
+      .set("PhotoGuest", user.PhotoGuest)
+      .set("CreateAt", new_moment.format("YYYY-MM-DD"))
+      .set("UpdateAt", new_moment.format("YYYY-MM-DD"));
+    var result = executeScalar(qry);
   }
 }

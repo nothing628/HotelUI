@@ -33,3 +33,7 @@
 table.table tr.selectable td {
   cursor: pointer;
 }
+
+table.table tr.selectable:hover td {
+  background-color: #bef1f1;
+}

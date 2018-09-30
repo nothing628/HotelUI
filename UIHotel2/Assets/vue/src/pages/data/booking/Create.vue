@@ -13,10 +13,10 @@
         <step-container name="booking">
           <create1></create1>
         </step-container>
-        <step-container name="guest">
+        <step-container name="guest" active>
           <create2></create2>
         </step-container>
-        <step-container name="room" active>
+        <step-container name="room">
           <create3></create3>
         </step-container>
 
