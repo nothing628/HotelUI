@@ -10,20 +10,20 @@
           <step-item step-number="2" step-title="Guest Info" step-target="guest"></step-item>
           <step-item step-number="3" step-title="Room Info" step-target="room"></step-item>
         </step-selector>
-        <step-container name="booking" active>
+        <step-container name="booking">
           <create1></create1>
         </step-container>
         <step-container name="guest">
           <create2></create2>
         </step-container>
-        <step-container name="room">
+        <step-container name="room" active>
           <create3></create3>
         </step-container>
 
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
-            <button class="btn btn-success m-r-5" @click="back"><i></i> Booking</button>
-            <button class="btn btn-success m-r-5" @click="back"><i></i> Booking & Checkin</button>
+            <button class="btn btn-success m-r-5" @click="validate"><i></i> Booking</button>
+            <button class="btn btn-success m-r-5" @click="validate"><i></i> Booking & Checkin</button>
             <button class="btn btn-danger" @click="back"><i></i> Cancel</button>
           </div>
         </div>
@@ -51,6 +51,10 @@ import Create3 from "@/components/Bookmark/Step3.vue";
   }
 })
 export default class DataBooking extends Vue {
+  validate() {
+    window.bus.$emit("book-validate");
+  }
+
   back() {
     this.$router.push({ name: "data.booking" });
   }

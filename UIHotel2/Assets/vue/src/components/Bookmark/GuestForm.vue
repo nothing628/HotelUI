@@ -237,5 +237,17 @@ export default class CreateGuest extends Vue {
     this.docName = filename;
     this.modalData.PhotoDoc = filehash;
   }
+
+  findOrSave() {
+    //
+  }
+
+  mounted() {
+    window.bus.$on("book-validate", this.findOrSave);
+  }
+
+  beforeDestroy() {
+    window.bus.$off("book-validate", this.findOrSave);
+  }
 }
 </script>

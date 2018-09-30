@@ -12,10 +12,6 @@ Vue.use(uiv, { prefix: "uiv" });
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
-const bus: any = new Vue();
-
-Vue.prototype.$bus = bus;
-
 new Vue({
   router,
   store,

@@ -33,10 +33,10 @@ export default {
   },
   methods: {
     toggleActive() {
-      this.$bus.$emit("wizard-active", this.uid);
+      window.bus.$emit("wizard-active", this.uid);
 
       if (this.stepTarget != "") {
-        this.$bus.$emit("wizard-toggle", this.stepTarget);
+        window.bus.$emit("wizard-toggle", this.stepTarget);
       }
     },
     activeWizard(uidname) {
@@ -46,10 +46,10 @@ export default {
   mounted() {
     this.uid = Math.ceil(Math.random() * 10000000);
     this.is_active = this.active;
-    this.$bus.$on("wizard-active", this.activeWizard);
+    window.bus.$on("wizard-active", this.activeWizard);
   },
   beforeDestroy() {
-    this.$bus.$off("wizard-active", this.activeWizard);
+    window.bus.$off("wizard-active", this.activeWizard);
   }
 };
 </script>

@@ -30,10 +30,10 @@ export default {
   },
   mounted() {
     this.is_active = this.active;
-    this.$bus.$on("wizard-toggle", this.containerActive);
+    window.bus.$on("wizard-toggle", this.containerActive);
   },
   beforeDestroy() {
-    this.$bus.$off("wizard-toggle", this.containerActive);
+    window.bus.$off("wizard-toggle", this.containerActive);
   }
 };
 </script>

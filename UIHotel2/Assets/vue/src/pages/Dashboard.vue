@@ -74,7 +74,7 @@
                   </a>
                 </div>
                 <div class="col-md-4">
-                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success" @click="goto('data.booking.create')">
                     <i class="fa fa-bookmark pull-left"></i>
                     Booking
                   </a>
@@ -118,6 +118,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
 export default class Dashboard extends Vue {
+  goto(location: string) {
+    this.$router.push({ name: location });
+  }
+
   mounted() {
     this.$store.commit("changeTitle", "Dashboard");
     this.$store.commit("changeSubtitle", "");

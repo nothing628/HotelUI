@@ -10,6 +10,7 @@ using Chromium;
 using Chromium.Remote;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
+using UIHotel2.Data;
 
 namespace UIHotel2.AppObject
 {
@@ -26,6 +27,34 @@ namespace UIHotel2.AppObject
             Self.AddFunction("OpenDialog").Execute += OpenDialogExecute;
             Self.AddFunction("SaveDialog").Execute += SaveDialogExecute;
             Self.AddFunction("GetUploadUrl").Execute += GetUploadUrl;
+            Self.AddFunction("GetNewBookingNumber").Execute += GetBookingNumberExecute;
+        }
+
+        private void GetBookingNumberExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            using (var context = new HotelContext())
+            {
+                var startnumber = 1;
+                var today = DateTime.Today;
+                var result = "BOK" + today.ToString("yyyyMMdd");
+                var bookingToday = context
+                    .Bookings
+                    .Where(b => b.BookingAt >= today)
+                    .Where(b => b.Id.Contains(result))
+                    .OrderByDescending(b => b.BookingAt)
+                    .FirstOrDefault();
+
+                if (bookingToday != null)
+                {
+                    // Generate new
+                    var subNumber = bookingToday.Id.Substring(11, 5);
+                    startnumber = Convert.ToInt32(subNumber);
+                    startnumber++;
+                }
+
+                result = string.Format("{0}{1:00000}", result, startnumber);
+                e.SetReturnValue(result);
+            }
         }
 
         private void SaveDialogExecute(object sender, CfrV8HandlerExecuteEventArgs e)

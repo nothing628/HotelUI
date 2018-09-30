@@ -9,6 +9,7 @@ export interface IApp {
   SaveDialog(callback: (data: any) => void): void;
   SaveDialog(filter: string, callback: (data: any) => void): void;
   GetUploadUrl(filehash: string): string;
+  GetNewBookingNumber(): string;
 }
 
 export interface ICS {
