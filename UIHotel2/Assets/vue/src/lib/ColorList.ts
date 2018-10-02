@@ -290,7 +290,7 @@ const BlueGrey: Array<string> = [
   "37474F",
   "263238"
 ];
-export const ColorArray = [
+export const ColorArray: Array<Array<string>> = [
   Red,
   Pink,
   Purple,
@@ -311,7 +311,7 @@ export const ColorArray = [
   Grey,
   BlueGrey
 ];
-export const ColorList = {
+export const ColorList: object = {
   Red,
   Pink,
   Purple,

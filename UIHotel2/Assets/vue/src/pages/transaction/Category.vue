@@ -38,6 +38,36 @@
           <counter :from.sync="from" :to.sync="to" :total.sync="max_item"></counter>
           <pagination :total-page.sync="totalPage" v-model="currentPage"></pagination>
         </div>
+
+        <uiv-modal title="Add Category" v-model="show_add">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Category Name</label>
+              <div class="col-md-6">
+                <input class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Icon</label>
+              <div class="col-md-3">
+                <icon-picker></icon-picker>
+              </div>
+              <label class="col-md-3 control-label">Color</label>
+              <div class="col-md-3">
+                <color-picker></color-picker>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Type</label>
+              <div class="col-md-3">
+                <input class="form-control"/>
+              </div>
+            </div>
+          </div>
+          <template slot="footer">
+            <button class="btn btn-danger">Cancel</button>
+          </template>
+        </uiv-modal>
       </div>
     </div>
   </div>
@@ -47,11 +77,15 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { squel, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
+import ColorPicker from "@/components/Form/ColorPicker.vue";
+import IconPicker from "@/components/Form/IconPicker.vue";
 
 @Component({
   components: {
     Pagination,
-    Counter
+    Counter,
+    ColorPicker,
+    IconPicker
   },
   filters: {
     strincome(item: boolean): string {
@@ -63,6 +97,8 @@ import Counter from "@/components/Table/Counter.vue";
   }
 })
 export default class TransactionCategory extends Vue {
+  private show_add: boolean = true;
+  private show_edit: boolean = false;
   private max_item: number = 0;
   private limit: number = 10;
   private currentPage: number = 1;
@@ -124,7 +160,7 @@ export default class TransactionCategory extends Vue {
   }
 
   addData() {
-    //
+    this.show_add = true;
   }
 
   mounted() {
