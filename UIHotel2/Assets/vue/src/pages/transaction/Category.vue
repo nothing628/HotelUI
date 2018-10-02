@@ -60,11 +60,15 @@
             <div class="form-group">
               <label class="col-md-3 control-label">Type</label>
               <div class="col-md-3">
-                <input class="form-control"/>
+                <select class="form-control">
+                  <option value="1">Income</option>
+                  <option value="0">Outcome</option>
+                </select>
               </div>
             </div>
           </div>
           <template slot="footer">
+            <button class="btn btn-success">Save</button>
             <button class="btn btn-danger">Cancel</button>
           </template>
         </uiv-modal>

@@ -37,3 +37,29 @@ table.table tr.selectable td {
 table.table tr.selectable:hover td {
   background-color: #bef1f1;
 }
+
+.form-control-color {
+  cursor: pointer;
+}
+.column-flex {
+  display: block;
+  float: left;
+}
+.column-flex > .row-flex {
+  width: 24px;
+  height: 24px;
+}
+
+.column-flex > .row-flex.btn {
+  width: 40px;
+  height: 40px;
+}
+
+.column-flex > .row-flex:hover,
+.column-flex > .row-flex.selected {
+  border: 3px solid black;
+}
+
+.column-flex > .row-flex.btn.selected {
+  background-color: #666;
+}

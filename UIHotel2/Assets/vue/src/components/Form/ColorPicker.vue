@@ -18,24 +18,6 @@
     </uiv-modal>
   </div>
 </template>
-<style>
-.form-control-color {
-  cursor: pointer;
-}
-.column-flex {
-  display: block;
-  float: left;
-}
-.column-flex > .row-flex {
-  width: 24px;
-  height: 24px;
-}
-.column-flex > .row-flex:hover,
-.column-flex > .row-flex.selected {
-  border: 3px solid black;
-}
-</style>
-
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { ColorArray } from "@/lib/ColorList";
