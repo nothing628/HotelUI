@@ -100,8 +100,14 @@ export default class IconPicker extends Vue {
 
   @Watch("value")
   changeValue(newval: string, oldval: string) {
-    this.select_icon = newval;
-    this.value_icon = newval;
+    if (newval.length == 0) {
+      this.value_icon = "fa-ellipsis-h";
+      this.select_icon = "fa-ellipsis-h";
+      this.$emit("input", "fa-ellipsis-h");
+    } else {
+      this.select_icon = newval;
+      this.value_icon = newval;
+    }
   }
 }
 </script>

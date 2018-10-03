@@ -44,23 +44,28 @@
             <div class="form-group">
               <label class="col-md-3 control-label">Category Name</label>
               <div class="col-md-6">
-                <input class="form-control"/>
+                <input
+                class="form-control"
+                name="category_name"
+                v-model="modelData.CategoryName"
+                v-validate="'required|max:40'"/>
+                <span class="text-danger">{{ errors.first('category_name') }}</span>
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-3 control-label">Icon</label>
               <div class="col-md-3">
-                <icon-picker></icon-picker>
+                <icon-picker v-model="modelData.CategoryIcon"></icon-picker>
               </div>
               <label class="col-md-3 control-label">Color</label>
               <div class="col-md-3">
-                <color-picker></color-picker>
+                <color-picker v-model="modelData.CategoryColor"></color-picker>
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-3 control-label">Type</label>
               <div class="col-md-3">
-                <select class="form-control">
+                <select class="form-control" v-model="is_income">
                   <option value="1">Income</option>
                   <option value="0">Outcome</option>
                 </select>
@@ -68,8 +73,47 @@
             </div>
           </div>
           <template slot="footer">
-            <button class="btn btn-success">Save</button>
-            <button class="btn btn-danger">Cancel</button>
+            <button class="btn btn-success" @click="storeData">Save</button>
+            <button class="btn btn-danger" @click="closeAll">Cancel</button>
+          </template>
+        </uiv-modal>
+
+        <uiv-modal title="Edit Category" v-model="show_edit">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Category Name</label>
+              <div class="col-md-6">
+                <input
+                class="form-control"
+                name="category_name"
+                v-model="modelData.CategoryName"
+                v-validate="'required|max:40'"/>
+                <span class="text-danger">{{ errors.first('category_name') }}</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Icon</label>
+              <div class="col-md-3">
+                <icon-picker v-model="modelData.CategoryIcon"></icon-picker>
+              </div>
+              <label class="col-md-3 control-label">Color</label>
+              <div class="col-md-3">
+                <color-picker v-model="modelData.CategoryColor"></color-picker>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Type</label>
+              <div class="col-md-3">
+                <select class="form-control" v-model="is_income">
+                  <option value="1">Income</option>
+                  <option value="0">Outcome</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <template slot="footer">
+            <button class="btn btn-success" @click="updateData">Save</button>
+            <button class="btn btn-danger" @click="closeAll">Cancel</button>
           </template>
         </uiv-modal>
       </div>
@@ -83,6 +127,14 @@ import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 import ColorPicker from "@/components/Form/ColorPicker.vue";
 import IconPicker from "@/components/Form/IconPicker.vue";
+
+interface IModelData {
+  CategoryName: string;
+  CategoryIcon: string;
+  CategoryColor: string;
+  IsIncome: boolean;
+  Id: number;
+}
 
 @Component({
   components: {
@@ -101,12 +153,20 @@ import IconPicker from "@/components/Form/IconPicker.vue";
   }
 })
 export default class TransactionCategory extends Vue {
-  private show_add: boolean = true;
+  private show_add: boolean = false;
   private show_edit: boolean = false;
+  private is_income: string = "0";
   private max_item: number = 0;
   private limit: number = 10;
   private currentPage: number = 1;
   private items: Array<any> = new Array();
+  private modelData: IModelData = {
+    CategoryName: "",
+    CategoryIcon: "",
+    CategoryColor: "",
+    IsIncome: false,
+    Id: 0
+  };
 
   get totalPage(): number {
     return Math.ceil(this.max_item / this.limit);
@@ -129,8 +189,9 @@ export default class TransactionCategory extends Vue {
 
   getIconClass(item: any) {
     let icon: string = item.CategoryIcon;
-    let arr_class = icon.split(" ");
+    let arr_class: string[] = [icon];
     arr_class.push("fa-2x");
+    arr_class.push("fa");
 
     return arr_class;
   }
@@ -164,7 +225,82 @@ export default class TransactionCategory extends Vue {
   }
 
   addData() {
+    this.modelData.Id = 0;
+    this.modelData.CategoryName = "";
+    this.modelData.CategoryIcon = "";
+    this.modelData.CategoryColor = "";
+    this.is_income = "1";
     this.show_add = true;
+    this.$validator.reset();
+  }
+
+  storeData() {
+    this.$validator.validateAll().then((is_valid: any) => {
+      if (is_valid) {
+        this.storeDataExe();
+      }
+    });
+  }
+
+  storeDataExe() {
+    let qry = si()
+      .into("transactioncategories")
+      .set("CategoryName", this.modelData.CategoryName)
+      .set("CategoryIcon", this.modelData.CategoryIcon)
+      .set("CategoryColor", this.modelData.CategoryColor)
+      .set("IsIncome", this.modelData.IsIncome);
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getItems();
+    this.closeAll();
+  }
+
+  editData(item: any) {
+    this.modelData.Id = item.Id;
+    this.modelData.CategoryName = item.CategoryName;
+    this.modelData.CategoryColor = item.CategoryColor;
+    this.modelData.CategoryIcon = item.CategoryIcon;
+    this.is_income = item.IsIncome ? "1" : "0";
+    this.show_edit = true;
+  }
+
+  updateData() {
+    this.$validator.validateAll().then((is_valid: any) => {
+      if (is_valid) {
+        this.updateDataExe();
+      }
+    });
+  }
+
+  updateDataExe() {
+    let qry = su()
+      .table("transactioncategories")
+      .set("CategoryName", this.modelData.CategoryName)
+      .set("CategoryIcon", this.modelData.CategoryIcon)
+      .set("CategoryColor", this.modelData.CategoryColor)
+      .set("IsIncome", this.modelData.IsIncome)
+      .where("Id = ?", this.modelData.Id);
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getItems();
+    this.closeAll();
+  }
+
+  deleteData(item: any) {
+    let qry = sd()
+      .from("transactioncategories")
+      .where("Id = ?", item.Id);
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getItems();
+  }
+
+  closeAll() {
+    this.show_add = false;
+    this.show_edit = false;
   }
 
   mounted() {
@@ -177,6 +313,11 @@ export default class TransactionCategory extends Vue {
   @Watch("currentPage")
   currentPageChanged(newval: number, oldval: number) {
     this.getItems();
+  }
+
+  @Watch("is_income")
+  isIncomeChanged(newval: string, oldval: string) {
+    this.modelData.IsIncome = this.is_income == "1";
   }
 }
 </script>
