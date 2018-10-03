@@ -47,8 +47,48 @@
         </div>
 
         <uiv-modal title="Add Transaction" v-model="show_add" @hide="closeAll">
-          <div class="form">
-            <div class="form-group"></div>
+          <div class="form form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Transaction At</label>
+              <div class="col-md-4">
+                <input type="date" class="form-control"/>
+              </div>
+              <div class="col-md-4">
+                <input type="time" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Kind</label>
+              <div class="col-md-3">
+                <select class="form-control" v-model="kind">
+                  <option value="1">Income</option>
+                  <option value="0">Outcome</option>
+                </select>
+              </div>
+              <label class="col-md-3 control-label">Category</label>
+              <div class="col-md-3">
+                <select class="form-control">
+                  <option
+                  v-for="item in listFilteredCategory"
+                  :key="item.Id"
+                  :value="item.Id">
+                    {{ item.CategoryName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Description</label>
+              <div class="col-md-9">
+                <textarea class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Ammount</label>
+              <div class="col-md-4">
+                <input type="number" class="form-control"/>
+              </div>
+            </div>
           </div>
 
           <template slot="footer">
@@ -67,6 +107,15 @@ import moment from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 
+interface IModelData {
+  TransactionDate: string;
+  TransactionTime: string;
+  CategoryId: number;
+  UserId: number;
+  Description: string;
+  Ammount: number;
+}
+
 @Component({
   components: {
     Pagination,
@@ -81,9 +130,28 @@ export default class TransactionList extends Vue {
   private currentPage: number = 1;
   private date_at: string = "";
   private keyword: string = "";
+  private kind: string = "1";
   private show_add: boolean = false;
   private show_edit: boolean = false;
-  
+  private modelData: IModelData = {
+    TransactionDate: "",
+    TransactionTime: "",
+    CategoryId: 0,
+    UserId: 0,
+    Description: "",
+    Ammount: 0
+  };
+
+  get listFilteredCategory(): Array<any> {
+    return this.listCategory.filter((item: any) => {
+      if (this.kind == "1") {
+        return item.IsIncome;
+      } else {
+        return !item.IsIncome;
+      }
+    });
+  }
+
   get from(): number {
     return (this.currentPage - 1) * this.limit + 1;
   }
@@ -105,14 +173,14 @@ export default class TransactionList extends Vue {
   get totalPage(): number {
     return Math.ceil(this.max_item / this.limit);
   }
-  
+
   closeAll() {
     this.show_add = false;
     this.show_edit = false;
   }
 
   addData() {
-    //
+    this.show_add = true;
   }
 
   editData(item: any) {
@@ -153,7 +221,7 @@ export default class TransactionList extends Vue {
       .limit(this.limit)
       .offset(this.offset);
     let result = execute(qry);
-    
+
     this.listCategory = [];
     result.forEach((item: any) => this.listCategory.push(item));
   }

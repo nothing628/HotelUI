@@ -37,8 +37,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class Login extends Vue {
-  username: string = "";
-  password: string = "";
+  private username: string = "";
+  private password: string = "";
 
   get app_title() {
     return this.$store.state.app_title;

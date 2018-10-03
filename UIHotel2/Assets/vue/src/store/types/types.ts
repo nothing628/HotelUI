@@ -1,8 +1,8 @@
 export interface UserLoginState {
-    id: string;
-    fullname: string;
-    username: string;
-    userlevel: number;
+    Id: number;
+    Fullname: string;
+    Username: string;
+    Level: number;
 }
 
 export interface RootState {

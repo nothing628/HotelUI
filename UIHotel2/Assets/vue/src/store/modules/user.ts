@@ -3,34 +3,35 @@ import { UserLoginState, RootState } from "../types/types";
 
 const namespaced: boolean = true;
 const state: UserLoginState = {
-  id: "1",
-  fullname: "2",
-  username: "2",
-  userlevel: 0
+  Id: 1,
+  Fullname: "2",
+  Username: "2",
+  Level: 0
 };
 
 const mutations: MutationTree<UserLoginState> = {
   logout(state) {
-    state.id = "";
-    state.fullname = "";
-    state.username = "";
+    state.Id = 0;
+    state.Fullname = "";
+    state.Username = "";
+    state.Level = -1;
   },
   login(state, user) {
-    state.id = user.Id;
-    state.username = user.Username;
-    state.fullname = user.Fullname;
-    state.userlevel = user.UserLevel;
+    state.Id = user.Id;
+    state.Username = user.Username;
+    state.Fullname = user.Fullname;
+    state.Level = user.UserLevel;
   }
 };
 
 const getters: GetterTree<UserLoginState, RootState> = {
   is_login(state): boolean {
-    return state.id != "";
+    return state.Id > 0;
   },
   levelname(state): string {
     var level = "";
 
-    switch (state.userlevel) {
+    switch (state.Level) {
       case 0:
         level = "Administrator";
         break;
@@ -48,6 +49,9 @@ const getters: GetterTree<UserLoginState, RootState> = {
     }
 
     return level;
+  },
+  user_id(state): number {
+    return state.Id;
   }
 };
 
