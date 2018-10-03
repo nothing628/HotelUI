@@ -152,10 +152,13 @@ export default class RoomMaintance extends Vue {
   }
 
   get to(): number {
-    let rest = this.from + 9;
+    let rest = this.from + this.limit - 1;
 
-    if (rest > this.max_item) return this.max_item;
-    return this.from + 9;
+    if (rest > this.max_item) {
+      return this.max_item;
+    }
+
+    return rest;
   }
 
   get offset(): number {

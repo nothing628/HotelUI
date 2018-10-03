@@ -27,6 +27,10 @@ namespace UIHotel2.Data.Tables
 
         public long CategoryId { get; set; }
 
+        [StringLength(200)]
+        [Required(AllowEmptyStrings = true)]
+        public string Description { get; set; }
+
         [ForeignKey("CategoryId")]
         public TransactionCategory Category { get; set; }
 

@@ -232,6 +232,10 @@
     <Compile Include="Migrations\201809252352104_AddStateAllow.Designer.cs">
       <DependentUpon>201809252352104_AddStateAllow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810031320137_AddDescriptionField.cs" />
+    <Compile Include="Migrations\201810031320137_AddDescriptionField.Designer.cs">
+      <DependentUpon>201810031320137_AddDescriptionField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Misc\AppHelper.cs" />
     <Compile Include="Misc\AuthHelper.cs" />
@@ -363,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809252352104_AddStateAllow.resx">
       <DependentUpon>201809252352104_AddStateAllow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810031320137_AddDescriptionField.resx">
+      <DependentUpon>201810031320137_AddDescriptionField.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

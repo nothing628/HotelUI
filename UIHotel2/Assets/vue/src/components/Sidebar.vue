@@ -38,7 +38,7 @@
         <menu-parent
           text="Transaction"
           icon="fa fa-diamond">
-          <menu-child text="New Transaction" route="transaction.list"></menu-child>
+          <menu-child text="List Transaction" route="transaction.list"></menu-child>
           <menu-child text="Transaction Category" route="transaction.category"></menu-child>
         </menu-parent>
         <menu-parent
