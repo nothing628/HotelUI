@@ -30,9 +30,12 @@
             </thead>
             <tbody>
               <tr v-for="item in items" :key="item.Id">
+                  <td>{{ item.TransactionAt | strtime }}</td>
+                  <td>{{ item.Description }}</td>
                   <td>{{ item.CategoryName }}</td>
-                  <td><i :class="getIconClass(item)" :style="getIconStyle(item)"></i></td>
-                  <td>{{ item.IsIncome | strincome }}</td>
+                  <td>{{ item.AmmountIn }}</td>
+                  <td>{{ item.AmmountOut }}</td>
+                  <td>{{ item.Subtotal }}</td>
                   <td>
                     <div class="btn-group pull-right">
                       <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
@@ -72,8 +75,8 @@
                   <option value="0">Outcome</option>
                 </select>
               </div>
-              <label class="col-md-3 control-label">Category</label>
-              <div class="col-md-3">
+              <label class="col-md-2 control-label">Category</label>
+              <div class="col-md-4">
                 <select
                 class="form-control"
                 name="category"
@@ -125,7 +128,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { ss, si, execute, executeScalar, su } from "@/lib/Test";
+import { ss, si, su, sd, execute, executeScalar } from "@/lib/Test";
 import moment from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
@@ -145,6 +148,13 @@ interface IModelData {
     Pagination,
     Counter,
     TimePicker
+  },
+  filters: {
+    strtime(item: string): string {
+      let m = moment(item);
+
+      return m.format("DD/MM HH:mm");
+    }
   }
 })
 export default class TransactionList extends Vue {
@@ -156,11 +166,11 @@ export default class TransactionList extends Vue {
   private date_at: string = "";
   private keyword: string = "";
   private kind: string = "1";
-  private show_add: boolean = true;
+  private show_add: boolean = false;
   private show_edit: boolean = false;
   private modelData: IModelData = {
     TransactionDate: "",
-    TransactionTime: "13:00:00",
+    TransactionTime: "",
     CategoryId: "",
     UserId: 0,
     Description: "",
@@ -209,8 +219,10 @@ export default class TransactionList extends Vue {
   }
 
   addData() {
+    let today = moment();
+
     this.modelData.TransactionDate = "";
-    this.modelData.TransactionTime = "";
+    this.modelData.TransactionTime = today.format("HH:mm:ss");
     this.modelData.CategoryId = "";
     this.modelData.Description = "";
     this.modelData.Ammount = 0;
@@ -247,18 +259,34 @@ export default class TransactionList extends Vue {
       .set("UserId", this.modelData.UserId)
       .set("CategoryId", this.modelData.CategoryId)
       .set("Description", this.modelData.Description);
-    console.log(qry.toString());
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getItems();
+    this.closeAll();
   }
 
   updateData() {
     //
   }
 
-  deleteData(item: any) {
+  updateDataExe() {
     //
   }
 
+  deleteData(item: any) {
+    let qry = sd()
+      .from("transactions")
+      .where("Id = ?", item.Id);
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getItems();
+  }
+
   bindFilter(qry: any): any {
+    qry.order("TransactionAt", false)
+
     if (this.date_at != "") {
       let date_start = moment(this.date_at);
       let date_end = date_start.add(1, "d");
@@ -299,7 +327,17 @@ export default class TransactionList extends Vue {
   }
 
   getItems() {
-    //
+    let qry = ss().from("transactions", "a");
+
+    qry = this.bindFilter(qry);
+    qry.join("transactioncategories", "b", "a.CategoryId = b.Id")
+      .field("a.*")
+      .field("b.CategoryName");
+
+    let result = execute(qry);
+
+    this.items = [];
+    result.forEach((item: any) => this.items.push(item));
   }
 
   mounted() {

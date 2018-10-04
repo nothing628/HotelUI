@@ -30,10 +30,6 @@ export default class TimePicker extends Vue {
 
   toggleFloat() {
     this.show = !this.show;
-
-    if (!this.show) {
-      this.$emit("input", this.valuex);
-    }
   }
 
   parseValue() {
@@ -44,6 +40,15 @@ export default class TimePicker extends Vue {
 
       this.valuex = parse.format("HH:mm:ss");
     }
+
+    this.$nextTick(() => {
+      this.$emit("input", this.valuex);
+    });
+  }
+
+  @Watch("show")
+  changeShow(newval: any, oldval: any) {
+    this.$emit("input", this.valuex);
   }
 
   @Watch("value")
