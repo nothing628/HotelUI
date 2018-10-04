@@ -203,7 +203,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { ss, si, su, sd, execute, executeScalar } from "@/lib/Test";
 import moment from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
@@ -254,6 +254,13 @@ export default class TransactionList extends Vue {
     Ammount: 0,
     Id: 0
   };
+
+  @Watch("date_at")
+  @Watch("keyword")
+  changeSearch() {
+    this.getMaxItem();
+    this.getItems();
+  }
 
   get maxDate(): string {
     return moment().format("YYYY-MM-DD");
@@ -432,7 +439,7 @@ export default class TransactionList extends Vue {
 
     if (this.date_at != "") {
       let date_start = moment(this.date_at);
-      let date_end = date_start.add(1, "d");
+      let date_end = date_start.clone().add(1, "d");
 
       qry.where("TransactionAt > ?", date_start.format("YYYY-MM-DD"));
       qry.where("TransactionAt < ?", date_end.format("YYYY-MM-DD"));
