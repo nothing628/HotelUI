@@ -50,6 +50,9 @@ const getters: GetterTree<IUserLoginState, IRootState> = {
 
     return level;
   },
+  level(state: IUserLoginState): number {
+    return state.Level;
+  },
   user_id(state: IUserLoginState): number {
     return state.Id;
   }

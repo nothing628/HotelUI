@@ -110,6 +110,7 @@
                 type="number"
                 class="form-control"
                 name="ammount"
+                min="0"
                 v-model="modelData.Ammount"
                 v-validate="'required|min_value:1'"/>
                 <span class="text-danger">{{ errors.first('ammount') }}</span>
@@ -119,6 +120,81 @@
 
           <template slot="footer">
             <button class="btn btn-success" @click="storeData">Save</button>
+            <button class="btn btn-danger" @click="closeAll">Cancel</button>
+          </template>
+        </uiv-modal>
+
+        <uiv-modal title="Add Transaction" v-model="show_edit" @hide="closeAll">
+          <div class="form form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Transaction At</label>
+              <div class="col-md-4">
+                <input
+                type="date"
+                class="form-control"
+                name="date_at"
+                v-model="modelData.TransactionDate"
+                v-validate="'required'"
+                :max="maxDate"/>
+                <span class="text-danger">{{ errors.first('date_at') }}</span>
+              </div>
+              <div class="col-md-5">
+                <time-picker v-model="modelData.TransactionTime"></time-picker>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Kind</label>
+              <div class="col-md-3">
+                <select class="form-control" v-model="kind">
+                  <option value="1">Income</option>
+                  <option value="0">Outcome</option>
+                </select>
+              </div>
+              <label class="col-md-2 control-label">Category</label>
+              <div class="col-md-4">
+                <select
+                class="form-control"
+                name="category"
+                v-model="modelData.CategoryId"
+                v-validate="'required'">
+                  <option
+                  v-for="item in listFilteredCategory"
+                  :key="item.Id"
+                  :value="item.Id">
+                    {{ item.CategoryName }}
+                  </option>
+                </select>
+                <span class="text-danger">{{ errors.first('category') }}</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Description</label>
+              <div class="col-md-9">
+                <textarea
+                class="form-control"
+                name="description"
+                v-model="modelData.Description"
+                v-validate="'max:200'"></textarea>
+                <span class="text-danger">{{ errors.first('description') }}</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Ammount</label>
+              <div class="col-md-4">
+                <input
+                type="number"
+                class="form-control"
+                name="ammount"
+                min="0"
+                v-model="modelData.Ammount"
+                v-validate="'required|min_value:1'"/>
+                <span class="text-danger">{{ errors.first('ammount') }}</span>
+              </div>
+            </div>
+          </div>
+
+          <template slot="footer">
+            <button class="btn btn-success" @click="updateData">Save</button>
             <button class="btn btn-danger" @click="closeAll">Cancel</button>
           </template>
         </uiv-modal>
@@ -138,9 +214,9 @@ interface IModelData {
   TransactionDate: string;
   TransactionTime: string;
   CategoryId: string;
-  UserId: number;
   Description: string;
   Ammount: number;
+  Id: number;
 }
 
 @Component({
@@ -168,13 +244,15 @@ export default class TransactionList extends Vue {
   private kind: string = "1";
   private show_add: boolean = false;
   private show_edit: boolean = false;
+  private user_level: number = -1;
+  private user_id: number = -1;
   private modelData: IModelData = {
     TransactionDate: "",
     TransactionTime: "",
     CategoryId: "",
-    UserId: 0,
     Description: "",
-    Ammount: 0
+    Ammount: 0,
+    Id: 0
   };
 
   get maxDate(): string {
@@ -213,6 +291,18 @@ export default class TransactionList extends Vue {
     return Math.ceil(this.max_item / this.limit);
   }
 
+  getCategoryKind(id: any): boolean | undefined {
+    let result = this.listCategory.filter((item: any) => {
+      return item.Id == id;
+    });
+
+    if (result.length > 0) {
+      return result[0].IsIncome;
+    }
+
+    return;
+  }
+
   closeAll() {
     this.show_add = false;
     this.show_edit = false;
@@ -231,7 +321,36 @@ export default class TransactionList extends Vue {
   }
 
   editData(item: any) {
-    //
+    let time_str = moment(item.TransactionAt);
+    let time_exp = moment().add(-7, "d");
+
+    if (item.IsClosed) {
+      // Cannot change, only administrator can change
+      // It's should 7 days before expired to change
+      let is_valid_time = time_exp.isBefore(time_str);
+      let is_valid_user = this.user_level == 1 || this.user_level == 0;
+
+      if (is_valid_time && is_valid_user) {
+        this.editDataExe(item);
+      }
+    } else {
+      this.editDataExe(item);
+    }
+  }
+
+  editDataExe(item: any) {
+    let ammount = item.AmmountIn - item.AmmountOut;
+    let is_income = this.getCategoryKind(item.CategoryId);
+    let time_str = moment(item.TransactionAt);
+
+    this.modelData.Id = item.Id;
+    this.modelData.Description = item.Description;
+    this.modelData.Ammount = Math.abs(ammount);
+    this.modelData.CategoryId = item.CategoryId;
+    this.modelData.TransactionDate = time_str.format("YYYY-MM-DD");
+    this.modelData.TransactionTime = time_str.format("HH:mm:ss");
+    this.kind = is_income ? "1" : "0";
+    this.show_edit = true;
   }
 
   storeData() {
@@ -256,7 +375,7 @@ export default class TransactionList extends Vue {
       .set("AmmountIn", ammountIn)
       .set("AmmountOut", ammountOut)
       .set("Subtotal", subtotal)
-      .set("UserId", this.modelData.UserId)
+      .set("UserId", this.user_id)
       .set("CategoryId", this.modelData.CategoryId)
       .set("Description", this.modelData.Description);
     let result = executeScalar(qry);
@@ -267,11 +386,35 @@ export default class TransactionList extends Vue {
   }
 
   updateData() {
-    //
+    this.$validator.validateAll().then((is_valid: boolean) => {
+      if (is_valid) {
+        this.updateDataExe();
+      }
+    });
   }
 
   updateDataExe() {
-    //
+    let ammountIn = this.kind == "1" ? this.modelData.Ammount : 0;
+    let ammountOut = this.kind == "0" ? this.modelData.Ammount : 0;
+    let subtotal = ammountIn - ammountOut;
+    let date = this.modelData.TransactionDate;
+    let time = this.modelData.TransactionTime;
+    let datetime = date + " " + time;
+    let qry = su()
+      .table("transactions")
+      .set("TransactionAt", datetime)
+      .set("AmmountIn", ammountIn)
+      .set("AmmountOut", ammountOut)
+      .set("Subtotal", subtotal)
+      .set("UserId", this.user_id)
+      .set("CategoryId", this.modelData.CategoryId)
+      .set("Description", this.modelData.Description)
+      .where("Id = ?", this.modelData.Id);
+    let result = executeScalar(qry);
+
+    this.getMaxItem();
+    this.getItems();
+    this.closeAll();
   }
 
   deleteData(item: any) {
@@ -285,7 +428,7 @@ export default class TransactionList extends Vue {
   }
 
   bindFilter(qry: any): any {
-    qry.order("TransactionAt", false)
+    qry.order("TransactionAt", false);
 
     if (this.date_at != "") {
       let date_start = moment(this.date_at);
@@ -330,7 +473,8 @@ export default class TransactionList extends Vue {
     let qry = ss().from("transactions", "a");
 
     qry = this.bindFilter(qry);
-    qry.join("transactioncategories", "b", "a.CategoryId = b.Id")
+    qry
+      .join("transactioncategories", "b", "a.CategoryId = b.Id")
       .field("a.*")
       .field("b.CategoryName");
 
@@ -341,7 +485,8 @@ export default class TransactionList extends Vue {
   }
 
   mounted() {
-    this.modelData.UserId = this.$store.getters["User/user_id"];
+    this.user_id = this.$store.getters["User/user_id"];
+    this.user_level = this.$store.getters["User/level"];
     this.$store.commit("changeTitle", "List Transaction");
     this.$store.commit("changeSubtitle", "");
     this.getListCategory();
