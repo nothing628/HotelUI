@@ -80,7 +80,7 @@
                   </a>
                 </div>
                 <div class="col-md-4">
-                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success" @click="goto('data.guest')">
                     <i class="fa fa-user pull-left"></i>
                     Guest
                   </a>
@@ -88,7 +88,7 @@
               </div>
               <div class="row m-t-10">
                 <div class="col-md-4">
-                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success" @click="goto('transaction.list')">
                     <i class="fa fa-retweet pull-left"></i>
                     Transaction
                   </a>
@@ -100,7 +100,7 @@
                   </a>
                 </div>
                 <div class="col-md-4">
-                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success" @click="goto('setting.app')">
                     <i class="fa fa-gear pull-left"></i>
                     Setting
                   </a>

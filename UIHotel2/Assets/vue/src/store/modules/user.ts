@@ -1,22 +1,22 @@
 import { Module, MutationTree, GetterTree, ActionTree } from "vuex";
-import { UserLoginState, RootState } from "../types/types";
+import { IUserLoginState, IRootState } from "../types/types";
 
 const namespaced: boolean = true;
-const state: UserLoginState = {
+const state: IUserLoginState = {
   Id: 1,
   Fullname: "2",
   Username: "2",
   Level: 0
 };
 
-const mutations: MutationTree<UserLoginState> = {
-  logout(state) {
+const mutations: MutationTree<IUserLoginState> = {
+  logout(state: IUserLoginState): void {
     state.Id = 0;
     state.Fullname = "";
     state.Username = "";
     state.Level = -1;
   },
-  login(state, user) {
+  login(state: IUserLoginState, user: any): void {
     state.Id = user.Id;
     state.Username = user.Username;
     state.Fullname = user.Fullname;
@@ -24,12 +24,12 @@ const mutations: MutationTree<UserLoginState> = {
   }
 };
 
-const getters: GetterTree<UserLoginState, RootState> = {
-  is_login(state): boolean {
+const getters: GetterTree<IUserLoginState, IRootState> = {
+  is_login(state: IUserLoginState): boolean {
     return state.Id > 0;
   },
-  levelname(state): string {
-    var level = "";
+  levelname(state: IUserLoginState): string {
+    let level: string = "";
 
     switch (state.Level) {
       case 0:
@@ -50,14 +50,14 @@ const getters: GetterTree<UserLoginState, RootState> = {
 
     return level;
   },
-  user_id(state): number {
+  user_id(state: IUserLoginState): number {
     return state.Id;
   }
 };
 
-const actions: ActionTree<UserLoginState, RootState> = {};
+const actions: ActionTree<IUserLoginState, IRootState> = {};
 
-export const User: Module<UserLoginState, RootState> = {
+export const User: Module<IUserLoginState, IRootState> = {
   namespaced,
   state,
   getters,

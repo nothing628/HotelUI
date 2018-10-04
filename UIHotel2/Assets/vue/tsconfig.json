@@ -12,7 +12,7 @@
     "sourceMap": false,
     "baseUrl": ".",
     "typeRoots": [
-      "./@types"
+      "src/@types"
     ],
     "types": [
       "node"

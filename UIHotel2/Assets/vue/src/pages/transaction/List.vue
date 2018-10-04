@@ -51,10 +51,17 @@
             <div class="form-group">
               <label class="col-md-3 control-label">Transaction At</label>
               <div class="col-md-4">
-                <input type="date" class="form-control"/>
+                <input
+                type="date"
+                class="form-control"
+                name="date_at"
+                v-model="modelData.TransactionDate"
+                v-validate="'required'"
+                :max="maxDate"/>
+                <span class="text-danger">{{ errors.first('date_at') }}</span>
               </div>
-              <div class="col-md-4">
-                <input type="time" class="form-control"/>
+              <div class="col-md-5">
+                <time-picker v-model="modelData.TransactionTime"></time-picker>
               </div>
             </div>
             <div class="form-group">
@@ -67,7 +74,11 @@
               </div>
               <label class="col-md-3 control-label">Category</label>
               <div class="col-md-3">
-                <select class="form-control">
+                <select
+                class="form-control"
+                name="category"
+                v-model="modelData.CategoryId"
+                v-validate="'required'">
                   <option
                   v-for="item in listFilteredCategory"
                   :key="item.Id"
@@ -75,18 +86,30 @@
                     {{ item.CategoryName }}
                   </option>
                 </select>
+                <span class="text-danger">{{ errors.first('category') }}</span>
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-3 control-label">Description</label>
               <div class="col-md-9">
-                <textarea class="form-control"></textarea>
+                <textarea
+                class="form-control"
+                name="description"
+                v-model="modelData.Description"
+                v-validate="'max:200'"></textarea>
+                <span class="text-danger">{{ errors.first('description') }}</span>
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-3 control-label">Ammount</label>
               <div class="col-md-4">
-                <input type="number" class="form-control"/>
+                <input
+                type="number"
+                class="form-control"
+                name="ammount"
+                v-model="modelData.Ammount"
+                v-validate="'required|min_value:1'"/>
+                <span class="text-danger">{{ errors.first('ammount') }}</span>
               </div>
             </div>
           </div>
@@ -102,15 +125,16 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { ss, execute, executeScalar } from "@/lib/Test";
+import { ss, si, execute, executeScalar, su } from "@/lib/Test";
 import moment from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
+import TimePicker from "@/components/Form/TimePicker.vue";
 
 interface IModelData {
   TransactionDate: string;
   TransactionTime: string;
-  CategoryId: number;
+  CategoryId: string;
   UserId: number;
   Description: string;
   Ammount: number;
@@ -119,7 +143,8 @@ interface IModelData {
 @Component({
   components: {
     Pagination,
-    Counter
+    Counter,
+    TimePicker
   }
 })
 export default class TransactionList extends Vue {
@@ -131,16 +156,20 @@ export default class TransactionList extends Vue {
   private date_at: string = "";
   private keyword: string = "";
   private kind: string = "1";
-  private show_add: boolean = false;
+  private show_add: boolean = true;
   private show_edit: boolean = false;
   private modelData: IModelData = {
     TransactionDate: "",
-    TransactionTime: "",
-    CategoryId: 0,
+    TransactionTime: "13:00:00",
+    CategoryId: "",
     UserId: 0,
     Description: "",
     Ammount: 0
   };
+
+  get maxDate(): string {
+    return moment().format("YYYY-MM-DD");
+  }
 
   get listFilteredCategory(): Array<any> {
     return this.listCategory.filter((item: any) => {
@@ -180,7 +209,13 @@ export default class TransactionList extends Vue {
   }
 
   addData() {
+    this.modelData.TransactionDate = "";
+    this.modelData.TransactionTime = "";
+    this.modelData.CategoryId = "";
+    this.modelData.Description = "";
+    this.modelData.Ammount = 0;
     this.show_add = true;
+    this.$validator.reset();
   }
 
   editData(item: any) {
@@ -188,7 +223,31 @@ export default class TransactionList extends Vue {
   }
 
   storeData() {
-    //
+    this.$validator.validateAll().then((is_valid: boolean) => {
+      if (is_valid) {
+        this.storeDataExe();
+      }
+    });
+  }
+
+  storeDataExe() {
+    let ammountIn = this.kind == "1" ? this.modelData.Ammount : 0;
+    let ammountOut = this.kind == "0" ? this.modelData.Ammount : 0;
+    let subtotal = ammountIn - ammountOut;
+    let date = this.modelData.TransactionDate;
+    let time = this.modelData.TransactionTime;
+    let datetime = date + " " + time;
+    let qry = si()
+      .into("transactions")
+      .set("IsClosed", false)
+      .set("TransactionAt", datetime)
+      .set("AmmountIn", ammountIn)
+      .set("AmmountOut", ammountOut)
+      .set("Subtotal", subtotal)
+      .set("UserId", this.modelData.UserId)
+      .set("CategoryId", this.modelData.CategoryId)
+      .set("Description", this.modelData.Description);
+    console.log(qry.toString());
   }
 
   updateData() {
@@ -244,6 +303,7 @@ export default class TransactionList extends Vue {
   }
 
   mounted() {
+    this.modelData.UserId = this.$store.getters["User/user_id"];
     this.$store.commit("changeTitle", "List Transaction");
     this.$store.commit("changeSubtitle", "");
     this.getListCategory();
