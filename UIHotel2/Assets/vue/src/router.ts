@@ -15,7 +15,6 @@ import DataGuest from "./pages/data/Guest.vue";
 import ReportFinance from "./pages/report/Finance.vue";
 import ReportHotel from "./pages/report/Hotel.vue";
 import SettingApp from "./pages/setting/Application.vue";
-import SettingDB from "./pages/setting/Database.vue";
 import SettingUser from "./pages/setting/User.vue";
 import Setup1 from "./pages/setup/Step1DB.vue";
 import Setup2 from "./pages/setup/Step2Migrate.vue";
@@ -44,7 +43,6 @@ export default new Router({
     { path: "/report/finance", name: "report.finance", component: ReportFinance },
     { path: "/report/hotel", name: "report.hotel", component: ReportHotel },
     { path: "/setting/app", name: "setting.app", component: SettingApp },
-    { path: "/setting/db", name: "setting.db", component: SettingDB },
     { path: "/setting/user", name: "setting.user", component: SettingUser },
     { path: "/setup/db", name: "setup.db", component: Setup1 },
     { path: "/setup/migrate", name: "setup.migrate", component: Setup2 },
