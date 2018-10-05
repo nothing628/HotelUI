@@ -10,15 +10,10 @@ export interface IApp {
   SaveDialog(filter: string, callback: (data: any) => void): void;
   GetUploadUrl(filehash: string): string;
   GetNewBookingNumber(): string;
+  CalcTransaction(callback: () => void): void;
 }
 
 export interface ICS {
   DB: IDB;
   App: IApp;
-}
-
-export interface THasAttribute {
-  GetDirty(): object;
-  GetAttributes(): object;
-  OriginalEquivalent(field: string, value: any): boolean;
 }

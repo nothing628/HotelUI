@@ -1,8 +1,7 @@
 import { QueryBuilder } from "./SQLGrammar/QueryBuilder";
 import { OrderType } from "./SQLGrammar/Enum";
-import { THasAttribute } from "@/lib/Interface";
 
-export class Table implements THasAttribute {
+export class Table {
   public GetDirty(): any[] {
     throw new Error("Method not implemented.");
   }

@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/jquery": "^3.3.6",
     "@types/jqueryui": "^1.12.4",
+    "currency.js": "^1.2.0",
     "fullcalendar": "^3.9.0",
     "jqueryui": "^1.11.1",
     "register-service-worker": "^1.0.0",
