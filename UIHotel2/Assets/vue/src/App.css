@@ -209,3 +209,37 @@ table.table tr.selectable:hover td {
   right: 0;
   bottom: 0;
 }
+
+.gritter-item-wrapper.gritter-success .gritter-top,
+.gritter-item-wrapper.gritter-success .gritter-bottom,
+.gritter-item-wrapper.gritter-success .gritter-item {
+  background: rgba(51, 105, 30, 0.8);
+}
+
+.gritter-item-wrapper.gritter-warning .gritter-top,
+.gritter-item-wrapper.gritter-warning .gritter-bottom,
+.gritter-item-wrapper.gritter-warning .gritter-item {
+  background: rgba(245, 127, 23, 0.8);
+}
+
+.gritter-item-wrapper.gritter-error .gritter-top,
+.gritter-item-wrapper.gritter-error .gritter-bottom,
+.gritter-item-wrapper.gritter-error .gritter-item {
+  background: rgba(70, 6, 6, 0.8);
+}
+
+.gritter-light.gritter-error .gritter-top,
+.gritter-light.gritter-error .gritter-bottom,
+.gritter-light.gritter-error .gritter-item {
+  background: rgb(255, 205, 210);
+}
+
+.gritter-item-wrapper.gritter-info .gritter-top,
+.gritter-item-wrapper.gritter-info .gritter-bottom,
+.gritter-item-wrapper.gritter-info .gritter-item {
+  background: rgba(13, 71, 161, 0.8);
+}
+
+.gritter-bottom, .gritter-item, .gritter-top {
+  background: rgba(0, 0, 0, 0.8);
+}

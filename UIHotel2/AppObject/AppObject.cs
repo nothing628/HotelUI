@@ -15,12 +15,13 @@ using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
 {
-    class AppObject : BaseObject
+    public class AppObject : BaseObject
     {
         public string retStr;
         public string originalName;
 
         public override string ObjectName => "App";
+        public const string baseUrl = "http://assets.app.local/upload/";
 
         public override void Register(JSObject obj)
         {
@@ -124,7 +125,6 @@ namespace UIHotel2.AppObject
         private void GetUploadUrl(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             var filename = e.Arguments[0].StringValue;
-            var baseUrl = "http://assets.app.local/upload/";
             var retUrl = baseUrl + filename;
 
             e.SetReturnValue(retUrl);
@@ -145,8 +145,10 @@ namespace UIHotel2.AppObject
         {
             var oThread = new Thread(() => {
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
-                var dialog = new OpenFileDialog();
-                dialog.Filter = Filter;
+                var dialog = new OpenFileDialog
+                {
+                    Filter = Filter
+                };
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -183,8 +185,10 @@ namespace UIHotel2.AppObject
         {
             var oThread = new Thread(() => {
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
-                var dialog = new SaveFileDialog();
-                dialog.Filter = Filter;
+                var dialog = new SaveFileDialog
+                {
+                    Filter = Filter
+                };
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -199,7 +203,7 @@ namespace UIHotel2.AppObject
             var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
             if (isSafe)
                 oThread.Abort();
-            
+
             callbackArgs.SetValue("filename", CfrV8Value.CreateString(originalName), CfxV8PropertyAttribute.ReadOnly);
             callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
         }

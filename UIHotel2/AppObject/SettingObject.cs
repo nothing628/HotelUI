@@ -4,17 +4,18 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chromium.Remote;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
 using UIHotel2.Data;
 using UIHotel2.Misc;
+using UIHotel2.Properties;
 
 namespace UIHotel2.AppObject
 {
-    class SettingObject : BaseObject
+    public class SettingObject : BaseObject
     {
         public override string ObjectName => "Setting";
-        private IDictionary<string, string> DatabaseSetting { get; set; }
 
         public override void Register(JSObject obj)
         {
@@ -36,6 +37,7 @@ namespace UIHotel2.AppObject
             var Time_Fullcharge = Self.AddDynamicProperty("Time_Fullcharge");
 
             Self.AddFunction("Save").Execute += SaveExecute;
+            Self.AddFunction("Test").Execute += TestExecute;
             Self.AddFunction("Load").Execute += LoadExecute;
 
             SQL_User.PropertyGet += SQL_User_PropertyGet;
@@ -67,6 +69,65 @@ namespace UIHotel2.AppObject
             Time_Checkout.PropertySet += Time_Checkout_PropertySet;
             Time_Fullcharge.PropertyGet += Time_Fullcharge_PropertyGet;
             Time_Fullcharge.PropertySet += Time_Fullcharge_PropertySet;
+        }
+
+        private void TestExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            if (e.Arguments.Length != 6)
+            {
+                e.Exception = "6 parameters expected!";
+                return;
+            }
+
+            var server = e.Arguments[0];
+            var port = e.Arguments[1];
+            var user = e.Arguments[2];
+            var password = e.Arguments[3];
+            var database = e.Arguments[4];
+            var callback = e.Arguments[5];
+
+            if (!server.IsString || !port.IsInt || !user.IsString || !password.IsString || !database.IsString || !callback.IsFunction)
+            {
+                //Invalid parameter;
+                e.Exception = "Invalid parameter type";
+                return;
+            }
+
+            if (callback.IsFunction)
+            {
+                // Callback to result
+                Settings.Default.SQL_DATABASE = database.StringValue;
+                Settings.Default.SQL_HOST = server.StringValue;
+                Settings.Default.SQL_PORT = port.IntValue;
+                Settings.Default.SQL_USER = user.StringValue;
+                Settings.Default.SQL_PASSWORD = password.StringValue;
+
+                using (var context = new HotelContext())
+                {
+                    var connection = context.Database.Connection;
+
+                    try
+                    {
+                        connection.Open();
+
+                        var result = context.Database.SqlQuery<int>("SELECT COUNT(*) FROM __migrationhistory");
+                        var arr_result = result.ToArray();
+
+                        if (arr_result.Length > 0 && arr_result[0] == 31)
+                        {
+                            callback.ExecuteFunction(null, new CfrV8Value[] { true });
+                        } else
+                        {
+                            callback.ExecuteFunction(null, new CfrV8Value[] { false });
+                        }
+                    } catch
+                    {
+                        callback.ExecuteFunction(null, new CfrV8Value[] { false });
+                    }
+                }
+
+                Settings.Default.Reload();
+            }
         }
 
         private void Time_Fullcharge_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
@@ -220,68 +281,68 @@ namespace UIHotel2.AppObject
 
         private void SQL_Database_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
-            Properties.Settings.Default.SQL_DATABASE = e.Value.StringValue;
+            Settings.Default.SQL_DATABASE = e.Value.StringValue;
         }
 
         private void SQL_Database_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = Properties.Settings.Default.SQL_DATABASE;
+            e.Retval = Settings.Default.SQL_DATABASE;
             e.SetReturnValue(true);
         }
 
         private void SQL_Port_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
-            Properties.Settings.Default.SQL_PORT = e.Value.IntValue;
+            Settings.Default.SQL_PORT = e.Value.IntValue;
         }
 
         private void SQL_Port_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = Properties.Settings.Default.SQL_PORT;
+            e.Retval = Settings.Default.SQL_PORT;
             e.SetReturnValue(true);
         }
 
         private void SQL_Host_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
-            Properties.Settings.Default.SQL_HOST = e.Value.StringValue;
+            Settings.Default.SQL_HOST = e.Value.StringValue;
         }
 
         private void SQL_Host_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = Properties.Settings.Default.SQL_HOST;
+            e.Retval = Settings.Default.SQL_HOST;
             e.SetReturnValue(true);
         }
 
         private void SQL_Password_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
-            Properties.Settings.Default.SQL_PASSWORD = e.Value.StringValue;
+            Settings.Default.SQL_PASSWORD = e.Value.StringValue;
         }
 
         private void SQL_Password_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = Properties.Settings.Default.SQL_PASSWORD;
+            e.Retval = Settings.Default.SQL_PASSWORD;
             e.SetReturnValue(true);
         }
 
         private void LoadExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            Properties.Settings.Default.Reload();
+            Settings.Default.Reload();
             SettingHelper.Load();
         }
 
         private void SaveExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
             SettingHelper.Save();
         }
 
         private void SQL_User_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
-            Properties.Settings.Default.SQL_USER = e.Value.StringValue;
+            Settings.Default.SQL_USER = e.Value.StringValue;
         }
 
         private void SQL_User_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
-            e.Retval = Properties.Settings.Default.SQL_USER;
+            e.Retval = Settings.Default.SQL_USER;
             e.SetReturnValue(true);
         }
     }

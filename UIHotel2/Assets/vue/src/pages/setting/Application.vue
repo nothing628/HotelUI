@@ -116,7 +116,7 @@
           </div>
           <div class="form-group">
             <div class="col-md-3 col-md-offset-3">
-              <button class="btn btn-success">
+              <button class="btn btn-success" @click="testSaveSetting">
                 <i class="fa fa-cube"></i>
                 Test & Save Setting
               </button>
@@ -206,6 +206,37 @@ export default class SettingApplication extends Vue {
 
     this.$store.commit("Setting/changeSetting", app_setting);
     this.$store.dispatch("Setting/SaveAppSetting");
+    this.$nextTick(this.loadSetting);
+  }
+
+  testSaveSetting() {
+    window.CS.Setting.Test(
+      this.SQL_Host,
+      this.SQL_Port,
+      this.SQL_User,
+      this.SQL_Password,
+      this.SQL_Database,
+      (e: boolean) => {
+        if (e) {
+          this.saveDBSetting();
+        } else {
+          //Warn the user
+        }
+      }
+    );
+  }
+
+  saveDBSetting() {
+    var db_setting = {
+      SQL_Database: this.SQL_Database,
+      SQL_Host: this.SQL_Host,
+      SQL_Port: this.SQL_Port,
+      SQL_User: this.SQL_User,
+      SQL_Password: this.SQL_Password
+    };
+
+    this.$store.commit("Setting/changeDBSetting", db_setting);
+    this.$store.dispatch("Setting/SaveDBSetting");
     this.$nextTick(this.loadSetting);
   }
 }

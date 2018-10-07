@@ -1,6 +1,7 @@
 <template>
   <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
     <v-navbar></v-navbar>
+    <v-notification></v-notification>
     <v-sidebar v-if="is_login"></v-sidebar>
 		<div class="sidebar-bg" v-if="is_login"></div>
     <v-content v-if="is_login"></v-content>
@@ -22,6 +23,7 @@ import VSidebar from "./components/Sidebar.vue";
 import VThemePanel from "./components/ThemePanel.vue";
 import VContent from "./components/Content.vue";
 import VLogin from "./components/Auth/Login.vue";
+import VNotification from "@/components/Layout/Notification.vue";
 
 @Component({
   components: {
@@ -29,7 +31,8 @@ import VLogin from "./components/Auth/Login.vue";
     VNavbar,
     VThemePanel,
     VSidebar,
-    VContent
+    VContent,
+    VNotification
   }
 })
 export default class App extends Vue {

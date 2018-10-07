@@ -14,14 +14,14 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.AppObject
 {
-    interface IBaseObject
+    public interface IBaseObject
     {
         string ObjectName { get; }
 
         void Register(JSObject obj);
     }
 
-    abstract class BaseObject : IBaseObject
+    public abstract class BaseObject : IBaseObject
     {
         public abstract string ObjectName { get; }
 
@@ -32,7 +32,7 @@ namespace UIHotel2.AppObject
             Self = obj.AddObject(ObjectName);
         }
 
-        public string[] GetProperties(dynamic data)
+        public string[] GetProperties()
         {
             return new string[] { };
         }
