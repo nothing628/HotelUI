@@ -14,6 +14,7 @@ export interface IApp {
 }
 
 export interface ISetting {
+  App_Name: string;
   App_Key: string;
   Hotel_Name: string;
   Hotel_Logo: string;

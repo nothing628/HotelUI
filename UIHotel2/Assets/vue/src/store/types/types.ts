@@ -7,6 +7,7 @@ export interface IUserLoginState {
 
 export interface ISettingState {
   App_Key: string;
+  App_Name: string;
   Hotel_Name: string;
   Hotel_Logo: string;
   Hotel_Address: string;

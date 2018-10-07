@@ -12,6 +12,12 @@
           <div class="form-group">
             <label class="col-md-3 control-label">App Key</label>
             <div class="col-md-4">
+              <input class="form-control" readonly v-model="App_Name"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">App Key</label>
+            <div class="col-md-4">
               <input class="form-control" readonly v-model="App_Key"/>
             </div>
           </div>
@@ -132,6 +138,7 @@ import TimePicker from "@/components/Form/TimePicker.vue";
 })
 export default class SettingApplication extends Vue {
   App_Key: string = "";
+  App_Name: string = "";
   Hotel_Name: string = "";
   Hotel_Logo: string = "";
   Hotel_Address: string = "";
@@ -163,6 +170,7 @@ export default class SettingApplication extends Vue {
   }
 
   copySetting() {
+    this.App_Name = this.$store.state.Setting.App_Name;
     this.App_Key = this.$store.state.Setting.App_Key;
     this.Hotel_Name = this.$store.state.Setting.Hotel_Name;
     this.Hotel_Logo = this.$store.state.Setting.Hotel_Logo;
@@ -181,10 +189,24 @@ export default class SettingApplication extends Vue {
 
   loadSetting() {
     this.$store.dispatch("Setting/LoadSetting");
+    this.copySetting();
   }
 
   saveSetting() {
-    
+    var app_setting = {
+      Hotel_Address: this.Hotel_Address,
+      Hotel_Name: this.Hotel_Name,
+      Hotel_Logo: this.Hotel_Logo,
+      Deposit: this.Deposit,
+      Penalty: this.Penalty,
+      Time_Checkin: this.Time_Checkin,
+      Time_Checkout: this.Time_Checkout,
+      Time_Fullcharge: this.Time_FullCharge
+    };
+
+    this.$store.commit("Setting/changeSetting", app_setting);
+    this.$store.dispatch("Setting/SaveAppSetting");
+    this.$nextTick(this.loadSetting);
   }
 }
 </script>
