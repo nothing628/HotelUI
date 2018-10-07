@@ -33,9 +33,9 @@
                   <td>{{ item.TransactionAt | strtime }}</td>
                   <td>{{ item.Description }}</td>
                   <td>{{ item.CategoryName }}</td>
-                  <td>{{ item.AmmountIn }}</td>
-                  <td>{{ item.AmmountOut }}</td>
-                  <td>{{ item.Subtotal }}</td>
+                  <td>{{ item.AmmountIn | strcurrency }}</td>
+                  <td>{{ item.AmmountOut | strcurrency }}</td>
+                  <td>{{ item.Subtotal | strcurrency }}</td>
                   <td>
                     <div class="btn-group pull-right">
                       <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
@@ -209,6 +209,7 @@ import moment from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 import TimePicker from "@/components/Form/TimePicker.vue";
+import currency from "currency.js";
 
 interface IModelData {
   TransactionDate: string;
@@ -230,6 +231,18 @@ interface IModelData {
       let m = moment(item);
 
       return m.format("DD/MM HH:mm");
+    },
+    strcurrency(item: string): string {
+      const IDR = (value: any) => {
+        var options = {
+          symbol: "Rp",
+          decimal: ",",
+          separator: "."
+        };
+        return currency(value, options);
+      };
+
+      return IDR(item).format(true);
     }
   }
 })
@@ -318,7 +331,7 @@ export default class TransactionList extends Vue {
   addData() {
     let today = moment();
 
-    this.modelData.TransactionDate = "";
+    this.modelData.TransactionDate = today.format("YYYY-MM-DD");
     this.modelData.TransactionTime = today.format("HH:mm:ss");
     this.modelData.CategoryId = "";
     this.modelData.Description = "";
@@ -387,9 +400,11 @@ export default class TransactionList extends Vue {
       .set("Description", this.modelData.Description);
     let result = executeScalar(qry);
 
-    this.getMaxItem();
-    this.getItems();
-    this.closeAll();
+    window.CS.App.CalcTransaction(() => {
+      this.getMaxItem();
+      this.getItems();
+      this.closeAll();
+    });
   }
 
   updateData() {
@@ -419,9 +434,11 @@ export default class TransactionList extends Vue {
       .where("Id = ?", this.modelData.Id);
     let result = executeScalar(qry);
 
-    this.getMaxItem();
-    this.getItems();
-    this.closeAll();
+    window.CS.App.CalcTransaction(() => {
+      this.getMaxItem();
+      this.getItems();
+      this.closeAll();
+    });
   }
 
   deleteData(item: any) {

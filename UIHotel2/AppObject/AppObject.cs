@@ -11,6 +11,7 @@ using Chromium.Remote;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
 using UIHotel2.Data;
+using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
 {
@@ -28,6 +29,24 @@ namespace UIHotel2.AppObject
             Self.AddFunction("SaveDialog").Execute += SaveDialogExecute;
             Self.AddFunction("GetUploadUrl").Execute += GetUploadUrl;
             Self.AddFunction("GetNewBookingNumber").Execute += GetBookingNumberExecute;
+            Self.AddFunction("CalcTransaction").Execute += CalcTransaction;
+        }
+
+        private void CalcTransaction(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            var callback = e.Arguments[0];
+            var th = new Thread(TransactionHelper.CalculateSubtotal);
+            th.Start();
+            th.Join();
+
+            ExecuteCallback(callback);
+        }
+
+        private void ExecuteCallback(CfrV8Value callback)
+        {
+            var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
+
+            callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
         }
 
         private void GetBookingNumberExecute(object sender, CfrV8HandlerExecuteEventArgs e)

@@ -240,6 +240,7 @@
     <Compile Include="Misc\AppHelper.cs" />
     <Compile Include="Misc\AuthHelper.cs" />
     <Compile Include="Misc\SettingHelper.cs" />
+    <Compile Include="Misc\TransactionHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Assets\css\dataTables.bootstrap.min.css">

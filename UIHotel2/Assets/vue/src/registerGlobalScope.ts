@@ -3,6 +3,7 @@ import $ from "jquery";
 import Vue from "vue";
 
 declare global {
+  // tslint:disable-next-line:interface-name
   interface Window {
     CS: ICS;
     $: JQueryStatic;
@@ -11,6 +12,6 @@ declare global {
   }
 }
 
-window["$"] = $;
-window["jQuery"] = $;
-window["bus"] = new Vue();
+window.$ = $;
+window.jQuery = $;
+window.bus = new Vue();

@@ -51,7 +51,6 @@
           text="Settings"
           icon="fa fa-wrench">
           <menu-child text="Application" route="setting.app"></menu-child>
-          <menu-child text="Database" route="setting.db"></menu-child>
           <menu-child text="Users" route="setting.user"></menu-child>
         </menu-parent>
         <!-- begin sidebar minify button -->
