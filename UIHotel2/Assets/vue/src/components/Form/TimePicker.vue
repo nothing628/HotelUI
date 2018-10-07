@@ -5,6 +5,7 @@
       <i class="glyphicon glyphicon-time"></i>
     </span>
     <float-control ref="test" @close="closeAll" v-model="valuex" v-if="show"></float-control>
+    <div class="backdrop" v-if="show" @click="closeAll"></div>
   </div>
 </template>
 <script lang="ts">

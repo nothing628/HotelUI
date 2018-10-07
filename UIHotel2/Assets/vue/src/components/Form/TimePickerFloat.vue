@@ -54,9 +54,9 @@
         </tr>
         <tr>
           <td>
-            <a class="btn btn-success" @click="close">
+            <button class="btn btn-success" @click="close">
               <i class="fa fa-check"></i>
-            </a>
+            </button>
           </td>
           <td class="separator">&nbsp;</td>
           <td></td>
