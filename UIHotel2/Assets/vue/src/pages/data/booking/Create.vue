@@ -163,7 +163,7 @@ export default class CreateBooking extends Vue {
   // Step 4 Finish step and get back to index
   redirectBack()
   {
-    //
+    this.$router.push({ name: "data.booking" });
   }
 
   booking() {
