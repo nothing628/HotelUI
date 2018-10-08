@@ -2,10 +2,10 @@
   <div :class="GritterClass">
     <div class="gritter-top"></div>
     <div class="gritter-item">
-      <a class="gritter-close" href="javascript:;">Close Notification</a>
+      <a class="gritter-close" href="javascript:;" @click="notifyTimeout">Close Notification</a>
       <div>
-        <span class="gritter-title" v-html="Title"></span>
-        <p v-html="Content"></p>
+        <span class="gritter-title" v-html="title"></span>
+        <p v-html="content"></p>
       </div>
       <div style="clear:both"></div>
     </div>
@@ -14,25 +14,31 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { setTimeout, clearTimeout } from 'timers';
 
 @Component
 export default class NotificationItem extends Vue {
   @Prop({ required: true })
-  public Id?: number;
+  public id?: number;
 
   @Prop({ required: false, default: "" })
-  public Title?: string;
+  public title?: string;
 
   @Prop({ required: false, default: "" })
-  public Content?: string;
+  public content?: string;
 
   @Prop({ required: false, default: ""})
-  public Type?: string;
+  public type?: string;
+
+  @Prop({ required: false, default: 5000 })
+  public interval?: number;
+
+  timeoutId: any;
 
   get GritterClass() {
     let default_class = ["gritter-item-wrapper"];
 
-    switch(this.Type) {
+    switch(this.type) {
       case "success":
         default_class.push("gritter-success");
         break;
@@ -49,8 +55,14 @@ export default class NotificationItem extends Vue {
     return default_class;
   }
 
+  notifyTimeout() {
+    clearTimeout(this.timeoutId);
+    this.$emit("timeout");
+  }
+
   mounted() {
-    //
+    var interval: number = this.interval || 5000;
+    this.timeoutId = setTimeout(this.notifyTimeout, interval);
   }
 }
 </script>

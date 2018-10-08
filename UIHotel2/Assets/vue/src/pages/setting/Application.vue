@@ -210,17 +210,21 @@ export default class SettingApplication extends Vue {
   }
 
   testSaveSetting() {
+    var port: number = Number(this.SQL_Port);
+
     window.CS.Setting.Test(
       this.SQL_Host,
-      this.SQL_Port,
+      port,
       this.SQL_User,
       this.SQL_Password,
       this.SQL_Database,
       (e: boolean) => {
         if (e) {
           this.saveDBSetting();
+          window.bus.$emit("Notify", {Title: "Database Test", Content: "Success to test setting", Type: "success"});
         } else {
           //Warn the user
+          window.bus.$emit("Notify", {Title: "Database Test", Content: "Failed to test setting", Type: "error"});
         }
       }
     );

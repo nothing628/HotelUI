@@ -225,7 +225,7 @@ table.table tr.selectable:hover td {
 .gritter-item-wrapper.gritter-error .gritter-top,
 .gritter-item-wrapper.gritter-error .gritter-bottom,
 .gritter-item-wrapper.gritter-error .gritter-item {
-  background: rgba(70, 6, 6, 0.8);
+  background: rgba(174, 6, 6, 0.8);
 }
 
 .gritter-light.gritter-error .gritter-top,
