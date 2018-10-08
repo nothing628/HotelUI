@@ -66,6 +66,7 @@ namespace UIHotel2.Migrations
                 new InvoiceDetailKind { Id = 1, KindName = "Room Invoice" },
                 new InvoiceDetailKind { Id = 2, KindName = "Room Move Charge" },
                 new InvoiceDetailKind { Id = 3, KindName = "Room Late Checkout" },
+                new InvoiceDetailKind { Id = 4, KindName = "Room Price by Online" },
                 new InvoiceDetailKind { Id = 97, KindName = "Deposit" },
                 new InvoiceDetailKind { Id = 98, KindName = "Cashback" },
                 new InvoiceDetailKind { Id = 99, KindName = "Pinalty" },

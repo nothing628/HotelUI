@@ -72,7 +72,7 @@ export default class CreateBooking extends Vue {
   // Step 1 Create in booking table
   createBooking() {
     let today = moment();
-    let qry = si()
+    let qryBook = si()
       .into("bookings")
       .set("Id", this.bookInfo.BookNumber)
       .set("BookingAt", today.format("YYYY-MM-DD HH:mm:ss"))
@@ -86,12 +86,13 @@ export default class CreateBooking extends Vue {
       .set("GuestId", this.guestInfo.Id)
       .set("RoomId", this.roomInfo.Id)
       .set("TypeId", this.bookInfo.BookType);
-    let result = executeScalar(qry);
     let qryRoom = su()
       .table("rooms")
       .set("RoomStateId", 2)
       .where("Id = ?", this.roomInfo.Id);
-    let resultRoom = executeScalar(qryRoom);
+    
+    executeScalar(qryBook);
+    executeScalar(qryRoom);
   }
 
   // Step 2 Create in invoice table and detail invoice
@@ -102,6 +103,12 @@ export default class CreateBooking extends Vue {
       .set("Id", this.bookInfo.BookNumber)
       .set("BookingId", this.bookInfo.BookNumber)
     let result = executeScalar(qry);
+    this.createInvoiceDetail();
+  }
+
+  createInvoiceDetail()
+  {
+    let today = moment();
     let qryType = ss()
       .from("bookingtypes")
       .where("Id = ?", this.bookInfo.BookType)
@@ -111,17 +118,46 @@ export default class CreateBooking extends Vue {
     if (resultType.length > 0) {
       if (resultType[0].IsLocal) {
         //is local, add detail deposit on it
+        let qryInv = si()
+          .into("invoicedetails")
+          .set("InvoiceId", this.bookInfo.BookNumber)
+          .set("KindId", 97)
+          .set("AmmountIn", this.bookInfo.Deposit)
+          .set("AmmountOut", 0)
+          .set("TransactionAt", today.format("YYYY-MM-DD HH:mm:ss"))
+          .set("IsSystem", true)
+          .set("Description", "Deposit");
+        executeScalar(qryInv);
       } else {
         //is online, add deposit same as room price
+        let qryInv = si()
+          .into("invoicedetails")
+          .set("InvoiceId", this.bookInfo.BookNumber)
+          .set("KindId", 4)
+          .set("AmmountIn", 0)
+          .set("AmmountOut", this.bookInfo.Price)
+          .set("TransactionAt", today.format("YYYY-MM-DD HH:mm:ss"))
+          .set("IsSystem", true)
+          .set("Description", "Online Price");
+        executeScalar(qryInv);
       }
     }
-    console.log(resultType);
   }
 
   // Step 3 Change state to checkin after process complete
   createCheckin()
   {
-    //
+    let today = moment();
+    let qryBook = su()
+      .table("bookings")
+      .set("CheckinAt", today.format("YYYY-MM-DD HH:mm:ss"))
+      .where("Id = ?", this.bookInfo.BookNumber);
+    let qryRoom = su()
+      .table("rooms")
+      .set("RoomStateId", 3)
+      .where("Id = ?", this.roomInfo.Id);
+    executeScalar(qryBook);
+    executeScalar(qryRoom);
   }
 
   // Step 4 Finish step and get back to index
