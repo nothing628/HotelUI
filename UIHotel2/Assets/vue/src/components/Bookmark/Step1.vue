@@ -206,6 +206,7 @@ export default class CreateStep1 extends Vue {
     this.bookingProv = 1;
     this.modalData.ArrivalDate = moment().format("YYYY-MM-DD");
     this.modalData.DepartureDate = moment().format("YYYY-MM-DD");
+    this.modalData.Deposit = this.$store.state.Setting.Deposit;
     window.bus.$on("book-validate", this.validate);
   }
 

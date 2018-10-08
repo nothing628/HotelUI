@@ -33,6 +33,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ss, si, su, sd, execute, executeScalar } from "@/lib/Test";
+import moment from "moment";
 import StepItem from "@/components/Steps/StepItem.vue";
 import StepSelector from "@/components/Steps/StepSelector.vue";
 import StepContainer from "@/components/Steps/StepContainer.vue";
@@ -51,9 +53,9 @@ import Create3 from "@/components/Bookmark/Step3.vue";
   }
 })
 export default class CreateBooking extends Vue {
-  private bookInfo: object = {};
-  private guestInfo: object = {};
-  private roomInfo: object = {};
+  private bookInfo: any = {};
+  private guestInfo: any = {};
+  private roomInfo: any = {};
 
   get isValid(): boolean {
     var book_val = Object.keys(this.bookInfo);
@@ -67,17 +69,89 @@ export default class CreateBooking extends Vue {
     );
   }
 
+  // Step 1 Create in booking table
+  createBooking() {
+    let today = moment();
+    let qry = si()
+      .into("bookings")
+      .set("Id", this.bookInfo.BookNumber)
+      .set("BookingAt", today.format("YYYY-MM-DD HH:mm:ss"))
+      .set("CheckinAt", null)
+      .set("CheckoutAt", null)
+      .set("ArrivalDate", this.bookInfo.ArrivalDate)
+      .set("DepartureDate", this.bookInfo.DepartureDate)
+      .set("CountAdult", this.bookInfo.CountAdult)
+      .set("CountChild", this.bookInfo.CountChild)
+      .set("Note", this.roomInfo.Note)
+      .set("GuestId", this.guestInfo.Id)
+      .set("RoomId", this.roomInfo.Id)
+      .set("TypeId", this.bookInfo.BookType);
+    let result = executeScalar(qry);
+    let qryRoom = su()
+      .table("rooms")
+      .set("RoomStateId", 2)
+      .where("Id = ?", this.roomInfo.Id);
+    let resultRoom = executeScalar(qryRoom);
+  }
+
+  // Step 2 Create in invoice table and detail invoice
+  createInvoice()
+  {
+    let qry = si()
+      .into("invoices")
+      .set("Id", this.bookInfo.BookNumber)
+      .set("BookingId", this.bookInfo.BookNumber)
+    let result = executeScalar(qry);
+    let qryType = ss()
+      .from("bookingtypes")
+      .where("Id = ?", this.bookInfo.BookType)
+      .field("IsLocal");
+    let resultType = execute(qryType);
+
+    if (resultType.length > 0) {
+      if (resultType[0].IsLocal) {
+        //is local, add detail deposit on it
+      } else {
+        //is online, add deposit same as room price
+      }
+    }
+    console.log(resultType);
+  }
+
+  // Step 3 Change state to checkin after process complete
+  createCheckin()
+  {
+    //
+  }
+
+  // Step 4 Finish step and get back to index
+  redirectBack()
+  {
+    //
+  }
+
   booking() {
     this.validate();
     this.$nextTick(() => {
-      console.log(this.isValid);
+      if (this.isValid) {
+        // Create only booking
+        this.createBooking();
+        this.createInvoice();
+        this.redirectBack();
+      }
     });
   }
 
   bookingCheckin() {
     this.validate();
     this.$nextTick(() => {
-      console.log(this.isValid);
+      if (this.isValid) {
+        // Create booking and checkin
+        this.createBooking();
+        this.createInvoice();
+        this.createCheckin();
+        this.redirectBack();
+      }
     });
   }
 

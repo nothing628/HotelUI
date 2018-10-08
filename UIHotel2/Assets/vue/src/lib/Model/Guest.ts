@@ -1,5 +1,5 @@
 import { ss, si, execute, executeScalar } from "@/lib/Test";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 export interface IGuest {
   IdNumber: string;
@@ -20,8 +20,8 @@ export interface IGuest {
 
 export class Guest {
   public static Store(user: IGuest): number {
-    var new_moment = moment();
-    var qry = si()
+    var new_moment: Moment = moment();
+    var qry: any = si()
       .into("guests")
       .set("IdKind", "KTP")
       .set("IdNumber", user.IdNumber)
@@ -40,7 +40,7 @@ export class Guest {
       .set("PhotoGuest", user.PhotoGuest)
       .set("CreateAt", new_moment.format("YYYY-MM-DD"))
       .set("UpdateAt", new_moment.format("YYYY-MM-DD"));
-    var result = executeScalar(qry);
+    var result: any = executeScalar(qry);
 
     return Number(result);
   }
