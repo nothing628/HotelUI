@@ -90,24 +90,22 @@ export default class CreateBooking extends Vue {
       .table("rooms")
       .set("RoomStateId", 2)
       .where("Id = ?", this.roomInfo.Id);
-    
+
     executeScalar(qryBook);
     executeScalar(qryRoom);
   }
 
   // Step 2 Create in invoice table and detail invoice
-  createInvoice()
-  {
+  createInvoice() {
     let qry = si()
       .into("invoices")
       .set("Id", this.bookInfo.BookNumber)
-      .set("BookingId", this.bookInfo.BookNumber)
+      .set("BookingId", this.bookInfo.BookNumber);
     let result = executeScalar(qry);
     this.createInvoiceDetail();
   }
 
-  createInvoiceDetail()
-  {
+  createInvoiceDetail() {
     let today = moment();
     let qryType = ss()
       .from("bookingtypes")
@@ -145,8 +143,7 @@ export default class CreateBooking extends Vue {
   }
 
   // Step 3 Change state to checkin after process complete
-  createCheckin()
-  {
+  createCheckin() {
     let today = moment();
     let qryBook = su()
       .table("bookings")
@@ -161,8 +158,7 @@ export default class CreateBooking extends Vue {
   }
 
   // Step 4 Finish step and get back to index
-  redirectBack()
-  {
+  redirectBack() {
     this.$router.push({ name: "data.booking" });
   }
 
