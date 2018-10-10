@@ -28,18 +28,16 @@
                 </tr>
             </thead>
             <tbody>
-              <tr v-for="item in items" :key="item.Id">
+              <tr v-for="item in items" :key="item.Id" :class="getStateColor(item)">
                   <td>{{ item.Id }}</td>
                   <td>{{ item.BookingAt | date_time_filt }}</td>
                   <td>{{ item.CheckinAt | date_time_filt }}</td>
                   <td>{{ item.ArrivalDate | date_filt }}</td>
                   <td>{{ item.DepartureDate | date_filt }}</td>
-                  <td>{{ item | status_filt }}</td>
+                  <td>{{ getStateName(item) }}</td>
                   <td>
                     <div class="btn-group pull-right">
-                      <button class="btn btn-sm btn-success" @click="editData(item)"><i class="fa fa-sign-in"></i> Check In</button>
-                      <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-trash"></i> Cancel Booking</button>
-                      <button class="btn btn-sm btn-danger" @click="deleteData(item)"><i class="fa fa-sign-out"></i> Check Out</button>
+                      <button class="btn btn-sm btn-success" @click="deleteData(item)"><i class="fa fa-pencil"></i> Action</button>
                     </div>
                   </td>
               </tr>
@@ -83,13 +81,6 @@ import { isNull, isNullOrUndefined } from 'util';
       }
 
       return momentf.format("DD/MM/YYYY");
-    },
-    status_filt(val: any): string {
-      if (isNullOrUndefined(val.CheckinAt)) {
-        return "Booking";
-      }
-      console.log(val);
-      return "";
     }
   }
 })
@@ -119,6 +110,81 @@ export default class DataBooking extends Vue {
 
   get totalPage(): number {
     return Math.ceil(this.max_item / this.limit);
+  }
+
+  get checkoutTime(): string {
+    return this.$store.state.Setting.Time_Checkout;
+  }
+
+  get checkinTime(): string {
+    return this.$store.state.Setting.Time_Checkin;
+  }
+
+  getStateName(item: any): string {
+    var state: number = this.getStateNum(item);
+
+    switch(state) {
+      case 0:
+        return "Booking";
+      case 1:
+        return "Should Checkin";
+      case 2:
+        return "Late Checkin";
+      case 3:
+        return "Checkin";
+      case 4:
+        return "Should Checkout";
+      case 5:
+        return "Late Checkout";
+    }
+
+    return "";
+  }
+
+  getStateNum(item: any): number {
+    var checkout_time = this.checkoutTime;
+    var checkin_time = this.checkinTime;
+    var timeCheck = moment.duration(checkin_time);
+    var timeOffset = moment.duration(checkout_time);
+    var today = moment();
+
+    if (isNullOrUndefined(item.CheckinAt)) {
+      var arrivalDate = moment(item.ArrivalDate);
+      var shouldCheckin = arrivalDate.clone().add(timeCheck);
+      var lateCheckin = arrivalDate.clone().add(timeOffset);
+      
+      if (today.isAfter(lateCheckin)) {
+        return 2;
+      } else if (today.isAfter(shouldCheckin)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      var departureDate = moment(item.DepartureDate);
+      var shouldCheckout = departureDate.clone().add(timeCheck);
+      var lateCheckout = departureDate.clone().add(timeOffset);
+
+      if (today.isAfter(lateCheckout)) {
+        return 5;
+      } else if (today.isAfter(shouldCheckout)) {
+        return 4;
+      } else {
+        return 3;
+      }
+    }
+  }
+
+  getStateColor(item: any): Array<string> {
+    var state = this.getStateNum(item);
+
+    if (state == 1 || state == 4) {
+      return ["bg-success"];
+    } else if (state == 2 || state == 5) {
+      return ["bg-danger"];
+    }
+
+    return [];
   }
 
   getMaxItem() {

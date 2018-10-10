@@ -204,6 +204,7 @@ export default class SettingApplication extends Vue {
       Time_Fullcharge: this.Time_FullCharge
     };
 
+    window.bus.$emit("Notify", {Title: "Setting saved", Content: "Success to save setting", Type: "success"});
     this.$store.commit("Setting/changeSetting", app_setting);
     this.$store.dispatch("Setting/SaveAppSetting");
     this.$nextTick(this.loadSetting);

@@ -243,3 +243,11 @@ table.table tr.selectable:hover td {
 .gritter-bottom, .gritter-item, .gritter-top {
   background: rgba(0, 0, 0, 0.8);
 }
+
+.table>tbody>tr.bg-success>td {
+  background-color: #dff0d8;
+}
+
+.table>tbody>tr.bg-danger>td {
+  background-color: #f2dede;
+}
