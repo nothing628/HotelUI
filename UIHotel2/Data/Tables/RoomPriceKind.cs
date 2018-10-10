@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class RoomPriceKind
+    public class RoomPriceKind
     {
         [Key]
         public long Id { get; set; }

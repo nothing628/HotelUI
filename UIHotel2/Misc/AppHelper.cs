@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,11 @@ namespace UIHotel2.Misc
 
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static TimeSpan GetTimespan(string timespanstr)
+        {
+            return TimeSpan.ParseExact(timespanstr, "hh\\:mm\\:ss", CultureInfo.CurrentCulture);
         }
     }
 

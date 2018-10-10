@@ -43,6 +43,8 @@ namespace UIHotel2.Data.Tables
         [ForeignKey("TypeId")]
         public BookingType Type { get; set; }
 
+        public ICollection<Invoice> Invoices { get; set; }
+
         [NotMapped]
         public bool IsCheckin
         {

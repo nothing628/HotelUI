@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UIHotel2.Misc;
 
 namespace UIHotel2
 {
@@ -13,10 +14,26 @@ namespace UIHotel2
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            if (args.Length > 0)
+            {
+                var firstArgs = args[0];
+
+                if (firstArgs == "--calc-transaction")
+                {
+                    TransactionHelper.CalculateSubtotal();
+                    TransactionHelper.ClosingTransaction();
+                } else if (firstArgs == "--calc-booking")
+                {
+                    TransactionHelper.CalculateBooking();
+                }
+
+                return;
+            }
 
             if (Bootstrap.Load(options => options.RemoteDebuggingPort = 8010))
             {

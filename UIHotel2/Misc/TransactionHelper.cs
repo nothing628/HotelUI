@@ -11,6 +11,46 @@ namespace UIHotel2.Misc
 {
     public static class TransactionHelper
     {
+        public static void CalculateBooking()
+        {
+            using (var context = new HotelContext())
+            {
+                var selectData = (from a in context.Bookings.Include(p => p.Invoices).Include(p => p.Type)
+                                  where !a.CheckoutAt.HasValue
+                                  select a).ToList();
+                var checkinData = (from a in selectData
+                                   where a.CheckinAt.HasValue
+                                   select a).ToList();
+                foreach(var data in checkinData)
+                {
+                    CalculateInvoice(data.Invoices.First(), data.Type, data.RoomId, data.ArrivalDate, data.DepartureDate);
+                }
+            }
+        }
+
+        private static void CalculateInvoice(Invoice invoice, BookingType type, long IdRoom, DateTime arrivalDate, DateTime departureDate)
+        {
+            var timeCheckout = AppHelper.GetTimespan(SettingHelper.TimeCheckout);
+            var timeFullcharge = AppHelper.GetTimespan(SettingHelper.TimeFullcharge);
+            var lateCheckout = departureDate.Add(timeCheckout);
+            var fullPay = DateTime.Today.Add(timeFullcharge);
+
+            if (type.IsLocal)
+            {
+                // Calculate room price
+            }
+
+            // Check checkout date
+            // Ketelatan checkout akan dihitung mulai dari jam 13:00 s/d 18:00
+            // Setelah jam tersebut, harga akan terhitung full.
+            if (DateTime.Now > lateCheckout)
+            {
+                //
+            }
+        }
+
+        
+
         private static void CalculateList(List<Transaction> lst, decimal lastSubtotal)
         {
             var lstSubtotal = lastSubtotal;
@@ -65,6 +105,11 @@ namespace UIHotel2.Misc
 
                 CalculateList(transaction, lstSubtotal);
             }
+        }
+
+        public static void ClosingTransaction()
+        {
+            //
         }
     }
 }

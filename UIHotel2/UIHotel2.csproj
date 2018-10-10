@@ -239,6 +239,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Misc\AppHelper.cs" />
     <Compile Include="Misc\AuthHelper.cs" />
+    <Compile Include="Misc\DataHelper.cs" />
     <Compile Include="Misc\SettingHelper.cs" />
     <Compile Include="Misc\TransactionHelper.cs" />
     <Compile Include="Program.cs" />
