@@ -27,12 +27,12 @@ namespace UIHotel2
                 {
                     TransactionHelper.CalculateSubtotal();
                     TransactionHelper.ClosingTransaction();
+                    return;
                 } else if (firstArgs == "--calc-booking")
                 {
                     TransactionHelper.CalculateBooking();
+                    return;
                 }
-
-                return;
             }
 
             if (Bootstrap.Load(options => options.RemoteDebuggingPort = 8010))

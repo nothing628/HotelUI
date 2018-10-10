@@ -46,6 +46,131 @@
           <counter :from.sync="from" :to.sync="to" :total.sync="max_item"></counter>
           <pagination :total-page.sync="totalPage" v-model="currentPage"></pagination>
         </div>
+
+        <uiv-modal v-model="show_form" title="Action" size="lg">
+          <step-selector>
+            <step-item step-number="" step-title="Booking Info" step-target="booking" active></step-item>
+            <step-item step-number="" step-title="Guest Info" step-target="guest"></step-item>
+          </step-selector>
+          <step-container name="booking" active>
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-md-3 control-label">Booking ID :</label>
+                <div class="col-md-6">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Room Number :</label>
+                <div class="col-md-6">
+                  <a class="btn btn-link">201 Big</a>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Status :</label>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Arrival Date :</label>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+                <label class="col-md-3 control-label">Departure Date :</label>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Checkin Time :</label>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+                <label class="col-md-3 control-label">Checkout Time :</label>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Count Adult :</label>
+                <div class="col-md-2">
+                  <input class="form-control" readonly />
+                </div>
+                <label class="col-md-2 control-label">Count Child :</label>
+                <div class="col-md-2">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Note :</label>
+                <div class="col-md-6">
+                  <textarea class="form-control" readonly></textarea>
+                </div>
+              </div>
+            </div>
+          </step-container>
+          <step-container name="guest">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-md-3">ID Number :</label>
+                <div class="col-md-6">
+                  <input class="form-control" readonly />
+                </div>
+                <div class="col-md-3">
+                  <img class="img-responsive img-float" src=""/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3">Fullname :</label>
+                <div class="col-md-5">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3">Email :</label>
+                <div class="col-md-5">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3">Address :</label>
+                <div class="col-md-6">
+                  <textarea class="form-control" readonly></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3">Phone Number :</label>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3 col-md-offset-3">
+                  <button class="btn btn-link">Detail Guest</button>
+                </div>
+              </div>
+            </div>
+          </step-container>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <button class="btn btn-block btn-info">Invoice</button>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-block btn-success">Checkin</button>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-block btn-danger">Checkout</button>
+            </div>
+          </div>
+          <div slot="footer">
+            <button class="btn btn-danger">Close</button>
+          </div>
+        </uiv-modal>
       </div>
     </div>
   </div>
@@ -55,13 +180,19 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { squel, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
+import StepItem from "@/components/Steps/StepItem.vue";
+import StepSelector from "@/components/Steps/StepSelector.vue";
+import StepContainer from "@/components/Steps/StepContainer.vue";
 import moment from "moment";
 import { isNull, isNullOrUndefined } from 'util';
 
 @Component({
   components: {
     Pagination,
-    Counter
+    Counter,
+    StepItem,
+    StepSelector,
+    StepContainer
   },
   filters: {
     date_time_filt(val: any): string {
@@ -85,6 +216,7 @@ import { isNull, isNullOrUndefined } from 'util';
   }
 })
 export default class DataBooking extends Vue {
+  private show_form: boolean = true;
   private max_item: number = 0;
   private currentPage: number = 1;
   private limit: number = 10;

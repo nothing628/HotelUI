@@ -251,3 +251,10 @@ table.table tr.selectable:hover td {
 .table>tbody>tr.bg-danger>td {
   background-color: #f2dede;
 }
+
+img.img-float {
+  position: absolute;
+  max-height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
