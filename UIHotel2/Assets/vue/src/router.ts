@@ -10,7 +10,7 @@ import CreateBooking from "@/pages/data/booking/Create.vue";
 import CreateGuest from "@/pages/data/guest/Create.vue";
 import EditGuest from "@/pages/data/guest/Edit.vue";
 import DataBooking from "./pages/data/Booking.vue";
-import DataCheckin from "./pages/data/Checkin.vue";
+import DataInvoice from "./pages/data/Invoice.vue";
 import DataGuest from "./pages/data/Guest.vue";
 import ReportFinance from "./pages/report/Finance.vue";
 import ReportHotel from "./pages/report/Hotel.vue";
@@ -31,7 +31,7 @@ export default new Router({
     { path: "/", name: "dashboard", component: Dashboard },
     { path: "/data/booking", name: "data.booking", component: DataBooking },
     { path: "/data/booking/create", name: "data.booking.create", component: CreateBooking },
-    { path: "/data/checkin", name: "data.checkin", component: DataCheckin },
+    { path: "/data/invoice/:id", name: "data.invoice", component: DataInvoice },
     { path: "/data/guest", name: "data.guest", component: DataGuest },
     { path: "/data/guest/create", name: "data.guest.create", component: CreateGuest },
     { path: "/data/guest/edit/:id", name: "data.guest.edit", component: EditGuest },

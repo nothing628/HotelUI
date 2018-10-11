@@ -31,8 +31,7 @@
         <menu-parent
           text="Data Maintain"
           icon="fa fa-book">
-          <menu-child text="Booking" route="data.booking"></menu-child>
-          <menu-child text="Checkin/Checkout" route="data.checkin"></menu-child>
+          <menu-child text="Booking / Checkin" route="data.booking"></menu-child>
           <menu-child text="Guest" route="data.guest"></menu-child>
         </menu-parent>
         <menu-parent

@@ -118,7 +118,7 @@
         </button>
       </div>
       <div class="col-md-3">
-        <button class="btn btn-block btn-success" :disabled="disableCheckin">
+        <button class="btn btn-block btn-success" @click="Checkin" :disabled="disableCheckin">
           <i class="fa fa-sign-in"></i> Checkin
         </button>
       </div>
@@ -295,6 +295,11 @@ export default class BookingDetail extends Vue {
         return 3;
       }
     }
+  }
+
+  public Checkin(): void {
+    Booking.CheckinBooking(this.booking_model.bookingId);
+    this.refreshAndClose();
   }
 
   public cancelBooking(): void {

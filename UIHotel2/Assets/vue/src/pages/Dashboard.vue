@@ -68,7 +68,7 @@
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-4">
-                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success" @click="goto('data.booking')">
                     <i class="fa fa-sign-in pull-left"></i>
                     Check In
                   </a>

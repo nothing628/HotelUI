@@ -15,15 +15,15 @@ namespace UIHotel2.Misc
         {
             using (var context = new HotelContext())
             {
-                var selectData = (from a in context.Bookings.Include(p => p.Invoices).Include(p => p.Type)
-                                  where !a.CheckoutAt.HasValue
+                var selectData = (from a in context.Invoices.Include(p => p.Booking).Include(p => p.Booking.Type)
+                                  where !a.CloseAt.HasValue
                                   select a).ToList();
                 var checkinData = (from a in selectData
-                                   where a.CheckinAt.HasValue
+                                   where a.Booking.CheckinAt.HasValue
                                    select a).ToList();
                 foreach(var data in checkinData)
                 {
-                    CalculateInvoice(data.Invoices.First(), data.Type, data.RoomId, data.ArrivalDate, data.DepartureDate);
+                    CalculateInvoice(data, data.Booking.Type, data.Booking.RoomId, data.Booking.ArrivalDate, data.Booking.DepartureDate);
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace UIHotel2.Misc
                 {
                     try
                     {
-                        foreach (var invoice in deleteInvoice)
+                        foreach (var invoice in updateInvoice)
                         {
                             context.Entry(invoice).State = EntityState.Modified;
                             context.SaveChanges();

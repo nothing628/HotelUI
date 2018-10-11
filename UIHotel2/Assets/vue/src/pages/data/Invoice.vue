@@ -14,9 +14,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
-export default class DataCheckin extends Vue {
+export default class DataInvoice extends Vue {
   mounted() {
-    this.$store.commit("changeTitle", "List Checkin");
+    this.$store.commit("changeTitle", "Invoice");
     this.$store.commit("changeSubtitle", "");
   }
 }

@@ -91,7 +91,7 @@ import { isNull, isNullOrUndefined } from "util";
   }
 })
 export default class DataBooking extends Vue {
-  private show_form: boolean = true;
+  private show_form: boolean = false;
   private max_item: number = 0;
   private currentPage: number = 1;
   private limit: number = 10;
