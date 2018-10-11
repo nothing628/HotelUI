@@ -32,6 +32,7 @@ namespace UIHotel2.Misc
         {
             var timeCheckout = AppHelper.GetTimespan(SettingHelper.TimeCheckout);
             var timeFullcharge = AppHelper.GetTimespan(SettingHelper.TimeFullcharge);
+            var penalty = SettingHelper.Penalty;
             var lateCheckout = departureDate.Add(timeCheckout);
             var fullPay = DateTime.Today.Add(timeFullcharge);
 
@@ -45,7 +46,32 @@ namespace UIHotel2.Misc
             // Setelah jam tersebut, harga akan terhitung full.
             if (DateTime.Now > lateCheckout)
             {
-                //
+                var start = departureDate;
+                var end = DateTime.Now;
+
+                while (start < end)
+                {
+                    // Hari ini dan masih belum terhitung fullcharge
+                    if (start == end.Date && end < start.Add(timeFullcharge))
+                    {
+                        var lateStart = start.Add(timeCheckout);
+                        var diffLate = end - lateStart;
+                        var hourDiff = Math.Ceiling(diffLate.TotalHours);
+                        var totalPenalty = penalty * hourDiff;
+
+                        if (hourDiff > 0)
+                        {
+                            //
+                        }
+                    } else
+                    {
+                        //Hitung fullcharge
+                        var price = DataHelper.GetRoomPrice(IdRoom, start);
+
+                    }
+
+                    start = start.AddDays(1);
+                }
             }
         }
 

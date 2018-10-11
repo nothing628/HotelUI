@@ -119,20 +119,35 @@ export default class PriceExpand extends Vue {
   }
 
   getData() {
+    this.createDummy();
     let qry = ss()
       .from("roomcategories", "a")
-      .left_join("roomprices", "b", "a.Id = b.RoomCategoryId")
+      .join("roomprices", "b", "a.Id = b.RoomCategoryId")
       .field("a.Id")
       .field("a.CategoryName")
       .field("b.Id as RoomPriceId")
       .field("b.Price")
-      .where(
-        se()
-          .and("b.RoomPriceKindId = ?", this.PriceId)
-          .or("b.RoomPriceKindId IS NULL")
-      );
+      .where("b.RoomPriceKindId = ?", this.PriceId);
     let result = execute(qry);
 
+    this.items.forEach((val, idx) => {
+      var data = result.filter((x: any) => x.Id == val.Id);
+
+      if (data.length > 0) {
+        this.items[idx].RoomPriceId = data[0].RoomPriceId;
+        this.items[idx].Price = data[0].Price;
+      }
+    });
+  }
+
+  createDummy() {
+    let qry = ss()
+      .from("roomcategories", "a")
+      .field("a.Id")
+      .field("a.CategoryName")
+      .field("NULL as RoomPriceId")
+      .field("0 as Price");
+    let result = execute(qry);
     this.items = [];
     result.forEach((item: any) => {
       this.items.push(item);

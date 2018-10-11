@@ -21,7 +21,7 @@ namespace UIHotel2.Misc
                 {
                     var room = context.Rooms.Where(r => r.Id == IdRoom).SingleOrDefault();
 
-                    price = GetRoomPrice(room.Id, DateAt);
+                    price = GetRoomPrice(room, DateAt);
                 } catch { }
             }
 
