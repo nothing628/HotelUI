@@ -49,7 +49,7 @@
           <pagination :total-page.sync="totalPage" v-model="currentPage"></pagination>
         </div>
 
-        <booking-detail v-if="show_form" :booking-id="selectedId" @close="show_form = false"></booking-detail>
+        <booking-detail v-if="show_form" :booking-id="selectedId" @close="show_form = false" @refresh="refresh"></booking-detail>
       </div>
     </div>
   </div>
@@ -195,6 +195,11 @@ export default class DataBooking extends Vue {
     return [];
   }
 
+  refresh() {
+    this.getMaxItem();
+    this.getItems();
+  }
+
   getMaxItem() {
     let qry = ss()
       .from("bookings")
@@ -229,8 +234,7 @@ export default class DataBooking extends Vue {
   mounted() {
     this.$store.commit("changeTitle", "List Booking");
     this.$store.commit("changeSubtitle", "");
-    this.getMaxItem();
-    this.getItems();
+    this.refresh();
   }
 }
 </script>

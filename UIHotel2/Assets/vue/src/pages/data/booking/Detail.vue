@@ -1,5 +1,5 @@
 <template>
-  <uiv-modal v-model="show" title="Action" size="lg">
+  <uiv-modal v-model="show" title="Action" size="lg" @hide="closeAll">
     <step-selector>
       <step-item step-number="" step-title="Booking Info" step-target="booking" active></step-item>
       <step-item step-number="" step-title="Guest Info" step-target="guest"></step-item>
@@ -14,8 +14,11 @@
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Room Number :</label>
-          <div class="col-md-6">
-            <a class="btn btn-link">{{ booking_model.roomNumber }} {{ booking_model.roomCategory }}</a>
+          <div class="col-md-3">
+            <input class="form-control" readonly v-model="booking_model.roomNumber"/>
+          </div>
+          <div class="col-md-3">
+            <input class="form-control" readonly v-model="booking_model.roomCategory"/>
           </div>
         </div>
         <div class="form-group">
@@ -110,16 +113,24 @@
 
     <div class="row" slot="footer">
       <div class="col-md-3">
-        <button class="btn btn-block btn-primary">Invoice</button>
+        <button class="btn btn-block btn-warning">
+          <i class="fa fa-book"></i> Invoice
+        </button>
       </div>
       <div class="col-md-3">
-        <button class="btn btn-block btn-success">Checkin</button>
+        <button class="btn btn-block btn-success" :disabled="disableCheckin">
+          <i class="fa fa-sign-in"></i> Checkin
+        </button>
       </div>
       <div class="col-md-3">
-        <button class="btn btn-block btn-success">Checkout</button>
+        <button class="btn btn-block btn-success" :disabled="disableCheckout">
+          <i class="fa fa-sign-out"></i> Checkout
+        </button>
       </div>
       <div class="col-md-3">
-        <button class="btn btn-block btn-danger" @click="closeAll">Close</button>
+        <button class="btn btn-block btn-danger" @click="cancelBooking" :disabled="disableCancel">
+          <i class="fa fa-times"></i> Cancel Booking
+        </button>
       </div>
     </div>
   </uiv-modal>
@@ -131,6 +142,7 @@ import StepItem from "@/components/Steps/StepItem.vue";
 import StepSelector from "@/components/Steps/StepSelector.vue";
 import StepContainer from "@/components/Steps/StepContainer.vue";
 import moment from "moment";
+import { Booking } from "@/lib/Model/Booking";
 import { isNullOrUndefined } from "util";
 
 interface IBookingModel {
@@ -212,6 +224,21 @@ export default class BookingDetail extends Vue {
     return this.getStateName(this.booking_model);
   }
 
+  get disableCheckin(): boolean {
+    var state: number = this.getStateNum(this.booking_model);
+    return state >= 2;
+  }
+  
+  get disableCheckout(): boolean {
+    var state: number = this.getStateNum(this.booking_model);
+    return state <= 2;
+  }
+
+  get disableCancel(): boolean {
+    var state: number = this.getStateNum(this.booking_model);
+    return state >= 3;
+  }
+
   @Prop({ required: true })
   public bookingId?: string;
 
@@ -244,7 +271,7 @@ export default class BookingDetail extends Vue {
     var today = moment();
 
     if (isNullOrUndefined(item.checkinTime)) {
-      var arrivalDate = moment(item.arrivalDate);
+      var arrivalDate = moment(item.arrivalDate, "DD/MM/YYYY");
       var shouldCheckin = arrivalDate.clone().add(timeCheck);
       var lateCheckin = arrivalDate.clone().add(timeOffset);
 
@@ -256,7 +283,7 @@ export default class BookingDetail extends Vue {
         return 0;
       }
     } else {
-      var departureDate = moment(item.departureDate);
+      var departureDate = moment(item.departureDate, "DD/MM/YYYY");
       var shouldCheckout = departureDate.clone().add(timeCheck);
       var lateCheckout = departureDate.clone().add(timeOffset);
 
@@ -268,6 +295,11 @@ export default class BookingDetail extends Vue {
         return 3;
       }
     }
+  }
+
+  public cancelBooking(): void {
+    Booking.CancelBooking(this.booking_model.bookingId);
+    this.refreshAndClose();
   }
 
   public getDataBooking(): void {
@@ -295,7 +327,7 @@ export default class BookingDetail extends Vue {
     }
 
     let first = result[0];
-    let arrival = moment(first.ArrivalDate);
+    let arrival = moment(first.ArrivalDate.toISOString());
     let depature = moment(first.DepartureDate);
     let checkin = moment(first.CheckinAt);
     let checkout = moment(first.CheckoutAt);
@@ -340,6 +372,11 @@ export default class BookingDetail extends Vue {
     this.guest_model.phone2 = first.Phone2;
     this.guest_model.address = fulladdress;
     this.guest_model.photoGuest = first.PhotoGuest;
+  }
+
+  public refreshAndClose() {
+    this.$emit("refresh");
+    this.closeAll();
   }
 
   public closeAll(): void {
