@@ -33,18 +33,51 @@ namespace UIHotel2.Misc
             var timeCheckout = AppHelper.GetTimespan(SettingHelper.TimeCheckout);
             var timeFullcharge = AppHelper.GetTimespan(SettingHelper.TimeFullcharge);
             var penalty = SettingHelper.Penalty;
-            var lateCheckout = departureDate.Add(timeCheckout);
-            var fullPay = DateTime.Today.Add(timeFullcharge);
+            var lateCheckoutAt = departureDate.Add(timeCheckout);
+            var fullPayAt = DateTime.Today.Add(timeFullcharge);
+            var detailInvoice = GetDetailInvoice(invoice);
+            var insInvoice = new List<InvoiceDetail>();
+            var updInvoice = new List<InvoiceDetail>();
+            var delInvoice = new List<InvoiceDetail>();
+
+            if (invoice.IsClosed)
+            {
+                return;
+            }
 
             if (type.IsLocal)
             {
                 // Calculate room price
+                var start = arrivalDate;
+                var end = departureDate;
+
+                while (start <= end)
+                {
+                    var price = DataHelper.GetRoomPrice(IdRoom, start);
+                    var isExists = detailInvoice.Any(p => p.KindId == 1 && p.TransactionAt == start);
+
+                    if (!isExists)
+                    {
+                        var newInvoice = new InvoiceDetail
+                        {
+                            AmmountOut = price,
+                            AmmountIn = 0,
+                            Description = "Room Invoice " + start.ToShortDateString(),
+                            IsSystem = true,
+                            InvoiceId = invoice.Id,
+                            KindId = 1,
+                            TransactionAt = start,
+                        };
+                        insInvoice.Add(newInvoice);
+                    }
+                    start = start.AddDays(1);
+                }
             }
 
             // Check checkout date
             // Ketelatan checkout akan dihitung mulai dari jam 13:00 s/d 18:00
             // Setelah jam tersebut, harga akan terhitung full.
-            if (DateTime.Now > lateCheckout)
+            if (DateTime.Now > lateCheckoutAt)
             {
                 var start = departureDate;
                 var end = DateTime.Now;
@@ -57,25 +90,145 @@ namespace UIHotel2.Misc
                         var lateStart = start.Add(timeCheckout);
                         var diffLate = end - lateStart;
                         var hourDiff = Math.Ceiling(diffLate.TotalHours);
-                        var totalPenalty = penalty * hourDiff;
+                        var totalPenalty = penalty * Convert.ToDecimal(hourDiff);
+                        var isExists = detailInvoice.Any(a => a.KindId == 99);
 
                         if (hourDiff > 0)
                         {
-                            //
+                            if (isExists)
+                            {
+                                var penaltyData = detailInvoice.First(p => p.KindId == 99);
+                                penaltyData.AmmountOut = totalPenalty;
+                                penaltyData.TransactionAt = end;
+                                updInvoice.Add(penaltyData);
+                            } else
+                            {
+                                var penaltyData = new InvoiceDetail
+                                {
+                                    AmmountIn = 0,
+                                    AmmountOut = totalPenalty,
+                                    Description = "Penalty",
+                                    IsSystem = true,
+                                    InvoiceId = invoice.Id,
+                                    KindId = 99,
+                                    TransactionAt = end,
+                                };
+                                insInvoice.Add(penaltyData);
+                            }
+                        }
+                        else if (isExists)
+                        {
+                            var penaltyData = detailInvoice.First(p => p.KindId == 99);
+                            penaltyData.AmmountOut = 0;
+                            penaltyData.TransactionAt = end;
+                            updInvoice.Add(penaltyData);
                         }
                     } else
                     {
-                        //Hitung fullcharge
+                        //Hitung fullcharge, kind 3 adalah late checkout
                         var price = DataHelper.GetRoomPrice(IdRoom, start);
+                        var isExists = detailInvoice.Any(a => a.KindId == 3 && a.TransactionAt == start);
 
+                        if (!isExists)
+                        {
+                            var newInvoice = new InvoiceDetail
+                            {
+                                AmmountOut = price,
+                                AmmountIn = 0,
+                                Description = "Late Checkout " + start.ToShortDateString(),
+                                IsSystem = true,
+                                InvoiceId = invoice.Id,
+                                KindId = 3,
+                                TransactionAt = start,
+                            };
+                            insInvoice.Add(newInvoice);
+                        }
                     }
 
                     start = start.AddDays(1);
                 }
             }
+
+            ChangeInvoiceDetail(insInvoice, updInvoice, delInvoice);
         }
 
-        
+        private static void ChangeInvoiceDetail(List<InvoiceDetail> newInvoice, List<InvoiceDetail> updateInvoice, List<InvoiceDetail> deleteInvoice)
+        {
+            using (var context = new HotelContext())
+            {
+                using (var transIns = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var invoice in newInvoice)
+                        {
+                            context.InvoiceDetails.Add(invoice);
+                            context.SaveChanges();
+                        }
+
+                        transIns.Commit();
+                    } catch
+                    {
+                        transIns.Rollback();
+                    }
+                }
+
+                using (var transUpd = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var invoice in deleteInvoice)
+                        {
+                            context.Entry(invoice).State = EntityState.Modified;
+                            context.SaveChanges();
+                        }
+
+                        transUpd.Commit();
+                    }
+                    catch
+                    {
+                        transUpd.Rollback();
+                    }
+                }
+
+                using (var transDel = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var invoice in deleteInvoice)
+                        {
+                            context.InvoiceDetails.Remove(invoice);
+                            context.SaveChanges();
+                        }
+
+                        transDel.Commit();
+                    }
+                    catch
+                    {
+                        transDel.Rollback();
+                    }
+                }
+            }
+        }
+
+        private static ICollection<InvoiceDetail> GetDetailInvoice(Invoice invoice)
+        {
+            var listResult = new List<InvoiceDetail>();
+
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    var details = from a in context.InvoiceDetails
+                                  where a.InvoiceId == invoice.Id
+                                  select a;
+
+                    listResult.AddRange(details.ToList());
+                } catch { }
+            }
+
+            return listResult;
+        }
 
         private static void CalculateList(List<Transaction> lst, decimal lastSubtotal)
         {
