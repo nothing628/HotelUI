@@ -5,9 +5,11 @@ import * as uiv from "uiv";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
+import { Register } from "@/lib/FilterList";
 import "./registerGlobalScope";
 import "./registerServiceWorker";
 
+Register();
 Vue.use(uiv, { prefix: "uiv" });
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;

@@ -30,10 +30,10 @@
             <tbody>
               <tr v-for="item in items" :key="item.Id" :class="getStateColor(item)">
                   <td>{{ item.Id }}</td>
-                  <td>{{ item.BookingAt | date_time_filt }}</td>
-                  <td>{{ item.CheckinAt | date_time_filt }}</td>
-                  <td>{{ item.ArrivalDate | date_filt }}</td>
-                  <td>{{ item.DepartureDate | date_filt }}</td>
+                  <td>{{ item.BookingAt | strdate("DD/MM/YYYY HH:mm") }}</td>
+                  <td>{{ item.CheckinAt | strdate("DD/MM/YYYY HH:mm") }}</td>
+                  <td>{{ item.ArrivalDate | strlongdate }}</td>
+                  <td>{{ item.DepartureDate | strlongdate }}</td>
                   <td>{{ getStateName(item) }}</td>
                   <td>
                     <div class="btn-group pull-right">
@@ -68,26 +68,6 @@ import { isNull, isNullOrUndefined } from "util";
     Pagination,
     Counter,
     BookingDetail
-  },
-  filters: {
-    date_time_filt(val: any): string {
-      let momentf = moment(val);
-
-      if (!momentf.isValid()) {
-        return "-";
-      }
-
-      return momentf.format("DD/MM/YYYY HH:mm");
-    },
-    date_filt(val: any): string {
-      let momentf = moment(val);
-
-      if (!momentf.isValid()) {
-        return "-";
-      }
-
-      return momentf.format("DD/MM/YYYY");
-    }
   }
 })
 export default class DataBooking extends Vue {

@@ -30,7 +30,7 @@
             </thead>
             <tbody>
               <tr v-for="item in items" :key="item.Id">
-                  <td>{{ item.TransactionAt | strtime }}</td>
+                  <td>{{ item.TransactionAt | strdate("DD/MM HH:mm") }}</td>
                   <td>{{ item.Description }}</td>
                   <td>{{ item.CategoryName }}</td>
                   <td>{{ item.AmmountIn | strcurrency }}</td>
@@ -209,7 +209,6 @@ import moment from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 import TimePicker from "@/components/Form/TimePicker.vue";
-import currency from "currency.js";
 
 interface IModelData {
   TransactionDate: string;
@@ -225,25 +224,6 @@ interface IModelData {
     Pagination,
     Counter,
     TimePicker
-  },
-  filters: {
-    strtime(item: string): string {
-      let m = moment(item);
-
-      return m.format("DD/MM HH:mm");
-    },
-    strcurrency(item: string): string {
-      const IDR = (value: any) => {
-        var options = {
-          symbol: "Rp",
-          decimal: ",",
-          separator: "."
-        };
-        return currency(value, options);
-      };
-
-      return IDR(item).format(true);
-    }
   }
 })
 export default class TransactionList extends Vue {

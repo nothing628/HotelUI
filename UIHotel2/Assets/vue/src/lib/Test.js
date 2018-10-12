@@ -37,6 +37,17 @@ export function execute(sque) {
 
   return result;
 }
+
+export function executeFirst(sque) {
+  let result = execute(sque);
+
+  if (result.length > 0) {
+    return result[0];
+  }
+
+  return undefined;
+}
+
 export function executeScalar(sque) {
   let v = sque.toParam();
   let sql = v.text;

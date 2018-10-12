@@ -11,7 +11,7 @@
       <tbody>
         <tr v-for="item in items" :key="item.Id">
             <td>{{ item.CategoryName }}</td>
-            <td>{{ item.Price | currency_price}}</td>
+            <td>{{ item.Price | strcurrency }}</td>
             <td>
               <div class="btn-group pull-right">
                 <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
@@ -55,17 +55,7 @@ interface IModalData {
   RoomPriceId?: number;
 }
 
-@Component({
-  filters: {
-    currency_price(val: any) {
-      if (val == null) return "Rp0";
-
-      let formater = new Intl.NumberFormat("id-ID", { style: 'currency', currency: 'IDR' });
-
-      return formater.format(val);
-    }
-  }
-})
+@Component
 export default class PriceExpand extends Vue {
   private open: boolean = false;
   private items: Array<any> = new Array<any>();

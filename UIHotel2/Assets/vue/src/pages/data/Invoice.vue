@@ -3,8 +3,9 @@
     <div class="invoice">
       <div class="invoice-company">
         <span class="pull-right hidden-print">
-          <a href="javascript:;" class="btn btn-sm btn-success m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-          <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-success m-b-10"><i class="fa fa-print m-r-5"></i> Print</a>
+          <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-pencil"></i> Pay Invoice</button>
+          <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-download m-r-5"></i> Export as PDF</button>
+          <button class="btn btn-sm btn-danger m-b-10 m-r-5"><i class="fa fa-times m-r-5"></i> Cancel</button>
         </span>
         {{ Hotel_Name }}
       </div>
@@ -13,7 +14,7 @@
           <small>from</small>
           <address class="m-t-5 m-b-5">
             <strong>{{ Hotel_Name }}</strong><br>
-            <span v-html="CleanAddress"></span>
+            <span v-html="CleanAddress(Hotel_Address)"></span>
             Phone: {{ Hotel_Phone }}<br>
             Email: {{ Hotel_Email }}
           </address>
@@ -21,11 +22,10 @@
         <div class="invoice-to">
           <small>to</small>
           <address class="m-t-5 m-b-5">
-            <strong>Company Name</strong><br>
-            Street Address<br>
-            City, Zip Code<br>
-            Phone: (123) 456-7890<br>
-            Fax: (123) 456-7890
+            <strong>{{ Guest_Name }}</strong><br>
+            <span v-html="CleanAddress(Guest_Address)"></span>
+            Phone: {{Guest_Phone1}}/{{Guest_Phone2}}<br>
+            Email: {{Guest_Email}}
           </address>
         </div>
         <div class="invoice-date">
@@ -46,14 +46,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>09/01</td>
+              <tr v-for="item in List_Detail" :key="item.Id">
+                <td>{{ item.TransactionAt | strshortdate }}</td>
                 <td>
-                  Redesign Service<br>
-                  <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id sagittis arcu.</small>
+                  {{ item.KindName }}<br>
+                  <small>{{ item.Description }}</small>
                 </td>
-                <td>$50.00</td>
-                <td>$2,500.00</td>
+                <td>{{ item.AmmountIn | strcurrency }}</td>
+                <td>{{ item.AmmountOut | strcurrency }}</td>
               </tr>
             </tbody>
           </table>
@@ -75,7 +75,7 @@
             </div>
           </div>
           <div class="invoice-price-right">
-            <small>TOTAL</small> Rp4,508,000
+            <small>TOTAL</small> {{ TotalBalance | strcurrency }}
           </div>
         </div>
       </div>
@@ -93,6 +93,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { ss, execute, executeFirst } from "@/lib/Test";
+import { isUndefined, isNull } from "util";
 
 @Component
 export default class DataInvoice extends Vue {
@@ -101,9 +103,25 @@ export default class DataInvoice extends Vue {
   Hotel_Address: string = "";
   Hotel_Phone: string = "";
   Hotel_Email: string = "";
+  Guest_Name: string = "";
+  Guest_Address: string = "";
+  Guest_Phone1: string = "";
+  Guest_Phone2: string = "";
+  Guest_Email: string = "";
+  List_Detail: Array<any> = new Array<any>();
 
-  get CleanAddress(): string {
-    return this.Hotel_Address.replace("\n", "<br/>") + "<br/>";
+  get TotalBalance(): number {
+    let total: number = 0;
+
+    this.List_Detail.forEach((item: any) => {
+      console.log(item);
+    });
+
+    return total;
+  }
+
+  CleanAddress(value: string): string {
+    return value.replace("\n", "<br/>") + "<br/>";
   }
 
   copySetting() {
@@ -113,11 +131,47 @@ export default class DataInvoice extends Vue {
     this.Hotel_Email = this.$store.state.Setting.Hotel_Email;
   }
 
+  getInvoice() {
+    let qry = ss()
+      .from("invoicedetails", "a")
+      .join("invoicedetailkinds", "b", "a.KindId = b.Id")
+      .field("a.*")
+      .field("b.KindName")
+      .where("a.InvoiceId = ?", this.invId);
+    let result = execute(qry);
+
+    if (result.length > 0) {
+      result.forEach((item: any) => this.List_Detail.push(item));
+    }
+  }
+
+  getGuest() {
+    let qry = ss()
+      .from("bookings", "a")
+      .join("guests", "b", "a.GuestId = b.Id")
+      .field("b.*")
+      .where("a.Id = ?", this.invId);
+    let result = executeFirst(qry);
+
+    if (!isUndefined(result)) {
+      this.Guest_Name = result.Fullname;
+      this.Guest_Address = result.Address + "\n";
+      this.Guest_Address += result.City + ", ";
+      this.Guest_Address += result.Province + ", "
+      this.Guest_Address += isNull(result.PostCode) ? "" : result.PostCode;
+      this.Guest_Phone1 = result.Phone1;
+      this.Guest_Phone2 = result.Phone2;
+      this.Guest_Email = result.Email;
+    }
+  }
+
   mounted() {
     this.invId = this.$route.params.id;
     this.$store.commit("changeTitle", "Invoice #" + this.invId);
     this.$store.commit("changeSubtitle", "");
     this.copySetting();
+    this.getGuest();
+    this.getInvoice();
   }
 }
 </script>
