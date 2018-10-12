@@ -6,17 +6,16 @@
           <a href="javascript:;" class="btn btn-sm btn-success m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
           <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-success m-b-10"><i class="fa fa-print m-r-5"></i> Print</a>
         </span>
-        Company Name, Inc
+        {{ Hotel_Name }}
       </div>
       <div class="invoice-header">
         <div class="invoice-from">
           <small>from</small>
           <address class="m-t-5 m-b-5">
-            <strong>Hotel</strong><br>
-            Jl. Kurang Mampu<br>
-            Tangerang, 14000<br>
-            Phone: (123) 456-7890<br>
-            Fax: (123) 456-7890
+            <strong>{{ Hotel_Name }}</strong><br>
+            <span v-html="CleanAddress"></span>
+            Phone: {{ Hotel_Phone }}<br>
+            Email: {{ Hotel_Email }}
           </address>
         </div>
         <div class="invoice-to">
@@ -61,7 +60,7 @@
         </div>
         <div class="invoice-price">
           <div class="invoice-price-left">
-            <div class="invoice-price-row" v-show="false">
+            <div class="invoice-price-row" v-if="false">
               <div class="sub-price">
                 <small>SUBTOTAL</small>
                 $4,500.00
@@ -84,9 +83,9 @@
       <div class="invoice-footer text-muted">
         <p class="text-center m-b-5">THANK YOU FOR YOUR BUSINESS</p>
         <p class="text-center">
-          <span class="m-r-10"><i class="fa fa-globe"></i> matiasgallipoli.com</span>
-          <span class="m-r-10"><i class="fa fa-phone"></i> T:016-18192302</span>
-          <span class="m-r-10"><i class="fa fa-envelope"></i> rtiemps@gmail.com</span>
+          <span class="m-r-10" v-if="false"><i class="fa fa-globe"></i></span>
+          <span class="m-r-10"><i class="fa fa-phone"></i> {{ Hotel_Phone }}</span>
+          <span class="m-r-10"><i class="fa fa-envelope"></i> {{ Hotel_Email }}</span>
         </p>
       </div>
     </div>
@@ -98,11 +97,27 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class DataInvoice extends Vue {
   private invId: string = "";
+  Hotel_Name: string = "";
+  Hotel_Address: string = "";
+  Hotel_Phone: string = "";
+  Hotel_Email: string = "";
+
+  get CleanAddress(): string {
+    return this.Hotel_Address.replace("\n", "<br/>") + "<br/>";
+  }
+
+  copySetting() {
+    this.Hotel_Name = this.$store.state.Setting.Hotel_Name;
+    this.Hotel_Address = this.$store.state.Setting.Hotel_Address;
+    this.Hotel_Phone = this.$store.state.Setting.Hotel_Phone;
+    this.Hotel_Email = this.$store.state.Setting.Hotel_Email;
+  }
 
   mounted() {
     this.invId = this.$route.params.id;
     this.$store.commit("changeTitle", "Invoice #" + this.invId);
     this.$store.commit("changeSubtitle", "");
+    this.copySetting();
   }
 }
 </script>

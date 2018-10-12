@@ -43,7 +43,7 @@ export default class App extends Vue {
     return this.$store.getters["User/is_login"];
   }
 
-  mounted() {
+  created() {
     this.$store.dispatch("Setting/CopySetting");
   }
 }
