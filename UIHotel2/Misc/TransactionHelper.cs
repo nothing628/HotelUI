@@ -79,7 +79,7 @@ namespace UIHotel2.Misc
             // Setelah jam tersebut, harga akan terhitung full.
             if (DateTime.Now > lateCheckoutAt)
             {
-                var start = departureDate;
+                var start = departureDate.AddDays(1);
                 var end = DateTime.Now;
 
                 while (start < end)
