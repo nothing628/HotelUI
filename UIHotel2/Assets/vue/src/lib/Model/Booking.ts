@@ -13,7 +13,7 @@ export class Booking {
 
     if (result.length > 0) {
       let first: any = result[0];
-      this.UpdateRoom(first.RoomId, 1);
+      this.UpdateRoomState(first.RoomId, 1);
     }
 
     let qry2: any = sd()
@@ -33,7 +33,7 @@ export class Booking {
 
     if (result.length > 0) {
       let first: any = result[0];
-      this.UpdateRoom(first.RoomId, 3);
+      this.UpdateRoomState(first.RoomId, 3);
     }
 
     let qry2: any = su()
@@ -44,7 +44,7 @@ export class Booking {
     return result2;
   }
 
-  private static UpdateRoom(roomId: number, state: number): any {
+  private static UpdateRoomState(roomId: number, state: number): any {
     let qry: any = su()
       .table("rooms")
       .set("RoomStateId", state)

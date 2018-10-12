@@ -113,7 +113,7 @@
 
     <div class="row" slot="footer">
       <div class="col-md-3">
-        <button class="btn btn-block btn-warning">
+        <button class="btn btn-block btn-warning" @click="Invoice">
           <i class="fa fa-book"></i> Invoice
         </button>
       </div>
@@ -144,6 +144,7 @@ import StepContainer from "@/components/Steps/StepContainer.vue";
 import moment from "moment";
 import { Booking } from "@/lib/Model/Booking";
 import { isNullOrUndefined } from "util";
+import { RawLocation } from 'vue-router';
 
 interface IBookingModel {
   bookingId: string;
@@ -295,6 +296,16 @@ export default class BookingDetail extends Vue {
         return 3;
       }
     }
+  }
+
+  public Invoice(): void {
+    let invoiceLocation: RawLocation = {
+      name: "data.invoice",
+      params: {
+        id: this.booking_model.bookingId
+      }
+    };
+    this.$router.push(invoiceLocation);
   }
 
   public Checkin(): void {
