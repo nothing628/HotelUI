@@ -43,9 +43,20 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="col-md-3 control-label">Hotel Email</label>
+            <div class="col-md-3">
+              <input type="email" maxlength="60" class="form-control" v-model="Hotel_Email"/>
+            </div>
+            <label class="col-md-3 control-label">Hotel Phone</label>
+            <div class="col-md-3">
+              <input type="text" maxlength="15" class="form-control" v-model="Hotel_Phone"/>
+            </div>
+          </div>
+          <div class="form-group">
             <label class="col-md-3 control-label">Hotel Logo</label>
-            <div class="col-md-2">
-              <span class="navbar-logo"></span>
+            <div class="col-md-1">
+              <span v-if="LogoUrl == ''" class="navbar-logo"></span>
+              <img v-else :src="LogoUrl" class="img-responsive"/>
             </div>
             <div class="col-md-3">
               <button class="btn btn-info" @click="browseImage">Change</button>
@@ -142,6 +153,8 @@ export default class SettingApplication extends Vue {
   Hotel_Name: string = "";
   Hotel_Logo: string = "";
   Hotel_Address: string = "";
+  Hotel_Email: string = "";
+  Hotel_Phone: string = "";
   Deposit: number = 0;
   Penalty: number = 0;
   Time_Checkin: string = "";
@@ -152,6 +165,12 @@ export default class SettingApplication extends Vue {
   SQL_Port: number = 0;
   SQL_User: string = "";
   SQL_Password: string = "";
+
+  get LogoUrl(): string {
+    if (this.Hotel_Logo != "")
+      return window.CS.App.GetUploadUrl(this.Hotel_Logo);
+    return "";
+  }
 
   mounted() {
     this.$store.commit("changeTitle", "Application Setting");
@@ -175,6 +194,8 @@ export default class SettingApplication extends Vue {
     this.Hotel_Name = this.$store.state.Setting.Hotel_Name;
     this.Hotel_Logo = this.$store.state.Setting.Hotel_Logo;
     this.Hotel_Address = this.$store.state.Setting.Hotel_Address;
+    this.Hotel_Email = this.$store.state.Setting.Hotel_Email;
+    this.Hotel_Phone = this.$store.state.Setting.Hotel_Phone;
     this.Deposit = this.$store.state.Setting.Deposit;
     this.Penalty = this.$store.state.Setting.Penalty;
     this.Time_Checkin = this.$store.state.Setting.Time_Checkin;
@@ -197,6 +218,8 @@ export default class SettingApplication extends Vue {
       Hotel_Address: this.Hotel_Address,
       Hotel_Name: this.Hotel_Name,
       Hotel_Logo: this.Hotel_Logo,
+      Hotel_Email: this.Hotel_Email,
+      Hotel_Phone: this.Hotel_Phone,
       Deposit: this.Deposit,
       Penalty: this.Penalty,
       Time_Checkin: this.Time_Checkin,

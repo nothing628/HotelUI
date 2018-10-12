@@ -103,6 +103,16 @@ namespace UIHotel2.Misc
             get => GetDatabaseSetting("hotel.address");
             set => SetDatabaseSetting("hotel.address", value);
         }
+        public static string HotelPhone
+        {
+            get => GetDatabaseSetting("hotel.phone");
+            set => SetDatabaseSetting("hotel.phone", value);
+        }
+        public static string HotelEmail
+        {
+            get => GetDatabaseSetting("hotel.email");
+            set => SetDatabaseSetting("hotel.email", value);
+        }
         public static int Deposit
         {
             get

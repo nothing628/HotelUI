@@ -8,6 +8,8 @@ const state: ISettingState = {
   Hotel_Address: "",
   Hotel_Name: "",
   Hotel_Logo: "",
+  Hotel_Email: "",
+  Hotel_Phone: "",
   Deposit: 0,
   Penalty: 0,
   Time_Checkin: "",
@@ -25,6 +27,8 @@ const mutations: MutationTree<ISettingState> = {
     state.Hotel_Address = payload.Hotel_Address;
     state.Hotel_Name = payload.Hotel_Name;
     state.Hotel_Logo = payload.Hotel_Logo;
+    state.Hotel_Email = payload.Hotel_Email;
+    state.Hotel_Phone = payload.Hotel_Phone;
     state.Deposit = payload.Deposit;
     state.Penalty = payload.Penalty;
     state.Time_Checkin = payload.Time_Checkin;
@@ -47,6 +51,8 @@ const actions: ActionTree<ISettingState, IRootState> = {
     context.state.Hotel_Name = window.CS.Setting.Hotel_Name;
     context.state.Hotel_Logo = window.CS.Setting.Hotel_Logo;
     context.state.Hotel_Address = window.CS.Setting.Hotel_Address;
+    context.state.Hotel_Email = window.CS.Setting.Hotel_Email;
+    context.state.Hotel_Phone = window.CS.Setting.Hotel_Phone;
     context.state.Deposit = window.CS.Setting.Deposit;
     context.state.Penalty = window.CS.Setting.Penalty;
     context.state.Time_Checkin = window.CS.Setting.Time_Checkin;
@@ -66,6 +72,8 @@ const actions: ActionTree<ISettingState, IRootState> = {
     window.CS.Setting.Hotel_Name = context.state.Hotel_Name;
     window.CS.Setting.Hotel_Logo = context.state.Hotel_Logo;
     window.CS.Setting.Hotel_Address = context.state.Hotel_Address;
+    window.CS.Setting.Hotel_Email = context.state.Hotel_Email;
+    window.CS.Setting.Hotel_Phone = context.state.Hotel_Phone;
     window.CS.Setting.Deposit = context.state.Deposit;
     window.CS.Setting.Penalty = context.state.Penalty;
     window.CS.Setting.Time_Checkin = context.state.Time_Checkin;

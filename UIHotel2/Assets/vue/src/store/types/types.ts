@@ -11,6 +11,8 @@ export interface ISettingState {
   Hotel_Name: string;
   Hotel_Logo: string;
   Hotel_Address: string;
+  Hotel_Phone: string;
+  Hotel_Email: string;
   Deposit: number;
   Penalty: number;
   Time_Checkin: string;

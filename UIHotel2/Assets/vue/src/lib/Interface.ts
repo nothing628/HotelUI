@@ -19,6 +19,8 @@ export interface ISetting {
   Hotel_Name: string;
   Hotel_Logo: string;
   Hotel_Address: string;
+  Hotel_Email: string;
+  Hotel_Phone: string;
   Deposit: number;
   Penalty: number;
   Time_Checkin: string;

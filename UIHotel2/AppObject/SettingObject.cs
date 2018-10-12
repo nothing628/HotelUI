@@ -30,6 +30,8 @@ namespace UIHotel2.AppObject
             var Hotel_Address = Self.AddDynamicProperty("Hotel_Address");
             var Hotel_Logo = Self.AddDynamicProperty("Hotel_Logo");
             var Hotel_Name = Self.AddDynamicProperty("Hotel_Name");
+            var Hotel_Phone = Self.AddDynamicProperty("Hotel_Phone");
+            var Hotel_Email = Self.AddDynamicProperty("Hotel_Email");
             var Deposit = Self.AddDynamicProperty("Deposit");
             var Penalty = Self.AddDynamicProperty("Penalty");
             var Time_Checkin = Self.AddDynamicProperty("Time_Checkin");
@@ -59,6 +61,10 @@ namespace UIHotel2.AppObject
             Hotel_Logo.PropertySet += Hotel_Logo_PropertySet;
             Hotel_Name.PropertyGet += Hotel_Name_PropertyGet;
             Hotel_Name.PropertySet += Hotel_Name_PropertySet;
+            Hotel_Email.PropertyGet += Hotel_Email_PropertyGet;
+            Hotel_Email.PropertySet += Hotel_Email_PropertySet;
+            Hotel_Phone.PropertyGet += Hotel_Phone_PropertyGet;
+            Hotel_Phone.PropertySet += Hotel_Phone_PropertySet;
             Deposit.PropertyGet += Deposit_PropertyGet;
             Deposit.PropertySet += Deposit_PropertySet;
             Penalty.PropertyGet += Penalty_PropertyGet;
@@ -69,6 +75,40 @@ namespace UIHotel2.AppObject
             Time_Checkout.PropertySet += Time_Checkout_PropertySet;
             Time_Fullcharge.PropertyGet += Time_Fullcharge_PropertyGet;
             Time_Fullcharge.PropertySet += Time_Fullcharge_PropertySet;
+        }
+
+        private void Hotel_Phone_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
+        {
+            if (e.Value.IsString)
+            {
+                SettingHelper.HotelPhone = e.Value.StringValue;
+                return;
+            }
+
+            e.Exception = "String value expected";
+        }
+
+        private void Hotel_Phone_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
+        {
+            e.Retval = SettingHelper.HotelPhone;
+            e.SetReturnValue(true);
+        }
+
+        private void Hotel_Email_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
+        {
+            if (e.Value.IsString)
+            {
+                SettingHelper.HotelEmail = e.Value.StringValue;
+                return;
+            }
+
+            e.Exception = "String value expected";
+        }
+
+        private void Hotel_Email_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
+        {
+            e.Retval = SettingHelper.HotelEmail;
+            e.SetReturnValue(true);
         }
 
         private void TestExecute(object sender, CfrV8HandlerExecuteEventArgs e)
