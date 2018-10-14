@@ -258,3 +258,8 @@ img.img-float {
   border: 1px solid #ccc;
   border-radius: 3px;
 }
+
+.invoice-price-right.white {
+  background-color: #cccdce;
+  color: #403e3e;
+}

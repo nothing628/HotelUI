@@ -78,6 +78,20 @@
             <small>TOTAL</small> {{ TotalBalance | strcurrency }}
           </div>
         </div>
+        <div class="invoice-price">
+          <div class="invoice-price-left">
+          </div>
+          <div class="invoice-price-right white">
+            <small>PAY</small> {{ TotalBalance | strcurrency }}
+          </div>
+        </div>
+        <div class="invoice-price">
+          <div class="invoice-price-left">
+          </div>
+          <div class="invoice-price-right white">
+            <small>CASHBACK</small> {{ TotalBalance | strcurrency }}
+          </div>
+        </div>
       </div>
       <div class="invoice-note"></div>
       <div class="invoice-footer text-muted">
