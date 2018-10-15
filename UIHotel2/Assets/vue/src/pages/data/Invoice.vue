@@ -3,7 +3,7 @@
     <div class="invoice">
       <div class="invoice-company">
         <span class="pull-right hidden-print">
-          <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-pencil"></i> Pay Invoice</button>
+          <button class="btn btn-sm btn-success m-b-10 m-r-5" @click="ProcessPayment"><i class="fa fa-pencil"></i> Pay Invoice</button>
           <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-download m-r-5"></i> Export as PDF</button>
           <button class="btn btn-sm btn-danger m-b-10 m-r-5"><i class="fa fa-times m-r-5"></i> Cancel</button>
         </span>
@@ -46,7 +46,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in List_Detail" :key="item.Id">
+              <tr v-for="item in CleanList" :key="item.Id">
                 <td>{{ item.TransactionAt | strshortdate }}</td>
                 <td>
                   {{ item.KindName }}<br>
@@ -78,60 +78,60 @@
             <small>TOTAL</small> {{ TotalBalance | strcurrency }}
           </div>
         </div>
-        <div class="invoice-price">
+        <div class="invoice-price" v-if="!is_pay">
           <div class="invoice-price-left">
             <div class="invoice-price-row">
               <div class="sub-price">
                 <small>TYPE PAY</small>
-                CASH
+                {{ PaymentType }}
               </div>
               <div class="sub-price">
                 <small>REF NO</small>
-                0293851284233
+                {{ PaymentRefno }}
               </div>
             </div>
           </div>
           <div class="invoice-price-right white">
-            <small>PAY</small> {{ TotalBalance | strcurrency }}
+            <small>PAY</small> {{ PaymentModel.Ammount | strcurrency }}
           </div>
         </div>
-        <div class="invoice-price">
+        <div class="invoice-price" v-if="is_pay">
           <div class="invoice-price-left">
             <div class="invoice-price-row">
               <div class="sub-price">
                 <small>TYPE PAY</small>
                 <div class="radio radio-css">
-                  <input type="radio" name="cssRadio" value="option1" checked="">
-                  <label>CASH</label>
+                  <input type="radio" v-model="TypeModel" name="cssRadio" id="option1" value="CASH">
+                  <label for="option1">CASH</label>
                 </div>
                 <div class="radio radio-css">
-                  <input type="radio" name="cssRadio" value="option1" checked="">
-                  <label>ONLINE</label>
+                  <input type="radio" v-model="TypeModel" name="cssRadio" id="option2" value="ONLINE">
+                  <label for="option2">ONLINE</label>
                 </div>
               </div>
-              <div class="sub-price">
+              <div class="sub-price" v-if="TypeModel == 'ONLINE'">
                 <small>REF NO</small>
-                <input/>
+                <input type="text" v-model="TypeRefno"/>
               </div>
             </div>
           </div>
           <div class="invoice-price-right white input">
             <div class="input-group">
               <span class="input-group-addon">Rp</span>
-              <input class="form-control">
+              <input class="form-control" v-model="PaymentModel.Ammount">
             </div>
           </div>
         </div>
         <div class="invoice-price">
           <div class="invoice-price-left"></div>
           <div class="invoice-price-right white">
-            <small>CASHBACK</small> {{ TotalBalance | strcurrency }}
+            <small>CASHBACK</small> {{ Cashback | strcurrency }}
           </div>
         </div>
-        <div class="invoice-price">
+        <div class="invoice-price" v-if="is_pay">
           <div class="invoice-price-left"></div>
           <div class="invoice-price-right">
-            <button class="btn btn-info"><i class="fa fa-check"></i> Finish</button>
+            <button class="btn btn-info btn-block" @click="PaymentSubmit"><i class="fa fa-check"></i> Finish</button>
           </div>
         </div>
       </div>
@@ -151,10 +151,19 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { ss, execute, executeFirst } from "@/lib/Test";
 import { isUndefined, isNull } from "util";
+import { PaymentType, IPaymentModel, Invoice } from "@/lib/Model/Invoice";
 
 @Component
 export default class DataInvoice extends Vue {
+  private is_pay: boolean = false;
   private invId: string = "";
+  private PaymentModel: IPaymentModel = {
+    Ammount: 0,
+    TRefNo: "",
+    Type: undefined
+  };
+  private TypeModel: string = "CASH";
+  private TypeRefno: string = "";
   Hotel_Name: string = "";
   Hotel_Address: string = "";
   Hotel_Phone: string = "";
@@ -166,14 +175,46 @@ export default class DataInvoice extends Vue {
   Guest_Email: string = "";
   List_Detail: Array<any> = new Array<any>();
 
+  get PaymentType(): string {
+    if (isUndefined(this.PaymentModel.Type)) {
+      return "-";
+    } else {
+      if (this.PaymentModel.Type == PaymentType.CASH) {
+        return "CASH";
+      } else {
+        return "ONLINE";
+      }
+    }
+  }
+
+  get PaymentRefno(): string {
+    if (this.PaymentModel.TRefNo == "" || isNull(this.PaymentModel.TRefNo)) {
+      return "-";
+    }
+
+    return this.PaymentModel.TRefNo;
+  }
+
+  get Cashback(): number {
+    return this.PaymentModel.Ammount - this.TotalBalance;
+  }
+
   get TotalBalance(): number {
     let total: number = 0;
 
-    this.List_Detail.forEach((item: any) => {
-      console.log(item);
+    this.CleanList.forEach((item: any) => {
+      total += item.AmmountOut - item.AmmountIn;
     });
 
     return total;
+  }
+
+  get CleanList(): Array<any> {
+    let filtered: Array<any> = this.List_Detail.filter((item) => {
+      return item.KindId != 100 && item.KindId != 101;
+    });
+
+    return filtered;
   }
 
   CleanAddress(value: string): string {
@@ -196,9 +237,53 @@ export default class DataInvoice extends Vue {
       .where("a.InvoiceId = ?", this.invId);
     let result = execute(qry);
 
+    this.List_Detail = [];
+    this.is_pay = false;
+
     if (result.length > 0) {
       result.forEach((item: any) => this.List_Detail.push(item));
+      this.getPayment();
     }
+  }
+
+  getPayment() {
+    let dataPayment = this.List_Detail.filter((item) => {
+      return item.KindId == 100 || item.KindId == 101;
+    });
+
+    if (dataPayment.length == 0) {
+      this.PaymentModel.Type = undefined;
+      this.PaymentModel.Ammount = 0;
+      this.PaymentModel.TRefNo = "";
+    } else {
+      let first = dataPayment[0];
+      this.PaymentModel.Type = first.KindId == 100 ? PaymentType.CASH : PaymentType.ONLINE;
+      this.PaymentModel.Ammount = first.AmmountIn;
+      this.PaymentModel.TRefNo = first.Description;
+    }
+  }
+
+  ProcessPayment() {
+    this.TypeRefno = this.PaymentModel.TRefNo;
+    
+    if (isUndefined(this.PaymentModel.Type) || this.PaymentModel.Type === PaymentType.CASH) {
+      this.TypeModel = "CASH";
+    } else {
+      this.TypeModel = "ONLINE";
+    }
+
+    this.is_pay = true;
+  }
+
+  PaymentSubmit() {
+    let paymentModel: IPaymentModel = {
+      Ammount: this.PaymentModel.Ammount,
+      TRefNo: this.TypeRefno,
+      Type: this.TypeModel == "CASH" ? PaymentType.CASH : PaymentType.ONLINE
+    };
+
+    Invoice.PaymentProcess(this.invId, paymentModel);
+    this.getInvoice();
   }
 
   getGuest() {
