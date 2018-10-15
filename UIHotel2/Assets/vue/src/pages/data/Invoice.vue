@@ -4,6 +4,7 @@
       <div class="invoice-company">
         <span class="pull-right hidden-print">
           <button class="btn btn-sm btn-success m-b-10 m-r-5" @click="ProcessPayment"><i class="fa fa-pencil"></i> Pay Invoice</button>
+          <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-plus"></i> Add Item</button>
           <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-download m-r-5"></i> Export as PDF</button>
           <button class="btn btn-sm btn-danger m-b-10 m-r-5"><i class="fa fa-times m-r-5"></i> Cancel</button>
         </span>
@@ -30,7 +31,7 @@
         </div>
         <div class="invoice-date">
           <small>Invoice Period</small>
-          <div class="date m-t-5">August 3,2012</div>
+          <div class="date m-t-5">{{ InvoicePeriod }}</div>
           <div class="invoice-detail">{{invId}}</div>
         </div>
       </div>
@@ -145,9 +146,36 @@
         </p>
       </div>
     </div>
+
+    <uiv-modal v-model="is_add" title="Add Transaction">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Description</label>
+          <div class="col-md-6">
+            <textarea class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Ammount In</label>
+          <div class="col-md-3">
+            <input class="form-control" type="number"/>
+          </div>
+          <label class="col-md-3 control-label">Ammount Out</label>
+          <div class="col-md-3">
+            <input class="form-control" type="number"/>
+          </div>
+        </div>
+      </div>
+
+      <div slot="footer">
+        <button class="btn btn-success">Save</button>
+        <button class="btn btn-danger">Cancel</button>
+      </div>
+    </uiv-modal>
   </div>
 </template>
 <script lang="ts">
+import moment from "moment";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { ss, execute, executeFirst } from "@/lib/Test";
 import { isUndefined, isNull } from "util";
@@ -156,6 +184,7 @@ import { PaymentType, IPaymentModel, Invoice } from "@/lib/Model/Invoice";
 @Component
 export default class DataInvoice extends Vue {
   private is_pay: boolean = false;
+  private is_add: boolean = true;
   private invId: string = "";
   private PaymentModel: IPaymentModel = {
     Ammount: 0,
@@ -215,6 +244,10 @@ export default class DataInvoice extends Vue {
     });
 
     return filtered;
+  }
+
+  get InvoicePeriod(): string {
+    return moment().format("MMMM DD, YYYY");
   }
 
   CleanAddress(value: string): string {
