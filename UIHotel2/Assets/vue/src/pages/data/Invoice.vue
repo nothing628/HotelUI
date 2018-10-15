@@ -80,6 +80,16 @@
         </div>
         <div class="invoice-price">
           <div class="invoice-price-left">
+            <div class="invoice-price-row">
+              <div class="sub-price">
+                <small>TYPE PAY</small>
+                CASH
+              </div>
+              <div class="sub-price">
+                <small>REF NO</small>
+                0293851284233
+              </div>
+            </div>
           </div>
           <div class="invoice-price-right white">
             <small>PAY</small> {{ TotalBalance | strcurrency }}
@@ -87,9 +97,41 @@
         </div>
         <div class="invoice-price">
           <div class="invoice-price-left">
+            <div class="invoice-price-row">
+              <div class="sub-price">
+                <small>TYPE PAY</small>
+                <div class="radio radio-css">
+                  <input type="radio" name="cssRadio" value="option1" checked="">
+                  <label>CASH</label>
+                </div>
+                <div class="radio radio-css">
+                  <input type="radio" name="cssRadio" value="option1" checked="">
+                  <label>ONLINE</label>
+                </div>
+              </div>
+              <div class="sub-price">
+                <small>REF NO</small>
+                <input/>
+              </div>
+            </div>
           </div>
+          <div class="invoice-price-right white input">
+            <div class="input-group">
+              <span class="input-group-addon">Rp</span>
+              <input class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="invoice-price">
+          <div class="invoice-price-left"></div>
           <div class="invoice-price-right white">
             <small>CASHBACK</small> {{ TotalBalance | strcurrency }}
+          </div>
+        </div>
+        <div class="invoice-price">
+          <div class="invoice-price-left"></div>
+          <div class="invoice-price-right">
+            <button class="btn btn-info"><i class="fa fa-check"></i> Finish</button>
           </div>
         </div>
       </div>
@@ -171,7 +213,7 @@ export default class DataInvoice extends Vue {
       this.Guest_Name = result.Fullname;
       this.Guest_Address = result.Address + "\n";
       this.Guest_Address += result.City + ", ";
-      this.Guest_Address += result.Province + ", "
+      this.Guest_Address += result.Province + ", ";
       this.Guest_Address += isNull(result.PostCode) ? "" : result.PostCode;
       this.Guest_Phone1 = result.Phone1;
       this.Guest_Phone2 = result.Phone2;

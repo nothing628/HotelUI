@@ -263,3 +263,29 @@ img.img-float {
   background-color: #cccdce;
   color: #403e3e;
 }
+
+.invoice-price-left .radio.radio-css {
+  margin-right: 10px;
+  display: inline;
+}
+
+.invoice-price-left .radio.radio-css label {
+  font-size: 16px;
+}
+
+.invoice-price-right.input {
+  padding: 11px 5px;
+}
+
+.invoice-price-right.input .input-group,
+.invoice-price-right.input .input-group .form-control {
+  height: 69px;
+}
+
+.invoice-price-right.input .input-group .input-group-addon,
+.invoice-price-right.input .input-group .form-control {
+  border-radius: 0;
+  font-size: 28px;
+  font-weight: 300;
+  border: 0px none;
+}
