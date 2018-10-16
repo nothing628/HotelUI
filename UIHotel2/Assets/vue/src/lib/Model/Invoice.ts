@@ -6,6 +6,18 @@ export enum PaymentType {
   ONLINE,
 }
 
+export enum UncategorizedDetailType {
+  IN = 200,
+  OUT = 201,
+}
+
+export interface IInvoiceDetailModel {
+  AmmountIn: number;
+  AmmountOut: number;
+  Type: UncategorizedDetailType;
+  Description: string;
+}
+
 export interface IPaymentModel {
   Ammount: number;
   TRefNo: string;
@@ -60,6 +72,29 @@ export class Invoice {
       qry.set("Description", paymentDetail.TRefNo);
     }
 
+    executeScalar(qry);
+  }
+
+  public static NewDetail(invoiceId: string, invoiceDetail: IInvoiceDetailModel): void {
+    let AmmountIn: number = 0;
+    let AmmountOut: number = 0;
+    let today: string = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    if (invoiceDetail.Type === UncategorizedDetailType.IN) {
+      AmmountIn = invoiceDetail.AmmountIn;
+    } else {
+      AmmountOut = invoiceDetail.AmmountOut;
+    }
+
+    let qry: any = si()
+      .into("invoicedetails")
+      .set("InvoiceId", invoiceId)
+      .set("AmmountIn", AmmountIn)
+      .set("AmmountOut", AmmountOut)
+      .set("TransactionAt", today)
+      .set("Description", invoiceDetail.Description)
+      .set("IsSystem", false)
+      .set("KindId", invoiceDetail.Type);
     executeScalar(qry);
   }
 }

@@ -4,9 +4,9 @@
       <div class="invoice-company">
         <span class="pull-right hidden-print">
           <button class="btn btn-sm btn-success m-b-10 m-r-5" @click="ProcessPayment"><i class="fa fa-pencil"></i> Pay Invoice</button>
-          <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-plus"></i> Add Item</button>
+          <button class="btn btn-sm btn-success m-b-10 m-r-5" @click="ShowNewDetail"><i class="fa fa-plus"></i> Add Item</button>
           <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-download m-r-5"></i> Export as PDF</button>
-          <button class="btn btn-sm btn-danger m-b-10 m-r-5"><i class="fa fa-times m-r-5"></i> Cancel</button>
+          <button class="btn btn-sm btn-danger m-b-10 m-r-5" @click="BackToList"><i class="fa fa-times m-r-5"></i> Cancel</button>
         </span>
         {{ Hotel_Name }}
       </div>
@@ -119,7 +119,7 @@
           <div class="invoice-price-right white input">
             <div class="input-group">
               <span class="input-group-addon">Rp</span>
-              <input class="form-control" v-model="PaymentModel.Ammount">
+              <input class="form-control" type="number" v-model="PaymentModel.Ammount">
             </div>
           </div>
         </div>
@@ -147,29 +147,52 @@
       </div>
     </div>
 
-    <uiv-modal v-model="is_add" title="Add Transaction">
+    <uiv-modal v-model="is_add" title="Add Transaction" @hide="CloseAll">
       <div class="form-horizontal">
         <div class="form-group">
           <label class="col-md-3 control-label">Description</label>
           <div class="col-md-6">
-            <textarea class="form-control"></textarea>
+            <textarea class="form-control" v-model="DetailModel.Description"></textarea>
           </div>
         </div>
         <div class="form-group">
-          <label class="col-md-3 control-label">Ammount In</label>
+          <label class="col-md-3 control-label">Type</label>
           <div class="col-md-3">
-            <input class="form-control" type="number"/>
+            <div class="radio radio-css">
+              <input type="radio" v-model="DetailType" name="cssRadio" id="option3" value="200">
+              <label for="option3">IN</label>
+            </div>
           </div>
-          <label class="col-md-3 control-label">Ammount Out</label>
           <div class="col-md-3">
-            <input class="form-control" type="number"/>
+            <div class="radio radio-css">
+              <input type="radio" v-model="DetailType" name="cssRadio" id="option4" value="201">
+              <label for="option4">OUT</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" v-if="DetailType == '200'">
+          <label class="col-md-3 control-label">Ammount In</label>
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">Rp</span>
+              <input class="form-control" type="number" v-model="DetailModel.AmmountIn">
+            </div>
+          </div>
+        </div>
+        <div class="form-group" v-if="DetailType == '201'">
+          <label class="col-md-3 control-label">Ammount Out</label>
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-addon">Rp</span>
+              <input class="form-control" type="number" v-model="DetailModel.AmmountOut">
+            </div>
           </div>
         </div>
       </div>
 
       <div slot="footer">
-        <button class="btn btn-success">Save</button>
-        <button class="btn btn-danger">Cancel</button>
+        <button class="btn btn-success" @click="StoreDetail">Save</button>
+        <button class="btn btn-danger" @click="CloseAll">Cancel</button>
       </div>
     </uiv-modal>
   </div>
@@ -179,13 +202,27 @@ import moment from "moment";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { ss, execute, executeFirst } from "@/lib/Test";
 import { isUndefined, isNull } from "util";
-import { PaymentType, IPaymentModel, Invoice } from "@/lib/Model/Invoice";
+import { PaymentType, IPaymentModel, UncategorizedDetailType, Invoice, IInvoiceDetailModel } from "@/lib/Model/Invoice";
+
+interface IDetailModel {
+  AmmountIn: number;
+  AmmountOut: number;
+  Type: UncategorizedDetailType;
+  Description: string;
+}
 
 @Component
 export default class DataInvoice extends Vue {
   private is_pay: boolean = false;
-  private is_add: boolean = true;
+  private is_add: boolean = false;
   private invId: string = "";
+  private DetailType: string = "200";
+  private DetailModel: IDetailModel = {
+    AmmountIn: 0,
+    AmmountOut: 0,
+    Type: UncategorizedDetailType.IN,
+    Description: ""
+  };
   private PaymentModel: IPaymentModel = {
     Ammount: 0,
     TRefNo: "",
@@ -250,6 +287,37 @@ export default class DataInvoice extends Vue {
     return moment().format("MMMM DD, YYYY");
   }
 
+  BackToList() {
+    this.$router.push({ name: "data.booking" });
+  }
+
+  StoreDetail() {
+    this.DetailModel.Type = this.DetailType == "200" ? UncategorizedDetailType.IN : UncategorizedDetailType.OUT;
+
+    let newDetail: IInvoiceDetailModel = {
+      AmmountIn: this.DetailModel.AmmountIn,
+      AmmountOut: this.DetailModel.AmmountOut,
+      Description: this.DetailModel.Description,
+      Type: this.DetailModel.Type
+    };
+
+    Invoice.NewDetail(this.invId, newDetail);
+    this.getInvoice();
+    this.is_add = false;
+  }
+
+  ShowNewDetail() {
+    this.DetailModel.AmmountIn = 0;
+    this.DetailModel.AmmountOut = 0;
+    this.DetailModel.Description = "";
+    this.DetailType = "201";
+    this.is_add = true;
+  }
+
+  CloseAll() {
+    this.is_add = false;
+  }
+
   CleanAddress(value: string): string {
     return value.replace("\n", "<br/>") + "<br/>";
   }
@@ -306,6 +374,7 @@ export default class DataInvoice extends Vue {
     }
 
     this.is_pay = true;
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   PaymentSubmit() {
