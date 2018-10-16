@@ -40,6 +40,7 @@
           <table class="table table-invoice">
             <thead>
               <tr>
+                <th style="width: 1px"></th>
                 <th>DATE</th>
                 <th>DESCRIPTION</th>
                 <th>IN</th>
@@ -48,6 +49,9 @@
             </thead>
             <tbody>
               <tr v-for="item in CleanList" :key="item.Id">
+                <td style="width: 1px">
+                  <button v-if="!item.IsSystem" @click="RemoveDetail(item.Id)" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
+                </td>
                 <td>{{ item.TransactionAt | strshortdate }}</td>
                 <td>
                   {{ item.KindName }}<br>
@@ -102,11 +106,11 @@
               <div class="sub-price">
                 <small>TYPE PAY</small>
                 <div class="radio radio-css">
-                  <input type="radio" v-model="TypeModel" name="cssRadio" id="option1" value="CASH">
+                  <input type="radio" v-model="TypeModel" id="option1" value="CASH">
                   <label for="option1">CASH</label>
                 </div>
                 <div class="radio radio-css">
-                  <input type="radio" v-model="TypeModel" name="cssRadio" id="option2" value="ONLINE">
+                  <input type="radio" v-model="TypeModel" id="option2" value="ONLINE">
                   <label for="option2">ONLINE</label>
                 </div>
               </div>
@@ -159,13 +163,13 @@
           <label class="col-md-3 control-label">Type</label>
           <div class="col-md-3">
             <div class="radio radio-css">
-              <input type="radio" v-model="DetailType" name="cssRadio" id="option3" value="200">
+              <input type="radio" v-model="DetailType" id="option3" value="200">
               <label for="option3">IN</label>
             </div>
           </div>
           <div class="col-md-3">
             <div class="radio radio-css">
-              <input type="radio" v-model="DetailType" name="cssRadio" id="option4" value="201">
+              <input type="radio" v-model="DetailType" id="option4" value="201">
               <label for="option4">OUT</label>
             </div>
           </div>
@@ -312,6 +316,11 @@ export default class DataInvoice extends Vue {
     this.DetailModel.Description = "";
     this.DetailType = "201";
     this.is_add = true;
+  }
+
+  RemoveDetail(idnum: number) {
+    Invoice.DeleteDetail(this.invId, idnum);
+    this.getInvoice();
   }
 
   CloseAll() {

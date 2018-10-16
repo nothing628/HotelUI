@@ -1,5 +1,6 @@
 import { ss, si, sd, se, execute, executeScalar } from "@/lib/Test";
 import moment from "moment";
+import { isUndefined } from "util";
 
 export enum PaymentType {
   CASH,
@@ -37,10 +38,15 @@ export class Invoice {
     executeScalar(qry);
   }
 
-  public static DeleteDetail(invoiceId: string): void {
+  public static DeleteDetail(invoiceId: string, detailId?: number): void {
     let qry: any = sd()
       .from("invoicedetails")
       .where("InvoiceId = ?", invoiceId);
+
+    if (!isUndefined(detailId)) {
+      qry.where("Id = ?", detailId);
+    }
+
     executeScalar(qry);
   }
 

@@ -305,7 +305,9 @@ export default class BookingDetail extends Vue {
         id: this.booking_model.bookingId
       }
     };
-    this.$router.push(invoiceLocation);
+
+    this.closeAll();
+    this.$nextTick(() => this.$router.push(invoiceLocation));
   }
 
   public Checkin(): void {
