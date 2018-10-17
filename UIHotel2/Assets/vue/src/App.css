@@ -289,3 +289,30 @@ img.img-float {
   font-weight: 300;
   border: 0px none;
 }
+
+.swal2-popup {
+  width: 60em;
+}
+
+.swal2-icon-text {
+  font-size: 5.5em;
+}
+
+.swal2-icon {
+  width: 80px;
+  height: 80px;
+  line-height: 7em;
+}
+
+.swal2-popup .swal2-styled.swal2-cancel,
+.swal2-popup .swal2-styled.swal2-confirm {
+  font-size: 18px;
+}
+
+.swal2-popup .swal2-content {
+  font-size: 21px;
+}
+
+.swal2-popup .swal2-title {
+  font-size: 30px;
+}

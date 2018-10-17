@@ -1,4 +1,3 @@
-import "@/App.css";
 import Vue from "vue";
 import Vuelidate from "vee-validate";
 import * as uiv from "uiv";
@@ -19,3 +18,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#page-container");
+
+import "@/App.css";

@@ -123,7 +123,7 @@
         </button>
       </div>
       <div class="col-md-3">
-        <button class="btn btn-block btn-success" :disabled="disableCheckout">
+        <button class="btn btn-block btn-success" @click="Checkout" :disabled="disableCheckout">
           <i class="fa fa-sign-out"></i> Checkout
         </button>
       </div>
@@ -142,7 +142,9 @@ import StepItem from "@/components/Steps/StepItem.vue";
 import StepSelector from "@/components/Steps/StepSelector.vue";
 import StepContainer from "@/components/Steps/StepContainer.vue";
 import moment from "moment";
+import swal, {SweetAlertResult,SweetAlertOptions} from "sweetalert2";
 import { Booking } from "@/lib/Model/Booking";
+import { Invoice } from "@/lib/Model/Invoice";
 import { isNullOrUndefined } from "util";
 import { RawLocation } from 'vue-router';
 
@@ -308,6 +310,29 @@ export default class BookingDetail extends Vue {
 
     this.closeAll();
     this.$nextTick(() => this.$router.push(invoiceLocation));
+  }
+
+  public Checkout(): void {
+    let options: SweetAlertOptions = {
+      title: "Checkout",
+      text: "Are you sure to checkout this booking ?",
+      type: "question",
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonClass: "bg-red darker-1"
+    };
+
+    swal(options).then((value: SweetAlertResult) => {
+      console.log(value);
+
+      let result = false; //Booking.Checkout(this.booking_model.bookingId);
+
+      if (result) {
+        // success, close the dialog and refresh the list
+      } else {
+        // error, invoice not balance
+      }
+    });
   }
 
   public Checkin(): void {

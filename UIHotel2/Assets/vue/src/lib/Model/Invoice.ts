@@ -1,4 +1,4 @@
-import { ss, si, sd, se, execute, executeScalar } from "@/lib/Test";
+import { ss, si, su, sd, se, execute, executeScalar } from "@/lib/Test";
 import moment from "moment";
 import { isUndefined } from "util";
 
@@ -101,6 +101,41 @@ export class Invoice {
       .set("Description", invoiceDetail.Description)
       .set("IsSystem", false)
       .set("KindId", invoiceDetail.Type);
+    executeScalar(qry);
+  }
+
+  public static IsBalance(invoiceId: string): boolean {
+    let qry: any = ss()
+      .from("invoicedetails")
+      .where("InvoiceId = ?", invoiceId)
+      .field("AmmountIn")
+      .field("AmmountOut");
+    let details: any = execute(qry);
+    let total: number = 0;
+
+    if (details.length > 0) {
+      details.forEach((item: any) => {
+        total += item.AmmountIn - item.AmmountOut;
+      });
+
+      return total === 0;
+    }
+
+    return false;
+  }
+
+  public static CloseInvoice(invoiceId: string): void {
+    let is_balance: boolean = this.IsBalance(invoiceId);
+    let today: string = moment().format("YYYY-MM-DD HH:mm:ss");
+    let qry: any = su()
+      .table("invoices")
+      .set("CloseAt", today)
+      .where("Id = ?", invoiceId);
+
+    if (!is_balance) {
+      throw new Error("Need to pay invoice before closing the invoice!");
+    }
+
     executeScalar(qry);
   }
 }

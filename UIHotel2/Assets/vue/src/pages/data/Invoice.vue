@@ -5,8 +5,8 @@
         <span class="pull-right hidden-print">
           <button class="btn btn-sm btn-success m-b-10 m-r-5" @click="ProcessPayment"><i class="fa fa-pencil"></i> Pay Invoice</button>
           <button class="btn btn-sm btn-success m-b-10 m-r-5" @click="ShowNewDetail"><i class="fa fa-plus"></i> Add Item</button>
-          <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-download m-r-5"></i> Export as PDF</button>
-          <button class="btn btn-sm btn-danger m-b-10 m-r-5" @click="BackToList"><i class="fa fa-times m-r-5"></i> Cancel</button>
+          <!-- <button class="btn btn-sm btn-success m-b-10 m-r-5"><i class="fa fa-download m-r-5"></i> Export as PDF</button> -->
+          <button class="btn btn-sm btn-danger m-b-10 m-r-5" @click="BackToList"><i class="fa fa-reply m-r-5"></i> Back</button>
         </span>
         {{ Hotel_Name }}
       </div>

@@ -44,6 +44,23 @@ export class Booking {
     return result2;
   }
 
+  public static Checkout(bookId: string): boolean {
+    try {
+      let today: string = moment().format("YYYY-MM-DD HH:mm:ss");
+      let qry: any = su()
+        .table("bookings")
+        .set("CheckoutAt", today)
+        .where("Id = ?", bookId);
+
+      Invoice.CloseInvoice(bookId);
+      executeScalar(qry);
+      return true;
+    } catch (e) {
+      // need to pay invoice first
+      return false;
+    }
+  }
+
   private static UpdateRoomState(roomId: number, state: number): any {
     let qry: any = su()
       .table("rooms")
