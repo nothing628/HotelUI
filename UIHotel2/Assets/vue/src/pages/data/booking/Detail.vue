@@ -231,7 +231,7 @@ export default class BookingDetail extends Vue {
     var state: number = this.getStateNum(this.booking_model);
     return state >= 2;
   }
-  
+
   get disableCheckout(): boolean {
     var state: number = this.getStateNum(this.booking_model);
     return state <= 2;
@@ -336,12 +336,12 @@ export default class BookingDetail extends Vue {
   }
 
   public Checkin(): void {
-    Booking.CheckinBooking(this.booking_model.bookingId);
+    Booking.Checkin(this.booking_model.bookingId);
     this.refreshAndClose();
   }
 
   public cancelBooking(): void {
-    Booking.CancelBooking(this.booking_model.bookingId);
+    Booking.Cancel(this.booking_model.bookingId);
     this.refreshAndClose();
   }
 

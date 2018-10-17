@@ -4,12 +4,12 @@ import { isUndefined } from "util";
 
 export enum PaymentType {
   CASH,
-  ONLINE,
+  ONLINE
 }
 
 export enum UncategorizedDetailType {
   IN = 200,
-  OUT = 201,
+  OUT = 201
 }
 
 export interface IInvoiceDetailModel {

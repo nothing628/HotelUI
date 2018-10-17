@@ -31,12 +31,23 @@ namespace UIHotel2.AppObject
             Self.AddFunction("GetUploadUrl").Execute += GetUploadUrl;
             Self.AddFunction("GetNewBookingNumber").Execute += GetBookingNumberExecute;
             Self.AddFunction("CalcTransaction").Execute += CalcTransaction;
+            Self.AddFunction("CalcBooking").Execute += CalcBooking;
         }
 
         private void CalcTransaction(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             var callback = e.Arguments[0];
             var th = new Thread(TransactionHelper.CalculateSubtotal);
+            th.Start();
+            th.Join();
+
+            ExecuteCallback(callback);
+        }
+
+        public void CalcBooking(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            var callback = e.Arguments[0];
+            var th = new Thread(TransactionHelper.CalculateBooking);
             th.Start();
             th.Join();
 

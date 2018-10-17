@@ -357,7 +357,7 @@ export default class DataInvoice extends Vue {
   }
 
   getPayment() {
-    let dataPayment = this.List_Detail.filter((item) => {
+    let dataPayment = this.List_Detail.filter((item: any) => {
       return item.KindId == 100 || item.KindId == 101;
     });
 
