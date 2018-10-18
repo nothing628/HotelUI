@@ -47,7 +47,14 @@ namespace UIHotel2.AppObject
         public void CalcBooking(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             var callback = e.Arguments[0];
-            var th = new Thread(TransactionHelper.CalculateBooking);
+            var bookId = "";
+
+            if (e.Arguments.Length == 2)
+            {
+                bookId = e.Arguments[1].StringValue;
+            }
+
+            var th = new Thread(() => TransactionHelper.CalculateBooking(bookId));
             th.Start();
             th.Join();
 

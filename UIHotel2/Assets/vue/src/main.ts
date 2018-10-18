@@ -4,7 +4,7 @@ import * as uiv from "uiv";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
-import { Register } from "@/lib/FilterList";
+import { Register } from "@/lib/List/Filter";
 import "./registerGlobalScope";
 import "./registerServiceWorker";
 

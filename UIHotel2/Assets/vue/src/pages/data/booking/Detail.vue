@@ -143,10 +143,9 @@ import StepSelector from "@/components/Steps/StepSelector.vue";
 import StepContainer from "@/components/Steps/StepContainer.vue";
 import moment from "moment";
 import swal, {SweetAlertResult,SweetAlertOptions} from "sweetalert2";
-import { Booking } from "@/lib/Model/Booking";
-import { Invoice } from "@/lib/Model/Invoice";
+import { Invoice, Booking, BookStatusType } from "@/lib/Model/ModelCollection";
 import { isNullOrUndefined } from "util";
-import { RawLocation } from 'vue-router';
+import { RawLocation } from "vue-router";
 
 interface IBookingModel {
   bookingId: string;
@@ -234,7 +233,7 @@ export default class BookingDetail extends Vue {
 
   get disableCheckout(): boolean {
     var state: number = this.getStateNum(this.booking_model);
-    return state <= 2;
+    return state <= 2 || state == 6;
   }
 
   get disableCancel(): boolean {
@@ -246,58 +245,13 @@ export default class BookingDetail extends Vue {
   public bookingId?: string;
 
   getStateName(item: any): string {
-    var state: number = this.getStateNum(item);
+    var state: BookStatusType = this.getStateNum(item);
 
-    switch (state) {
-      case 0:
-        return "Booking";
-      case 1:
-        return "Should Checkin";
-      case 2:
-        return "Late Checkin";
-      case 3:
-        return "Checkin";
-      case 4:
-        return "Should Checkout";
-      case 5:
-        return "Late Checkout";
-    }
-
-    return "";
+    return Booking.GetStatusName(state);
   }
 
-  getStateNum(item: any): number {
-    var checkout_time = this.checkoutTime;
-    var checkin_time = this.checkinTime;
-    var timeCheck = moment.duration(checkin_time);
-    var timeOffset = moment.duration(checkout_time);
-    var today = moment();
-
-    if (isNullOrUndefined(item.checkinTime)) {
-      var arrivalDate = moment(item.arrivalDate, "DD/MM/YYYY");
-      var shouldCheckin = arrivalDate.clone().add(timeCheck);
-      var lateCheckin = arrivalDate.clone().add(timeOffset);
-
-      if (today.isAfter(lateCheckin)) {
-        return 2;
-      } else if (today.isAfter(shouldCheckin)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } else {
-      var departureDate = moment(item.departureDate, "DD/MM/YYYY");
-      var shouldCheckout = departureDate.clone().add(timeCheck);
-      var lateCheckout = departureDate.clone().add(timeOffset);
-
-      if (today.isAfter(lateCheckout)) {
-        return 5;
-      } else if (today.isAfter(shouldCheckout)) {
-        return 4;
-      } else {
-        return 3;
-      }
-    }
+  getStateNum(item: any): BookStatusType {
+    return Booking.GetStatus(item.arrivalDate, item.departureDate, item.checkinTime, item.checkoutTime);
   }
 
   public Invoice(): void {
@@ -323,14 +277,10 @@ export default class BookingDetail extends Vue {
     };
 
     swal(options).then((value: SweetAlertResult) => {
-      console.log(value);
-
-      let result = false; //Booking.Checkout(this.booking_model.bookingId);
-
-      if (result) {
-        // success, close the dialog and refresh the list
-      } else {
-        // error, invoice not balance
+      if (value.value) {
+        Invoice.Recalculate(this.booking_model.bookingId, () => {
+          Booking.Checkout(this.booking_model.bookingId);
+        });
       }
     });
   }

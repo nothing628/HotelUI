@@ -61,6 +61,10 @@ export class Invoice {
     executeScalar(qry);
   }
 
+  public static Recalculate(invoiceId: string, callback: () => void): void {
+    window.CS.App.CalcBooking(callback, invoiceId);
+  }
+
   public static PaymentProcess(invoiceId: string, paymentDetail: IPaymentModel): void {
     this.DropCurrentPayment(invoiceId);
     let is_cash: boolean = paymentDetail.Type === PaymentType.CASH;

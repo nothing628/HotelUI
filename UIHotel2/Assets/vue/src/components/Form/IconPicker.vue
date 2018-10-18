@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { IconArray } from "@/lib/IconList";
+import { IconArray } from "@/lib/List/Icon";
 import Pagination from "@/components/Table/Pagination.vue";
 
 @Component({

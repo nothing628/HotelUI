@@ -57,6 +57,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { squel, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
+import { Booking, BookStatusType } from "@/lib/Model/ModelCollection";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 import BookingDetail from "@/pages/data/booking/Detail.vue";
@@ -109,58 +110,13 @@ export default class DataBooking extends Vue {
   }
 
   getStateName(item: any): string {
-    var state: number = this.getStateNum(item);
+    var state: BookStatusType = this.getStateNum(item);
 
-    switch (state) {
-      case 0:
-        return "Booking";
-      case 1:
-        return "Should Checkin";
-      case 2:
-        return "Late Checkin";
-      case 3:
-        return "Checkin";
-      case 4:
-        return "Should Checkout";
-      case 5:
-        return "Late Checkout";
-    }
-
-    return "";
+    return Booking.GetStatusName(state);
   }
 
-  getStateNum(item: any): number {
-    var checkout_time = this.checkoutTime;
-    var checkin_time = this.checkinTime;
-    var timeCheck = moment.duration(checkin_time);
-    var timeOffset = moment.duration(checkout_time);
-    var today = moment();
-
-    if (isNullOrUndefined(item.CheckinAt)) {
-      var arrivalDate = moment(item.ArrivalDate);
-      var shouldCheckin = arrivalDate.clone().add(timeCheck);
-      var lateCheckin = arrivalDate.clone().add(timeOffset);
-
-      if (today.isAfter(lateCheckin)) {
-        return 2;
-      } else if (today.isAfter(shouldCheckin)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } else {
-      var departureDate = moment(item.DepartureDate);
-      var shouldCheckout = departureDate.clone().add(timeCheck);
-      var lateCheckout = departureDate.clone().add(timeOffset);
-
-      if (today.isAfter(lateCheckout)) {
-        return 5;
-      } else if (today.isAfter(shouldCheckout)) {
-        return 4;
-      } else {
-        return 3;
-      }
-    }
+  getStateNum(item: any): BookStatusType {
+    return Booking.GetStatus(item.arrivalDate, item.departureDate, item.CheckinAt, item.CheckoutAt);
   }
 
   getStateColor(item: any): Array<string> {

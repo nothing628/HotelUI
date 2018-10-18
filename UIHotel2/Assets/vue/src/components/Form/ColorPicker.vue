@@ -20,7 +20,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ColorArray } from "@/lib/ColorList";
+import { ColorArray } from "@/lib/List/Color";
 
 @Component
 export default class ColorPicker extends Vue {

@@ -25,7 +25,7 @@
           <address class="m-t-5 m-b-5">
             <strong>{{ Guest_Name }}</strong><br>
             <span v-html="CleanAddress(Guest_Address)"></span>
-            Phone: {{Guest_Phone1}}/{{Guest_Phone2}}<br>
+            Phone: {{Guest_Phone1}} / {{Guest_Phone2}}<br>
             Email: {{Guest_Email}}
           </address>
         </div>

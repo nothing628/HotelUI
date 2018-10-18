@@ -11,7 +11,7 @@ export interface IApp {
   GetUploadUrl(filehash: string): string;
   GetNewBookingNumber(): string;
   CalcTransaction(callback: () => void): void;
-  CalcBooking(callback: () => void): void;
+  CalcBooking(callback: () => void, invoiceId?: string): void;
 }
 
 export interface ISetting {

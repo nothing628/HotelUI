@@ -13,15 +13,24 @@ namespace UIHotel2.Misc
     {
         public static void CalculateBooking()
         {
+            CalculateBooking("");
+        }
+
+        public static void CalculateBooking(string BookId)
+        {
             using (var context = new HotelContext())
             {
-                var selectData = (from a in context.Invoices.Include(p => p.Booking).Include(p => p.Booking.Type)
-                                  where !a.CloseAt.HasValue
-                                  select a).ToList();
+                var iqueryable = from a in context.Invoices.Include(p => p.Booking).Include(p => p.Booking.Type)
+                                 where !a.CloseAt.HasValue
+                                 select a;
+
+                if (BookId.Length > 0) iqueryable.Where(p => p.BookingId == BookId);
+
+                var selectData = iqueryable.ToList();
                 var checkinData = (from a in selectData
                                    where a.Booking.CheckinAt.HasValue
                                    select a).ToList();
-                foreach(var data in checkinData)
+                foreach (var data in checkinData)
                 {
                     CalculateInvoice(data, data.Booking.Type, data.Booking.RoomId, data.Booking.ArrivalDate, data.Booking.DepartureDate);
                 }
