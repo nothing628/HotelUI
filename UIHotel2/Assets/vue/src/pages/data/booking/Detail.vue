@@ -142,7 +142,7 @@ import StepItem from "@/components/Steps/StepItem.vue";
 import StepSelector from "@/components/Steps/StepSelector.vue";
 import StepContainer from "@/components/Steps/StepContainer.vue";
 import moment from "moment";
-import swal, {SweetAlertResult,SweetAlertOptions} from "sweetalert2";
+import swal, { SweetAlertResult, SweetAlertOptions } from "sweetalert2";
 import { Invoice, Booking, BookStatusType } from "@/lib/Model/ModelCollection";
 import { isNullOrUndefined } from "util";
 import { RawLocation } from "vue-router";
@@ -251,7 +251,12 @@ export default class BookingDetail extends Vue {
   }
 
   getStateNum(item: any): BookStatusType {
-    return Booking.GetStatus(item.arrivalDate, item.departureDate, item.checkinTime, item.checkoutTime);
+    return Booking.GetStatus(
+      item.arrivalDate,
+      item.departureDate,
+      item.checkinTime,
+      item.checkoutTime
+    );
   }
 
   public Invoice(): void {
@@ -356,7 +361,10 @@ export default class BookingDetail extends Vue {
       .where("Id = ?", this.booking_model.guestId);
     let result = execute(qry);
     let first = result[0];
-    let fulladdress = first.Address + ", " + first.City + ", " + first.Province + ", " + first.State;
+    let fulladdress = first.Address + ", ";
+    fulladdress += first.City + ", ";
+    fulladdress += first.Province + ", ";
+    fulladdress += first.State;
 
     this.guest_model.idNumber = first.IdNumber;
     this.guest_model.fullname = first.Fullname;

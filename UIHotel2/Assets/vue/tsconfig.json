@@ -16,7 +16,8 @@
       "node_modules/@types"
     ],
     "types": [
-      "node"
+      "node",
+      "echarts"
     ],
     "paths": {
       "@/*": [

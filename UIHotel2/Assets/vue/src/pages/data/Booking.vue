@@ -116,7 +116,12 @@ export default class DataBooking extends Vue {
   }
 
   getStateNum(item: any): BookStatusType {
-    return Booking.GetStatus(item.arrivalDate, item.departureDate, item.CheckinAt, item.CheckoutAt);
+    return Booking.GetStatus(
+      item.arrivalDate,
+      item.departureDate,
+      item.CheckinAt,
+      item.CheckoutAt
+    );
   }
 
   getStateColor(item: any): Array<string> {
