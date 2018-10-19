@@ -242,6 +242,7 @@ namespace UIHotel2.Misc
         private static void CalculateList(List<Transaction> lst, decimal lastSubtotal)
         {
             var lstSubtotal = lastSubtotal;
+            var limit = DateTime.Now.AddDays(-7).Date;
 
             using (var context = new HotelContext())
             using (var dbTrans = context.Database.BeginTransaction())
@@ -252,6 +253,7 @@ namespace UIHotel2.Misc
                     {
                         var newSubtotal = lstSubtotal + trans.AmmountIn - trans.AmmountOut;
                         trans.Subtotal = newSubtotal;
+                        trans.IsClosed = trans.TransactionAt < limit;
                         lstSubtotal = newSubtotal;
                         context.Entry(trans).State = EntityState.Modified;
                         context.SaveChanges();
@@ -266,7 +268,7 @@ namespace UIHotel2.Misc
             }
         }
 
-        public static void CalculateSubtotal()
+        public static void CalculateSubtotal(bool normalize = false)
         {
             using (var context = new HotelContext())
             {
@@ -275,9 +277,9 @@ namespace UIHotel2.Misc
                 var last7 = DateTime.Today.AddDays(-7);
 
                 var lastTrans = (from t in context.Transactions
-                                    where t.IsClosed
-                                    orderby t.TransactionAt descending
-                                    select t).FirstOrDefault();
+                                 where t.TransactionAt <= last7
+                                 orderby t.TransactionAt descending
+                                 select t).FirstOrDefault();
 
                 var transaction = (from t in context.Transactions
                                    where !t.IsClosed
@@ -289,6 +291,12 @@ namespace UIHotel2.Misc
                 if (lastTrans != null)
                 {
                     lstSubtotal = lastTrans.Subtotal;
+                }
+
+                if (normalize)
+                {
+                    lstSubtotal = 0;
+                    transaction = context.Transactions.OrderBy(c => c.TransactionAt).ToList();
                 }
 
                 CalculateList(transaction, lstSubtotal);

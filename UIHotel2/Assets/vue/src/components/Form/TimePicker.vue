@@ -1,6 +1,6 @@
 <template>
   <div class="input-group bootstrap-timepicker timepicker">
-    <input class="form-control" type="text" v-model="valuex" maxlength="8">
+    <input class="form-control" type="text" v-model="valuex" maxlength="8" :disabled="disabled">
     <span class="input-group-addon" @click="toggleFloat">
       <i class="glyphicon glyphicon-time"></i>
     </span>
@@ -24,6 +24,9 @@ export default class TimePicker extends Vue {
 
   @Prop({ type: String, required: false })
   private value?: string;
+
+  @Prop({ type: Boolean, required: false, default: false })
+  private disabled?: boolean;
 
   closeAll() {
     this.show = false;

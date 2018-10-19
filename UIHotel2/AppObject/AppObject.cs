@@ -36,29 +36,41 @@ namespace UIHotel2.AppObject
 
         private void CalcTransaction(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            var callback = e.Arguments[0];
-            var th = new Thread(TransactionHelper.CalculateSubtotal);
-            th.Start();
-            th.Join();
+            try
+            {
+                var callback = e.Arguments[0];
+                var th = new Thread(() => TransactionHelper.CalculateSubtotal(false));
+                th.Start();
+                th.Join();
 
-            ExecuteCallback(callback);
+                ExecuteCallback(callback);
+            } catch (Exception ex)
+            {
+                e.Exception = ex.Message;
+            }
         }
 
         public void CalcBooking(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            var callback = e.Arguments[0];
-            var bookId = "";
-
-            if (e.Arguments.Length == 2)
+            try
             {
-                bookId = e.Arguments[1].StringValue;
+                var callback = e.Arguments[0];
+                var bookId = "";
+
+                if (e.Arguments.Length == 2)
+                {
+                    bookId = e.Arguments[1].StringValue;
+                }
+
+                var th = new Thread(() => TransactionHelper.CalculateBooking(bookId));
+                th.Start();
+                th.Join();
+
+                ExecuteCallback(callback);
+            } catch (Exception ex)
+            {
+                e.Exception = ex.Message;
             }
-
-            var th = new Thread(() => TransactionHelper.CalculateBooking(bookId));
-            th.Start();
-            th.Join();
-
-            ExecuteCallback(callback);
         }
 
         private void ExecuteCallback(CfrV8Value callback)

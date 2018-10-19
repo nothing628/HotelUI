@@ -23,12 +23,18 @@ namespace UIHotel2
             {
                 var firstArgs = args[0];
 
-                if (firstArgs == "--calc-transaction")
+                if (firstArgs == "--calc-all-transaction")
+                {
+                    TransactionHelper.CalculateSubtotal(true);
+                    return;
+                }
+                else if (firstArgs == "--calc-transaction")
                 {
                     TransactionHelper.CalculateSubtotal();
                     TransactionHelper.ClosingTransaction();
                     return;
-                } else if (firstArgs == "--calc-booking")
+                }
+                else if (firstArgs == "--calc-booking")
                 {
                     TransactionHelper.CalculateBooking();
                     return;

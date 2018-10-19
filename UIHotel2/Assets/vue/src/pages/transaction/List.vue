@@ -38,8 +38,8 @@
                   <td>{{ item.Subtotal | strcurrency }}</td>
                   <td>
                     <div class="btn-group pull-right">
-                      <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
-                      <button class="btn btn-sm btn-danger" @click="deleteData(item)"><i class="fa fa-trash"></i> Delete</button>
+                      <button class="btn btn-sm btn-warning" :disabled="canEdit(item)" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
+                      <button class="btn btn-sm btn-danger" :disabled="canEdit(item)" @click="deleteData(item)"><i class="fa fa-trash"></i> Delete</button>
                     </div>
                   </td>
               </tr>
@@ -60,7 +60,8 @@
                 name="date_at"
                 v-model="modelData.TransactionDate"
                 v-validate="'required'"
-                :max="maxDate"/>
+                :max="maxDate"
+                :min="minDate"/>
                 <span class="text-danger">{{ errors.first('date_at') }}</span>
               </div>
               <div class="col-md-5">
@@ -124,7 +125,7 @@
           </template>
         </uiv-modal>
 
-        <uiv-modal title="Add Transaction" v-model="show_edit" @hide="closeAll">
+        <uiv-modal title="Edit Transaction" v-model="show_edit" @hide="closeAll">
           <div class="form form-horizontal">
             <div class="form-group">
               <label class="col-md-3 control-label">Transaction At</label>
@@ -135,11 +136,12 @@
                 name="date_at"
                 v-model="modelData.TransactionDate"
                 v-validate="'required'"
+                disabled
                 :max="maxDate"/>
                 <span class="text-danger">{{ errors.first('date_at') }}</span>
               </div>
               <div class="col-md-5">
-                <time-picker v-model="modelData.TransactionTime"></time-picker>
+                <time-picker disabled v-model="modelData.TransactionTime"></time-picker>
               </div>
             </div>
             <div class="form-group">
@@ -205,7 +207,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { ss, si, su, sd, execute, executeScalar } from "@/lib/Test";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 import TimePicker from "@/components/Form/TimePicker.vue";
@@ -259,6 +261,10 @@ export default class TransactionList extends Vue {
     return moment().format("YYYY-MM-DD");
   }
 
+  get minDate(): string {
+    return this.limitEdit.format("YYYY-MM-DD");
+  }
+
   get listFilteredCategory(): Array<any> {
     return this.listCategory.filter((item: any) => {
       if (this.kind == "1") {
@@ -291,6 +297,10 @@ export default class TransactionList extends Vue {
     return Math.ceil(this.max_item / this.limit);
   }
 
+  get limitEdit(): Moment {
+    return moment().add(-7, "d").startOf("d");
+  }
+
   getCategoryKind(id: any): boolean | undefined {
     let result = this.listCategory.filter((item: any) => {
       return item.Id == id;
@@ -306,6 +316,13 @@ export default class TransactionList extends Vue {
   closeAll() {
     this.show_add = false;
     this.show_edit = false;
+  }
+
+  canEdit(item: any): boolean {
+    var transactionAt = moment(item.TransactionAt);
+    var limitEdit = this.limitEdit;
+
+    return transactionAt.isBefore(limitEdit);;
   }
 
   addData() {
