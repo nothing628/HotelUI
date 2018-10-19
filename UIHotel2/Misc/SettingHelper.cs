@@ -117,7 +117,7 @@ namespace UIHotel2.Misc
         {
             get
             {
-                var deposit = GetDatabaseSetting("deposit");
+                var deposit = GetDatabaseSetting("deposit", "0");
                 return Convert.ToInt32(deposit);
             }
             set => SetDatabaseSetting("deposit", value.ToString());
@@ -126,7 +126,7 @@ namespace UIHotel2.Misc
         {
             get
             {
-                var penalty = GetDatabaseSetting("penalty");
+                var penalty = GetDatabaseSetting("penalty", "0");
                 return Convert.ToInt32(penalty);
             }
             set => SetDatabaseSetting("penalty", value.ToString());
