@@ -49,18 +49,18 @@
                 </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>09/01</td>
-                <td>Description</td>
-                <td>Rp100.000</td>
-                <td>Rp0</td>
+              <tr v-for="item in listData" :key="item.Id">
+                <td>{{ item.TransactionAt | strdate("DD/MM/YYYY HH:mm") }}</td>
+                <td>{{ item.Description }}</td>
+                <td>{{ item.AmmountIn | strcurrency }}</td>
+                <td>{{ item.AmmountOut | strcurrency }}</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="2">Total</td>
-                <td>Rp785.000</td>
-                <td>Rp200.000</td>
+                <td colspan="2"><strong>Total</strong></td>
+                <td>{{ totalIn | strcurrency }}</td>
+                <td>{{ totalOut | strcurrency }}</td>
               </tr>
             </tfoot>
           </table>
@@ -109,6 +109,22 @@ export default class ReportFinance extends Vue {
 
   get isCustom(): boolean {
     return this.type == DownloadType.Custom;
+  }
+
+  get totalIn(): number {
+    let result: number = 0;
+
+    this.listData.forEach((item: any) => result += item.AmmountIn);
+
+    return result;
+  }
+
+  get totalOut(): number {
+    let result: number = 0;
+
+    this.listData.forEach((item: any) => result += item.AmmountOut);
+
+    return result;
   }
 
   getReport(dateStart: Moment, dateEnd: Moment) {
