@@ -102,9 +102,7 @@ export default class ReportFinance extends Vue {
 
   @Watch("isDownload")
   isDownloadChange(newval: boolean, oldval: boolean): void {
-    if (newval) {
-      this.$nextTick(() => this.createChart());
-    } else {
+    if (!newval) {
       this.$nextTick(() => this.destroyChart());
     }
   }
@@ -126,6 +124,8 @@ export default class ReportFinance extends Vue {
     data.forEach((item: any) => {
       this.listData.push(item);
     });
+
+    this.$nextTick(() => this.createChart());
   }
 
   getTimeRange(type: DownloadType): ITimeRange {
@@ -160,7 +160,7 @@ export default class ReportFinance extends Vue {
 
     switch(this.type) {
       case DownloadType.Dialy:
-        result.push(range.start.format("DD"));
+        result.push(range.start.format("DD/MM/YYYY"));
       break;
       case DownloadType.Monthly:
         while (start.isBefore(end)) {
@@ -185,6 +185,26 @@ export default class ReportFinance extends Vue {
     return result;
   }
 
+  sumAmmountIn(items: Array<any>): number {
+    if (items.length == 0) return 0;
+
+    let result = 0;
+
+    items.forEach((item: any) => result += item.AmmountIn);
+
+    return result;
+  }
+
+  sumAmmountOut(items: Array<any>): number {
+    if (items.length == 0) return 0;
+
+    let result = 0;
+
+    items.forEach((item: any) => result += item.AmmountOut);
+
+    return result;
+  }
+
   getYAxisData(kind: KindType): Array<number> {
     let result: Array<number> = new Array<number>();
     let range: ITimeRange = this.getTimeRange(this.type);
@@ -193,33 +213,59 @@ export default class ReportFinance extends Vue {
 
     switch (this.type) {
       case DownloadType.Dialy:
-        let calc = this.listData.reduce((prevVal: any, curVal: any) => {
-          console.log(curVal);
-          return 0;
-        });
+        let sumNum = 0;
 
-        result.push(calc);
+        if (kind == KindType.In)
+          sumNum = this.sumAmmountIn(this.listData);
+        else
+          sumNum = this.sumAmmountOut(this.listData);
+
+        result.push(sumNum);
       break;
+      case DownloadType.Custom:
       case DownloadType.Monthly:
         while (start.isBefore(end)) {
-          let endTime = start.endOf("day");
-          let startTime = start.startOf("day");
+          let sumNum = 0;
+          let startTime = start.clone().startOf("date");
+          let endTime = start.clone().endOf("date");
           let filterDay = this.listData.filter((item: any) => {
             let itemDate = moment(item.TransactionAt);
-            let retFilt = itemDate.isAfter(startTime);
-console.log(retFilt);
-            return itemDate.isBetween(startTime, endTime, "seconds");
+            let isAfter = itemDate.isAfter(startTime);
+            let isBefore = itemDate.isBefore(endTime);
+
+            return isBefore && isAfter;
           });
 
-          console.log(filterDay);
+          if (kind == KindType.In)
+            sumNum = this.sumAmmountIn(filterDay);
+          else
+            sumNum = this.sumAmmountOut(filterDay);
+          
+          result.push(sumNum);
           start.add(1, "day");
         }
       break;
       case DownloadType.Yearly:
+        while (start.isBefore(end)) {
+          let sumNum = 0;
+          let startTime = start.clone().startOf("months");
+          let endTime = start.clone().endOf("months");
+          let filterDay = this.listData.filter((item: any) => {
+            let itemDate = moment(item.TransactionAt);
+            let isAfter = itemDate.isAfter(startTime);
+            let isBefore = itemDate.isBefore(endTime);
 
-      break;
-      case DownloadType.Custom:
+            return isBefore && isAfter;
+          });
 
+          if (kind == KindType.In)
+            sumNum = this.sumAmmountIn(filterDay);
+          else
+            sumNum = this.sumAmmountOut(filterDay);
+          
+          result.push(sumNum);
+          start.add(1, "months");
+        }
       break;
     }
 
