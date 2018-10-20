@@ -41,7 +41,10 @@ namespace UIHotel2
                 }
             }
 
-            if (Bootstrap.Load(options => options.RemoteDebuggingPort = 8010))
+            if (Bootstrap.Load(options => {
+                options.RemoteDebuggingPort = 8010;
+                options.SingleProcess = true;
+            }))
             {
                 Bootstrap.RegisterFolderResources("Assets");
 

@@ -94,7 +94,7 @@
                   </a>
                 </div>
                 <div class="col-md-4">
-                  <a href="javascript:;" class="btn btn-lg btn-block btn-success">
+                  <a href="javascript:;" class="btn btn-lg btn-block btn-success" @click="goto('report.finance')">
                     <i class="fa fa-line-chart pull-left"></i>
                     Report
                   </a>

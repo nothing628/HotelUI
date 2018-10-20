@@ -4,10 +4,11 @@ namespace UIHotel2.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using UIHotel2.Data;
     using UIHotel2.Data.Tables;
     using UIHotel2.Misc;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Data.HotelContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<HotelContext>
     {
         public Configuration()
         {

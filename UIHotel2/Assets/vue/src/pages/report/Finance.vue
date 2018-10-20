@@ -8,10 +8,10 @@
         <div class="form-inline m-b-10">
           <div class="form-group">
             <div class="btn-group m-r-5">
-              <a class="btn btn-success" :class="{active: type == 0}" @click="setDay(0)">Today</a>
-              <a class="btn btn-success" :class="{active: type == 1}" @click="setDay(1)">This Month</a>
-              <a class="btn btn-success" :class="{active: type == 2}" @click="setDay(2)">This Year</a>
-              <a class="btn btn-success" :class="{active: type == 3}" @click="setDay(3)">Custom</a>
+              <button class="btn btn-success" :class="{active: type == 0}" @click="setDay(0)">Today</button>
+              <button class="btn btn-success" :class="{active: type == 1}" @click="setDay(1)">This Month</button>
+              <button class="btn btn-success" :class="{active: type == 2}" @click="setDay(2)">This Year</button>
+              <button class="btn btn-success" :class="{active: type == 3}" @click="setDay(3)">Custom</button>
             </div>
           </div>
           <div class="form-group" v-if="isCustom">
@@ -24,18 +24,18 @@
           </div>
           <div class="form-group">
             <div class="btn-group">
-              <a class="btn btn-success" @click="downloadReport">
+              <button class="btn btn-success" @click="downloadReport">
                 <i class="fa fa-search"></i>
                 <span> Search</span>
-              </a>
-              <a class="btn btn-success" @click="exportReport">
+              </button>
+              <button class="btn btn-success" @click="exportReport">
                 <i class="fa fa-download"></i>
                 <span> Export</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
-        <div style="width: 100%;position: relative;" v-if="isDownload">
+        <div style="width: 100%;position: relative;" v-show="isDownload">
           <div ref="kanvas"></div>
         </div>
         <div class="dataTables_wrapper form-inline dt-bootstrap no-footer" v-if="isDownload">
@@ -72,7 +72,8 @@
 <script lang="ts">
 import echart from "echarts";
 import moment, { Moment } from "moment";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { ss, execute } from "@/lib/Test";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 enum DownloadType {
   Dialy,
@@ -99,12 +100,32 @@ export default class ReportFinance extends Vue {
   type: DownloadType = DownloadType.Dialy;
   listData: Array<any> = new Array<any>();
 
+  @Watch("isDownload")
+  isDownloadChange(newval: boolean, oldval: boolean): void {
+    if (newval) {
+      this.$nextTick(() => this.createChart());
+    } else {
+      this.$nextTick(() => this.destroyChart());
+    }
+  }
+
   get isCustom(): boolean {
     return this.type == DownloadType.Custom;
   }
 
-  getReport(dateStart: string, dateEnd: string) {
-    //
+  getReport(dateStart: Moment, dateEnd: Moment) {
+    let qry = ss()
+      .from("transactions")
+      .where("TransactionAt >= ?", dateStart.format("YYYY-MM-DD HH:mm:ss"))
+      .where("TransactionAt <= ?", dateEnd.format("YYYY-MM-DD HH:mm:ss"));
+    let data = execute(qry);
+
+    this.listData = [];
+    this.isDownload = true;
+
+    data.forEach((item: any) => {
+      this.listData.push(item);
+    });
   }
 
   getTimeRange(type: DownloadType): ITimeRange {
@@ -132,19 +153,89 @@ export default class ReportFinance extends Vue {
   }
 
   getXAxisData(): Array<string> {
-    return [];
+    let result: Array<string> = new Array<string>();
+    let range: ITimeRange = this.getTimeRange(this.type);
+    let start = range.start.clone();
+    let end = range.end;
+
+    switch(this.type) {
+      case DownloadType.Dialy:
+        result.push(range.start.format("DD"));
+      break;
+      case DownloadType.Monthly:
+        while (start.isBefore(end)) {
+          result.push(start.format("DD"));
+          start.add(1, "day");
+        }
+      break;
+      case DownloadType.Yearly:
+        while (start.isBefore(end)) {
+          result.push(start.format("MMM YYYY"));
+          start.add(1, "month");
+        }
+      break;
+      case DownloadType.Custom:
+        while (start.isBefore(end)) {
+          result.push(start.format("DD/MM/YYYY"));
+          start.add(1, "day");
+        }
+      break;
+    }
+
+    return result;
   }
 
   getYAxisData(kind: KindType): Array<number> {
-    return [];
+    let result: Array<number> = new Array<number>();
+    let range: ITimeRange = this.getTimeRange(this.type);
+    let start = range.start.clone();
+    let end = range.end;
+
+    switch (this.type) {
+      case DownloadType.Dialy:
+        let calc = this.listData.reduce((prevVal: any, curVal: any) => {
+          console.log(curVal);
+          return 0;
+        });
+
+        result.push(calc);
+      break;
+      case DownloadType.Monthly:
+        while (start.isBefore(end)) {
+          let endTime = start.endOf("day");
+          let startTime = start.startOf("day");
+          let filterDay = this.listData.filter((item: any) => {
+            let itemDate = moment(item.TransactionAt);
+            let retFilt = itemDate.isAfter(startTime);
+console.log(retFilt);
+            return itemDate.isBetween(startTime, endTime, "seconds");
+          });
+
+          console.log(filterDay);
+          start.add(1, "day");
+        }
+      break;
+      case DownloadType.Yearly:
+
+      break;
+      case DownloadType.Custom:
+
+      break;
+    }
+
+    return result;
+  }
+
+  destroyChart() {
+    var kanvas = this.$refs.kanvas as HTMLDivElement;
+    echart.dispose(kanvas);
   }
 
   createChart() {
-    var kanvas = this.$refs.kanvas as Element;
+    var kanvas = this.$refs.kanvas as HTMLDivElement;
     $(kanvas).width(kanvas.clientWidth);
     $(kanvas).height(400);
-    var elem = kanvas as HTMLDivElement;
-    var chart = echart.init(elem);
+    var chart = echart.init(kanvas);
 
     chart.setOption({
       color: ['#00acac', '#ff5b57'],
@@ -183,13 +274,13 @@ export default class ReportFinance extends Vue {
 
   downloadReport() {
     let range = this.getTimeRange(this.type);
-    console.log(range);
+
+    this.getReport(range.start, range.end);
   }
 
   mounted() {
     this.$store.commit("changeTitle", "Transaction Report");
     this.$store.commit("changeSubtitle", "");
-    this.createChart();
   }
 }
 </script>

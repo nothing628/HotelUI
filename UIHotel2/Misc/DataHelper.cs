@@ -4,13 +4,39 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIHotel2.AppObject;
 using UIHotel2.Data;
 using UIHotel2.Data.Tables;
+using UIHotel2.Migrations;
 
 namespace UIHotel2.Misc
 {
     public static class DataHelper
     {
+        public static bool MigrateDB(bool recreateDB)
+        {
+            var connStr = DBObject.ConnectionString;
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<HotelContext, Configuration>());
+
+            if (Database.Exists(connStr) && recreateDB)
+            {
+                Database.Delete(connStr);
+            }
+
+            try
+            {
+                using (var ctx = new HotelContext())
+                {
+                    ctx.Database.Initialize(true);
+                }
+
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
         public static decimal GetRoomPrice(long IdRoom, DateTime DateAt)
         {
             decimal price = 0;
