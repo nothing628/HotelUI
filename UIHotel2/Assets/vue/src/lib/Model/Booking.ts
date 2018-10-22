@@ -101,8 +101,8 @@ export class Booking {
   }
 
   public static GetStatus(
-    arrivalAt: string,
-    departureAt: string,
+    arrivalAt: string | Date,
+    departureAt: string | Date,
     checkinTime?: string,
     checkoutTime?: string
   ): BookStatusType {

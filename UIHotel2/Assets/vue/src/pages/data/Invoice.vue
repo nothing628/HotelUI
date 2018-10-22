@@ -110,11 +110,11 @@
                   <label for="option1">CASH</label>
                 </div>
                 <div class="radio radio-css">
-                  <input type="radio" v-model="TypeModel" id="option2" value="ONLINE">
-                  <label for="option2">ONLINE</label>
+                  <input type="radio" v-model="TypeModel" id="option2" value="DEBIT">
+                  <label for="option2">DEBIT</label>
                 </div>
               </div>
-              <div class="sub-price" v-if="TypeModel == 'ONLINE'">
+              <div class="sub-price" v-if="TypeModel == 'DEBIT'">
                 <small>REF NO</small>
                 <input type="text" v-model="TypeRefno"/>
               </div>
@@ -252,7 +252,7 @@ export default class DataInvoice extends Vue {
       if (this.PaymentModel.Type == PaymentType.CASH) {
         return "CASH";
       } else {
-        return "ONLINE";
+        return "DEBIT";
       }
     }
   }
@@ -367,7 +367,7 @@ export default class DataInvoice extends Vue {
       this.PaymentModel.TRefNo = "";
     } else {
       let first = dataPayment[0];
-      this.PaymentModel.Type = first.KindId == 100 ? PaymentType.CASH : PaymentType.ONLINE;
+      this.PaymentModel.Type = first.KindId == 100 ? PaymentType.CASH : PaymentType.DEBIT;
       this.PaymentModel.Ammount = first.AmmountIn;
       this.PaymentModel.TRefNo = first.Description;
     }
@@ -379,7 +379,7 @@ export default class DataInvoice extends Vue {
     if (isUndefined(this.PaymentModel.Type) || this.PaymentModel.Type === PaymentType.CASH) {
       this.TypeModel = "CASH";
     } else {
-      this.TypeModel = "ONLINE";
+      this.TypeModel = "DEBIT";
     }
 
     this.is_pay = true;
@@ -390,7 +390,7 @@ export default class DataInvoice extends Vue {
     let paymentModel: IPaymentModel = {
       Ammount: this.PaymentModel.Ammount,
       TRefNo: this.TypeRefno,
-      Type: this.TypeModel == "CASH" ? PaymentType.CASH : PaymentType.ONLINE
+      Type: this.TypeModel == "CASH" ? PaymentType.CASH : PaymentType.DEBIT
     };
 
     Invoice.PaymentProcess(this.invId, paymentModel);

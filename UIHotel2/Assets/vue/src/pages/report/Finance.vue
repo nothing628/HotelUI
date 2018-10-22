@@ -333,7 +333,7 @@ export default class ReportFinance extends Vue {
   exportReport() {
     let range = this.getTimeRange(this.type);
 
-    //
+    window.CS.Hotel.TransactionReportDownload(range.start.toDate(), range.end.toDate());
   }
 
   downloadReport() {

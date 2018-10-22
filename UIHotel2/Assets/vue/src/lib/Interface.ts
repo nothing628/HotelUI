@@ -14,6 +14,11 @@ export interface IApp {
   CalcBooking(callback: () => void, invoiceId?: string): void;
 }
 
+export interface IHotel {
+  TransactionReportDownload(start: Date, end: Date): void;
+  BookingReportDownload(start: Date, end: Date): void;
+}
+
 export interface ISetting {
   App_Name: string;
   App_Key: string;
@@ -40,5 +45,6 @@ export interface ISetting {
 export interface ICS {
   DB: IDB;
   App: IApp;
+  Hotel: IHotel;
   Setting: ISetting;
 }

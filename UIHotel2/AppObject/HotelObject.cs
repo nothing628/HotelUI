@@ -27,7 +27,33 @@ namespace UIHotel2.AppObject
         public override void Register(JSObject obj)
         {
             base.Register(obj);
-            Self.AddFunction("TransactionReportDownload").Execute += TransactionDownload; ;
+            Self.AddFunction("TransactionReportDownload").Execute += TransactionDownload;
+            Self.AddFunction("BookingReportDownload").Execute += BookingDownload;
+        }
+
+        private void BookingDownload(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            if (e.Arguments.Length != 2 || !e.Arguments[0].IsDate || !e.Arguments[1].IsDate)
+            {
+                e.Exception = "Need to have 2 argument in date";
+                return;
+            }
+
+            var time = new CfrTime();
+            var start = time.ToUniversalTime(e.Arguments[0].DateValue);
+            var end = time.ToUniversalTime(e.Arguments[1].DateValue);
+            var oThread = new Thread(() => {
+                var filename = GetFilename("Excel File|*.xlsx");
+                var isSuccess = CreateBookingReport(filename, start, end.AddDays(1));
+
+                if (isSuccess)
+                {
+                    Process.Start(filename);
+                }
+            });
+
+            oThread.SetApartmentState(ApartmentState.STA);
+            oThread.Start();
         }
 
         private void TransactionDownload(object sender, CfrV8HandlerExecuteEventArgs e)
@@ -53,6 +79,21 @@ namespace UIHotel2.AppObject
 
             oThread.SetApartmentState(ApartmentState.STA);
             oThread.Start();
+        }
+
+        private bool CreateBookingReport(string destination, DateTime start, DateTime end)
+        {
+            var result = true;
+            var start_row = 0;
+
+            using (var workbook = ReoGridControl.CreateMemoryWorkbook())
+            using (var context = new HotelContext())
+            {
+                if (string.IsNullOrEmpty(destination)) return false;
+                var worksheet = workbook.Worksheets[0];
+            }
+
+            return result;
         }
 
         private bool CreateTransactionReport(string destination, DateTime start, DateTime end)

@@ -117,8 +117,8 @@ export default class DataBooking extends Vue {
 
   getStateNum(item: any): BookStatusType {
     return Booking.GetStatus(
-      item.arrivalDate,
-      item.departureDate,
+      item.ArrivalDate,
+      item.DepartureDate,
       item.CheckinAt,
       item.CheckoutAt
     );

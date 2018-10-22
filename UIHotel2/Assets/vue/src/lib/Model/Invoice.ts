@@ -4,7 +4,7 @@ import { isUndefined } from "util";
 
 export enum PaymentType {
   CASH,
-  ONLINE
+  DEBIT
 }
 
 export enum UncategorizedDetailType {
