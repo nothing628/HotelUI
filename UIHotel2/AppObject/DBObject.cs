@@ -26,8 +26,7 @@ namespace UIHotel2.AppObject
         {
             get
             {
-                var dbObject = new DBObject();
-                return dbObject.GetConnectionString();
+                return GetConnectionString();
             }
         }
 
@@ -290,7 +289,7 @@ namespace UIHotel2.AppObject
             }
         }
 
-        private string GetConnectionString()
+        private static string GetConnectionString()
         {
             var SQL_Host = Settings.Default.SQL_HOST;
             var SQL_Port = Settings.Default.SQL_PORT;
