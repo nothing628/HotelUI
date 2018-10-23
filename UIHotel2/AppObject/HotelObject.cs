@@ -4,6 +4,7 @@ using Chromium.WebBrowser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -84,13 +85,80 @@ namespace UIHotel2.AppObject
         private bool CreateBookingReport(string destination, DateTime start, DateTime end)
         {
             var result = true;
-            var start_row = 0;
+            var start_row = 5;
 
             using (var workbook = ReoGridControl.CreateMemoryWorkbook())
             using (var context = new HotelContext())
             {
                 if (string.IsNullOrEmpty(destination)) return false;
                 var worksheet = workbook.Worksheets[0];
+                var transactionList = new List<Booking>();
+
+                try
+                {
+                    transactionList = context.Bookings
+                        .Include(t => t.Type)
+                        .Include(t => t.Room)
+                        .Include(t => t.Guest)
+                        .Where(t => t.BookingAt >= start.Date)
+                        .Where(t => t.BookingAt < end.Date)
+                        .ToList();
+                } catch
+                {
+                    result = false;
+                }
+
+                try
+                {
+                    worksheet.Cells[start_row, 0].Data = "Booking Date";
+                    worksheet.Cells[start_row, 1].Data = "Arrival Date";
+                    worksheet.Cells[start_row, 2].Data = "Departure Date";
+                    worksheet.Cells[start_row, 3].Data = "Checkin Date";
+                    worksheet.Cells[start_row, 4].Data = "Checkout Date";
+                    worksheet.Cells[start_row, 5].Data = "Booking Type";
+                    worksheet.Cells[start_row, 6].Data = "Room Number";
+                    worksheet.Cells[start_row, 7].Data = "Guest Id";
+                    worksheet.Cells[start_row, 8].Data = "Guest Name";
+                    worksheet.Cells[start_row, 9].Data = "Total Adult";
+                    worksheet.Cells[start_row, 10].Data = "Total Child";
+                    worksheet.Cells[start_row, 11].Data = "Total Price";
+                    worksheet.Cells[start_row, 12].Data = "Total Pay";
+
+                    for (int i = 1; i <= transactionList.Count; i++)
+                    {
+                        var bookingData = transactionList[i - 1];
+                        var rowNum = start_row + i;
+
+                        if (rowNum >= worksheet.RowCount - 1) worksheet.RowCount = rowNum + 2;
+
+                        worksheet.Cells[rowNum, 0].Data = bookingData.BookingAt;
+                        worksheet.Cells[rowNum, 1].Data = bookingData.ArrivalDate;
+                        worksheet.Cells[rowNum, 2].Data = bookingData.DepartureDate;
+                        worksheet.Cells[rowNum, 3].Data = bookingData.CheckinAt;
+                        worksheet.Cells[rowNum, 4].Data = bookingData.CheckoutAt;
+                        worksheet.Cells[rowNum, 5].Data = bookingData.Type.TypeName;
+                        worksheet.Cells[rowNum, 6].Data = bookingData.Room.RoomNumber;
+                        worksheet.Cells[rowNum, 7].Data = bookingData.Guest.IdNumber;
+                        worksheet.Cells[rowNum, 8].Data = bookingData.Guest.Fullname;
+                        worksheet.Cells[rowNum, 9].Data = bookingData.CountAdult;
+                        worksheet.Cells[rowNum, 10].Data = bookingData.CountChild;
+                        worksheet.Cells[rowNum, 11].Data = GetPrice(bookingData.Id);
+                        worksheet.Cells[rowNum, 12].Data = GetPay(bookingData.Id);
+
+                        worksheet.Cells[rowNum, 0].DataFormat = CellDataFormatFlag.DateTime;
+                        worksheet.Cells[rowNum, 1].DataFormat = CellDataFormatFlag.DateTime;
+                        worksheet.Cells[rowNum, 2].DataFormat = CellDataFormatFlag.DateTime;
+                        worksheet.Cells[rowNum, 3].DataFormat = CellDataFormatFlag.DateTime;
+                        worksheet.Cells[rowNum, 4].DataFormat = CellDataFormatFlag.DateTime;
+                        worksheet.Cells[rowNum, 6].DataFormat = CellDataFormatFlag.Text;
+                        worksheet.Cells[rowNum, 7].DataFormat = CellDataFormatFlag.Text;
+                    }
+
+                    workbook.Save(destination);
+                } catch
+                {
+                    result = false;
+                }
             }
 
             return result;
@@ -99,7 +167,7 @@ namespace UIHotel2.AppObject
         private bool CreateTransactionReport(string destination, DateTime start, DateTime end)
         {
             var result = true;
-            var start_row = 0;
+            var start_row = 5;
 
             using (var workbook = ReoGridControl.CreateMemoryWorkbook())
             using (var context = new HotelContext())
@@ -128,14 +196,17 @@ namespace UIHotel2.AppObject
 
                     for (int i = 1; i <= transactionList.Count;i++)
                     {
-                        if (start_row + i >= worksheet.RowCount - 1) worksheet.RowCount = start_row + i + 2;
+                        var rowNum = start_row + i;
+                        var transaction = transactionList[i - 1];
 
-                        worksheet.Cells[start_row + i, 0].Data = transactionList[i - 1].TransactionAt;
-                        worksheet.Cells[start_row + i, 1].Data = transactionList[i - 1].Description;
-                        worksheet.Cells[start_row + i, 2].Data = transactionList[i - 1].AmmountIn;
-                        worksheet.Cells[start_row + i, 3].Data = transactionList[i - 1].AmmountOut;
+                        if (rowNum >= worksheet.RowCount - 1) worksheet.RowCount = rowNum + 2;
 
-                        worksheet.Cells[start_row + i, 0].DataFormat = CellDataFormatFlag.DateTime;
+                        worksheet.Cells[rowNum, 0].Data = transaction.TransactionAt;
+                        worksheet.Cells[rowNum, 1].Data = transaction.Description;
+                        worksheet.Cells[rowNum, 2].Data = transaction.AmmountIn;
+                        worksheet.Cells[rowNum, 3].Data = transaction.AmmountOut;
+
+                        worksheet.Cells[rowNum, 0].DataFormat = CellDataFormatFlag.DateTime;
                     }
 
                     workbook.Save(destination);
@@ -162,6 +233,53 @@ namespace UIHotel2.AppObject
             }
 
             return filename;
+        }
+
+        private decimal GetPrice(string invoiceId)
+        {
+            decimal result = 0;
+
+            using (var context = new HotelContext())
+            {
+                var details = GetInvoiceDetail(invoiceId);
+
+                result = details.Sum(t => t.AmmountOut);
+            }
+
+            return result;
+        }
+
+        private decimal GetPay(string invoiceId)
+        {
+            decimal result = 0;
+
+            using (var context = new HotelContext())
+            {
+                var details = GetInvoiceDetail(invoiceId);
+
+                result = details.Sum(t => t.AmmountIn);
+            }
+
+            return result;
+        }
+
+        private List<InvoiceDetail> GetInvoiceDetail(string invoiceId)
+        {
+            var result = new List<InvoiceDetail>();
+
+            if (string.IsNullOrEmpty(invoiceId)) return result;
+
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    result = context.InvoiceDetails
+                        .Where(t => t.InvoiceId == invoiceId)
+                        .ToList();
+                } catch { }
+            }
+
+            return result;
         }
     }
 }

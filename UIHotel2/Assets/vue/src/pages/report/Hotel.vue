@@ -40,9 +40,8 @@
             <thead>
                 <tr role="row">
                   <th rowspan="1" colspan="1">Date</th>
-                  <th rowspan="1" colspan="1">Description</th>
-                  <th rowspan="1" colspan="1">In</th>
-                  <th rowspan="1" colspan="1">Out</th>
+                  <th rowspan="1" colspan="1">Checkin</th>
+                  <th rowspan="1" colspan="1">Checkout</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,7 +54,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="2"><strong>Total</strong></td>
+                <td><strong>Total</strong></td>
                 <td>{{ totalIn | strcurrency }}</td>
                 <td>{{ totalOut | strcurrency }}</td>
               </tr>
@@ -89,6 +88,7 @@ export default class ReportHotel extends Vue {
   type: DownloadType = DownloadType.Dialy;
   startDate: string = "";
   endDate: string = "";
+  listData: Array<any> = new Array<any>();
 
   get isCustom(): boolean {
     return this.type == DownloadType.Custom;
@@ -119,7 +119,7 @@ export default class ReportHotel extends Vue {
   }
 
   getReport(dateStart: Moment, dateEnd: Moment) {
-    //
+    this.isDownload = true;
   }
 
   exportReport() {
