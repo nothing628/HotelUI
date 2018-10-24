@@ -39,24 +39,40 @@
           <table class="table table-striped table-bordered dataTable no-footer dtr-inline" role="grid">
             <thead>
                 <tr role="row">
-                  <th rowspan="1" colspan="1">Date</th>
-                  <th rowspan="1" colspan="1">Checkin</th>
-                  <th rowspan="1" colspan="1">Checkout</th>
+                  <th>ID</th>
+                  <th>Booking</th>
+                  <th>Type</th>
+                  <th>Arrival</th>
+                  <th>Departure</th>
+                  <th>Checkin</th>
+                  <th>Checkout</th>
+                  <th>Room Number</th>
+                  <th>Guest ID</th>
+                  <th>Guest Name</th>
+                  <th>Total Pay</th>
                 </tr>
             </thead>
             <tbody>
               <tr v-for="item in listData" :key="item.Id">
-                <td>{{ item.TransactionAt | strdate("DD/MM/YYYY HH:mm") }}</td>
-                <td>{{ item.Description }}</td>
+                <td>{{ item.Id }}</td>
+                <td>{{ item.BookingAt | strdate("DD/MM/YYYY") }}</td>
+                <td>{{ item.TypeName }}</td>
+                <td>{{ item.ArrivalDate | strdate("DD/MM/YYYY") }}</td>
+                <td>{{ item.DepartureDate | strdate("DD/MM/YYYY") }}</td>
+                <td>{{ item.CheckinAt | strdate("DD/MM/YYYY") }}</td>
+                <td>{{ item.CheckoutAt | strdate("DD/MM/YYYY") }}</td>
+                <td>{{ item.RoomNumber }}</td>
+                <td>{{ item.IdNumber }}</td>
+                <td>{{ item.Fullname }}</td>
                 <td>{{ item.AmmountIn | strcurrency }}</td>
-                <td>{{ item.AmmountOut | strcurrency }}</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td><strong>Total</strong></td>
-                <td>{{ totalIn | strcurrency }}</td>
-                <td>{{ totalOut | strcurrency }}</td>
+                <td colspan="2"><strong>Booking Count</strong></td>
+                <td>{{ BookingCount }}</td>
+                <td colspan="7"><strong>Total</strong></td>
+                <td>{{ TotalPay | strcurrency }}</td>
               </tr>
             </tfoot>
           </table>
@@ -67,7 +83,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { ss, execute } from "@/lib/Test";
+import { ss, se, execute } from "@/lib/Test";
 import moment, { Moment } from "moment";
 
 enum DownloadType {
@@ -94,32 +110,71 @@ export default class ReportHotel extends Vue {
     return this.type == DownloadType.Custom;
   }
 
+  get BookingCount(): number {
+    return this.listData.length;
+  }
+
+  get TotalPay(): number {
+    let result: number = 0;
+
+    this.listData.forEach((item: any) => result += item.AmmountIn);
+
+    return result;
+  }
+
   getTimeRange(type: DownloadType): ITimeRange {
     var timeRange: ITimeRange = {
       start: moment().startOf("d"),
       end: moment().endOf("d")
     };
 
-    switch(type) {
+    switch (type) {
       case DownloadType.Monthly:
         timeRange.start = moment().startOf("M");
         timeRange.end = moment().endOf("M");
-      break;
+        break;
       case DownloadType.Yearly:
         timeRange.start = moment().startOf("y");
         timeRange.end = moment().endOf("y");
-      break;
+        break;
       case DownloadType.Custom:
         timeRange.start = moment(this.startDate).startOf("d");
         timeRange.end = moment(this.endDate).endOf("d");
-      break;
+        break;
     }
 
     return timeRange;
   }
 
   getReport(dateStart: Moment, dateEnd: Moment) {
+    let qry = ss()
+      .from("bookings", "a")
+      .join("bookingtypes", "b", "a.TypeId = b.Id")
+      .join("rooms", "c", "a.RoomId = c.Id")
+      .join("guests", "d", "a.GuestId = d.Id")
+      .join("invoicedetails", "e", "a.Id =  e.InvoiceId")
+      .where(
+        se()
+          .and("e.KindId = ?", 100)
+          .or("e.KindId = ?", 101)
+      )
+      .field("a.Id")
+      .field("a.BookingAt")
+      .field("a.ArrivalDate")
+      .field("a.DepartureDate")
+      .field("a.CheckinAt")
+      .field("a.CheckoutAt")
+      .field("b.TypeName")
+      .field("c.RoomNumber")
+      .field("d.IdNumber")
+      .field("d.Fullname")
+      .field("e.AmmountIn")
+      .where("a.CheckoutAt IS NOT NULL");
+    let result = execute(qry);
+
+    this.listData = [];
     this.isDownload = true;
+    result.forEach((item: any) => this.listData.push(item));
   }
 
   exportReport() {

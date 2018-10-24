@@ -102,6 +102,7 @@ namespace UIHotel2.AppObject
                         .Include(t => t.Guest)
                         .Where(t => t.BookingAt >= start.Date)
                         .Where(t => t.BookingAt < end.Date)
+                        .Where(t => t.CheckoutAt.HasValue)
                         .ToList();
                 } catch
                 {
