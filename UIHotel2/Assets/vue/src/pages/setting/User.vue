@@ -41,8 +41,6 @@
               </tr>
             </tbody>
           </table>
-          <counter :from.sync="from" :to.sync="to" :total.sync="max_item"></counter>
-          <pagination :total-page.sync="totalPage" v-model="current_page"></pagination>
         </div>
 
         <uiv-modal title="Add new user" v-model="show_add" @hide="closeAll">
@@ -191,15 +189,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import swal, { SweetAlertOptions, SweetAlertResult } from "sweetalert2";
-import Pagination from "@/components/Table/Pagination.vue";
-import Counter from "@/components/Table/Counter.vue";
 import { IUserModel, UserLevel } from "@/lib/Interface";
 
 @Component({
-  components: {
-    Pagination,
-    Counter
-  },
   filters: {
     isActive(val: any) {
       if (val) return "Yes";
@@ -233,9 +225,6 @@ export default class SettingUser extends Vue {
   private show_reset: boolean = false;
   private keyword: string = "";
   private items: Array<any> = new Array<any>();
-  private max_item: number = 0;
-  private limit: number = 20;
-  private current_page: number = 1;
   private model_id: number = 0;
   private model_data: IUserModel = {
     Fullname: "",
@@ -244,28 +233,6 @@ export default class SettingUser extends Vue {
     Level: UserLevel.Receptionist,
     IsActive: true
   };
-
-  get from(): number {
-    return this.offset + 1;
-  }
-
-  get to(): number {
-    let value = this.from + this.limit - 1;
-
-    if (value > this.max_item) {
-      return this.max_item;
-    }
-
-    return value;
-  }
-
-  get offset(): number {
-    return (this.current_page - 1) * this.limit;
-  }
-
-  get totalPage(): number {
-    return Math.ceil(this.max_item / this.limit);
-  }
 
   getData() {
     this.items = [];
