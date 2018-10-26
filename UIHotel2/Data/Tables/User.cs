@@ -27,7 +27,7 @@ namespace UIHotel2.Data.Tables
         public string Password { get; set; }
 
         public byte Level { get; set; } = 0;
-        //Level 0 = Administrator, 1 = Manager, 2 = Receptionist, 3 = Cleaner/OB
+        //Level 0 = Administrator, 1 = Manager, 2 = Receptionist, 3 = Maintenance/OB
 
         public bool IsActive { get; set; } = true;
 

@@ -23,10 +23,42 @@ namespace UIHotel2.AppObject
             Self.AddFunction("Validate").Execute += ValidateExecute;
             Self.AddFunction("Create").Execute += CreateExecute;
             Self.AddFunction("Update").Execute += UpdateExecute;
+            Self.AddFunction("ResetPassword").Execute += ResetPasswordExecute;
             Self.AddFunction("Delete").Execute += DeleteExecute;
             Self.AddFunction("Get").Execute += GetExecute;
             Self.AddFunction("List").Execute += ListExecute;
             Self.AddFunction("ChangePassword").Execute += ChangePasswordExecute;
+        }
+
+        private void ResetPasswordExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            try
+            {
+                var userId = e.Arguments[0].IntValue;
+                var newPassword = e.Arguments[1].StringValue;
+
+                using (var context = new HotelContext())
+                {
+                    var user = context.Users.Find(userId);
+
+                    if (user != null)
+                    {
+                        user.UpdatePassword(newPassword);
+
+                        context.Entry(user).State = EntityState.Modified;
+                        context.SaveChanges();
+                        e.SetReturnValue(true);
+                    }
+                    else
+                    {
+                        e.SetReturnValue(false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                e.Exception = ex.Message;
+            }
         }
 
         private void ListExecute(object sender, CfrV8HandlerExecuteEventArgs e)
@@ -91,7 +123,6 @@ namespace UIHotel2.AppObject
                 var userId = e.Arguments[0].IntValue;
                 var userData = e.Arguments[1];
                 var fullname = userData.GetValue("Fullname").StringValue;
-                var password = userData.GetValue("Password").StringValue;
                 var level = userData.GetValue("Level").IntValue;
                 var is_active = userData.GetValue("IsActive").BoolValue;
 
@@ -104,7 +135,6 @@ namespace UIHotel2.AppObject
                     user.Fullname = fullname;
                     user.Level = Convert.ToByte(level);
                     user.IsActive = is_active;
-                    user.UpdatePassword(password);
 
                     context.Entry(user).State = EntityState.Modified;
                     context.SaveChanges();

@@ -35,6 +35,7 @@ export interface IAuth {
   Create(user: IUserModel): any;
   Update(id: number, user: IUserModel): any;
   Delete(id: number): boolean;
+  ResetPassword(id: number, newpassword: string): boolean;
   ChangePassword(id: number, oldpassword: string, newpassword: string): boolean;
   Validate(username: string, password: string): any | undefined;
 }
