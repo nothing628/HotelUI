@@ -27,16 +27,15 @@
             </thead>
             <tbody>
               <tr v-for="item in items" :key="item.Id">
-                  <td>{{ item.TransactionAt | strdate("DD/MM HH:mm") }}</td>
-                  <td>{{ item.Description }}</td>
-                  <td>{{ item.CategoryName }}</td>
-                  <td>{{ item.AmmountIn | strcurrency }}</td>
-                  <td>{{ item.AmmountOut | strcurrency }}</td>
-                  <td>{{ item.Subtotal | strcurrency }}</td>
+                  <td>{{ item.Username }}</td>
+                  <td>{{ item.Fullname }}</td>
+                  <td>{{ item.Level | levelStr }}</td>
+                  <td>{{ item.IsActive | isActive }}</td>
                   <td>
                     <div class="btn-group pull-right">
-                      <button class="btn btn-sm btn-warning" :disabled="canEdit(item)" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
-                      <button class="btn btn-sm btn-danger" :disabled="canEdit(item)" @click="deleteData(item)"><i class="fa fa-trash"></i> Delete</button>
+                      <button class="btn btn-sm btn-success" @click="editData(item)"><i class="fa fa-eye"></i> Change Password</button>
+                      <button class="btn btn-sm btn-warning" @click="editData(item)"><i class="fa fa-pencil"></i> Edit</button>
+                      <button class="btn btn-sm btn-danger" @click="deleteData(item)"><i class="fa fa-trash"></i> Delete</button>
                     </div>
                   </td>
               </tr>
@@ -95,6 +94,15 @@
                 </select>
               </div>
             </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Is Active</label>
+              <div class="col-md-4">
+                <div class="checkbox checkbox-css checkbox-success">
+                  <input type="checkbox" id="checkbox_css_2" v-model="model_data.IsActive">
+                  <label for="checkbox_css_2">Is Active</label>
+                </div>
+              </div>
+            </div>
           </div>
 
           <template slot="footer">
@@ -110,18 +118,38 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
-
-interface IUserModel {
-  Fullname: string;
-  Username: string;
-  Password: string;
-  Level: number;
-}
+import { IUserModel, UserLevel } from "@/lib/Interface";
 
 @Component({
   components: {
     Pagination,
     Counter
+  },
+  filters: {
+    isActive(val: any) {
+      if (val) return "Yes";
+      return "No";
+    },
+    levelStr(val: any) {
+      let result: string = "Undefined";
+
+      switch (val) {
+        case 0:
+          result = "Administrator";
+          break;
+        case 1:
+          result = "Manager";
+          break;
+        case 2:
+          result = "Receptionist";
+          break;
+        case 3:
+          result = "Maintance";
+          break;
+      }
+
+      return result;
+    }
   }
 })
 export default class SettingUser extends Vue {
@@ -136,7 +164,8 @@ export default class SettingUser extends Vue {
     Fullname: "",
     Username: "",
     Password: "",
-    Level: 2
+    Level: UserLevel.Receptionist,
+    IsActive: true
   };
 
   get from(): number {
@@ -161,6 +190,14 @@ export default class SettingUser extends Vue {
     return Math.ceil(this.max_item / this.limit);
   }
 
+  getData() {
+    this.items = [];
+
+    let users = window.CS.Auth.List();
+
+    users.forEach((item: any) => this.items.push(item));
+  }
+
   closeAll() {
     this.show_add = false;
     this.show_edit = false;
@@ -179,17 +216,29 @@ export default class SettingUser extends Vue {
   }
 
   storeDataExe() {
-    //
+    try {
+      window.CS.Auth.Create(this.model_data);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   updateData() {
-    //
+    this.$validator.validateAll().then((is_valid: boolean) => {
+      if (is_valid) {
+        this.updateDataExe();
+      }
+    });
+  }
+
+  updateDataExe(): void {
+    console.log(this.model_data);
   }
 
   addData() {
     this.model_data.Username = "";
     this.model_data.Password = "";
-    this.model_data.Level = 2;
+    this.model_data.Level = UserLevel.Receptionist;
     this.model_data.Fullname = "";
     this.show_add = true;
     this.$validator.reset();
@@ -198,6 +247,7 @@ export default class SettingUser extends Vue {
   mounted() {
     this.$store.commit("changeTitle", "User Setting");
     this.$store.commit("changeSubtitle", "");
+    this.getData();
   }
 }
 </script>

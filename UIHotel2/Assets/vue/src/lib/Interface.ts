@@ -14,6 +14,31 @@ export interface IApp {
   CalcBooking(callback: () => void, invoiceId?: string): void;
 }
 
+export enum UserLevel {
+  Administrator,
+  Manager,
+  Receptionist,
+  Cleaner
+}
+
+export interface IUserModel {
+  Username: string;
+  Fullname: string;
+  Password: string;
+  Level: UserLevel;
+  IsActive: boolean;
+}
+
+export interface IAuth {
+  List(): Array<any>;
+  Get(id: number): any;
+  Create(user: IUserModel): any;
+  Update(id: number, user: IUserModel): any;
+  Delete(id: number): boolean;
+  ChangePassword(id: number, oldpassword: string, newpassword: string): boolean;
+  Validate(username: string, password: string): any | undefined;
+}
+
 export interface IHotel {
   TransactionReportDownload(start: Date, end: Date): void;
   BookingReportDownload(start: Date, end: Date): void;
@@ -45,6 +70,7 @@ export interface ISetting {
 export interface ICS {
   DB: IDB;
   App: IApp;
+  Auth: IAuth;
   Hotel: IHotel;
   Setting: ISetting;
 }
