@@ -316,3 +316,7 @@ img.img-float {
 .swal2-popup .swal2-title {
   font-size: 30px;
 }
+
+.content.content-setup {
+  margin-right: 220px;
+}

@@ -44,10 +44,10 @@ export default new Router({
     { path: "/report/hotel", name: "report.hotel", component: ReportHotel },
     { path: "/setting/app", name: "setting.app", component: SettingApp },
     { path: "/setting/user", name: "setting.user", component: SettingUser },
-    { path: "/setup/db", name: "setup.db", component: Setup1 },
-    { path: "/setup/migrate", name: "setup.migrate", component: Setup2 },
-    { path: "/setup/basic", name: "setup.basic", component: Setup3 },
-    { path: "/setup/finish", name: "setup.finish", component: Setup4 },
+    { path: "/setup/db", name: "setup.db", component: Setup1, meta: { is_setup: true } },
+    { path: "/setup/migrate", name: "setup.migrate", component: Setup2, meta: { is_setup: true } },
+    { path: "/setup/basic", name: "setup.basic", component: Setup3, meta: { is_setup: true } },
+    { path: "/setup/finish", name: "setup.finish", component: Setup4, meta: { is_setup: true } },
     { path: "/transaction/category", name: "transaction.category", component: TransactionCategory },
     { path: "/transaction/list", name: "transaction.list", component: TransactionList }
   ]
