@@ -8,10 +8,10 @@
             <div class="stats-icon"><i class="fa fa-users"></i></div>
             <div class="stats-info">
               <h4>TOTAL VISITORS</h4>
-              <p>3,291,922</p>	
+              <p>{{ TotalVisitor }}</p>	
             </div>
             <div class="stats-link">
-              <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+              <a href="javascript:;" @click="goto('data.booking')">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
             </div>
           </div>
         </div>
@@ -22,10 +22,10 @@
             <div class="stats-icon"><i class="fa fa-sign-in"></i></div>
             <div class="stats-info">
               <h4>TOTAL USED ROOM</h4>
-              <p>10/20</p>	
+              <p>{{ RoomUsed.Used }}/{{ RoomUsed.Total }}</p>	
             </div>
             <div class="stats-link">
-              <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+              <a href="javascript:;" @click="goto('room.list')">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
             </div>
           </div>
         </div>
@@ -36,10 +36,10 @@
             <div class="stats-icon"><i class="fa fa-users"></i></div>
             <div class="stats-info">
               <h4>UNIQUE VISITORS</h4>
-              <p>1,291,922</p>	
+              <p>{{ UniqueVistor }}</p>	
             </div>
             <div class="stats-link">
-              <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+              <a href="javascript:;" @click="goto('data.booking')">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
             </div>
           </div>
         </div>
@@ -50,10 +50,10 @@
             <div class="stats-icon"><i class="fa fa-clock-o"></i></div>
             <div class="stats-info">
               <h4>BALANCE TODAY</h4>
-              <p>Rp. 1,000,000</p>	
+              <p>{{ Balance | strcurrency }}</p>	
             </div>
             <div class="stats-link">
-              <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+              <a href="javascript:;" @click="goto('report.finance')">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
             </div>
           </div>
         </div>
@@ -115,9 +115,30 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { IRoomUsed } from "@/lib/Interface";
 
 @Component
 export default class Dashboard extends Vue {
+  get RoomUsed(): object {
+    let room: IRoomUsed = window.CS.Hotel.Room;
+    return {
+      Used: room.Used,
+      Total: room.Total
+    };
+  }
+
+  get TotalVisitor(): number {
+    return window.CS.Hotel.Visitor;
+  }
+
+  get UniqueVistor(): number {
+    return window.CS.Hotel.UniqueVisitor;
+  }
+
+  get Balance(): number {
+    return window.CS.Hotel.Balance;
+  }
+
   goto(location: string) {
     this.$router.push({ name: location });
   }

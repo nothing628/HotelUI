@@ -14,6 +14,7 @@ using UIHotel2.Data;
 using UIHotel2.Data.Tables;
 using unvell.ReoGrid;
 using unvell.ReoGrid.DataFormat;
+using Chromium;
 
 namespace UIHotel2.AppObject
 {
@@ -30,6 +31,94 @@ namespace UIHotel2.AppObject
             base.Register(obj);
             Self.AddFunction("TransactionReportDownload").Execute += TransactionDownload;
             Self.AddFunction("BookingReportDownload").Execute += BookingDownload;
+            var visitor = Self.AddDynamicProperty("Visitor");
+            var room = Self.AddDynamicProperty("Room");
+            var unique_visitor = Self.AddDynamicProperty("UniqueVisitor");
+            var balance = Self.AddDynamicProperty("Balance");
+
+            visitor.PropertyGet += Visitor_PropertyGet;
+            room.PropertyGet += Room_PropertyGet;
+            unique_visitor.PropertyGet += Unique_visitor_PropertyGet;
+            balance.PropertyGet += Balance_PropertyGet;
+        }
+
+        private void Balance_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
+        {
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    var result = context.Transactions.OrderByDescending(p => p.TransactionAt).Select(p => p.Subtotal).First();
+                    var castVal = Convert.ToUInt32(result);
+                    e.Retval = castVal;
+                } catch
+                {
+                    e.Retval = -1;
+                }
+            }
+
+            e.SetReturnValue(true);
+        }
+        
+        private void Unique_visitor_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
+        {
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    var today = DateTime.Today;
+                    var monthago = today.AddMonths(-1);
+                    var result = context.Bookings.Include(p => p.Guest).Where(p => p.Guest.CreateAt > monthago).ToList();
+                    var guest = result.Select(p => p.Guest.Id).Distinct();
+                    var count = guest.Count();
+
+                    e.Retval = count;
+                } catch
+                {
+                    e.Retval = -1;
+                }
+            }
+
+            e.SetReturnValue(true);
+        }
+
+        private void Room_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
+        {
+            var total = 0;
+            var used = 0;
+            var C = CfrV8Value.CreateObject(new CfrV8Accessor());
+
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    total = context.Rooms.Count();
+                    var roomAvail = context.Rooms.Where(p => p.RoomStateId == 1 || p.RoomStateId == 2).Count();
+                    used = total - roomAvail;
+                } catch { }
+            }
+
+            C.SetValue("Used", used, CfxV8PropertyAttribute.ReadOnly);
+            C.SetValue("Total", total, CfxV8PropertyAttribute.ReadOnly);
+            e.Retval = C;
+            e.SetReturnValue(true);
+        }
+
+        private void Visitor_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
+        {
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    var result = context.Bookings.Where(p => !p.CheckoutAt.HasValue).Count();
+                    e.Retval = result;
+                } catch
+                {
+                    e.Retval = -1;
+                }
+            }
+
+            e.SetReturnValue(true);
         }
 
         private void BookingDownload(object sender, CfrV8HandlerExecuteEventArgs e)

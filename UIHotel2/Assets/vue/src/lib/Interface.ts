@@ -40,9 +40,18 @@ export interface IAuth {
   Validate(username: string, password: string): any | undefined;
 }
 
+export interface IRoomUsed {
+  Used: number;
+  Total: number;
+}
+
 export interface IHotel {
   TransactionReportDownload(start: Date, end: Date): void;
   BookingReportDownload(start: Date, end: Date): void;
+  Visitor: number;
+  Room: IRoomUsed;
+  Balance: number;
+  UniqueVisitor: number;
 }
 
 export interface ISetting {
