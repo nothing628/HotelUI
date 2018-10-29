@@ -39,16 +39,28 @@ namespace UIHotel2
                     TransactionHelper.CalculateBooking();
                     return;
                 }
+                else if (firstArgs == "--setup")
+                {
+                    InitApp("http://assets.app.local/index.html#/setup/db");
+                    return;
+                }
             }
 
-            if (Bootstrap.Load(options => {
+            InitApp();
+        }
+
+        public static void InitApp(string UrlToLoad = "http://assets.app.local/index.html")
+        {
+            if (Bootstrap.Load(options =>
+            {
                 options.RemoteDebuggingPort = 8010;
                 options.SingleProcess = true;
             }))
             {
                 Bootstrap.RegisterFolderResources("Assets");
-
-                Application.Run(new Form1());
+                var form = new Form1();
+                form.LoadUrl(UrlToLoad);
+                Application.Run(form);
             }
         }
     }

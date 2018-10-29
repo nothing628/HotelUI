@@ -16,7 +16,7 @@ namespace UIHotel2
 {
     public partial class Form1 : Formium
     {
-        public Form1() : base("http://assets.app.local/index.html")
+        public Form1() : base("about:blank")
         {
             InitializeComponent();
 
