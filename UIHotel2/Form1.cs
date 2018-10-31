@@ -43,7 +43,7 @@ namespace UIHotel2
             listObject.Add(new AuthObject());
             listObject.Add(new AppObject.AppObject());
             listObject.Add(new DBObject());
-            listObject.Add(new HotelObject(this));
+            listObject.Add(new HotelObject());
             listObject.Add(new SettingObject());
 
             repository.AddDynamicProperty("IsDebug").PropertyGet += IsDebug_PropertyGet;

@@ -74,7 +74,7 @@ export default class Step1 extends Vue {
   testConnect() {
     var port: number = Number(this.SQL_Port);
 
-    window.CS.Setting.TestConnect(
+    window.CS.DB.TestConnect(
       this.SQL_Host,
       port,
       this.SQL_User,
@@ -83,14 +83,18 @@ export default class Step1 extends Vue {
         if (e) {
           this.next();
         } else {
-          window.bus.$emit("Notify", {Title: "Database Test", Content: "Failed to connect", Type: "error"});
+          window.bus.$emit("Notify", {
+            Title: "Database Test",
+            Content: "Failed to connect",
+            Type: "error"
+          });
         }
       }
     );
   }
 
   next() {
-    this.$router.push({ name: "setup.migrate"});
+    this.$router.push({ name: "setup.migrate" });
   }
 
   cancel() {

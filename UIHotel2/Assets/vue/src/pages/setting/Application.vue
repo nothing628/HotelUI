@@ -227,7 +227,11 @@ export default class SettingApplication extends Vue {
       Time_Fullcharge: this.Time_FullCharge
     };
 
-    window.bus.$emit("Notify", {Title: "Setting saved", Content: "Success to save setting", Type: "success"});
+    window.bus.$emit("Notify", {
+      Title: "Setting saved",
+      Content: "Success to save setting",
+      Type: "success"
+    });
     this.$store.commit("Setting/changeSetting", app_setting);
     this.$store.dispatch("Setting/SaveAppSetting");
     this.$nextTick(this.loadSetting);
@@ -236,7 +240,7 @@ export default class SettingApplication extends Vue {
   testSaveSetting() {
     var port: number = Number(this.SQL_Port);
 
-    window.CS.Setting.Test(
+    window.CS.DB.Test(
       this.SQL_Host,
       port,
       this.SQL_User,
@@ -245,10 +249,18 @@ export default class SettingApplication extends Vue {
       (e: boolean) => {
         if (e) {
           this.saveDBSetting();
-          window.bus.$emit("Notify", {Title: "Database Test", Content: "Success to test setting", Type: "success"});
+          window.bus.$emit("Notify", {
+            Title: "Database Test",
+            Content: "Success to test setting",
+            Type: "success"
+          });
         } else {
           //Warn the user
-          window.bus.$emit("Notify", {Title: "Database Test", Content: "Failed to test setting", Type: "error"});
+          window.bus.$emit("Notify", {
+            Title: "Database Test",
+            Content: "Failed to test setting",
+            Type: "error"
+          });
         }
       }
     );

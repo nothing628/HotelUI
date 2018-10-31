@@ -20,7 +20,7 @@ using UIHotel2.Properties;
 
 namespace UIHotel2.AppObject
 {
-    class DBObject : BaseObject
+    public class DBObject : BaseObject
     {
         public static string ConnectionString
         {
@@ -39,9 +39,133 @@ namespace UIHotel2.AppObject
             Self.AddFunction("QueryScalar").Execute += QueryScalarExecute;
             Self.AddFunction("CalendarGet").Execute += GetCalendar;
             Self.AddFunction("CalendarSet").Execute += SetCalendar;
+            Self.AddFunction("Test").Execute += TestExecute;
+            Self.AddFunction("TestConnect").Execute += TestConnectExecute;
         }
 
-        private CfrV8Value[] parseToArray(CfrV8Value arguments)
+        private void TestConnectExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            if (e.Arguments.Length != 5)
+            {
+                e.Exception = "5 parameters expected!";
+                return;
+            }
+
+            var server = e.Arguments[0];
+            var port = e.Arguments[1];
+            var user = e.Arguments[2];
+            var password = e.Arguments[3];
+            var callback = e.Arguments[4];
+
+            if (!server.IsString || !port.IsInt || !user.IsString || !password.IsString || !callback.IsFunction)
+            {
+                //Invalid parameter;
+                e.Exception = "Invalid parameter type";
+                return;
+            }
+
+            if (callback.IsFunction)
+            {
+                // Callback to result
+                Settings.Default.SQL_HOST = server.StringValue;
+                Settings.Default.SQL_PORT = port.IntValue;
+                Settings.Default.SQL_USER = user.StringValue;
+                Settings.Default.SQL_PASSWORD = password.StringValue;
+
+                var is_connect = TestConnect();
+
+                callback.ExecuteFunction(null, new CfrV8Value[] { is_connect });
+
+                Settings.Default.Reload();
+            }
+        }
+
+        private bool TestConnect()
+        {
+            var is_connect = true;
+
+            using (var context = new HotelContext())
+            {
+                try
+                {
+                    context.Database.Connection.Open();
+                }
+                catch
+                {
+                    is_connect = false;
+                }
+            }
+
+            return is_connect;
+        }
+
+        private bool TestDatabase()
+        {
+            var is_verified = true;
+
+            using (var context = new HotelContext())
+            {
+                var connection = context.Database.Connection;
+
+                try
+                {
+                    connection.Open();
+
+                    var result = context.Database.SqlQuery<int>("SELECT COUNT(*) FROM __migrationhistory");
+                    var arr_result = result.ToArray();
+
+                    is_verified = arr_result.Length > 0 && arr_result[0] == 31;
+                }
+                catch
+                {
+                    is_verified = false;
+                }
+            }
+
+            return is_verified;
+        }
+
+        private void TestExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            if (e.Arguments.Length != 6)
+            {
+                e.Exception = "6 parameters expected!";
+                return;
+            }
+
+            var server = e.Arguments[0];
+            var port = e.Arguments[1];
+            var user = e.Arguments[2];
+            var password = e.Arguments[3];
+            var database = e.Arguments[4];
+            var callback = e.Arguments[5];
+
+            if (!server.IsString || !port.IsInt || !user.IsString || !password.IsString || !database.IsString || !callback.IsFunction)
+            {
+                //Invalid parameter;
+                e.Exception = "Invalid parameter type";
+                return;
+            }
+
+            if (callback.IsFunction)
+            {
+                // Callback to result
+                Settings.Default.SQL_DATABASE = database.StringValue;
+                Settings.Default.SQL_HOST = server.StringValue;
+                Settings.Default.SQL_PORT = port.IntValue;
+                Settings.Default.SQL_USER = user.StringValue;
+                Settings.Default.SQL_PASSWORD = password.StringValue;
+
+                var is_connect = TestConnect();
+                var is_verify = TestDatabase();
+
+                callback.ExecuteFunction(null, new CfrV8Value[] { is_connect && is_verify });
+
+                Settings.Default.Reload();
+            }
+        }
+
+        private CfrV8Value[] ParseToArray(CfrV8Value arguments)
         {
             if (!arguments.IsArray)
                 return new CfrV8Value[] { };
@@ -56,9 +180,9 @@ namespace UIHotel2.AppObject
             return result.ToArray();
         }
 
-        private DynamicParameters parseParameter(CfrV8Value argumentsx)
+        private DynamicParameters ParseParameter(CfrV8Value argumentsx)
         {
-            var arguments = parseToArray(argumentsx);
+            var arguments = ParseToArray(argumentsx);
             var paramLength = arguments.Length;
             var paramObject = new DynamicParameters();
 
@@ -72,17 +196,29 @@ namespace UIHotel2.AppObject
                     var argData = arguments[i];
 
                     if (argData.IsString)
+                    {
                         paramObject.Add(paramName, argData.StringValue, DbType.String);
+                    }
                     else if (argData.IsInt)
+                    {
                         paramObject.Add(paramName, argData.IntValue, DbType.Int32);
+                    }
                     else if (argData.IsDouble)
+                    {
                         paramObject.Add(paramName, argData.DoubleValue, DbType.Double);
+                    }
                     else if (argData.IsBool)
+                    {
                         paramObject.Add(paramName, argData.BoolValue, DbType.Boolean);
+                    }
                     else if (argData.IsUint)
+                    {
                         paramObject.Add(paramName, argData.UintValue, DbType.UInt32);
+                    }
                     else if (argData.IsUndefined || argData.IsNull)
+                    {
                         paramObject.Add(paramName, null);
+                    }
                     else if (argData.IsObject)
                     {
                         var type = argData.GetValue("type").StringValue;
@@ -145,7 +281,7 @@ namespace UIHotel2.AppObject
             try
             {
                 var qryString = e.Arguments[0].StringValue;
-                var paramObject = parseParameter(e.Arguments[1]);
+                var paramObject = ParseParameter(e.Arguments[1]);
                 var counter = 0;
 
                 using (var connect = GetConnection())
@@ -176,7 +312,7 @@ namespace UIHotel2.AppObject
             try
             {
                 var qryString = e.Arguments[0].StringValue;
-                var paramObject = parseParameter(e.Arguments[1]);
+                var paramObject = ParseParameter(e.Arguments[1]);
 
                 using (var connData = GetConnection())
                 {
@@ -221,7 +357,6 @@ namespace UIHotel2.AppObject
                             continue;
                         }
                     }
-
 
                     lastInput = new EventInputObject
                     {

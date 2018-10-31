@@ -114,7 +114,7 @@ export default class ReportFinance extends Vue {
   get totalIn(): number {
     let result: number = 0;
 
-    this.listData.forEach((item: any) => result += item.AmmountIn);
+    this.listData.forEach((item: any) => (result += item.AmmountIn));
 
     return result;
   }
@@ -122,7 +122,7 @@ export default class ReportFinance extends Vue {
   get totalOut(): number {
     let result: number = 0;
 
-    this.listData.forEach((item: any) => result += item.AmmountOut);
+    this.listData.forEach((item: any) => (result += item.AmmountOut));
 
     return result;
   }
@@ -150,19 +150,19 @@ export default class ReportFinance extends Vue {
       end: moment().endOf("d")
     };
 
-    switch(type) {
+    switch (type) {
       case DownloadType.Monthly:
         timeRange.start = moment().startOf("M");
         timeRange.end = moment().endOf("M");
-      break;
+        break;
       case DownloadType.Yearly:
         timeRange.start = moment().startOf("y");
         timeRange.end = moment().endOf("y");
-      break;
+        break;
       case DownloadType.Custom:
         timeRange.start = moment(this.startDate).startOf("d");
         timeRange.end = moment(this.endDate).endOf("d");
-      break;
+        break;
     }
 
     return timeRange;
@@ -174,28 +174,32 @@ export default class ReportFinance extends Vue {
     let start = range.start.clone();
     let end = range.end;
 
-    switch(this.type) {
-      case DownloadType.Dialy:
+    switch (this.type) {
+      case DownloadType.Dialy: {
         result.push(range.start.format("DD/MM/YYYY"));
-      break;
-      case DownloadType.Monthly:
+        break;
+      }
+      case DownloadType.Monthly: {
         while (start.isBefore(end)) {
           result.push(start.format("DD"));
           start.add(1, "day");
         }
-      break;
-      case DownloadType.Yearly:
+        break;
+      }
+      case DownloadType.Yearly: {
         while (start.isBefore(end)) {
           result.push(start.format("MMM YYYY"));
           start.add(1, "month");
         }
-      break;
-      case DownloadType.Custom:
+        break;
+      }
+      case DownloadType.Custom: {
         while (start.isBefore(end)) {
           result.push(start.format("DD/MM/YYYY"));
           start.add(1, "day");
         }
-      break;
+        break;
+      }
     }
 
     return result;
@@ -206,7 +210,7 @@ export default class ReportFinance extends Vue {
 
     let result = 0;
 
-    items.forEach((item: any) => result += item.AmmountIn);
+    items.forEach((item: any) => (result += item.AmmountIn));
 
     return result;
   }
@@ -216,7 +220,7 @@ export default class ReportFinance extends Vue {
 
     let result = 0;
 
-    items.forEach((item: any) => result += item.AmmountOut);
+    items.forEach((item: any) => (result += item.AmmountOut));
 
     return result;
   }
@@ -228,16 +232,18 @@ export default class ReportFinance extends Vue {
     let end = range.end;
 
     switch (this.type) {
-      case DownloadType.Dialy:
+      case DownloadType.Dialy: {
         let sumNum = 0;
 
-        if (kind == KindType.In)
+        if (kind == KindType.In) {
           sumNum = this.sumAmmountIn(this.listData);
-        else
+        } else {
           sumNum = this.sumAmmountOut(this.listData);
+        }
 
         result.push(sumNum);
-      break;
+        break;
+      }
       case DownloadType.Custom:
       case DownloadType.Monthly:
         while (start.isBefore(end)) {
@@ -252,15 +258,16 @@ export default class ReportFinance extends Vue {
             return isBefore && isAfter;
           });
 
-          if (kind == KindType.In)
+          if (kind == KindType.In) {
             sumNum = this.sumAmmountIn(filterDay);
-          else
+          } else {
             sumNum = this.sumAmmountOut(filterDay);
-          
+          }
+
           result.push(sumNum);
           start.add(1, "day");
         }
-      break;
+        break;
       case DownloadType.Yearly:
         while (start.isBefore(end)) {
           let sumNum = 0;
@@ -274,15 +281,16 @@ export default class ReportFinance extends Vue {
             return isBefore && isAfter;
           });
 
-          if (kind == KindType.In)
+          if (kind == KindType.In) {
             sumNum = this.sumAmmountIn(filterDay);
-          else
+          } else {
             sumNum = this.sumAmmountOut(filterDay);
-          
+          }
+
           result.push(sumNum);
           start.add(1, "months");
         }
-      break;
+        break;
     }
 
     return result;
@@ -300,29 +308,32 @@ export default class ReportFinance extends Vue {
     var chart = echart.init(kanvas);
 
     chart.setOption({
-      color: ['#00acac', '#ff5b57'],
+      color: ["#00acac", "#ff5b57"],
       title: {
-        text: 'Transaction Chart'
+        text: "Transaction Chart"
       },
       tooltip: {},
       legend: {
-        data:['In', 'Out']
+        data: ["In", "Out"]
       },
       xAxis: {
         data: this.getXAxisData()
       },
       yAxis: {},
-      series: [{
-        name: 'In',
-        type: 'bar',
-        data: this.getYAxisData(KindType.In),
-        barGap: '0%'
-      }, {
-        name: 'Out',
-        type: 'bar',
-        data: this.getYAxisData(KindType.Out),
-        barGap: '0%'
-      }]
+      series: [
+        {
+          name: "In",
+          type: "bar",
+          data: this.getYAxisData(KindType.In),
+          barGap: "0%"
+        },
+        {
+          name: "Out",
+          type: "bar",
+          data: this.getYAxisData(KindType.Out),
+          barGap: "0%"
+        }
+      ]
     });
   }
 
@@ -333,7 +344,10 @@ export default class ReportFinance extends Vue {
   exportReport() {
     let range = this.getTimeRange(this.type);
 
-    window.CS.Hotel.TransactionReportDownload(range.start.toDate(), range.end.toDate());
+    window.CS.Hotel.TransactionReportDownload(
+      range.start.toDate(),
+      range.end.toDate()
+    );
   }
 
   downloadReport() {

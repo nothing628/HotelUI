@@ -62,7 +62,7 @@ namespace UIHotel2.Misc
         public static decimal GetCategoryPrice(long IdCategory, DateTime DateAt)
         {
             var prices = GetPrices(DateAt);
-            var price = prices.Where(p => p.RoomCategoryId == IdCategory).SingleOrDefault();
+            var price = prices.SingleOrDefault(p => p.RoomCategoryId == IdCategory);
 
             if (price == null)
                 return 0;

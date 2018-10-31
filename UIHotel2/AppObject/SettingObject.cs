@@ -39,8 +39,6 @@ namespace UIHotel2.AppObject
             var Time_Fullcharge = Self.AddDynamicProperty("Time_Fullcharge");
 
             Self.AddFunction("Save").Execute += SaveExecute;
-            Self.AddFunction("Test").Execute += TestExecute;
-            Self.AddFunction("TestConnect").Execute += TestConnectExecute;
             Self.AddFunction("Load").Execute += LoadExecute;
 
             SQL_User.PropertyGet += SQL_User_PropertyGet;
@@ -78,43 +76,6 @@ namespace UIHotel2.AppObject
             Time_Fullcharge.PropertySet += Time_Fullcharge_PropertySet;
         }
 
-        private void TestConnectExecute(object sender, CfrV8HandlerExecuteEventArgs e)
-        {
-            if (e.Arguments.Length != 5)
-            {
-                e.Exception = "5 parameters expected!";
-                return;
-            }
-
-            var server = e.Arguments[0];
-            var port = e.Arguments[1];
-            var user = e.Arguments[2];
-            var password = e.Arguments[3];
-            var callback = e.Arguments[4];
-
-            if (!server.IsString || !port.IsInt || !user.IsString || !password.IsString || !callback.IsFunction)
-            {
-                //Invalid parameter;
-                e.Exception = "Invalid parameter type";
-                return;
-            }
-
-            if (callback.IsFunction)
-            {
-                // Callback to result
-                Settings.Default.SQL_HOST = server.StringValue;
-                Settings.Default.SQL_PORT = port.IntValue;
-                Settings.Default.SQL_USER = user.StringValue;
-                Settings.Default.SQL_PASSWORD = password.StringValue;
-
-                var is_connect = TestConnect();
-
-                callback.ExecuteFunction(null, new CfrV8Value[] { is_connect });
-
-                Settings.Default.Reload();
-            }
-        }
-
         private void Hotel_Phone_PropertySet(object sender, CfrV8AccessorSetEventArgs e)
         {
             if (e.Value.IsString)
@@ -147,90 +108,6 @@ namespace UIHotel2.AppObject
         {
             e.Retval = SettingHelper.HotelEmail;
             e.SetReturnValue(true);
-        }
-
-        private bool TestConnect()
-        {
-            var is_connect = true;
-
-            using (var context = new HotelContext())
-            {
-                try
-                {
-                    context.Database.Connection.Open();
-                } catch
-                {
-                    is_connect = false;
-                }
-            }
-
-            return is_connect;
-        }
-
-        private bool TestDatabase()
-        {
-            var is_verified = true;
-
-            using (var context = new HotelContext())
-            {
-                var connection = context.Database.Connection;
-
-                try
-                {
-                    connection.Open();
-
-                    var result = context.Database.SqlQuery<int>("SELECT COUNT(*) FROM __migrationhistory");
-                    var arr_result = result.ToArray();
-
-                    is_verified = arr_result.Length > 0 && arr_result[0] == 31;
-                }
-                catch
-                {
-                    is_verified = false;
-                }
-            }
-
-            return is_verified;
-        }
-
-        private void TestExecute(object sender, CfrV8HandlerExecuteEventArgs e)
-        {
-            if (e.Arguments.Length != 6)
-            {
-                e.Exception = "6 parameters expected!";
-                return;
-            }
-
-            var server = e.Arguments[0];
-            var port = e.Arguments[1];
-            var user = e.Arguments[2];
-            var password = e.Arguments[3];
-            var database = e.Arguments[4];
-            var callback = e.Arguments[5];
-
-            if (!server.IsString || !port.IsInt || !user.IsString || !password.IsString || !database.IsString || !callback.IsFunction)
-            {
-                //Invalid parameter;
-                e.Exception = "Invalid parameter type";
-                return;
-            }
-
-            if (callback.IsFunction)
-            {
-                // Callback to result
-                Settings.Default.SQL_DATABASE = database.StringValue;
-                Settings.Default.SQL_HOST = server.StringValue;
-                Settings.Default.SQL_PORT = port.IntValue;
-                Settings.Default.SQL_USER = user.StringValue;
-                Settings.Default.SQL_PASSWORD = password.StringValue;
-
-                var is_connect = TestConnect();
-                var is_verify = TestDatabase();
-
-                callback.ExecuteFunction(null, new CfrV8Value[] { is_connect && is_verify });
-
-                Settings.Default.Reload();
-            }
         }
 
         private void Time_Fullcharge_PropertySet(object sender, CfrV8AccessorSetEventArgs e)

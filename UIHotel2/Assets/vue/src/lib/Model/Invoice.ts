@@ -62,7 +62,7 @@ export class Invoice {
   }
 
   public static Recalculate(invoiceId: string, callback: () => void): void {
-    window.CS.App.CalcBooking(callback, invoiceId);
+    window.CS.Hotel.CalcBooking(callback, invoiceId);
   }
 
   public static PaymentProcess(invoiceId: string, paymentDetail: IPaymentModel): void {

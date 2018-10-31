@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chromium;
 using Chromium.Remote;
 using Chromium.Remote.Event;
 using Chromium.WebBrowser;
 using UIHotel2.Data;
-using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
 {
@@ -30,54 +26,6 @@ namespace UIHotel2.AppObject
             Self.AddFunction("SaveDialog").Execute += SaveDialogExecute;
             Self.AddFunction("GetUploadUrl").Execute += GetUploadUrl;
             Self.AddFunction("GetNewBookingNumber").Execute += GetBookingNumberExecute;
-            Self.AddFunction("CalcTransaction").Execute += CalcTransaction;
-            Self.AddFunction("CalcBooking").Execute += CalcBooking;
-        }
-
-        private void CalcTransaction(object sender, CfrV8HandlerExecuteEventArgs e)
-        {
-            try
-            {
-                var callback = e.Arguments[0];
-                var th = new Thread(() => TransactionHelper.CalculateSubtotal(false));
-                th.Start();
-                th.Join();
-
-                ExecuteCallback(callback);
-            } catch (Exception ex)
-            {
-                e.Exception = ex.Message;
-            }
-        }
-
-        public void CalcBooking(object sender, CfrV8HandlerExecuteEventArgs e)
-        {
-            try
-            {
-                var callback = e.Arguments[0];
-                var bookId = "";
-
-                if (e.Arguments.Length == 2)
-                {
-                    bookId = e.Arguments[1].StringValue;
-                }
-
-                var th = new Thread(() => TransactionHelper.CalculateBooking(bookId));
-                th.Start();
-                th.Join();
-
-                ExecuteCallback(callback);
-            } catch (Exception ex)
-            {
-                e.Exception = ex.Message;
-            }
-        }
-
-        private void ExecuteCallback(CfrV8Value callback)
-        {
-            var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
-
-            callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
         }
 
         private void GetBookingNumberExecute(object sender, CfrV8HandlerExecuteEventArgs e)

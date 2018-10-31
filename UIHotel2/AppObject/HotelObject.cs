@@ -6,24 +6,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIHotel2.Data;
 using UIHotel2.Data.Tables;
 using unvell.ReoGrid;
 using unvell.ReoGrid.DataFormat;
 using Chromium;
+using UIHotel2.Misc;
 
 namespace UIHotel2.AppObject
 {
-    class HotelObject : BaseObject
+    public class HotelObject : BaseObject
     {
-        public HotelObject(Form owner)
-        {
-        }
-
         public override string ObjectName => "Hotel";
 
         public override void Register(JSObject obj)
@@ -31,6 +26,8 @@ namespace UIHotel2.AppObject
             base.Register(obj);
             Self.AddFunction("TransactionReportDownload").Execute += TransactionDownload;
             Self.AddFunction("BookingReportDownload").Execute += BookingDownload;
+            Self.AddFunction("CalcTransaction").Execute += CalcTransaction;
+            Self.AddFunction("CalcBooking").Execute += CalcBooking;
             var visitor = Self.AddDynamicProperty("Visitor");
             var room = Self.AddDynamicProperty("Room");
             var unique_visitor = Self.AddDynamicProperty("UniqueVisitor");
@@ -40,6 +37,54 @@ namespace UIHotel2.AppObject
             room.PropertyGet += Room_PropertyGet;
             unique_visitor.PropertyGet += Unique_visitor_PropertyGet;
             balance.PropertyGet += Balance_PropertyGet;
+        }
+
+        private void ExecuteCallback(CfrV8Value callback)
+        {
+            var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
+
+            callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
+        }
+
+        public void CalcBooking(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            try
+            {
+                var callback = e.Arguments[0];
+                var bookId = "";
+
+                if (e.Arguments.Length == 2)
+                {
+                    bookId = e.Arguments[1].StringValue;
+                }
+
+                var th = new Thread(() => TransactionHelper.CalculateBooking(bookId));
+                th.Start();
+                th.Join();
+
+                ExecuteCallback(callback);
+            }
+            catch (Exception ex)
+            {
+                e.Exception = ex.Message;
+            }
+        }
+
+        private void CalcTransaction(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            try
+            {
+                var callback = e.Arguments[0];
+                var th = new Thread(() => TransactionHelper.CalculateSubtotal(false));
+                th.Start();
+                th.Join();
+
+                ExecuteCallback(callback);
+            }
+            catch (Exception ex)
+            {
+                e.Exception = ex.Message;
+            }
         }
 
         private void Balance_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
@@ -59,7 +104,7 @@ namespace UIHotel2.AppObject
 
             e.SetReturnValue(true);
         }
-        
+
         private void Unique_visitor_PropertyGet(object sender, CfrV8AccessorGetEventArgs e)
         {
             using (var context = new HotelContext())
@@ -174,7 +219,7 @@ namespace UIHotel2.AppObject
         private bool CreateBookingReport(string destination, DateTime start, DateTime end)
         {
             var result = true;
-            var start_row = 5;
+            const int start_row = 5;
 
             using (var workbook = ReoGridControl.CreateMemoryWorkbook())
             using (var context = new HotelContext())
@@ -257,7 +302,7 @@ namespace UIHotel2.AppObject
         private bool CreateTransactionReport(string destination, DateTime start, DateTime end)
         {
             var result = true;
-            var start_row = 5;
+            const int start_row = 5;
 
             using (var workbook = ReoGridControl.CreateMemoryWorkbook())
             using (var context = new HotelContext())

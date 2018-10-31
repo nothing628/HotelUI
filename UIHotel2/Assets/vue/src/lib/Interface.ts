@@ -1,6 +1,21 @@
 export interface IDB {
   Query(qry: string, params: Array<any>): Array<any>;
   QueryScalar: any;
+  Test(
+    host: string,
+    port: number,
+    user: string,
+    password: string,
+    database: string,
+    callback: (is_okay: boolean) => void
+  ): void;
+  TestConnect(
+    host: string,
+    port: number,
+    user: string,
+    password: string,
+    callback: (is_okay: boolean) => void
+  ): void;
 }
 
 export interface IApp {
@@ -10,8 +25,6 @@ export interface IApp {
   SaveDialog(filter: string, callback: (data: any) => void): void;
   GetUploadUrl(filehash: string): string;
   GetNewBookingNumber(): string;
-  CalcTransaction(callback: () => void): void;
-  CalcBooking(callback: () => void, invoiceId?: string): void;
 }
 
 export enum UserLevel {
@@ -48,6 +61,8 @@ export interface IRoomUsed {
 export interface IHotel {
   TransactionReportDownload(start: Date, end: Date): void;
   BookingReportDownload(start: Date, end: Date): void;
+  CalcTransaction(callback: () => void): void;
+  CalcBooking(callback: () => void, invoiceId?: string): void;
   Visitor: number;
   Room: IRoomUsed;
   Balance: number;
@@ -74,8 +89,6 @@ export interface ISetting {
   SQL_Password: string;
   Save(): void;
   Load(): void;
-  Test(host: string, port: number, user: string, password: string, database: string, callback: (is_okay: boolean) => void): void;
-  TestConnect(host: string, port: number, user: string, password: string, callback: (is_okay: boolean) => void): void;
 }
 
 export interface ICS {

@@ -34,12 +34,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
 export default class Step2 extends Vue {
-	next() {
-		this.$router.push({ name: "setup.finish"});
-	}
+  next() {
+    this.$router.push({ name: "setup.finish" });
+  }
 
-	mounted() {
-		window.handleSlimScroll();
-	}
+  mounted() {
+    window.handleSlimScroll();
+  }
 }
 </script>

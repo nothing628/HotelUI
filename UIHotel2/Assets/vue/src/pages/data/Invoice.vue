@@ -206,7 +206,13 @@ import moment from "moment";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { ss, execute, executeFirst } from "@/lib/Test";
 import { isUndefined, isNull } from "util";
-import { PaymentType, IPaymentModel, UncategorizedDetailType, Invoice, IInvoiceDetailModel } from "@/lib/Model/Invoice";
+import {
+  PaymentType,
+  IPaymentModel,
+  UncategorizedDetailType,
+  Invoice,
+  IInvoiceDetailModel
+} from "@/lib/Model/Invoice";
 
 interface IDetailModel {
   AmmountIn: number;
@@ -280,7 +286,7 @@ export default class DataInvoice extends Vue {
   }
 
   get CleanList(): Array<any> {
-    let filtered: Array<any> = this.List_Detail.filter((item) => {
+    let filtered: Array<any> = this.List_Detail.filter((item: any) => {
       return item.KindId != 100 && item.KindId != 101;
     });
 
@@ -296,7 +302,11 @@ export default class DataInvoice extends Vue {
   }
 
   StoreDetail() {
-    this.DetailModel.Type = this.DetailType == "200" ? UncategorizedDetailType.IN : UncategorizedDetailType.OUT;
+    if (this.DetailType == "200") {
+      this.DetailModel.Type = UncategorizedDetailType.IN;
+    } else {
+      this.DetailModel.Type = UncategorizedDetailType.OUT;
+    }
 
     let newDetail: IInvoiceDetailModel = {
       AmmountIn: this.DetailModel.AmmountIn,
@@ -367,7 +377,13 @@ export default class DataInvoice extends Vue {
       this.PaymentModel.TRefNo = "";
     } else {
       let first = dataPayment[0];
-      this.PaymentModel.Type = first.KindId == 100 ? PaymentType.CASH : PaymentType.DEBIT;
+
+      if (first.KindId == 100) {
+        this.PaymentModel.Type = PaymentType.CASH;
+      } else {
+        this.PaymentModel.Type = PaymentType.DEBIT;
+      }
+      
       this.PaymentModel.Ammount = first.AmmountIn;
       this.PaymentModel.TRefNo = first.Description;
     }
@@ -375,8 +391,11 @@ export default class DataInvoice extends Vue {
 
   ProcessPayment() {
     this.TypeRefno = this.PaymentModel.TRefNo;
-    
-    if (isUndefined(this.PaymentModel.Type) || this.PaymentModel.Type === PaymentType.CASH) {
+
+    if (
+      isUndefined(this.PaymentModel.Type) ||
+      this.PaymentModel.Type === PaymentType.CASH
+    ) {
       this.TypeModel = "CASH";
     } else {
       this.TypeModel = "DEBIT";

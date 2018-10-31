@@ -275,7 +275,11 @@ export default class SettingUser extends Vue {
 
   resetPassword() {
     window.CS.Auth.ResetPassword(this.model_id, this.model_data.Password);
-    window.bus.$emit("Notify", {Title: "Password Reseted", Content: "Success to reset password", Type: "success"});
+    window.bus.$emit("Notify", {
+      Title: "Password Reseted",
+      Content: "Success to reset password",
+      Type: "success"
+    });
     this.getData();
     this.closeAll();
   }
@@ -301,7 +305,11 @@ export default class SettingUser extends Vue {
     try {
       this.model_data.Level = Number(this.model_data.Level);
       window.CS.Auth.Create(this.model_data);
-      window.bus.$emit("Notify", {Title: "Account Created", Content: "Success to create account", Type: "success"});
+      window.bus.$emit("Notify", {
+        Title: "Account Created",
+        Content: "Success to create account",
+        Type: "success"
+      });
     } catch (e) {
       console.log(e);
     }
@@ -322,7 +330,11 @@ export default class SettingUser extends Vue {
     try {
       this.model_data.Level = Number(this.model_data.Level);
       window.CS.Auth.Update(this.model_id, this.model_data);
-      window.bus.$emit("Notify", {Title: "Account Updated", Content: "Success to update account", Type: "success"});
+      window.bus.$emit("Notify", {
+        Title: "Account Updated",
+        Content: "Success to update account",
+        Type: "success"
+      });
     } catch (e) {
       console.log(e);
     }

@@ -48,10 +48,7 @@ export default class App extends Vue {
   refreshMeta() {
     let current = this.$router.currentRoute.meta;
 
-    if ('is_setup' in current && current.is_setup)
-      this.is_setup = true;
-    else
-      this.is_setup = false;
+    this.is_setup = "is_setup" in current && current.is_setup;
   }
 
   created() {
