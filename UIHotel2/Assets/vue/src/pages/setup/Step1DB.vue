@@ -50,7 +50,7 @@
             </button>
           </div>
           <div class="col-md-2">
-            <button class="btn btn-success btn-block" @click="textAndNext">
+            <button class="btn btn-success btn-block" @click="testConnect">
               Next
               <i class="fa fa-chevron-right"></i>
             </button>
@@ -65,13 +65,31 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
 export default class Step1 extends Vue {
-  SQL_Database: string = "";
-  SQL_Host: string = "";
-  SQL_Port: number = 0;
-  SQL_User: string = "";
+  SQL_Database: string = "hotelx";
+  SQL_Host: string = "localhost";
+  SQL_Port: number = 3306;
+  SQL_User: string = "root";
   SQL_Password: string = "";
 
-  textAndNext() {
+  testConnect() {
+    var port: number = Number(this.SQL_Port);
+
+    window.CS.Setting.TestConnect(
+      this.SQL_Host,
+      port,
+      this.SQL_User,
+      this.SQL_Password,
+      (e: boolean) => {
+        if (e) {
+          this.next();
+        } else {
+          window.bus.$emit("Notify", {Title: "Database Test", Content: "Failed to connect", Type: "error"});
+        }
+      }
+    );
+  }
+
+  next() {
     this.$router.push({ name: "setup.migrate"});
   }
 

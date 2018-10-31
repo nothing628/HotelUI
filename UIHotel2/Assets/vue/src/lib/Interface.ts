@@ -75,6 +75,7 @@ export interface ISetting {
   Save(): void;
   Load(): void;
   Test(host: string, port: number, user: string, password: string, database: string, callback: (is_okay: boolean) => void): void;
+  TestConnect(host: string, port: number, user: string, password: string, callback: (is_okay: boolean) => void): void;
 }
 
 export interface ICS {
