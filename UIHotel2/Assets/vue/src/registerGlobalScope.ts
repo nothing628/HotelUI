@@ -9,9 +9,13 @@ declare global {
     $: JQueryStatic;
     jQuery: JQueryStatic;
     bus: Vue;
+    handleSlimScroll(): void;
   }
 }
 
 window.$ = $;
 window.jQuery = $;
 window.bus = new Vue();
+window.handleSlimScroll = () => {
+  //
+};

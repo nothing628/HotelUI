@@ -18,7 +18,6 @@ import SettingApp from "./pages/setting/Application.vue";
 import SettingUser from "./pages/setting/User.vue";
 import Setup1 from "./pages/setup/Step1DB.vue";
 import Setup2 from "./pages/setup/Step2Migrate.vue";
-import Setup3 from "./pages/setup/Step3Setting.vue";
 import Setup4 from "./pages/setup/Step4Finish.vue";
 import TransactionCategory from "./pages/transaction/Category.vue";
 import TransactionList from "./pages/transaction/List.vue";
@@ -46,7 +45,6 @@ export default new Router({
     { path: "/setting/user", name: "setting.user", component: SettingUser },
     { path: "/setup/db", name: "setup.db", component: Setup1, meta: { is_setup: true } },
     { path: "/setup/migrate", name: "setup.migrate", component: Setup2, meta: { is_setup: true } },
-    { path: "/setup/basic", name: "setup.basic", component: Setup3, meta: { is_setup: true } },
     { path: "/setup/finish", name: "setup.finish", component: Setup4, meta: { is_setup: true } },
     { path: "/transaction/category", name: "transaction.category", component: TransactionCategory },
     { path: "/transaction/list", name: "transaction.list", component: TransactionList }

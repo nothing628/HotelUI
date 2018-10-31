@@ -1,3 +1,9 @@
+.fa.animate {
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin { 100% { transform:rotate(360deg); } }
+
 .bwizard-steps .active a {
   color: #fff;
   cursor: default;

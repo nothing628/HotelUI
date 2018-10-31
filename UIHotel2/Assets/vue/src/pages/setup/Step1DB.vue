@@ -50,7 +50,7 @@
             </button>
           </div>
           <div class="col-md-2">
-            <button class="btn btn-success btn-block">
+            <button class="btn btn-success btn-block" @click="textAndNext">
               Next
               <i class="fa fa-chevron-right"></i>
             </button>
@@ -72,11 +72,15 @@ export default class Step1 extends Vue {
   SQL_Password: string = "";
 
   textAndNext() {
-    //
+    this.$router.push({ name: "setup.migrate"});
   }
 
   cancel() {
     window.close();
+  }
+
+  mounted() {
+    window.handleSlimScroll();
   }
 }
 </script>

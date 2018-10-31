@@ -45,15 +45,26 @@ export default class App extends Vue {
     return this.$store.getters["User/is_login"];
   }
 
-  created() {
-    this.$store.dispatch("Setting/CopySetting");
-  }
-
-  mounted() {
+  refreshMeta() {
     let current = this.$router.currentRoute.meta;
 
     if ('is_setup' in current && current.is_setup)
       this.is_setup = true;
+    else
+      this.is_setup = false;
+  }
+
+  created() {
+    this.$store.dispatch("Setting/CopySetting");
+  }
+
+  beforeDestroy() {
+    window.bus.$off("refresh-meta", this.refreshMeta);
+  }
+
+  mounted() {
+    window.bus.$on("refresh-meta", this.refreshMeta);
+    this.refreshMeta();
   }
 }
 </script>
