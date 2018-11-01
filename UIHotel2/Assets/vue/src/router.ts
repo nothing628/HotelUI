@@ -6,6 +6,7 @@ import RoomCategory from "./pages/room/Category.vue";
 import RoomPrice from "./pages/room/Price.vue";
 import RoomCalendar from "./pages/room/Calendar.vue";
 import RoomMaintance from "./pages/room/Maintance.vue";
+import AuthChangePass from "@/pages/auth/ChangePass.vue";
 import CreateBooking from "@/pages/data/booking/Create.vue";
 import CreateGuest from "@/pages/data/guest/Create.vue";
 import EditGuest from "@/pages/data/guest/Edit.vue";
@@ -28,6 +29,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     { path: "/", name: "dashboard", component: Dashboard },
+    { path: "/auth/change", name: "auth.changepass", component: AuthChangePass },
     { path: "/data/booking", name: "data.booking", component: DataBooking },
     { path: "/data/booking/create", name: "data.booking.create", component: CreateBooking },
     { path: "/data/invoice/:id", name: "data.invoice", component: DataInvoice },

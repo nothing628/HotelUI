@@ -18,7 +18,7 @@
         </a>
         <ul class="dropdown-menu animated fadeInLeft">
           <li class="arrow"></li>
-          <li><a href="javascript:;">Change Password</a></li>
+          <li><a @click="changepass">Change Password</a></li>
           <li class="divider"></li>
           <li><a @click="logout">Log Out</a></li>
         </ul>
@@ -66,6 +66,10 @@ export default class Header extends Vue {
 
   logout() {
     this.$store.commit("User/logout");
+  }
+
+  changepass() {
+    this.$router.push({ name: "auth.changepass" });
   }
 }
 </script>
