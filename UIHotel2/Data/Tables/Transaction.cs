@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class Transaction
+    public class Transaction
     {
         [Key]
         public long Id { get; set; }
-        
+
         public DateTime TransactionAt { get; set; }
 
         public bool IsClosed { get; set; } = false;

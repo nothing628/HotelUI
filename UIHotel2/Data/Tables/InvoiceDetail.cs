@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class InvoiceDetail
+    public class InvoiceDetail
     {
         [Key]
         public long Id { get; set; }
@@ -21,6 +21,7 @@ namespace UIHotel2.Data.Tables
         public decimal AmmountOut { get; set; } = 0;
         public DateTime TransactionAt { get; set; }
         public bool IsSystem { get; set; } = true;
+
         [StringLength(1000)]
         public string Description { get; set; }
 

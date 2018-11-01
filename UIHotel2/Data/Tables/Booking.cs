@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class Booking
+    public class Booking
     {
         [Key]
         [StringLength(16)]
         public string Id { get; set; }
+
         public DateTime BookingAt { get; set; }
         public DateTime? CheckinAt { get; set; }
         public DateTime? CheckoutAt { get; set; }
@@ -20,6 +21,7 @@ namespace UIHotel2.Data.Tables
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime ArrivalDate { get; set; }
+
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime DepartureDate { get; set; }
@@ -68,7 +70,7 @@ namespace UIHotel2.Data.Tables
             using (var context = new HotelContext())
             {
                 var CurrDate = DateTime.Now.ToString("yyyyMMdd");
-                var Prefix = "BOK";
+                const string Prefix = "BOK";
                 var PrefixID = Prefix + CurrDate;
                 var newId = 1;
 

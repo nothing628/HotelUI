@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class TransactionCategory
+    public class TransactionCategory
     {
         [Key]
         public long Id { get; set; }
-        
+
         public bool IsIncome { get; set; } = true;
 
         [StringLength(40)]

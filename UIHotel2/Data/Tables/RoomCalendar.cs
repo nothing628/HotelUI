@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class RoomCalendar
+    public class RoomCalendar
     {
         [Key]
         public long Id { get; set; }
@@ -20,6 +20,7 @@ namespace UIHotel2.Data.Tables
         public DateTime DateAt { get; set; }
 
         public long RoomPriceKindId { get; set; }
+
         [ForeignKey("RoomPriceKindId")]
         public RoomPriceKind Kind { get; set; }
     }

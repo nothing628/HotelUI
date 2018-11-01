@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class Invoice
+    public class Invoice
     {
         [Key]
         [StringLength(16)]

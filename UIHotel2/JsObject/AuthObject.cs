@@ -10,12 +10,12 @@ using UIHotel2.Data;
 using UIHotel2.Data.Tables;
 using UIHotel2.Misc;
 
-namespace UIHotel2.AppObject
+namespace UIHotel2.JsObject
 {
-    class AuthObject : BaseObject
+    public class AuthObject : BaseObject
     {
         public override string ObjectName => "Auth";
-        static string AppKey => SettingHelper.AppKey;
+        private static string AppKey => SettingHelper.AppKey;
 
         public override void Register(JSObject obj)
         {
@@ -71,7 +71,7 @@ namespace UIHotel2.AppObject
                 e.SetReturnValue(convertval);
             }
         }
-        
+
         private void GetExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
             try
@@ -227,7 +227,7 @@ namespace UIHotel2.AppObject
                 var username = e.Arguments[0].StringValue;
                 var password = e.Arguments[1].StringValue;
                 var hashPassword = AuthHelper.HashText(password, AppKey);
-                
+
                 using (var context = new HotelContext())
                 {
                     var user = context.Users

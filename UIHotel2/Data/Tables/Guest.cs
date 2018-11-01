@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class Guest
+    public class Guest
     {
         [Key]
         public long Id { get; set; }
-        
+
         [Index("IFX_IdNumber", IsUnique = true, Order = 0)]
         [StringLength(30)]
         public string IdNumber { get; set; }
@@ -24,12 +24,12 @@ namespace UIHotel2.Data.Tables
         [Required]
         [StringLength(60)]
         public string Fullname { get; set; }
-        
+
         [StringLength(100)]
         public string Email { get; set; }
-        
+
         public bool IsVIP { get; set; }
-        
+
         [StringLength(50)]
         public string BirthPlace { get; set; }
 
@@ -41,29 +41,29 @@ namespace UIHotel2.Data.Tables
         [Required]
         [StringLength(15)]
         public string Phone1 { get; set; }
-        
+
         [StringLength(15)]
         public string Phone2 { get; set; }
-        
+
         [StringLength(255)]
         public string Address { get; set; }
-        
+
         [StringLength(50)]
         public string City { get; set; }
-        
+
         [StringLength(50)]
         public string Province { get; set; }
-        
+
         [StringLength(50)]
         public string State { get; set; }
-        
+
         [StringLength(10)]
         public string PostCode { get; set; }
 
         [Required]
         [StringLength(50)]
         public string PhotoDoc { get; set; }
-        
+
         [StringLength(50)]
         public string PhotoGuest { get; set; }
 

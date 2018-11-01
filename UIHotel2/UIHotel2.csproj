@@ -83,12 +83,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppObject\AppObject.cs" />
-    <Compile Include="AppObject\AuthObject.cs" />
-    <Compile Include="AppObject\BaseObject.cs" />
-    <Compile Include="AppObject\DBObject.cs" />
-    <Compile Include="AppObject\HotelObject.cs" />
-    <Compile Include="AppObject\SettingObject.cs" />
+    <Compile Include="JsObject\AppObject.cs" />
+    <Compile Include="JsObject\AuthObject.cs" />
+    <Compile Include="JsObject\BaseObject.cs" />
+    <Compile Include="JsObject\DBObject.cs" />
+    <Compile Include="JsObject\HotelObject.cs" />
+    <Compile Include="JsObject\SettingObject.cs" />
     <Compile Include="Data\Convention\DateTypeConvention.cs" />
     <Compile Include="Data\HotelContext.cs" />
     <Compile Include="Data\Tables\Booking.cs" />

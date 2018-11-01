@@ -9,7 +9,7 @@ using UIHotel2.Misc;
 
 namespace UIHotel2.Data.Tables
 {
-    class User
+    public class User
     {
         [Key]
         public long Id { get; set; }

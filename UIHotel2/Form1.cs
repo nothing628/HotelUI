@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIHotel2.AppObject;
+using UIHotel2.JsObject;
 
 namespace UIHotel2
 {
@@ -28,6 +28,7 @@ namespace UIHotel2
             GlobalObject.AddFunction("windowClose").Execute += CloseExecute;
             Chromium.BrowserCreated += Chromium_BrowserCreated;
             RegisterObject();
+            CallJavascriptO = new DelegateCallJavascript(CallJavascript);
         }
 
         private void CloseExecute(object sender, CfrV8HandlerExecuteEventArgs e)
@@ -35,13 +36,21 @@ namespace UIHotel2
             Close();
         }
 
+        private void CallJavascript()
+        {
+            ExecuteJavascript("alert('12');");
+        }
+
+        public delegate void DelegateCallJavascript();
+        public DelegateCallJavascript CallJavascriptO;
+
         private void RegisterObject()
         {
             List<IBaseObject> listObject = new List<IBaseObject>();
             var repository = GlobalObject.AddObject("CS");
 
             listObject.Add(new AuthObject());
-            listObject.Add(new AppObject.AppObject());
+            listObject.Add(new AppObject(this));
             listObject.Add(new DBObject());
             listObject.Add(new HotelObject());
             listObject.Add(new SettingObject());

@@ -15,7 +15,7 @@ using unvell.ReoGrid.DataFormat;
 using Chromium;
 using UIHotel2.Misc;
 
-namespace UIHotel2.AppObject
+namespace UIHotel2.JsObject
 {
     public class HotelObject : BaseObject
     {

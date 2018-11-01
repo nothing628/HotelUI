@@ -4,13 +4,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UIHotel2.AppObject;
+using UIHotel2.JsObject;
 using UIHotel2.Data.Convention;
 using UIHotel2.Data.Tables;
 
 namespace UIHotel2.Data
 {
-    class HotelContext: DbContext
+    public class HotelContext: DbContext
     {
         public HotelContext(): base(DBObject.ConnectionString)
         {
@@ -20,7 +20,7 @@ namespace UIHotel2.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.Entity<Guest>()
                 .Property(x => x.BirthDay)
                 .HasColumnType("Date");

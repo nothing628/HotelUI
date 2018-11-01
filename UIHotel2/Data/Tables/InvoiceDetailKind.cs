@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIHotel2.Data.Tables
 {
-    class InvoiceDetailKind
+    public class InvoiceDetailKind
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

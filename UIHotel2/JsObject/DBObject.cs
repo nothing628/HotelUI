@@ -18,7 +18,7 @@ using UIHotel2.Data.Tables;
 using UIHotel2.Misc;
 using UIHotel2.Properties;
 
-namespace UIHotel2.AppObject
+namespace UIHotel2.JsObject
 {
     public class DBObject : BaseObject
     {

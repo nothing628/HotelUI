@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UIHotel2.AppObject;
+using UIHotel2.JsObject;
 using UIHotel2.Data;
 using UIHotel2.Data.Tables;
 using UIHotel2.Migrations;

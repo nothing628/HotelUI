@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UIHotel2.AppObject
+namespace UIHotel2.JsObject
 {
     public interface IBaseObject
     {
