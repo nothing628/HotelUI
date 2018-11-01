@@ -28,7 +28,7 @@ namespace UIHotel2.Misc
             {
                 using (var ctx = new HotelContext())
                 {
-                    ctx.Database.Initialize(true);
+                    ctx.Database.Initialize(false);
                 }
 
                 return true;

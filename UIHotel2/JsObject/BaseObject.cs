@@ -44,7 +44,7 @@ namespace UIHotel2.JsObject
             return expando as ExpandoObject;
         }
 
-        protected void CallCallback(CfrV8Value callback, CfrV8Value param, CfrV8Context v8Context)
+        protected void CallCallback(CfrV8Value callback, CfrV8Context v8Context, params KeyValuePair<string, object>[] par)
         {
             if (callback != null)
             {
@@ -60,9 +60,17 @@ namespace UIHotel2.JsObject
                 {
                     //enter saved context
                     v8Context.Enter();
-                    
+
+                    var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
+
+                    foreach (var val in par)
+                    {
+                        var validValue = ConvertValue(val.Value);
+                        callbackArgs.SetValue(val.Key, validValue, CfxV8PropertyAttribute.ReadOnly);
+                    }
+
                     //execute callback
-                    callback.ExecuteFunction(null, new CfrV8Value[] { param });
+                    callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
 
                     v8Context.Exit();
 

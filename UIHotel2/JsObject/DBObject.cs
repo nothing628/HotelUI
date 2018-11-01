@@ -41,6 +41,45 @@ namespace UIHotel2.JsObject
             Self.AddFunction("CalendarSet").Execute += SetCalendar;
             Self.AddFunction("Test").Execute += TestExecute;
             Self.AddFunction("TestConnect").Execute += TestConnectExecute;
+            Self.AddFunction("Migrate").Execute += MigrateExecute;
+        }
+
+        private async void MigrateExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            if (e.Arguments.Length != 6)
+            {
+                e.Exception = "6 parameters expected!";
+                return;
+            }
+
+            var server = e.Arguments[0];
+            var port = e.Arguments[1];
+            var user = e.Arguments[2];
+            var password = e.Arguments[3];
+            var database = e.Arguments[4];
+            var callback = e.Arguments[5];
+            var context = CfrV8Context.GetCurrentContext();
+
+            if (!server.IsString || !port.IsInt || !user.IsString || !password.IsString || !database.IsString || !callback.IsFunction)
+            {
+                //Invalid parameter;
+                e.Exception = "Invalid parameter type";
+                return;
+            }
+
+            Settings.Default.SQL_HOST = server.StringValue;
+            Settings.Default.SQL_PORT = port.IntValue;
+            Settings.Default.SQL_USER = user.StringValue;
+            Settings.Default.SQL_PASSWORD = password.StringValue;
+            Settings.Default.SQL_DATABASE = database.StringValue;
+            Settings.Default.Save();
+
+            await Task.Run(() =>
+            {
+                var is_success = DataHelper.MigrateDB(true);
+
+                CallCallback(callback, context, new KeyValuePair<string, object>("success", is_success));
+            });
         }
 
         private void TestConnectExecute(object sender, CfrV8HandlerExecuteEventArgs e)

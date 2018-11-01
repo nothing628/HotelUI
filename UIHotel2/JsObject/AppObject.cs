@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -37,14 +38,11 @@ namespace UIHotel2.JsObject
             //save current context
             var v8Context = CfrV8Context.GetCurrentContext();
             var callback = Array.Find(e.Arguments, p => p.IsFunction);
-            var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
-            callbackArgs.SetValue("success", CfrV8Value.CreateBool(true), CfxV8PropertyAttribute.ReadOnly);
-            callbackArgs.SetValue("text", CfrV8Value.CreateString("Message from C#"), CfxV8PropertyAttribute.ReadOnly);
 
             //simulate async methods.
             await Task.Delay(5000);
 
-            CallCallback(callback, callbackArgs, v8Context);
+            CallCallback(callback, v8Context, new KeyValuePair<string, object>("Name", 12));
         }
 
         private void GetBookingNumberExecute(object sender, CfrV8HandlerExecuteEventArgs e)
