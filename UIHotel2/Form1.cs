@@ -50,7 +50,7 @@ namespace UIHotel2
             var repository = GlobalObject.AddObject("CS");
 
             listObject.Add(new AuthObject());
-            listObject.Add(new AppObject(this));
+            listObject.Add(new AppObject());
             listObject.Add(new DBObject());
             listObject.Add(new HotelObject());
             listObject.Add(new SettingObject());

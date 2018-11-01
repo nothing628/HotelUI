@@ -21,12 +21,6 @@ namespace UIHotel2.JsObject
 
         public override string ObjectName => "App";
         public const string baseUrl = "http://assets.app.local/upload/";
-        private Form1 Form1;
-
-        public AppObject(Form1 form): base()
-        {
-            this.Form1 = form;
-        }
 
         public override void Register(JSObject obj)
         {
@@ -36,65 +30,21 @@ namespace UIHotel2.JsObject
             Self.AddFunction("GetUploadUrl").Execute += GetUploadUrl;
             Self.AddFunction("GetNewBookingNumber").Execute += GetBookingNumberExecute;
             Self.AddFunction("Test").Execute += TestExecute;
-            //add a function with async callback
-            var asyncCallbackTestFunc = Self.AddFunction("asyncCallbackTest");
-            asyncCallbackTestFunc.Execute += async (func, args) =>
-            {
-                //save current context
-                var v8Context = CfrV8Context.GetCurrentContext();
-                var callback = Array.Find(args.Arguments, p => p.IsFunction);
-
-                //simulate async methods.
-                await Task.Delay(5000).ConfigureAwait(false);
-
-                if (callback != null)
-                {
-                    //get render process context
-                    var rc = callback.CreateRemoteCallContext();
-
-                    //enter render process
-                    rc.Enter();
-
-                    //create render task
-                    var task = new CfrTask();
-                    task.Execute += (_, taskArgs) =>
-                    {
-                        //enter saved context
-                        v8Context.Enter();
-
-                        //create callback argument
-                        var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
-                        callbackArgs.SetValue("success", CfrV8Value.CreateBool(true), CfxV8PropertyAttribute.ReadOnly);
-                        callbackArgs.SetValue("text", CfrV8Value.CreateString("Message from C#"), CfxV8PropertyAttribute.ReadOnly);
-
-                        //execute callback
-                        callback.ExecuteFunction(null, new CfrV8Value[] { callbackArgs });
-
-                        v8Context.Exit();
-
-                        //lock task from gc
-                        lock (task)
-                        {
-                            Monitor.PulseAll(task);
-                        }
-                    };
-
-                    lock (task)
-                    {
-                        //post task to render process
-                        v8Context.TaskRunner.PostTask(task);
-                    }
-
-                    rc.Exit();
-
-                    GC.KeepAlive(task);
-                }
-            };
         }
 
-        private void TestExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        private async void TestExecute(object sender, CfrV8HandlerExecuteEventArgs e)
         {
-            this.Form1.Invoke(Form1.CallJavascriptO);
+            //save current context
+            var v8Context = CfrV8Context.GetCurrentContext();
+            var callback = Array.Find(e.Arguments, p => p.IsFunction);
+            var callbackArgs = CfrV8Value.CreateObject(new CfrV8Accessor());
+            callbackArgs.SetValue("success", CfrV8Value.CreateBool(true), CfxV8PropertyAttribute.ReadOnly);
+            callbackArgs.SetValue("text", CfrV8Value.CreateString("Message from C#"), CfxV8PropertyAttribute.ReadOnly);
+
+            //simulate async methods.
+            await Task.Delay(5000);
+
+            CallCallback(callback, callbackArgs, v8Context);
         }
 
         private void GetBookingNumberExecute(object sender, CfrV8HandlerExecuteEventArgs e)

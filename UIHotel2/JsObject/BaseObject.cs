@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UIHotel2.JsObject
@@ -32,11 +33,6 @@ namespace UIHotel2.JsObject
             Self = obj.AddObject(ObjectName);
         }
 
-        public string[] GetProperties()
-        {
-            return new string[] { };
-        }
-
         public dynamic ToExpandoObject(object value)
         {
             IDictionary<string, object> dapperRowProperties = value as IDictionary<string, object>;
@@ -46,6 +42,47 @@ namespace UIHotel2.JsObject
                 expando.Add(property.Key, property.Value);
 
             return expando as ExpandoObject;
+        }
+
+        protected void CallCallback(CfrV8Value callback, CfrV8Value param, CfrV8Context v8Context)
+        {
+            if (callback != null)
+            {
+                //get render process context
+                var rc = callback.CreateRemoteCallContext();
+
+                //enter render process
+                rc.Enter();
+
+                //create render task
+                var task = new CfrTask();
+                task.Execute += (_, taskArgs) =>
+                {
+                    //enter saved context
+                    v8Context.Enter();
+                    
+                    //execute callback
+                    callback.ExecuteFunction(null, new CfrV8Value[] { param });
+
+                    v8Context.Exit();
+
+                    //lock task from gc
+                    lock (task)
+                    {
+                        Monitor.PulseAll(task);
+                    }
+                };
+
+                lock (task)
+                {
+                    //post task to render process
+                    v8Context.TaskRunner.PostTask(task);
+                }
+
+                rc.Exit();
+
+                GC.KeepAlive(task);
+            }
         }
 
         static BaseObject()
