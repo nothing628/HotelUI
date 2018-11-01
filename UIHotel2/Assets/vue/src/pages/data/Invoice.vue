@@ -383,7 +383,7 @@ export default class DataInvoice extends Vue {
       } else {
         this.PaymentModel.Type = PaymentType.DEBIT;
       }
-      
+
       this.PaymentModel.Ammount = first.AmmountIn;
       this.PaymentModel.TRefNo = first.Description;
     }

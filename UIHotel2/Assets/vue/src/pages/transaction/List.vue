@@ -322,7 +322,7 @@ export default class TransactionList extends Vue {
     var transactionAt = moment(item.TransactionAt);
     var limitEdit = this.limitEdit;
 
-    return transactionAt.isBefore(limitEdit);;
+    return transactionAt.isBefore(limitEdit);
   }
 
   addData() {

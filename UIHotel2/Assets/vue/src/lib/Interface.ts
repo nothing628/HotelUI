@@ -16,6 +16,14 @@ export interface IDB {
     password: string,
     callback: (is_okay: boolean) => void
   ): void;
+  Migrate(
+    host: string,
+    port: number,
+    user: string,
+    password: string,
+    database: string,
+    callback: (is_okay: boolean) => void
+  ): void;
 }
 
 export interface IApp {

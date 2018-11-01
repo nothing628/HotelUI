@@ -54,9 +54,10 @@ export class Invoice {
     let qry: any = sd()
       .from("invoicedetails")
       .where("InvoiceId = ?", invoiceId)
-      .where(se()
-        .or("KindId = ?", 100)
-        .or("KindId = ?", 101)
+      .where(
+        se()
+          .or("KindId = ?", 100)
+          .or("KindId = ?", 101)
       );
     executeScalar(qry);
   }

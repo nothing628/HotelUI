@@ -17,7 +17,7 @@
           <input class="form-control input-lg inverse-mode no-border" v-model="username" placeholder="Username" required="" type="text">
         </div>
         <div class="form-group m-b-20">
-          <input class="form-control input-lg inverse-mode no-border" v-model="password" placeholder="Password" required="" type="password">
+          <input class="form-control input-lg inverse-mode no-border" v-model="password" placeholder="Password" required="" type="password" @keypress="listenKey">
         </div>
         <div class="login-buttons">
           <button type="button" @click="submit" class="btn btn-success btn-block btn-lg">Sign in</button>
@@ -42,6 +42,12 @@ export default class Login extends Vue {
 
   get app_title() {
     return this.$store.state.app_title;
+  }
+
+  listenKey(evt: KeyboardEvent) {
+    if (evt.keyCode == 13) {
+      this.submit();
+    }
   }
 
   submit() {

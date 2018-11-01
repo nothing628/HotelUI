@@ -94,7 +94,15 @@ export default class Step1 extends Vue {
   }
 
   next() {
-    this.$router.push({ name: "setup.migrate" });
+    let params = {
+      SQL_Database: this.SQL_Database,
+      SQL_Host: this.SQL_Host,
+      SQL_Port: this.SQL_Port.toString(),
+      SQL_User: this.SQL_User,
+      SQL_Password: this.SQL_Password
+    };
+
+    this.$router.push({ name: "setup.migrate", query: params });
   }
 
   cancel() {

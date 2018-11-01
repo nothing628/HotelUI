@@ -37,6 +37,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class Step4 extends Vue {
   finish() {
+    this.$store.dispatch("Setting/CopySetting");
     this.$router.push({ name: "dashboard" });
     this.$nextTick(() => window.bus.$emit("refresh-meta"));
   }
