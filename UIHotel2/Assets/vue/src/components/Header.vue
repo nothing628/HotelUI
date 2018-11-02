@@ -18,9 +18,9 @@
         </a>
         <ul class="dropdown-menu animated fadeInLeft">
           <li class="arrow"></li>
-          <li><a @click="changepass">Change Password</a></li>
+          <li><a href="javascript:;" @click="changepass">Change Password</a></li>
           <li class="divider"></li>
-          <li><a @click="logout">Log Out</a></li>
+          <li><a href="javascript:;" @click="logout">Log Out</a></li>
         </ul>
       </li>
       <li onclick="windowMinimize();">

@@ -34,6 +34,7 @@
 </style>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { isNullOrUndefined } from 'util';
 
 @Component
 export default class Login extends Vue {
@@ -52,12 +53,30 @@ export default class Login extends Vue {
 
   submit() {
     //logic login here
-    this.$store.commit("User/login", {
-      Id: 12,
-      Username: "YT",
-      Fullname: "Youtube",
-      UserLevel: 0
-    });
+    var user = window.CS.Auth.Validate(this.username, this.password);
+
+    if (isNullOrUndefined(user)) {
+      window.bus.$emit("Notify", {
+        Title: "Sign In",
+        Content: "Username or Password wrong!",
+        Type: "error"
+      });
+    } else {
+      let fullname = user.Fullname;
+
+      window.bus.$emit("Notify", {
+        Title: "Sign In",
+        Content: "Welcome back " + fullname,
+        Type: "success"
+      });
+
+      this.$store.commit("User/login", {
+        Id: user.Id,
+        Username: user.Username,
+        Fullname: user.Fullname,
+        UserLevel: user.Level
+      });
+    }
   }
 }
 </script>

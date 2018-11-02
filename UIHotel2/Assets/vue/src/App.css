@@ -326,3 +326,13 @@ img.img-float {
 .content.content-setup {
   margin-right: 220px;
 }
+
+.sidebar .nav>li.nav-profile .image {
+  float: left;
+  width: auto;
+  height: auto;
+  margin-top: 2px;
+  margin-right: 15px;
+  overflow: hidden;
+  border-radius: 0;
+}

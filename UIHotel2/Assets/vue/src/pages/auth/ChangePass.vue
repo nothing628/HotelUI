@@ -28,8 +28,8 @@
 
             <div class="form-group">
               <div class="col-md-8 col-md-offset-4">
-                <button class="btn btn-success m-r-5">Change Password</button>
-                <button class="btn btn-danger m-r-5">Cancel</button>
+                <button class="btn btn-success m-r-5" @click="changePassword">Change Password</button>
+                <button class="btn btn-danger m-r-5" @click="cancel">Cancel</button>
               </div>
             </div>
           </div>
@@ -46,6 +46,44 @@ export default class ChangePass extends Vue {
   CurrentPassword: string = "";
   NewPassword: string = "";
   ConfirmPassword: string = "";
+
+  changePassword() {
+    let id = this.$store.getters["User/user_id"];
+    
+    if (this.NewPassword != this.ConfirmPassword || this.NewPassword == "" || this.CurrentPassword == "") {
+      window.bus.$emit("Notify", {
+        Title: "Change password ",
+        Content: "Failed to change password, last password or repeat password wrong!",
+        Type: "error"
+      });
+
+      return;
+    }
+
+    let result = window.CS.Auth.ChangePassword(id, this.CurrentPassword, this.NewPassword);
+
+    if (result) {
+      window.bus.$emit("Notify", {
+        Title: "Change password ",
+        Content: "Success to change password, please to logout and login again.",
+        Type: "success"
+      });
+
+      this.CurrentPassword = "";
+      this.NewPassword = "";
+      this.ConfirmPassword = "";
+    } else {
+      window.bus.$emit("Notify", {
+        Title: "Change password ",
+        Content: "Failed to change password, last password or repeat password wrong!",
+        Type: "error"
+      });
+    }
+  }
+
+  cancel() {
+    this.$router.push({ name: "dashboard" });
+  }
 
   mounted() {
     this.$store.commit("changeTitle", "Change Password");

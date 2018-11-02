@@ -3,10 +3,10 @@ import { IUserLoginState, IRootState } from "../types/types";
 
 const namespaced: boolean = true;
 const state: IUserLoginState = {
-  Id: 1,
+  Id: 0,
   Fullname: "",
   Username: "",
-  Level: 0
+  Level: -1
 };
 
 const mutations: MutationTree<IUserLoginState> = {

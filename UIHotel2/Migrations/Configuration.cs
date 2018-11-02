@@ -97,7 +97,7 @@ namespace UIHotel2.Migrations
                 new User {
                     Username = "admin",
                     Fullname = "Administrator",
-                    Password = AuthHelper.HashText("a", SettingHelper.AppKey),
+                    Password = AuthHelper.HashText("admin", SettingHelper.AppKey),
                     Level = 0,
                     IsActive = true
                 });
