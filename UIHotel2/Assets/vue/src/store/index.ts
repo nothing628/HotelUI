@@ -3,6 +3,7 @@ import Vuex, { MutationTree } from "vuex";
 import { StoreOptions } from "vuex";
 import { User } from "@/store/modules/user";
 import { Setting } from "@/store/modules/setting";
+import { Menu } from "@/store/modules/menu";
 import { IRootState } from "@/store/types/types";
 
 Vue.use(Vuex);
@@ -26,7 +27,8 @@ const store: StoreOptions<IRootState> = {
   mutations,
   modules: {
     User,
-    Setting
+    Setting,
+    Menu,
   }
 };
 

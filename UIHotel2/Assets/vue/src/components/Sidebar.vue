@@ -99,5 +99,9 @@ export default class Sidebar extends Vue {
   get levelname() {
     return this.$store.getters["User/levelname"];
   }
+
+  get listmenu() {
+    return this.$store.getters["Menu/MenuList"];
+  }
 }
 </script>

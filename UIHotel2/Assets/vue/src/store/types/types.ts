@@ -25,6 +25,18 @@ export interface ISettingState {
   SQL_Password: string;
 }
 
+export interface IMenuBase {
+  text: string;
+  show_rule: Array<boolean>;
+  icon?: string;
+  route?: string;
+  submenu?: Array<IMenuBase>;
+}
+
+export interface IMenuState {
+  listMenu: Array<IMenuBase>;
+}
+
 export interface IRootState {
   app_title: string;
   app_version: string;

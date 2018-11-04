@@ -53,6 +53,7 @@ export default class App extends Vue {
 
   created() {
     this.$store.dispatch("Setting/CopySetting");
+    this.$store.dispatch("Menu/RegisterMenu");
   }
 
   beforeDestroy() {
