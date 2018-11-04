@@ -40,8 +40,7 @@ namespace UIHotel2
                 }
                 else if (firstArgs == "--setup")
                 {
-                    //InitApp("http://assets.app.local/index.html#/setup/db");
-                    AppHelper.CreateStartup();
+                    InitApp("http://assets.app.local/index.html#/setup/db");
                     return;
                 }
             }

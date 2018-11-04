@@ -77,6 +77,7 @@ namespace UIHotel2.JsObject
             await Task.Run(() =>
             {
                 var is_success = DataHelper.MigrateDB(true);
+                AppHelper.CreateStartup();
 
                 CallCallback(callback, context, new KeyValuePair<string, object>("success", is_success));
             });
