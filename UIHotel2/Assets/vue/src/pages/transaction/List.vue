@@ -397,7 +397,7 @@ export default class TransactionList extends Vue {
       .set("Description", this.modelData.Description);
     let result = executeScalar(qry);
 
-    window.CS.Hotel.CalcTransaction(() => {
+    window.CS.Hotel.CalcTransaction(false, () => {
       this.getMaxItem();
       this.getItems();
       this.closeAll();
@@ -431,7 +431,7 @@ export default class TransactionList extends Vue {
       .where("Id = ?", this.modelData.Id);
     let result = executeScalar(qry);
 
-    window.CS.Hotel.CalcTransaction(() => {
+    window.CS.Hotel.CalcTransaction(false, () => {
       this.getMaxItem();
       this.getItems();
       this.closeAll();

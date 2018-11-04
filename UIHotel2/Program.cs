@@ -31,7 +31,6 @@ namespace UIHotel2
                 else if (firstArgs == "--calc-transaction")
                 {
                     TransactionHelper.CalculateSubtotal();
-                    TransactionHelper.ClosingTransaction();
                     return;
                 }
                 else if (firstArgs == "--calc-booking")
@@ -41,7 +40,8 @@ namespace UIHotel2
                 }
                 else if (firstArgs == "--setup")
                 {
-                    InitApp("http://assets.app.local/index.html#/setup/db");
+                    //InitApp("http://assets.app.local/index.html#/setup/db");
+                    AppHelper.CreateStartup();
                     return;
                 }
             }

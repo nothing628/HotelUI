@@ -1,6 +1,7 @@
 import { ss, si, su, sd, se, execute, executeScalar } from "@/lib/Test";
 import moment from "moment";
 import { isUndefined } from "util";
+import { Transaction } from "@/lib/Model/Transaction";
 
 export enum PaymentType {
   CASH,
@@ -141,6 +142,7 @@ export class Invoice {
       throw new Error("Need to pay invoice before closing the invoice!");
     }
 
+    Transaction.CheckoutTransaction(invoiceId);
     executeScalar(qry);
   }
 }

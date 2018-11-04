@@ -302,10 +302,5 @@ namespace UIHotel2.Misc
                 CalculateList(transaction, lstSubtotal);
             }
         }
-
-        public static void ClosingTransaction()
-        {
-            //
-        }
     }
 }

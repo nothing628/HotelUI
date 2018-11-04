@@ -74,8 +74,17 @@ namespace UIHotel2.JsObject
         {
             try
             {
-                var callback = e.Arguments[0];
-                var th = new Thread(() => TransactionHelper.CalculateSubtotal(false));
+                var normalize = e.Arguments[0];
+                var callback = e.Arguments[1];
+
+                if (!normalize.IsBool)
+                {
+                    e.Exception = "Parameter 1 expected Boolean";
+                    return;
+                }
+
+                var is_normalize = normalize.BoolValue;
+                var th = new Thread(() => TransactionHelper.CalculateSubtotal(is_normalize));
                 th.Start();
                 th.Join();
 

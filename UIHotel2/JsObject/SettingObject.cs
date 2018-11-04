@@ -40,6 +40,7 @@ namespace UIHotel2.JsObject
 
             Self.AddFunction("Save").Execute += SaveExecute;
             Self.AddFunction("Load").Execute += LoadExecute;
+            Self.AddFunction("Reset").Execute += ResetExecute;
 
             SQL_User.PropertyGet += SQL_User_PropertyGet;
             SQL_User.PropertySet += SQL_User_PropertySet;
@@ -74,6 +75,14 @@ namespace UIHotel2.JsObject
             Time_Checkout.PropertySet += Time_Checkout_PropertySet;
             Time_Fullcharge.PropertyGet += Time_Fullcharge_PropertyGet;
             Time_Fullcharge.PropertySet += Time_Fullcharge_PropertySet;
+        }
+
+        private void ResetExecute(object sender, CfrV8HandlerExecuteEventArgs e)
+        {
+            Settings.Default.Reset();
+            Settings.Default.Reload();
+            SettingHelper.Load();
+            e.SetReturnValue(true);
         }
 
         private void Hotel_Phone_PropertySet(object sender, CfrV8AccessorSetEventArgs e)

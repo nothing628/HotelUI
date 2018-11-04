@@ -69,7 +69,7 @@ export interface IRoomUsed {
 export interface IHotel {
   TransactionReportDownload(start: Date, end: Date): void;
   BookingReportDownload(start: Date, end: Date): void;
-  CalcTransaction(callback: () => void): void;
+  CalcTransaction(is_normalize: boolean, callback: () => void): void;
   CalcBooking(callback: () => void, invoiceId?: string): void;
   Visitor: number;
   Room: IRoomUsed;

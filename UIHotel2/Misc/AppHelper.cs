@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,15 @@ namespace UIHotel2.Misc
         public static TimeSpan GetTimespan(string timespanstr)
         {
             return TimeSpan.ParseExact(timespanstr, "hh\\:mm\\:ss", CultureInfo.CurrentCulture);
+        }
+
+        public static void CreateStartup()
+        {
+            //Generate task schedule;
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName);
+            var args = " --calc-transaction";
+            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            key.SetValue("UIHotel2", path + args, Microsoft.Win32.RegistryValueKind.String);
         }
     }
 
