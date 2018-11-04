@@ -48,19 +48,19 @@
 
       <div class="row m-t-10">
         <div class="col-md-4">
-          <button class="btn btn-success btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 1)">
+          <button class="btn btn-success btn-block" @click="bookingRoom" :disabled="!isAllow(selectedRoom.StateAllow, 1)">
             <i class="fa fa-book"></i>
             Booking
           </button>
         </div>
         <div class="col-md-4">
-          <button class="btn btn-success btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 2)">
+          <button class="btn btn-success btn-block" @click="checkinRoom" :disabled="!isAllow(selectedRoom.StateAllow, 2)">
             <i class="fa fa-sign-in"></i>
             Check-In
           </button>
         </div>
         <div class="col-md-4">
-          <button class="btn btn-success btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 3)">
+          <button class="btn btn-success btn-block" @click="checkoutRoom" :disabled="!isAllow(selectedRoom.StateAllow, 3)">
             <i class="fa fa-sign-out"></i>
             Check-Out
           </button>
@@ -69,13 +69,13 @@
 
       <div class="row m-t-10">
         <div class="col-md-4">
-          <button class="btn btn-warning btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 4)">
+          <button class="btn btn-warning btn-block" @click="finishClean" :disabled="!isAllow(selectedRoom.StateAllow, 4)">
             <i class="fa fa-magic"></i>
             Finish Cleaning
           </button>
         </div>
         <div class="col-md-4">
-          <button class="btn btn-warning btn-block" :disabled="!isAllow(selectedRoom.StateAllow, 5)">
+          <button class="btn btn-warning btn-block" @click="maintance" :disabled="!isAllow(selectedRoom.StateAllow, 5)">
             <i class="fa fa-wrench"></i>
             Maintance
           </button>
@@ -94,12 +94,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { ss, execute, executeScalar } from "@/lib/Test";
+import { Room, RoomStateType } from "@/lib/Model/Room";
 import PanelAccordion from "@/components/Panel/PanelAccordion.vue";
 
 interface IRoomModel {
   Id: number;
   RoomFloor?: string;
   RoomNumber: string;
+  RoomStateId: number;
   StateAllow: string;
   StateColor: string;
   StateName: string;
@@ -118,11 +120,56 @@ export default class RoomList extends Vue {
   private selectedRoom: IRoomModel = {
     CategoryName: "",
     RoomNumber: "",
+    RoomStateId: 0,
     StateAllow: "",
     StateColor: "",
     StateName: "",
     Id: 0,
   };
+
+  bookingRoom(): void {
+    let id: string = this.selectedRoom.Id.toString();
+
+    this.$router.push({ name: "data.booking.create", query: { roomId: id } });
+  }
+
+  checkinRoom(): void {
+    let currentState = this.selectedRoom.RoomStateId;
+
+    if (currentState === 1) {
+      this.bookingRoom();
+    } else {
+      this.checkoutRoom();
+    }
+  }
+
+  checkoutRoom(): void {
+    let id: string = this.selectedRoom.Id.toString();
+
+    this.$router.push({ name: "data.booking", query: { roomId: id } });
+  }
+
+  maintance(): void {
+    let id = this.selectedRoom.Id;
+    let currentState = this.selectedRoom.RoomStateId;
+
+    if (currentState === 1) {
+      Room.ChangeState(id, RoomStateType.Maintance);
+    } else {
+      Room.ChangeState(id, RoomStateType.Vacant);
+    }
+    
+    this.open_detail = false;
+    this.getRoom();
+  }
+
+  finishClean(): void {
+    let id = this.selectedRoom.Id;
+
+    Room.ChangeState(id, RoomStateType.Vacant);
+    this.open_detail = false;
+    this.getRoom();
+  }
 
   isAllow(stateallow: string, selector: number) {
     let selectAllow = stateallow.substr(selector - 1, 1);
@@ -134,6 +181,7 @@ export default class RoomList extends Vue {
     this.selectedRoom.Id = item.Id;
     this.selectedRoom.RoomFloor = item.RoomFloor;
     this.selectedRoom.RoomNumber = item.RoomNumber;
+    this.selectedRoom.RoomStateId = item.RoomStateId;
     this.selectedRoom.StateAllow = item.StateAllow;
     this.selectedRoom.StateColor = item.StateColor;
     this.selectedRoom.StateName = item.StateName;
@@ -157,6 +205,8 @@ export default class RoomList extends Vue {
     let qry = ss().from("roomcategories");
     let result = execute(qry);
 
+    this.listCategory = [];
+
     result.forEach((item: any) => {
       this.listCategory.push(item);
     });
@@ -173,6 +223,8 @@ export default class RoomList extends Vue {
       .field("b.StateAllow")
       .field("c.CategoryName");
     let result = execute(qry);
+
+    this.listRoom = [];
 
     result.forEach((item: any) => {
       this.listRoom.push(item);

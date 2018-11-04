@@ -67,10 +67,11 @@
 </template>
 <script lang="ts">
 import Pagination from "@/components/Table/Pagination.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { ss, se, execute } from "@/lib/Test";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ss, se, execute, executeFirst } from "@/lib/Test";
+import { isUndefined } from "util";
 
-interface IModalData {
+export interface IModalData {
   Id: string;
   RoomNumber: string;
   RoomCategory: string;
@@ -97,6 +98,34 @@ export default class CreateStep3 extends Vue {
     RoomFloor: "",
     Note: ""
   };
+
+  @Prop({ required: false, default: 0, type: Number })
+  private select?: number;
+
+  @Watch("select")
+  selectRoomChange() {
+    if (this.select != 0) {
+      let qry = ss()
+        .from("rooms", "a")
+        .join("roomstates", "b", "a.RoomStateId = b.Id")
+        .join("roomcategories", "c", "a.RoomCategoryId = c.Id")
+        .where(
+          se()
+            .and("b.Id = ?", 1)
+            .or("b.Id = ?", 4)
+        )
+        .where("a.Id = ?", this.select)
+        .field("a.*")
+        .field("b.StateName")
+        .field("b.StateColor")
+        .field("c.CategoryName");
+      let result = executeFirst(qry);
+
+      if (!isUndefined(result)) {
+        this.selectRoom(result);
+      }
+    }
+  }
 
   get IsRoomSelected(): boolean {
     return this.modalData.Id != "";

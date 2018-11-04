@@ -10,8 +10,7 @@ export enum RoomStateType {
 }
 
 export class Room {
-  public static ChangeState(roomId: number, state: RoomStateType): void
-  {
+  public static ChangeState(roomId: number, state: RoomStateType): void {
     let qry: any = su()
       .table("rooms")
       .set("RoomStateId", state)

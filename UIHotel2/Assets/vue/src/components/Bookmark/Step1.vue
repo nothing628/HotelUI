@@ -114,7 +114,7 @@ import { ss, execute } from "@/lib/Test";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import moment from "moment";
 
-interface IModalData {
+export interface IModalData {
   BookNumber: string;
   BookType: number;
   Deposit: number;
@@ -189,6 +189,8 @@ export default class CreateStep1 extends Vue {
       }
     });
   }
+
+  
 
   @Watch("bookingProv")
   bookProvChange() {

@@ -220,7 +220,7 @@ import { IGuest, Guest } from "@/lib/Model/Guest";
 import Pagination from "@/components/Table/Pagination.vue";
 import moment from "moment";
 
-interface IModalData {
+export interface IModalData {
   Id: string;
   IdNumber: string;
   Fullname: string;

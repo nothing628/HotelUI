@@ -56,13 +56,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { squel, ss, su, sd, si, execute, executeScalar } from "@/lib/Test";
+import { squel, ss, su, sd, si, execute, executeScalar, executeFirst } from "@/lib/Test";
 import { Booking, BookStatusType } from "@/lib/Model/ModelCollection";
 import Pagination from "@/components/Table/Pagination.vue";
 import Counter from "@/components/Table/Counter.vue";
 import BookingDetail from "@/pages/data/booking/Detail.vue";
 import moment from "moment";
-import { isNull, isNullOrUndefined } from "util";
+import { isNull, isNullOrUndefined, isUndefined } from "util";
 
 @Component({
   components: {
@@ -172,10 +172,28 @@ export default class DataBooking extends Vue {
     this.show_form = true;
   }
 
+  processQuery(query: { [key: string]: string }): void {
+    if ("roomId" in query) {
+      let roomId = query["roomId"];
+      let qry = ss()
+        .from("bookings", "a")
+        .where("a.roomId = ?", Number(roomId))
+        .where("a.CheckoutAt IS NULL")
+        .field("a.Id");
+      let result = executeFirst(qry);
+
+      if (!isUndefined(result)) {
+        this.detail(result);
+      }
+    }
+  }
+
   mounted() {
     this.$store.commit("changeTitle", "List Booking");
     this.$store.commit("changeSubtitle", "");
+    var query: { [key: string]: string } = this.$router.currentRoute.query;
     this.refresh();
+    this.processQuery(query);
   }
 }
 </script>

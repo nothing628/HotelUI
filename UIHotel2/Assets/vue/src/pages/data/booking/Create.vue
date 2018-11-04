@@ -17,7 +17,7 @@
           <create2 v-model="guestInfo"></create2>
         </step-container>
         <step-container name="room">
-          <create3 v-model="roomInfo"></create3>
+          <create3 v-model="roomInfo" :select.sync="roomId"></create3>
         </step-container>
 
         <div class="row">
@@ -56,6 +56,7 @@ export default class CreateBooking extends Vue {
   private bookInfo: any = {};
   private guestInfo: any = {};
   private roomInfo: any = {};
+  private roomId: number = 0;
 
   get isValid(): boolean {
     var book_val = Object.keys(this.bookInfo);
@@ -195,9 +196,19 @@ export default class CreateBooking extends Vue {
     this.$router.push({ name: "data.booking" });
   }
 
+  processQuery(query: {[key: string]: string}) {
+    if ("roomId" in query) {
+      let roomId = query["roomId"];
+
+      this.roomId = Number(roomId);
+    }
+  }
+
   mounted() {
+    let query = this.$router.currentRoute.query;
     this.$store.commit("changeTitle", "Create Booking");
     this.$store.commit("changeSubtitle", "");
+    this.processQuery(query);
   }
 }
 </script>
