@@ -28,7 +28,7 @@ namespace UIHotel2.Misc
         {
             //Generate task schedule;
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName);
-            var args = " --calc-transaction";
+            var args = " --daemon";
             Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             key.SetValue("UIHotel2", path + args, Microsoft.Win32.RegistryValueKind.String);
         }

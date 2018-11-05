@@ -1,7 +1,9 @@
 ﻿using NetDimension.NanUI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIHotel2.Misc;
@@ -10,6 +12,7 @@ namespace UIHotel2
 {
     static class Program
     {
+        static System.Threading.Timer timer;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -23,19 +26,15 @@ namespace UIHotel2
             {
                 var firstArgs = args[0];
 
-                if (firstArgs == "--calc-all-transaction")
+                if (firstArgs == "--normalize")
                 {
                     TransactionHelper.CalculateSubtotal(true);
                     return;
                 }
-                else if (firstArgs == "--calc-transaction")
+                else if (firstArgs == "--daemon")
                 {
-                    TransactionHelper.CalculateSubtotal();
-                    return;
-                }
-                else if (firstArgs == "--calc-booking")
-                {
-                    TransactionHelper.CalculateBooking();
+                    timer = new System.Threading.Timer(new TimerCallback(TimerTick), null, 60*1000, 20*60*1000);
+                    Application.Run();
                     return;
                 }
                 else if (firstArgs == "--setup")
@@ -46,6 +45,12 @@ namespace UIHotel2
             }
 
             InitApp();
+        }
+
+        public static void TimerTick(object state)
+        {
+            TransactionHelper.CalculateSubtotal();
+            TransactionHelper.CalculateBooking();
         }
 
         public static void InitApp(string UrlToLoad = "http://assets.app.local/index.html")
