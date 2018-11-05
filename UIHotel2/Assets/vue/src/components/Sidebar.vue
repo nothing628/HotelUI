@@ -20,40 +20,7 @@
       <!-- begin sidebar nav -->
       <ul class="nav">
         <li class="nav-header">Navigation</li>
-        <menu-child text="Dashboard" route="dashboard" icon="fa fa-laptop"></menu-child>
-        <menu-parent
-          text="Room"
-          icon="fa fa-codepen">
-          <menu-child text="Room List" route="room.list"></menu-child>
-          <menu-child text="Room Maintance" route="room.maintance"></menu-child>
-          <menu-child text="Room Category" route="room.category"></menu-child>
-          <menu-child text="Room Price" route="room.price"></menu-child>
-          <menu-child text="Calendar Price" route="room.calendar"></menu-child>
-        </menu-parent>
-        <menu-parent
-          text="Data Maintain"
-          icon="fa fa-book">
-          <menu-child text="Booking / Checkin" route="data.booking"></menu-child>
-          <menu-child text="Guest" route="data.guest"></menu-child>
-        </menu-parent>
-        <menu-parent
-          text="Transaction"
-          icon="fa fa-diamond">
-          <menu-child text="List Transaction" route="transaction.list"></menu-child>
-          <menu-child text="Transaction Category" route="transaction.category"></menu-child>
-        </menu-parent>
-        <menu-parent
-          text="Report"
-          icon="fa fa-line-chart">
-          <menu-child text="Booking Report" route="report.hotel"></menu-child>
-          <menu-child text="Transaction Report" route="report.finance"></menu-child>
-        </menu-parent>
-        <menu-parent
-          text="Settings"
-          icon="fa fa-wrench">
-          <menu-child text="Application" route="setting.app"></menu-child>
-          <menu-child text="Users" route="setting.user"></menu-child>
-        </menu-parent>
+        <menu-select v-for="(item, i) in listmenu" :key="i" :menu_data="item" :level="level"></menu-select>
         <!-- begin sidebar minify button -->
         <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
         <!-- end sidebar minify button -->
@@ -67,11 +34,13 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MenuParent from "./Menu/MenuParent.vue";
 import MenuChild from "./Menu/MenuChild.vue";
+import MenuSelect from "@/components/Menu/MenuSelect.vue";
 
 @Component({
   components: {
     MenuParent,
-    MenuChild
+    MenuChild,
+    MenuSelect
   }
 })
 export default class Sidebar extends Vue {

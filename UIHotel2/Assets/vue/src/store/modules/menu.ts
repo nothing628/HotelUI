@@ -27,46 +27,46 @@ const actions: ActionTree<IMenuState, IRootState> = {
       show_rule: [ true, true, true, true ],
       submenu: [
         { show_rule: [ true, true, true, true ], text:"Room List", route: "room.list" },
-        { show_rule: [ true, true, true, true ], text:"Room Maintance", route: "room.maintance" },
-        { show_rule: [ true, true, true, true ], text:"Room Category", route: "room.category" },
-        { show_rule: [ true, true, true, true ], text:"Room Price", route: "room.price" },
-        { show_rule: [ true, true, true, true ], text:"Calendar Price", route: "room.calendar" }
+        { show_rule: [ true, true, false, false ], text:"Room Maintance", route: "room.maintance" },
+        { show_rule: [ true, true, false, false ], text:"Room Category", route: "room.category" },
+        { show_rule: [ true, true, false, false ], text:"Room Price", route: "room.price" },
+        { show_rule: [ true, true, false, false ], text:"Calendar Price", route: "room.calendar" }
       ]
     };
     let datam: IMenuBase = {
       text: "Data Maintain",
       icon: "fa fa-book",
-      show_rule: [ true, true, true, true ],
+      show_rule: [ true, true, true, false ],
       submenu: [
-        { show_rule: [ true, true, true, true ], text: "Booking / Checkin", route: "data.booking" },
-        { show_rule: [ true, true, true, true ], text: "Guest", route: "data.guest" }
+        { show_rule: [ true, true, true, false ], text: "Booking / Checkin", route: "data.booking" },
+        { show_rule: [ true, true, true, false ], text: "Guest", route: "data.guest" }
       ]
     };
     let transaction: IMenuBase = {
       text: "Transaction",
       icon: "fa fa-diamond",
-      show_rule: [ true, true, true, true ],
+      show_rule: [ true, true, true, false ],
       submenu: [
-        { show_rule: [ true, true, true, true ], text: "List Transaction", route: "transaction.list" },
-        { show_rule: [ true, true, true, true ], text: "Transaction Category", route: "transaction.category" }
+        { show_rule: [ true, true, true, false ], text: "List Transaction", route: "transaction.list" },
+        { show_rule: [ true, true, false, false ], text: "Transaction Category", route: "transaction.category" }
       ]
     };
     let report: IMenuBase = {
       text: "Report",
       icon: "fa fa-line-chart",
-      show_rule: [ true, true, true, true ],
+      show_rule: [ true, true, false, false ],
       submenu: [
-        { show_rule: [ true, true, true, true ], text: "Booking Report", route: "report.hotel" },
-        { show_rule: [ true, true, true, true ], text: "Transaction Report", route: "report.finance" }
+        { show_rule: [ true, true, false, false ], text: "Booking Report", route: "report.hotel" },
+        { show_rule: [ true, true, false, false ], text: "Transaction Report", route: "report.finance" }
       ]
     };
     let settings: IMenuBase = {
       text: "Settings",
       icon: "fa fa-wrench",
-      show_rule: [ true, true, true, true ],
+      show_rule: [ true, true, false, false ],
       submenu: [
-        { show_rule: [ true, true, true, true ], text: "Application", route: "setting.app" },
-        { show_rule: [ true, true, true, true ], text: "Users", route: "setting.user" }
+        { show_rule: [ true, true, false, false ], text: "Application", route: "setting.app" },
+        { show_rule: [ true, true, false, false ], text: "Users", route: "setting.user" }
       ]
     };
 
