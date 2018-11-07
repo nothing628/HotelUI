@@ -72,5 +72,9 @@ export default class Sidebar extends Vue {
   get listmenu() {
     return this.$store.getters["Menu/MenuList"];
   }
+
+  mounted() {
+    window.handleSlimScroll();
+  }
 }
 </script>
