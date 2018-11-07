@@ -10,6 +10,14 @@ namespace UIHotel2.Misc
 {
     static class AppHelper
     {
+        public static DateTime ExpiredDate
+        {
+            get
+            {
+                return Properties.Settings.Default.INS_DATE.AddMonths(1);
+            }
+        }
+
         public static string GenerateRandomStr(int length)
         {
             var random = new Random();
@@ -31,6 +39,12 @@ namespace UIHotel2.Misc
             var args = " --daemon";
             Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             key.SetValue("UIHotel2", path + args, Microsoft.Win32.RegistryValueKind.String);
+        }
+
+        public static void CreateInsDate()
+        {
+            Properties.Settings.Default.INS_DATE = DateTime.Now;
+            Properties.Settings.Default.Save();
         }
     }
 

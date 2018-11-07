@@ -78,6 +78,7 @@ namespace UIHotel2.JsObject
             {
                 var is_success = DataHelper.MigrateDB(true);
                 AppHelper.CreateStartup();
+                AppHelper.CreateInsDate();
 
                 CallCallback(callback, context, new KeyValuePair<string, object>("success", is_success));
             });

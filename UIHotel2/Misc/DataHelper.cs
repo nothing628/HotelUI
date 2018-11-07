@@ -13,6 +13,18 @@ namespace UIHotel2.Misc
 {
     public static class DataHelper
     {
+        public static void DestoryDB()
+        {
+            var connStr = DBObject.ConnectionString;
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<HotelContext, Configuration>());
+
+            if (Database.Exists(connStr))
+            {
+                Database.Delete(connStr);
+            }
+        }
+
         public static bool MigrateDB(bool recreateDB)
         {
             var connStr = DBObject.ConnectionString;

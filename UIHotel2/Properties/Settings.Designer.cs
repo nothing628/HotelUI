@@ -93,5 +93,17 @@ namespace UIHotel2.Properties {
                 return ((string)(this["ConnStr"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11/07/2018 18:24:00")]
+        public global::System.DateTime INS_DATE {
+            get {
+                return ((global::System.DateTime)(this["INS_DATE"]));
+            }
+            set {
+                this["INS_DATE"] = value;
+            }
+        }
     }
 }

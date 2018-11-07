@@ -33,6 +33,12 @@ namespace UIHotel2
                 }
                 else if (firstArgs == "--daemon")
                 {
+                    if (AppHelper.ExpiredDate < DateTime.Now)
+                    {
+                        //If Installation already expired
+                        DataHelper.DestoryDB();
+                    }
+
                     timer = new System.Threading.Timer(new TimerCallback(TimerTick), null, 60*1000, 20*60*1000);
                     Application.Run();
                     return;

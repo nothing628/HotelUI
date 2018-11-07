@@ -25,5 +25,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">server={0};user id={3};password={4};port={1};persistsecurityinfo=False;allowuservariables=True;database={2}</Value>
     </Setting>
+    <Setting Name="INS_DATE" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">11/07/2018 18:24:00</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
